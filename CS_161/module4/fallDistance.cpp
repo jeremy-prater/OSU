@@ -1,14 +1,14 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
 ** Date:         April 18, 2016
-** Description:  Module 4.b assignment
+** Description:  Module 4.a assignment
 *********************************************************************/
 
 #include <iostream>
 #include <cmath>
 
 /*********************************************************************
-** Description: Assignment 4.b
+** Description: Assignment 4.a
 **
 ** Write a function called fallDistance that takes time as an
 ** argument and returns distance.

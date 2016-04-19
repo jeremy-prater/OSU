@@ -1,14 +1,14 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
 ** Date:         April 18, 2016
-** Description:  Module 4.a assignment
+** Description:  Module 4.b assignment
 *********************************************************************/
 
 #include <iostream>
 #include <cmath>
 
 /*********************************************************************
-** Description: Assignment 4.a
+** Description: Assignment 4.b
 **
 ** Write a function called fallDistance that takes time as an
 ** argument and returns distance.
@@ -31,14 +31,16 @@
 
 float fallDistance (float time)
 {
-  return (1.0f/2)(9.8f)(pow(time,2));
+  return (1.0/2)*(9.8)*pow(time,2);
 }
 
 #ifdef Debug
-void main(void)
+int main(void)
 {
-  cout << fallDistance (1.0f) << endl;
-  cout << fallDistance (2.0f) << endl;
-  cout << fallDistance (3.0f) << endl;
+  std::cout << fallDistance (1.0) << std::endl;
+  std::cout << fallDistance (2.0) << std::endl;
+  std::cout << fallDistance (3.0) << std::endl;
+
+  return 0;
 }
 #endif

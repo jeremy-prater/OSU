@@ -11,6 +11,7 @@
 ** Description: Assignment 4.b
 **
 ** Write a function called smallSort, which sorts 3 numbers
+** by reference
 **
 **
 *********************************************************************/

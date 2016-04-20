@@ -37,7 +37,7 @@ float fallDistance (float time)
 #ifdef Debug
 int main(void)
 {
-  std::cout << fallDistance (1.0) << std::endl;
+  std::cout << fallDistance (sqrt(2)) << std::endl;
   std::cout << fallDistance (2.0) << std::endl;
   std::cout << fallDistance (3.0) << std::endl;
 

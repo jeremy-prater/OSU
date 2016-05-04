@@ -107,9 +107,7 @@ Point LineSegment::getEnd2 ()
 
 double LineSegment::length ()
 {
-  return sqrt(
-    pow(this->_p2.getXCoord() - this->_p1.getXCoord(), 2) +
-    pow(this->_p2.getYCoord() - this->_p1.getYCoord(), 2));
+  return _p1.distanceTo(_p2);
 }
 
 /////////////////////////////////////////////////////////////////

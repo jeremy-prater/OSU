@@ -108,9 +108,10 @@ double Point::getYCoord() { return _Y; }
 //
 // Return distance to another point
 //
-double Point::distanceTo (Point &dist_Point)
+double Point::distanceTo (const Point & dist_Point)
 {
-  return sqrt (pow(dist_Point.getXCoord() - this->_X, 2) + pow(dist_Point.getYCoord() - this->_Y, 2));
+  return sqrt (pow(((Point)dist_Point).getXCoord() - this->_X, 2) +
+               pow(((Point)dist_Point).getYCoord() - this->_Y, 2) );
 }
 
 #ifdef Debug

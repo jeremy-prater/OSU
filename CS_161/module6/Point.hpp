@@ -47,7 +47,7 @@ class Point
     double getXCoord();
     double getYCoord();
 
-    double distanceTo (Point &dist_Point);
+    double distanceTo (const Point & dist_Point);
 };
 
 #endif // POINT_HPP

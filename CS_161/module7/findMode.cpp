@@ -6,6 +6,7 @@
 
 #include <math.h>
 #include <vector>
+#include <algorithm>
 
 #ifdef Debug
 #include <iostream>
@@ -93,7 +94,7 @@ std::vector<int> findMode (int input[], int length)
     }
   }
 
-  output_data = std::sort (output_data.begin(), output_data.end());
+  std::sort (output_data.begin(), output_data.end());
 
   return output_data;
 }

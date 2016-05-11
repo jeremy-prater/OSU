@@ -46,6 +46,7 @@ std::vector<int> findMode (int input[], int length)
 {
   std::vector<int_frequency> temp_data;
   std::vector<int> output_data;
+  int max_frequency=0;
 
   for (int i=0; i<length; i++)
   {
@@ -71,7 +72,6 @@ std::vector<int> findMode (int input[], int length)
     }
   }
 
-  int max_frequency=0;
   // Find highest frequency
   for (int x = 0; x < temp_data.size(); x++)
   {
@@ -81,7 +81,7 @@ std::vector<int> findMode (int input[], int length)
     }
   }
 
-  // Add high frequency objects to the out going vector.
+  // Add high frequency objects to the outgoing vector.
   for (int x = 0; x < temp_data.size(); x++)
   {
     if (temp_data[x].count == max_frequency)

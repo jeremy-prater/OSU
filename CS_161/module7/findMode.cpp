@@ -37,7 +37,7 @@ std::vector<int> findMode (int input[], int length);
 
 /////////////////////////////////////////////////////////////////
 //
-// std::std::vector<int[]> findMode (int[] input)
+// std::std::vector<int[]> findMode (int[] length)
 //
 // Return a vector (int[]) with the mode(s) of input (int[]).
 //
@@ -90,6 +90,7 @@ std::vector<int> findMode (int input[], int length)
     }
   }
 
+  // Sort the outgoing vector
   std::sort (output_data.begin(), output_data.end());
 
   return output_data;
@@ -99,23 +100,25 @@ std::vector<int> findMode (int input[], int length)
 #ifdef Debug
 void debug_printf(std::vector<int> result)
 {
+  printf ("Mode : ");
   for (int x=0;x<result.size();x++)
   {
-    printf ("loop: %d=%d\n",x ,result[x]);
+    printf ("%d ", result[x]);
   }
+  printf ("\n\n");
 }
 
 int main()
 {
   int test1[] = {1,1,1,1,1,2};
-  int test2[] = {1,1,1,2,2,2};
-  int test3[] = {1,2,3,4,5,6};
-  int test4[] = {1,1,2,2,3,3};
+  int test2[] = {1,1,1,2,2,2,1,2};
+  int test3[] = {1,2,3,4,5,6,7,8,9};
+  int test4[] = {5,5,4,4,1,1,6,6,2,2,3,3};
 
   debug_printf (findMode(test1, ARRAY_LENGTH (test1)));
-  debug_printf (findMode(test1, ARRAY_LENGTH (test2)));
-  debug_printf (findMode(test1, ARRAY_LENGTH (test3)));
-  debug_printf (findMode(test1, ARRAY_LENGTH (test4)));
+  debug_printf (findMode(test2, ARRAY_LENGTH (test2)));
+  debug_printf (findMode(test3, ARRAY_LENGTH (test3)));
+  debug_printf (findMode(test4, ARRAY_LENGTH (test4)));
   return 0;
 }
 #endif

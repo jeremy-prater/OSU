@@ -14,6 +14,8 @@
 **
 *********************************************************************/
 
+#define ARRAY_LENGTH(x) (sizeof(x)/sizeof(x[0]))
+
 struct int_frequency
 {
   int value;

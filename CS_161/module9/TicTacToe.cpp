@@ -6,6 +6,9 @@
 #include "Board.hpp"
 #include "TicTacToe.hpp"
 
+#include <iostream>
+#include <string>
+
 /*********************************************************************
 ** Description: Assignment 9
 **
@@ -37,7 +40,7 @@ TicTacToe::TicTacToe(char firstMove)
   }
   else
   {
-    gameBoard = nullptr;
+    gameBoard = 0;
   }
 }
 
@@ -50,7 +53,7 @@ TicTacToe::TicTacToe(char firstMove)
 
 TicTacToe::~TicTacToe()
 {
-  if (gameBoard != nullptr)
+  if (gameBoard != 0)
   {
     delete gameBoard;
   }

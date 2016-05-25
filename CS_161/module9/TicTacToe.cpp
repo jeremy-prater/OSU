@@ -94,19 +94,22 @@ void TicTacToe::play()
 
     gameBoard->printBoard();
 
-    std::cout << "Enter coordinates to play :";
     inputGood = false;
     while (!inputGood)
     {
+      std::cout << "Enter coordinates to play :";
       std::cin >> playX >> playY;
       if (!std::cin.good())
       {
-        std::cin.ignore (10);
+        std::cin.ignore (10000, '\n');
         std::cin.clear();
       }
       else
       {
-        inputGood = true;
+        if (((playX >= 0) && (playX <= 2)) && ((playY >= 0) && (playY <= 2)))
+        {
+          inputGood = true;
+        }
       }
     }
 

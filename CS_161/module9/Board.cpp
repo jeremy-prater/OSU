@@ -65,6 +65,7 @@ bool Board::makeMove (int x, int y)
   }
 
   // Update gameState if required.
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////

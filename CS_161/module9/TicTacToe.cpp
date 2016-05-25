@@ -94,7 +94,7 @@ void TicTacToe::play()
     gameBoard->printBoard();
 
     std::cout << "Enter coordinates to play :";
-    std::cin >> playX >> playY;
+    std::cin >> playY >> playX;
 
     if (gameBoard->makeMove (playX, playY) == false)
     {

@@ -103,7 +103,7 @@ void TicTacToe::play()
   }
 }
 
-void main()
+int main()
 {
   TicTacToe test ('x');
   test.play();

@@ -27,9 +27,9 @@
 // Class constructor with default variables
 //
 
-Board::Board (playerTurn_e startingPlayer);
+Board::Board (playerTurn_e startingPlayer)
 {
-  memset (0, this->board, sizeof (board));
+  memset (this->board,0 ,sizeof (board));
   currentGameState = UNFINISHED;
   currentPlayerTurn = startingPlayer;
 }

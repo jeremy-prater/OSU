@@ -122,6 +122,10 @@ void TicTacToe::play()
       round++;
     }
   }
+
+  std::cout << std::endl << std::endl << std::endl << " -- GAME OVER --" << std::endl << std::endl;
+  gameBoard->printBoard();
+
   switch (gameBoard->gameState())
   {
     case X_WON:

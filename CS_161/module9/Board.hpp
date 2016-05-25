@@ -1,0 +1,46 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         May 24, 2016
+** Description:  Module 9 assignment
+*********************************************************************/
+
+#ifndef BOARD_HPP
+#define BOARD_HPP
+
+/*********************************************************************
+** Description: Assignment 9
+**
+** class definition for Board
+**
+*********************************************************************/
+
+typedef enum gameState_e
+{
+  X_WON,
+  O_WON,
+  DRAW,
+  UNFINISHED
+} gameState_e;
+
+typedef enum playerTurn_e
+{
+  NO_PLAYER = 0,
+  X_TURN    = 1,
+  O_TURN    = 2
+} playerTurn_e;
+
+class Board
+{
+private:
+  unsigned char board[3][3];
+  gameState_e currentGameState;
+  playerTurn_e currentPlayerTurn;
+
+public:
+  gameState_e gameState();
+  playerTurn_e gamePlayer();
+  bool makeMove (int x, int y);
+  Board (currentPlayerTurn startingPlayer);
+};
+
+#endif // BOARD_HPP

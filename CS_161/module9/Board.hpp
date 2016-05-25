@@ -37,13 +37,16 @@ private:
   playerTurn_e currentPlayerTurn;
 
 public:
-  gameState_e gameState();
-  playerTurn_e gamePlayer();
+  gameState_e gameState(void);
+  playerTurn_e gamePlayer(void);
   bool makeMove (int x, int y);
   Board (playerTurn_e startingPlayer);
 
   void printBoard();
   char getPieceHelper(int x, int y);
+
+  bool CheckWinner (playerTurn_e checkPlayer);
+  bool CheckDraw(void);
 };
 
 #endif // BOARD_HPP

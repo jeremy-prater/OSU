@@ -29,9 +29,9 @@
 
 Board::Board (playerTurn_e startingPlayer)
 {
-  memset (this->board,0 ,sizeof (board));
-  currentGameState = UNFINISHED;
-  currentPlayerTurn = startingPlayer;
+  memset (this->board,0 ,sizeof (this->board));
+  this->currentGameState = UNFINISHED;
+  this->currentPlayerTurn = startingPlayer;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -47,24 +47,36 @@ Board::Board (playerTurn_e startingPlayer)
 bool Board::makeMove (int x, int y)
 {
   // Check if x,y is a valid move.
-  if (board[x][y] != NO_PLAYER)
+  if (this->board[x][y] != NO_PLAYER)
   {
     return false;
   }
 
   // Update board...
-  board[x][y] = currentPlayerTurn;
+  this->board[x][y] = this->currentPlayerTurn;
 
-  if (currentPlayerTurn == X_TURN)
+  if (this->gamePlayer() == X_TURN)
   {
-    currentPlayerTurn = O_TURN;
+    this->currentPlayerTurn = O_TURN;
   }
   else
   {
-    currentPlayerTurn = X_TURN;
+    this->currentPlayerTurn = X_TURN;
   }
 
   // Update gameState if required.
+  if (CheckWinner (X_TURN) == true)
+  {
+    this->currentGameState = X_WON;
+  }
+  if (CheckWinner (O_TURN) == true)
+  {
+    this->currentGameState = O_WON;
+  }
+  if (CheckDraw() == true)
+  {
+    this->currentGameState = DRAW;
+  }
   return true;
 }
 
@@ -75,9 +87,9 @@ bool Board::makeMove (int x, int y)
 // Return : The current game state.
 //
 
-gameState_e Board::gameState()
+gameState_e Board::gameState(void)
 {
-  return currentGameState;
+  return this->currentGameState;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -87,9 +99,9 @@ gameState_e Board::gameState()
 // Return : The current players turn.
 //
 
-playerTurn_e Board::gamePlayer()
+playerTurn_e Board::gamePlayer(void)
 {
-  return currentPlayerTurn;
+  return this->currentPlayerTurn;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -99,15 +111,15 @@ playerTurn_e Board::gamePlayer()
 // Print the current board configuration to the console.
 //
 
-void Board::printBoard()
+void Board::printBoard(void)
 {
   std::cout << std::endl << std::endl;
   std::cout << "   0   1   2 \n";
-  std::cout << "0  " << getPieceHelper(0,0) << " | "<< getPieceHelper(1,0) <<" | " << getPieceHelper(2,0) << "\n";
+  std::cout << "0  " << this->getPieceHelper(0,0) << " | "<< this->getPieceHelper(1,0) <<" | " << this->getPieceHelper(2,0) << "\n";
   std::cout << "  -----------\n";
-  std::cout << "1  " << getPieceHelper(0,1) << " | "<< getPieceHelper(1,1) <<" | " << getPieceHelper(2,1) << "\n";
+  std::cout << "1  " << this->getPieceHelper(0,1) << " | "<< this->getPieceHelper(1,1) <<" | " << this->getPieceHelper(2,1) << "\n";
   std::cout << "  -----------\n";
-  std::cout << "2  " << getPieceHelper(0,2) << " | "<< getPieceHelper(1,2) <<" | " << getPieceHelper(2,2) << "\n" << std::endl;
+  std::cout << "2  " << this->getPieceHelper(0,2) << " | "<< this->getPieceHelper(1,2) <<" | " << this->getPieceHelper(2,2) << "\n" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -119,13 +131,59 @@ void Board::printBoard()
 
 char Board::getPieceHelper(int x, int y)
 {
-  if (board[x][y] == X_TURN)
+  if (this->board[x][y] == X_TURN)
   {
     return 'X';
   }
-  if (board[x][y] == O_TURN)
+  if (this->board[x][y] == O_TURN)
   {
     return 'O';
   }
   return '.';
+}
+
+/////////////////////////////////////////////////////////////////
+//
+// char Board::getPieceHelper(int x, int y)
+//
+// Helper function to return the character equivalent of a piece enum.
+//
+
+bool Board::CheckWinner (playerTurn_e checkPlayer)
+{
+  return (((board[0][0] == checkPlayer) && (board[0][1] == checkPlayer) && (board[0][2] == checkPlayer)) ||
+          ((board[1][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[1][2] == checkPlayer)) ||
+          ((board[2][0] == checkPlayer) && (board[2][1] == checkPlayer) && (board[2][2] == checkPlayer)) ||
+
+          ((board[0][0] == checkPlayer) && (board[1][0] == checkPlayer) && (board[2][0] == checkPlayer)) ||
+          ((board[0][1] == checkPlayer) && (board[1][1] == checkPlayer) && (board[2][1] == checkPlayer)) ||
+          ((board[0][2] == checkPlayer) && (board[1][2] == checkPlayer) && (board[2][2] == checkPlayer)) ||
+
+          ((board[0][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[2][2] == checkPlayer)) ||
+          ((board[2][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[0][2] == checkPlayer)) );
+}
+
+/////////////////////////////////////////////////////////////////
+//
+// bool Board::CheckDraw(void)
+//
+// Returns true if all slots are filled and no winner is declared.
+//
+
+bool Board::CheckDraw(void)
+{
+  bool emptySlot = false;
+
+  for (int x=0;x<3;x++)
+  {
+    for (int y=0;y<3;y++)
+    {
+      if (this->board[x][y] == NO_PLAYER)
+      {
+        emptySlot = true;
+      }
+    }
+  }
+
+  return !emptySlot;
 }

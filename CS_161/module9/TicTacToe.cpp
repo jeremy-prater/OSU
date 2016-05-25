@@ -89,7 +89,7 @@ void TicTacToe::play()
     {
       std::cout << "O";
     }
-    std::cout << std::endl << std::endl << std::endl;
+    std::cout << std::endl << std::endl;
 
     gameBoard->printBoard();
 
@@ -98,11 +98,29 @@ void TicTacToe::play()
 
     if (gameBoard->makeMove (playX, playY) == false)
     {
-      std::cout << " -- Invalid move!! " << playX << ", " << playY << " is already taken!!" << std::endl << std::endl;
+      std::cout << std::endl<< " -- Invalid move!! " << playX << ", " << playY << " is already taken!!" << std::endl;
     }
     else
     {
       round++;
+    }
+  }
+  switch (gameBoard->gameState())
+  {
+    case X_WON:
+    {
+      std::cout << std::endl << std::endl << "X Won !!" < std::endl;
+      break;
+    }
+    case O_WON:
+    {
+      std::cout << std::endl << std::endl << "O Won !!" < std::endl;
+      break;
+    }
+    case DRAW:
+    {
+      std::cout << std::endl << std::endl << "Draw (cat game?)" < std::endl;
+      break;
     }
   }
 }

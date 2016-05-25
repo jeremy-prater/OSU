@@ -41,6 +41,9 @@ public:
   playerTurn_e gamePlayer();
   bool makeMove (int x, int y);
   Board (playerTurn_e startingPlayer);
+
+  void printBoard();
+  char getPieceHelper(int x, int y);
 };
 
 #endif // BOARD_HPP

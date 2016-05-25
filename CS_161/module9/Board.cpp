@@ -27,7 +27,7 @@
 // Class constructor with default variables
 //
 
-Board::Board (currentPlayerTurn startingPlayer);
+Board::Board (playerTurn_e startingPlayer);
 {
   memset (0, this->board, sizeof (board));
   currentGameState = UNFINISHED;
@@ -98,7 +98,7 @@ playerTurn_e Board::gamePlayer()
 // Print the current board configuration to the console.
 //
 
-gameState_e Board::printBoard()
+void Board::printBoard()
 {
   std::cout << std::endl << std::endl;
   std::cout << "   0   1   2 \n";
@@ -106,7 +106,7 @@ gameState_e Board::printBoard()
   std::cout << "  -----------\n";
   std::cout << "1  " << getPieceHelper(0,1) << " | "<< getPieceHelper(1,1) <<" | " << getPieceHelper(2,1) << "\n";
   std::cout << "  -----------\n";
-  std::cout << "2  " << getPieceHelper(0,2) << " | "<< getPieceHelper(1,2) <<" | " << getPieceHelper(2,2) << "\n";
+  std::cout << "2  " << getPieceHelper(0,2) << " | "<< getPieceHelper(1,2) <<" | " << getPieceHelper(2,2) << "\n" << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////

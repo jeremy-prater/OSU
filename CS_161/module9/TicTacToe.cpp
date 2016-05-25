@@ -68,7 +68,7 @@ TicTacToe::~TicTacToe()
 
 void TicTacToe::play()
 {
-  if (board == nullptr)
+  if (gameBoard == 0)
   {
     return;
   }
@@ -76,29 +76,29 @@ void TicTacToe::play()
   int round = 0;
   int playX, playY;
   playX = playY = 0;
-  while (board->gameState() == UNFINISHED)
+  while (gameBoard->gameState() == UNFINISHED)
   {
-    cout << "\n\n -- Round : " << round++ << std::endl;
-    cout << " -- Player : ";
+    std::cout << "\n\n -- Round : " << round++ << std::endl;
+    std::cout << " -- Player : ";
 
-    if (board->gamePlayer() == X_TURN)
+    if (gameBoard->gamePlayer() == X_TURN)
     {
-      cout << "X";
+      std::cout << "X";
     }
-    else if (board->gamePlayer() == O_TURN)
+    else if (gameBoard->gamePlayer() == O_TURN)
     {
-      cout << "O";
+      std::cout << "O";
     }
-    cout << std::endl << std::endl << std::endl;
+    std::cout << std::endl << std::endl << std::endl;
 
-    board->printBoard();
+    gameBoard->printBoard();
 
-    cout << "Enter coordinates to play :";
-    cin >> playX >> playY;
+    std::cout << "Enter coordinates to play :";
+    std::cin >> playX >> playY;
 
-    if (board->makeMove (playX, playY) == false)
+    if (gameBoard->makeMove (playX, playY) == false)
     {
-      cout << " -- Invalid move!! " << playX << ", " << playY << " is already taken!!" << std::endl << std::endl;
+      std::cout << " -- Invalid move!! " << playX << ", " << playY << " is already taken!!" << std::endl << std::endl;
     }
   }
 }
@@ -107,4 +107,5 @@ void main()
 {
   TicTacToe test ('x');
   test.play();
+  return 0;
 }

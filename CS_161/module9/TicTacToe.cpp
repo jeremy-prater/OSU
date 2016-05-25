@@ -101,8 +101,8 @@ void TicTacToe::play()
       std::cin >> playX >> playY;
       if (!std::cin.good())
       {
-        std::cin.ignore (10000, '\n');
         std::cin.clear();
+        std::cin.ignore ();
       }
       else
       {

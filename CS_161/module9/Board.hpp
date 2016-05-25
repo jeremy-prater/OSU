@@ -40,7 +40,7 @@ public:
   gameState_e gameState();
   playerTurn_e gamePlayer();
   bool makeMove (int x, int y);
-  Board (currentPlayerTurn startingPlayer);
+  Board (playerTurn_e startingPlayer);
 };
 
 #endif // BOARD_HPP

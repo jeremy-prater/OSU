@@ -126,17 +126,17 @@ void TicTacToe::play()
   {
     case X_WON:
     {
-      std::cout << std::endl << std::endl << "X Won !!" < std::endl;
+      std::cout << std::endl << std::endl << "X Won !!" << std::endl;
       break;
     }
     case O_WON:
     {
-      std::cout << std::endl << std::endl << "O Won !!" < std::endl;
+      std::cout << std::endl << std::endl << "O Won !!" << std::endl;
       break;
     }
     case DRAW:
     {
-      std::cout << std::endl << std::endl << "Draw (cat game?)" < std::endl;
+      std::cout << std::endl << std::endl << "Draw (cat game?)" << std::endl;
       break;
     }
   }

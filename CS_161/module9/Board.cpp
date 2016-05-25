@@ -144,23 +144,23 @@ char Board::getPieceHelper(int x, int y)
 
 /////////////////////////////////////////////////////////////////
 //
-// char Board::getPieceHelper(int x, int y)
+// bool Board::CheckWinner (playerTurn_e checkPlayer)
 //
-// Helper function to return the character equivalent of a piece enum.
+// Returns true if checkPlayer completed a TicTacToe
 //
 
 bool Board::CheckWinner (playerTurn_e checkPlayer)
 {
-  return (((board[0][0] == checkPlayer) && (board[0][1] == checkPlayer) && (board[0][2] == checkPlayer)) ||
-          ((board[1][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[1][2] == checkPlayer)) ||
-          ((board[2][0] == checkPlayer) && (board[2][1] == checkPlayer) && (board[2][2] == checkPlayer)) ||
+  return (((this->board[0][0] == checkPlayer) && (this->board[0][1] == checkPlayer) && (this->board[0][2] == checkPlayer)) || // Horizontal TicTacToe 1
+          ((this->board[1][0] == checkPlayer) && (this->board[1][1] == checkPlayer) && (this->board[1][2] == checkPlayer)) || // Horizontal TicTacToe 2
+          ((this->board[2][0] == checkPlayer) && (this->board[2][1] == checkPlayer) && (this->board[2][2] == checkPlayer)) || // Horizontal TicTacToe 3
 
-          ((board[0][0] == checkPlayer) && (board[1][0] == checkPlayer) && (board[2][0] == checkPlayer)) ||
-          ((board[0][1] == checkPlayer) && (board[1][1] == checkPlayer) && (board[2][1] == checkPlayer)) ||
-          ((board[0][2] == checkPlayer) && (board[1][2] == checkPlayer) && (board[2][2] == checkPlayer)) ||
+          ((this->board[0][0] == checkPlayer) && (this->board[1][0] == checkPlayer) && (this->board[2][0] == checkPlayer)) || // Vertical TicTacToe 1
+          ((this->board[0][1] == checkPlayer) && (this->board[1][1] == checkPlayer) && (this->board[2][1] == checkPlayer)) || // Vertical TicTacToe 2
+          ((this->board[0][2] == checkPlayer) && (this->board[1][2] == checkPlayer) && (this->board[2][2] == checkPlayer)) || // Vertical TicTacToe 3
 
-          ((board[0][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[2][2] == checkPlayer)) ||
-          ((board[2][0] == checkPlayer) && (board[1][1] == checkPlayer) && (board[0][2] == checkPlayer)) );
+          ((this->board[0][0] == checkPlayer) && (this->board[1][1] == checkPlayer) && (this->board[2][2] == checkPlayer)) || // X TicTacToe 1
+          ((this->board[2][0] == checkPlayer) && (this->board[1][1] == checkPlayer) && (this->board[0][2] == checkPlayer)) ); // X TicTacToe 2
 }
 
 /////////////////////////////////////////////////////////////////

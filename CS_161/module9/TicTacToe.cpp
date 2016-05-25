@@ -68,18 +68,19 @@ TicTacToe::~TicTacToe()
 
 void TicTacToe::play()
 {
+  int currentRound = 1;
+  bool inputGood = false;
+  int playX = 0;
+  int playY = 0;
+
   if (gameBoard == 0)
   {
     return;
   }
 
-  int round = 0;
-  bool inputGood = false;
-  int playX, playY;
-  playX = playY = 0;
   while (gameBoard->gameState() == UNFINISHED)
   {
-    std::cout << "\n\n -- Round : " << round << std::endl;
+    std::cout << "\n\n -- Round : " << currentRound << std::endl;
     std::cout << " -- Player : ";
 
     if (gameBoard->gamePlayer() == X_TURN)
@@ -119,7 +120,7 @@ void TicTacToe::play()
     }
     else
     {
-      round++;
+      currentRound++;
     }
   }
 
@@ -146,9 +147,16 @@ void TicTacToe::play()
   }
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// int main()
+//
+// Program entry point
+//
+
 int main()
 {
-  TicTacToe test ('x');
-  test.play();
+  TicTacToe gameTest ('x');
+  gameTest.play();
   return 0;
 }

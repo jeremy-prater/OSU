@@ -74,6 +74,7 @@ void TicTacToe::play()
   }
 
   int round = 0;
+  bool inputGood = false;
   int playX, playY;
   playX = playY = 0;
   while (gameBoard->gameState() == UNFINISHED)
@@ -94,7 +95,20 @@ void TicTacToe::play()
     gameBoard->printBoard();
 
     std::cout << "Enter coordinates to play :";
-    std::cin >> playX >> playY;
+    inputGood = false;
+    while (!inputGood)
+    {
+      std::cin >> playX >> playY;
+      if (!std::cin.good())
+      {
+        std::cin.ignore (10);
+        std::cin.clear();
+      }
+      else
+      {
+        inputGood = true;
+      }
+    }
 
     if (gameBoard->makeMove (playX, playY) == false)
     {

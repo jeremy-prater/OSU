@@ -4,5 +4,5 @@
 
 all : library
 
-library : Book.cpp Library.cpp Patron.cpp
-	g++ Book.cpp Library.cpp Patron.cpp -o library
+library : Book.cpp Library.cpp Patron.cpp main.cpp
+	g++ Book.cpp Library.cpp Patron.cpp main.cpp -o library

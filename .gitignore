@@ -1,1 +1,13 @@
+.metadata
+*.cproject
+*.project
+
+CS_161/module4/fallDistance
+CS_161/module4/hailstone
+CS_161/module4/smallSort
+CS_161/module5/box
+CS_161/module6/linesegment
+CS_161/module6/point
+CS_161/module7/findMode
 CS_161/module9/tictactoe
+CS_161/module10/library

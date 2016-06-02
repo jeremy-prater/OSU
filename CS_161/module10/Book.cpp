@@ -140,7 +140,7 @@ void Book::setCheckedOutBy(Patron* newPatron)
 //
 Patron* Book::getRequestedBy()
 {
-  this->requestedBy;
+  return this->requestedBy;
 }
 
 /////////////////////////////////////////////////////////////////

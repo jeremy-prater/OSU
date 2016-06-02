@@ -213,7 +213,7 @@ int main()
   Book b3("345", "Phantom Tollbooth", "Juster");
   Patron p1("abc", "Felicity");
   Patron p2("bcd", "Waldo");
-  Patron p3("123", "Jeremy")
+  Patron p3("123", "Jeremy");
   Library lib;
   lib.addBook(&b1);
   lib.addBook(&b2);
@@ -235,11 +235,13 @@ int main()
   std::cout << "p2 fine: " << p2Fine << std::endl;
 
   std::cout << "request: " << lib.requestBook ("123", "123") << std::endl;
+  std::cout << "request: " << lib.requestBook ("12b", "123") << std::endl;
+  std::cout << "request: " << lib.requestBook ("abc", "123") << std::endl;
 
   for (int i=0; i<10; i++)
      lib.incrementCurrentDate();
 
-  std::cout << "return book" << lib.returnBook ("123") << std::endl;
+  std::cout << "return book: " << lib.returnBook ("123") << std::endl;
   std::cout << lib.payFine("bcd", 1.0) << std::endl;
   p1Fine = p1.getFineAmount();
   p2Fine = p2.getFineAmount();

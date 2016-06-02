@@ -38,7 +38,6 @@ public:
     void setRequestedBy(Patron*);
     int getDateCheckedOut();
     void setDateCheckedOut(int);
-    void dump();
 };
 
 

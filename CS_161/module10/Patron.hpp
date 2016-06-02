@@ -21,7 +21,6 @@ public:
     void removeBook(Book* b);
     double getFineAmount();
     void amendFine(double amount);
-    void dump();
 };
 
 #endif

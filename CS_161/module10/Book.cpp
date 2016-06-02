@@ -122,13 +122,6 @@ Patron* Book::getCheckedOutBy()
 //
 void Book::setCheckedOutBy(Patron* newPatron)
 {
-  //Locale currentLocation = this->getLocation();
-  //if (currentLocation == CHECKED_OUT)
-  //{
-    // The book is already checked out.
-    //return;
-  //}
-  //this->setLocation (CHECKED_OUT);
   this->checkedOutBy = newPatron;
 }
 
@@ -151,14 +144,7 @@ Patron* Book::getRequestedBy()
 //
 void Book::setRequestedBy(Patron* newPatron)
 {
-  // The book must be checked out and no other
-  // patron must be requesting the book
-  //Locale currentLocation = this->getLocation();
-  //if ((currentLocation == CHECKED_OUT) && (this->getRequestedBy() == 0))
-  //{
-    // The book is checked out and no other patron is requesting it.
-    this->requestedBy = newPatron;
-  //}
+  this->requestedBy = newPatron;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -180,18 +166,5 @@ int Book::getDateCheckedOut()
 //
 void Book::setDateCheckedOut(int date)
 {
-  // Book location must be CHECKED_OUT
-  //Locale currentLocation = this->getLocation();
-  //if (currentLocation == CHECKED_OUT)
-  //{
-    this->dateCheckedOut = date;
-  //}
-}
-
-#include <iostream>
-void Book::dump()
-{
-  std::cout << this->idCode << ":" << this->title << ":" << this->author << ":"
-            << this->location << ":" << this->checkedOutBy << ":" << this->requestedBy << ":"
-            << this->dateCheckedOut << std::endl;
+  this->dateCheckedOut = date;
 }

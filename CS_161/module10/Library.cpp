@@ -25,6 +25,7 @@
 // Library::Library()
 //
 // Class constructor with default variables.
+//
 
 Library::Library()
 {
@@ -33,15 +34,36 @@ Library::Library()
   this->currentDate = 0;
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// void Library::addBook(Book* newBook)
+//
+// Add a book to the library holdings.
+//
+
 void Library::addBook(Book* newBook)
 {
   this->holdings.push_back (newBook);
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// void Library::addPatron(Patron* newPatron)
+//
+// Add a patron to the library members.
+//
+
 void Library::addPatron(Patron* newPatron)
 {
   this->members.push_back (newPatron);
 }
+
+/////////////////////////////////////////////////////////////////
+//
+// std::string Library::checkOutBook(std::string pID, std::string bID)
+//
+// Checkout out a book to a patron.
+//
 
 std::string Library::checkOutBook(std::string pID, std::string bID)
 {
@@ -89,6 +111,13 @@ std::string Library::checkOutBook(std::string pID, std::string bID)
   return "check out successful";
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// std::string Library::returnBook(std::string bID)
+//
+// Return a book to the library.
+//
+
 std::string Library::returnBook(std::string bID)
 {
   Book * curBook = this->getBook(bID);
@@ -116,6 +145,13 @@ std::string Library::returnBook(std::string bID)
   }
   return "return successful";
 }
+
+/////////////////////////////////////////////////////////////////
+//
+// std::string Library::requestBook(std::string pID, std::string bID)
+//
+// Mark a book for holding for another patron.
+//
 
 std::string Library::requestBook(std::string pID, std::string bID)
 {
@@ -148,6 +184,13 @@ std::string Library::requestBook(std::string pID, std::string bID)
 
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// std::string Library::payFine(std::string pID, double payment)
+//
+// Adjust patron fineAmount by payment.
+//
+
 std::string Library::payFine(std::string pID, double payment)
 {
   Patron * curPatron = this->getPatron(pID);
@@ -161,6 +204,14 @@ std::string Library::payFine(std::string pID, double payment)
   return "payment successful";
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// void Library::incrementCurrentDate()
+//
+// Add one day to the currentDate and preform logic for checking
+// for overdue books.
+//
+
 void Library::incrementCurrentDate()
 {
   this->currentDate++;
@@ -168,7 +219,6 @@ void Library::incrementCurrentDate()
   for (int patronCounter = 0; patronCounter < this->members.size(); patronCounter++)
   {
     Patron * curPatron = this->members[patronCounter];
-    //curPatron->dump();
     for (int bookCounter = 0; bookCounter < curPatron->getCheckedOutBooks().size(); bookCounter++)
     {
       Book * curBook = curPatron->getCheckedOutBooks()[bookCounter];
@@ -179,6 +229,13 @@ void Library::incrementCurrentDate()
     }
   }
 }
+
+/////////////////////////////////////////////////////////////////
+//
+// Patron* Library::getPatron(std::string pID)
+//
+// Find a patron from members based on patron ID.
+//
 
 Patron* Library::getPatron(std::string pID)
 {
@@ -193,6 +250,13 @@ Patron* Library::getPatron(std::string pID)
   return 0;
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// Book* Library::getBook(std::string bID)
+//
+// Find a book from holdings based on book ID.
+//
+
 Book* Library::getBook(std::string bID)
 {
   for (int bookCounter = 0; bookCounter < this->holdings.size(); bookCounter++)
@@ -205,6 +269,13 @@ Book* Library::getBook(std::string bID)
   }
   return 0;
 }
+
+/////////////////////////////////////////////////////////////////
+//
+// int main()
+//
+// Program entry point
+//
 
 int main()
 {
@@ -250,8 +321,5 @@ int main()
 
   std::cout << "checkout book: " << lib.checkOutBook("123", "345") << std::endl;
   std::cout << "checkout book: " << lib.checkOutBook("123", "123") << std::endl;
-
-
-
   return 0;
 }

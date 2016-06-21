@@ -1,9 +1,10 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
-** Date:         May 24, 2016
+** Date:         June 21, 2016
 ** Description:  Lab Aa
 *********************************************************************/
 #include "average.h"
+#include "lib_flip_display.h"
 
 /*********************************************************************
 ** Description: Lab Aa average.cpp
@@ -19,14 +20,15 @@
 // return the average of an array of doubles.
 //
 
-double avg(double * arrayPtr, unsigned int arrayLength)
+double avg(const double * arrayPtr,const unsigned int arrayLength)
 {
   // Declare a local double for the average.
   double arrayAvg = 0;
 
-  if (arrayLength == 0)
+  if ((arrayLength == 0) || (arrayPtr == 0))
   {
-    // If the length is 0, return the default value of 0;
+    // If the length is 0, return the default value of 0
+    // If the arrayPtr is invalid (null), return default value of 0
     return arrayAvg;
   }
   

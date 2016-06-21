@@ -1,11 +1,12 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
-** Date:         May 24, 2016
+** Date:         June 21, 2016
 ** Description:  Lab Aa
 *********************************************************************/
 
-#include "summation.h"
-#include "ncurses.h"
+#include "average.h"
+#include "lib_flip_display.h"
+#include <stdlib.h>
 
 /*********************************************************************
 ** Description: Lab Aa lab1-1.cpp
@@ -23,31 +24,44 @@
 
 int main (void)
 {
-  int ch;
-  initscr();
-  raw();
-  keypad(stdscr, TRUE);
-  noecho();
-  printw("Type any character to see it in bold\n");
-  ch = getch();			/* If raw() hadn't been called
-  * we have to press enter before it
-  * gets to the program 		*/
-  if(ch == KEY_F(1))		/* Without keypad enabled this will */
-    printw("F1 Key pressed");/*  not get to us either	*/
-    /* Without noecho() some ugly escape
-    * charachters might have been printed
-    * on screen			*/
-  else
-  {
-    printw("The pressed key is ");
-    attron(A_BOLD);
-    printw("%c", ch);
-    attroff(A_BOLD);
-  }
-  refresh();			/* Print it on to the real screen */
-  getch();			/* Wait for user input */
-  endwin();			/* End curses mode		  */
-
+  init_display();
+  debug_print (true, COLOR_GREEN, "CS_162: Lab Aa 1-1 Testing...\n\n");
   
+  double testResult;
+  double testArray1[10] = {0,1,2,3,4,5,6,7,8,9};
+  
+  unsigned int userArrayLength;
+  double * userArray;
+  
+  debug_print (false, COLOR_WHITE, "Average of zero length array...");
+  debug_test_result (avg (testArray1, 0) == 0);
+
+  debug_print (false, COLOR_WHITE, "Average of nullptr array...");
+  debug_test_result (avg (__null, ARRAY_SIZE (testArray1)) == 0);
+  
+  debug_print (false, COLOR_WHITE, "Average of testArray1...");
+  debug_test_result (avg (testArray1, ARRAY_SIZE (testArray1)) == 4.5);
+
+  debug_print (false, COLOR_WHITE, "Average of testArray1 with incorrect length...");
+  debug_test_result (avg (testArray1, ARRAY_SIZE (testArray1)-1) != 4.5);
+  
+  debug_print (false, COLOR_WHITE,"Enter user defined array test:\n\nEnter number of elements: ");
+
+  scanw ("%d", &userArrayLength);
+
+  userArray = (double*)malloc (userArrayLength * sizeof (double));
+  for (int userCount = 0;userCount < userArrayLength; userCount++)
+  {
+    debug_print (false, COLOR_WHITE,"Enter data (%d/%d): ", userCount+1, userArrayLength);
+    scanw ("%lf", &userArray[userCount]);
+  }
+
+  debug_print (false, COLOR_WHITE, "User Average : %lf\n\n", avg(userArray, userArrayLength));
+
+  free (userArray);
+
+  debug_print (false, COLOR_WHITE, "Test Complete! Press any key to exit.");
+  getch();
+  shutdown_display();
   return 0;
 }

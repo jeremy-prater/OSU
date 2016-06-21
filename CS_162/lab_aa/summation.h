@@ -1,6 +1,6 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
-** Date:         May 24, 2016
+** Date:         June 21, 2016
 ** Description:  Lab Aa
 *********************************************************************/
 
@@ -21,6 +21,8 @@
 // return the sum of an array of doubles.
 //
 
-double sum(double * arrayPtr, unsigned int arrayLength);
+#define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
+
+double sum(const double * arrayPtr,const unsigned int arrayLength);
 
 #endif // SUMMATION_H

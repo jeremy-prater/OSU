@@ -1,6 +1,6 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
-** Date:         May 24, 2016
+** Date:         June 21, 2016
 ** Description:  Lab Aa
 *********************************************************************/
 
@@ -23,6 +23,6 @@
 // return the average of an array of doubles.
 //
 
-double avg(double * arrayPtr, unsigned int arrayLength);
+double avg(const double * arrayPtr,const unsigned int arrayLength);
 
 #endif // AVERAGE_H

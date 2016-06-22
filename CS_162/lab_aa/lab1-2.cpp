@@ -30,7 +30,8 @@ int main (void)
   
   double testResult;
   double testArray1[10] = {0,1,2,3,4,5,6,7,8,9};
-  
+  double testArray2[10] = {-5,-4,-3,-2,-1,1,2,3,4,5};
+    
   unsigned int userArrayLength;
   double * userArray;
   
@@ -45,7 +46,10 @@ int main (void)
 
   debug_print (false, COLOR_WHITE, "Summation of testArray1 with incorrect length...");
   debug_test_result (sum (testArray1, ARRAY_SIZE (testArray1)-1) != 45);
-  
+
+  debug_print (false, COLOR_WHITE, "Summation of testArray2...");
+  debug_test_result (sum (testArray2, ARRAY_SIZE (testArray1)) == 0);
+
   debug_print (false, COLOR_WHITE,"Enter user defined array test:\n\nEnter number of elements: ");
 
   scanw ("%d", &userArrayLength);

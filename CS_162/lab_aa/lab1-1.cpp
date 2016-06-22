@@ -50,9 +50,9 @@ int main (void)
   scanw ("%d", &userArrayLength);
 
   userArray = (double*)malloc (userArrayLength * sizeof (double));
-  for (int userCount = 0;userCount < userArrayLength; userCount++)
+  for (unsigned int userCount = 0;userCount < userArrayLength; userCount++)
   {
-    debug_print (false, COLOR_WHITE,"Enter data (%d/%d): ", userCount+1, userArrayLength);
+    debug_print (false, COLOR_WHITE,"Enter data (%u/%u): ", userCount+1, userArrayLength);
     scanw ("%lf", &userArray[userCount]);
   }
 

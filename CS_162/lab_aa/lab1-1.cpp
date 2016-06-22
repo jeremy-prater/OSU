@@ -52,7 +52,7 @@ int main (void)
 
   debug_print (false, COLOR_WHITE,"Enter user defined array test:\n\nEnter number of elements: ");
 
-  scanw ("%d", &userArrayLength);
+  scanw ("%u", &userArrayLength);
 
   userArray = (double*)malloc (userArrayLength * sizeof (double));
   for (unsigned int userCount = 0;userCount < userArrayLength; userCount++)

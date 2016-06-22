@@ -4,7 +4,6 @@
 ** Description:  Lab Aa
 *********************************************************************/
 #include "average.h"
-#include "lib_flip_display.h"
 
 /*********************************************************************
 ** Description: Lab Aa average.cpp

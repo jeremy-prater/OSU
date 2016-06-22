@@ -4,7 +4,6 @@
 ** Description:  Lab Aa
 *********************************************************************/
 #include "summation.h"
-#include "lib_flip_display.h"
 
 /*********************************************************************
 ** Description: Lab Aa summation.cpp

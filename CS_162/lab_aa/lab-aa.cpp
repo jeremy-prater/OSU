@@ -25,7 +25,7 @@
 int main (void)
 {
   init_display();
-  debug_print (true, COLOR_GREEN, "CS_162: Lab Aa 1-1 Testing...\n\n");
+  debug_print (true, COLOR_GREEN, "CS_162: Lab Aa  Testing...\n\n");
 
   double testResult;
 
@@ -52,13 +52,13 @@ int main (void)
 
   debug_print (false, COLOR_WHITE,"Enter user defined array test:\n\nEnter number of elements: ");
 
-  scanw ("%u", &userArrayLength);
+  scanw ((char*)"%u", &userArrayLength);
 
   userArray = (double*)malloc (userArrayLength * sizeof (double));
   for (unsigned int userCount = 0;userCount < userArrayLength; userCount++)
   {
     debug_print (false, COLOR_WHITE,"Enter data (%u/%u): ", userCount+1, userArrayLength);
-    scanw ("%lf", &userArray[userCount]);
+    scanw ((char*)"%lf", &userArray[userCount]);
   }
 
   debug_print (false, COLOR_WHITE, "User Average : %lf\n\n", avg(userArray, userArrayLength));
@@ -82,13 +82,13 @@ int main (void)
 
   debug_print (false, COLOR_WHITE,"Enter user defined array test:\n\nEnter number of elements: ");
 
-  scanw ("%u", &userArrayLength);
+  scanw ((char*)"%u", &userArrayLength);
 
   userArray = (double*)malloc (userArrayLength * sizeof (double));
   for (unsigned int userCount = 0;userCount < userArrayLength; userCount++)
   {
     debug_print (false, COLOR_WHITE,"Enter data (%u/%u): ", userCount+1, userArrayLength);
-    scanw ("%lf", &userArray[userCount]);
+    scanw ((char*)"%lf", &userArray[userCount]);
   }
 
   debug_print (false, COLOR_WHITE, "User Sum : %lf\n\n", sum(userArray, userArrayLength));

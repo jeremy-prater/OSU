@@ -42,7 +42,7 @@ int main()
   debug_test_result (myList->GetItemCount() == 0);
 
   debug_print (false, COLOR_WHITE, "Total price from empty storage.\t\t\t\n");
-  debug_test_result (myList->getTotalPrice() == 0);
+  debug_test_result (myList->GetTotalPrice() == 0);
 
 
   myList->AddListItem ("Bananas", "lb", 0.99, 2.32);

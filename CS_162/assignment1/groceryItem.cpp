@@ -29,10 +29,10 @@ using namespace std;
 //        None
 //
 
-groceryItem::groceryItem (string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity)
+groceryItem::groceryItem (const string &newItemName, const string &newUnitType, double newUnitPrice, double newUnitQuantity)
 {
-  this->itemName = newItemName;
-  this->unitType = newUnitType;
+  this->itemName = string(newItemName);
+  this->unitType = string(newUnitType);
   this->unitPrice = newUnitPrice;
   this->unitQuantity = newUnitQuantity;
 }

@@ -26,17 +26,18 @@ private:
   groceryItem ** currentGroceryList;
 
   void ResizeGroceryList();
-  void RemoveAllListItems();
 
 public:
   groceryList ();
   ~groceryList();
 
   void CreateGroceryList();
-  void AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);
+  void RemoveAllListItems();
+  void AddListItem(const string &newItemName, const string &newUnitType, double newUnitPrice, double newUnitQuantity);
   void RemoveListItem (unsigned int itemIndex);
   unsigned int GetItemCount();
   void PrintGroceryList();
+  double GetTotalPrice();
 };
 
 #endif // GROCERY_LIST

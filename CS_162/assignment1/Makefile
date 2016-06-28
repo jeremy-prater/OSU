@@ -5,7 +5,7 @@
 all : groceryList
 
 groceryList: groceryItem.cpp groceryList.cpp lib_flip_display.cpp groceryMain.cpp
-	g++ groceryItem.cpp groceryList.cpp lib_flip_display.cpp groceryMain.cpp -lncurses -o groceryList
+	g++ groceryItem.cpp groceryList.cpp lib_flip_display.cpp groceryMain.cpp -g -lncurses -o groceryList
 
 clean :
 	rm -f groceryList

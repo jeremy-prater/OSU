@@ -27,7 +27,7 @@ private:
   double unitQuantity;
 
 public:
-  groceryItem (string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);
+  groceryItem (const string &newItemName, const string &newUnitType, double newUnitPrice, double newUnitQuantity);
 
   string getItemName();
   string getUnitType();

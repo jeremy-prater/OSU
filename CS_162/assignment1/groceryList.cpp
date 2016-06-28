@@ -51,12 +51,12 @@ groceryList::~groceryList()
 void groceryList::RemoveAllListItems()
 {
   // Check if the groceryList is already created...
-  if ((this->groceryListMaxCount != 0) && (this->currentGroceryList != __null))
+  if ((this->groceryListCurrentCount != 0) && (this->currentGroceryList != __null))
   {
     // Delete all items from the current list...
     while (this->groceryListCurrentCount > 0)
     {
-      this->RemoveListItem(0);
+      this->RemoveListItem(this->groceryListCurrentCount - 1);
     }
   }
 }
@@ -87,10 +87,10 @@ void groceryList::ResizeGroceryList()
   this->currentGroceryList = (groceryItem **)realloc (this->currentGroceryList, sizeof (groceryItem *) * this->groceryListMaxCount);
 }
 
-void groceryList::AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity)
+void groceryList::AddListItem(const string &newItemName, const string &newUnitType, double newUnitPrice, double newUnitQuantity)
 {
   // Make sure there is room in the pointer storage array.
-  if (this->groceryListCurrentCount + 1 == this->groceryListMaxCount)
+  if ((this->groceryListCurrentCount + 1) >= this->groceryListMaxCount)
   {
     // If not, resize the array
     this->ResizeGroceryList();
@@ -111,7 +111,7 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
     if ((this->groceryListCurrentCount > 1) && (itemIndex != (this->groceryListCurrentCount - 1)))
     {
       // memcpy the tail of the array back into the deleted item position.
-      memcpy (this->currentGroceryList[itemIndex], this->currentGroceryList[itemIndex + 1], sizeof (groceryItem *) * (this->groceryListCurrentCount - 1));
+      memcpy (&this->currentGroceryList[itemIndex], &this->currentGroceryList[itemIndex + 1], sizeof (groceryItem *) * (this->groceryListCurrentCount - 1));
       this->groceryListCurrentCount--;
     }
   }
@@ -119,12 +119,13 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
 
 double groceryList::GetTotalPrice()
 {
+  unsigned int currentItemIndex = 0;
   double totalPrice = 0;
   for (currentItemIndex = 0; currentItemIndex < this->groceryListCurrentCount; currentItemIndex++)
   {
     totalPrice += ((groceryItem *)this->currentGroceryList[currentItemIndex])->getTotalPrice();
   }
-  return totalPrice();
+  return totalPrice;
 }
 
 unsigned int groceryList::GetItemCount()
@@ -156,5 +157,5 @@ void groceryList::PrintGroceryList()
   }
   debug_print (true, COLOR_WHITE, "---------------------------\n");
   debug_print (true, COLOR_WHITE, " Total price: ");
-  debug_print (true, COLOR_GREREN, "%01.2ld\n\n",this->getTotalPrice());
+  debug_print (true, COLOR_GREEN, "%01.2ld\n\n",this->GetTotalPrice());
 }

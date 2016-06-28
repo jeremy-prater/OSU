@@ -4,7 +4,7 @@
 ** Description:  General purpose library for using NCURSES in flip
 *********************************************************************/
 
-#include "lib_flip_display.h"
+#include "lib_flip_display.hpp"
 
 /*********************************************************************
 **

@@ -23,7 +23,9 @@ class groceryList
 private:
   unsigned int groceryListMaxCount;
   unsigned int groceryListCurrentCount;
-  groceryItem ** currentGroceryList
+  groceryItem ** currentGroceryList;
+
+  void ResizeGroceryList();
 
 public:
   groceryList ();
@@ -32,6 +34,6 @@ public:
   void AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);
   void RemoveListItem (unsigned int itemIndex);
   void PrintGroceryList();
-}
+};
 
 #endif // GROCERY_LIST

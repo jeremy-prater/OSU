@@ -13,6 +13,8 @@
 
 #include "groceryList.hpp"
 #include "lib_flip_display.hpp"
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -29,7 +31,7 @@ using namespace std;
 
 groceryList::groceryList ()
 {
-  this->groceryListCurCount = 0;
+  this->groceryListCurrentCount = 0;
   this->groceryListMaxCount = 0;
   this->currentGroceryList = __null;
 }
@@ -37,10 +39,10 @@ groceryList::groceryList ()
 void groceryList::CreateGroceryList()
 {
   // Check if the groceryList is already created...
-  if (this->groceryListMaxCount != 0) && (this->currentGroceryList != __null)
+  if ((this->groceryListMaxCount != 0) && (this->currentGroceryList != __null))
   {
     // Delete all items from the current list...
-    while (this->groceryListCurCount > 0)
+    while (this->groceryListCurrentCount > 0)
     {
       this->RemoveListItem(0);
     }
@@ -77,8 +79,9 @@ void groceryList::AddListItem(string newItemName, string newUnitType, double new
     this->ResizeGroceryList();
   }
   // Add the new item to the storage array.
+  this->currentGroceryList[this->groceryListCurrentCount++] = new groceryItem (newItemName, newUnitType, newUnitPrice, newUnitQuantity);
 }
-this->currentGroceryList[this->groceryListCurrentCount++] = new groceryItem (newItemName, newUnitType, newUnitPrice, newUnitQuantity);
+
 void groceryList::RemoveListItem (unsigned int itemIndex)
 {
   // Make sure the item to delete exists
@@ -88,7 +91,7 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
     delete this->currentGroceryList[itemIndex];
 
     // If there is more than one item in the buffer, and it is not the last.
-    if (this->groceryListCurrentCount > 1) && (itemIndex != (this->groceryListCurrentCount - 1))
+    if ((this->groceryListCurrentCount > 1) && (itemIndex != (this->groceryListCurrentCount - 1)))
     {
       // memcpy the tail of the array back into the deleted item position.
       memcpy (this->currentGroceryList[itemIndex], this->currentGroceryList[itemIndex + 1], sizeof (groceryItem *) * (this->groceryListCurrentCount - 1));
@@ -98,19 +101,19 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
 }
 void groceryList::PrintGroceryList()
 {
-  unsigned int currentItem = 0;
+  unsigned int currentItemIndex = 0;
   for (currentItemIndex = 0; currentItemIndex < this->groceryListCurrentCount; currentItemIndex++)
   {
     groceryItem * currentItem = this->currentGroceryList[currentItemIndex];
-    debug_print (false, COLOR_GRAY, "Item name:\t\t");
-    debug_print (true,  COLOR_GRAY, "%s\n", currentItem->getItemName());
-    debug_print (false, COLOR_GRAY, "Item unit:\t\t");
-    debug_print (true,  COLOR_GRAY, "%s\n", currentItem->getUnitType());
-    debug_print (false, COLOR_GRAY, "Unit quantity:\t\t");
-    debug_print (true,  COLOR_GRAY, "%01.2ld\n", currentItem->getUnitQuantity());
-    debug_print (false, COLOR_GRAY, "Unit price:\t\t");
+    debug_print (false, COLOR_WHITE, "Item name:\t\t");
+    debug_print (true,  COLOR_WHITE, "%s\n", currentItem->getItemName().c_str());
+    debug_print (false, COLOR_WHITE, "Item unit:\t\t");
+    debug_print (true,  COLOR_WHITE, "%s\n", currentItem->getUnitType().c_str());
+    debug_print (false, COLOR_WHITE, "Unit quantity:\t\t");
+    debug_print (true,  COLOR_WHITE, "%01.2ld\n", currentItem->getUnitQuantity());
+    debug_print (false, COLOR_WHITE, "Unit price:\t\t");
     debug_print (true,  COLOR_GREEN, "%01.2ld\n", currentItem->getUnitPrice());
-    debug_print (false, COLOR_GRAY, "Total price:\t\t");
+    debug_print (false, COLOR_WHITE, "Total price:\t\t");
     debug_print (true,  COLOR_GREEN, "%01.2ld\n\n", currentItem->getTotalPrice());
   }
 }

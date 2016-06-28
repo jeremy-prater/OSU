@@ -4,6 +4,8 @@
 ** Description:  groceryItem.cpp
 *********************************************************************/
 
+#include "groceryItem.hpp"
+
 /*********************************************************************
 ** Description: groceryItem class implementation
 **

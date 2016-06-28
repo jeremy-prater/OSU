@@ -7,6 +7,8 @@
 #ifndef GROCERY_ITEM
 #define GROCERY_ITEM
 
+#include <string>
+
 /*********************************************************************
 ** Description: groceryItem class definition
 **
@@ -32,6 +34,6 @@ public:
   double getUnitPrice();
   double getUnitQuantity();
   double getTotalPrice();
-}
+};
 
 #endif // GROCERY_ITEM

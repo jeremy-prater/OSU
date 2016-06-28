@@ -30,7 +30,7 @@ private:
 
 public:
   groceryList ();
-  groceryList::~groceryList()
+  ~groceryList();
 
   void CreateGroceryList();
   void AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);

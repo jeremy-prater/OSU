@@ -36,7 +36,19 @@ groceryList::groceryList ()
   this->currentGroceryList = __null;
 }
 
-void groceryList::CreateGroceryList()
+groceryList::~groceryList()
+{
+  // Destroying the groceryList
+  // Remove all items
+  this->RemoveAllListItems();
+  if (this->currentGroceryList != __null)
+  {
+    // If the grocery list storage exists, free it.
+    free (this->currentGroceryList);
+  }
+}
+
+void groceryList::RemoveAllListItems()
 {
   // Check if the groceryList is already created...
   if ((this->groceryListMaxCount != 0) && (this->currentGroceryList != __null))
@@ -47,7 +59,12 @@ void groceryList::CreateGroceryList()
       this->RemoveListItem(0);
     }
   }
+}
 
+void groceryList::CreateGroceryList()
+{
+  this->RemoveAllListItems();
+  // No need to free currentGroceryList since we are using realloc
   // Reset groceryListMaxCount to zero and initialize the pointer storage memory.
   this->groceryListMaxCount = 0;
   this->ResizeGroceryList();

@@ -31,7 +31,11 @@ int main()
   init_display();
   debug_print (true, COLOR_CYAN, "Grocery List V1.0 Testing...\n\n");
 
+  groceryList * myList = new groceryList();
 
+  delete myList;
+  debug_print (false, COLOR_WHITE, "Test Complete! Press any key to exit.");
+  getch();
   shutdown_display();
   return 0;
 }

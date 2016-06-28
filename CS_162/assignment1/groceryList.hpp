@@ -26,9 +26,11 @@ private:
   groceryItem ** currentGroceryList;
 
   void ResizeGroceryList();
+  void RemoveAllListItems();
 
 public:
   groceryList ();
+  groceryList::~groceryList()
 
   void CreateGroceryList();
   void AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);

@@ -35,6 +35,7 @@ public:
   void CreateGroceryList();
   void AddListItem(string newItemName, string newUnitType, double newUnitPrice, double newUnitQuantity);
   void RemoveListItem (unsigned int itemIndex);
+  unsigned int GetItemCount();
   void PrintGroceryList();
 };
 

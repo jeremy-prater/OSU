@@ -116,9 +116,30 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
     }
   }
 }
+
+double groceryList::GetTotalPrice()
+{
+  double totalPrice = 0;
+  for (currentItemIndex = 0; currentItemIndex < this->groceryListCurrentCount; currentItemIndex++)
+  {
+    totalPrice += ((groceryItem *)this->currentGroceryList[currentItemIndex])->getTotalPrice();
+  }
+  return totalPrice();
+}
+
+unsigned int groceryList::GetItemCount()
+{
+  return this->groceryListCurrentCount;
+}
+
 void groceryList::PrintGroceryList()
 {
   unsigned int currentItemIndex = 0;
+
+  debug_print (true, COLOR_WHITE, "\n\n");
+  debug_print (true, COLOR_WHITE, "  Grocery List contents:\n");
+  debug_print (true, COLOR_WHITE, "---------------------------\n\n");
+
   for (currentItemIndex = 0; currentItemIndex < this->groceryListCurrentCount; currentItemIndex++)
   {
     groceryItem * currentItem = this->currentGroceryList[currentItemIndex];
@@ -133,4 +154,7 @@ void groceryList::PrintGroceryList()
     debug_print (false, COLOR_WHITE, "Total price:\t\t");
     debug_print (true,  COLOR_GREEN, "%01.2ld\n\n", currentItem->getTotalPrice());
   }
+  debug_print (true, COLOR_WHITE, "---------------------------\n");
+  debug_print (true, COLOR_WHITE, " Total price: ");
+  debug_print (true, COLOR_GREREN, "%01.2ld\n\n",this->getTotalPrice());
 }

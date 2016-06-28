@@ -56,7 +56,7 @@ void groceryList::RemoveAllListItems()
     // Delete all items from the current list...
     while (this->groceryListCurrentCount > 0)
     {
-      this->RemoveListItem(this->groceryListCurrentCount - 1);
+      this->RemoveListItem(0);
     }
   }
 }
@@ -111,9 +111,9 @@ void groceryList::RemoveListItem (unsigned int itemIndex)
     if ((this->groceryListCurrentCount > 1) && (itemIndex != (this->groceryListCurrentCount - 1)))
     {
       // memcpy the tail of the array back into the deleted item position.
-      memcpy (&this->currentGroceryList[itemIndex], &this->currentGroceryList[itemIndex + 1], sizeof (groceryItem *) * (this->groceryListCurrentCount - 1));
-      this->groceryListCurrentCount--;
+      memmove (&this->currentGroceryList[itemIndex], &this->currentGroceryList[itemIndex + 1], sizeof(groceryItem *) * (this->groceryListCurrentCount - 1));
     }
+    this->groceryListCurrentCount--;
   }
 }
 
@@ -149,13 +149,13 @@ void groceryList::PrintGroceryList()
     debug_print (false, COLOR_WHITE, "Item unit:\t\t");
     debug_print (true,  COLOR_WHITE, "%s\n", currentItem->getUnitType().c_str());
     debug_print (false, COLOR_WHITE, "Unit quantity:\t\t");
-    debug_print (true,  COLOR_WHITE, "%01.2ld\n", currentItem->getUnitQuantity());
+    debug_print (true,  COLOR_WHITE, "%01.2lf\n", currentItem->getUnitQuantity());
     debug_print (false, COLOR_WHITE, "Unit price:\t\t");
-    debug_print (true,  COLOR_GREEN, "%01.2ld\n", currentItem->getUnitPrice());
+    debug_print (true,  COLOR_GREEN, "%01.2lf\n", currentItem->getUnitPrice());
     debug_print (false, COLOR_WHITE, "Total price:\t\t");
-    debug_print (true,  COLOR_GREEN, "%01.2ld\n\n", currentItem->getTotalPrice());
+    debug_print (true,  COLOR_GREEN, "%01.2lf\n\n", currentItem->getTotalPrice());
   }
   debug_print (true, COLOR_WHITE, "---------------------------\n");
   debug_print (true, COLOR_WHITE, " Total price: ");
-  debug_print (true, COLOR_GREEN, "%01.2ld\n\n",this->GetTotalPrice());
+  debug_print (true, COLOR_GREEN, "%01.2lf\n\n",this->GetTotalPrice());
 }

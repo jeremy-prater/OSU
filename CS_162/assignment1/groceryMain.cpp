@@ -52,6 +52,8 @@ int main()
   myList->AddListItem ("Apples", "lb", 0.79, 180);
   myList->AddListItem ("Ice cream", "pack", 5.19, 1);
 
+  myList->RemoveListItem(1);
+
   myList->PrintGroceryList();
 
   delete myList;

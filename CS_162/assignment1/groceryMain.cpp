@@ -87,7 +87,7 @@ int main()
 
   delete myList;
   debug_print (false, COLOR_WHITE, "Test Complete! Press any key to exit.");
-  getch();
+  
   shutdown_display();
   return 0;
 }

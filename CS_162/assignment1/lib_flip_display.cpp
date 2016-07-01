@@ -5,6 +5,10 @@
 *********************************************************************/
 
 #include "lib_flip_display.hpp"
+#include <stdio.h>
+#include <stdarg.h>
+#include <termios.h>
+#include <string.h>
 
 /*********************************************************************
 **
@@ -15,43 +19,48 @@
 **
 *********************************************************************/
 
+int getkey() 
+{
+    int character;
+    struct termios orig_term_attr;
+    struct termios new_term_attr;
+
+    /* set the terminal to raw mode */
+    tcgetattr(fileno(stdin), &orig_term_attr);
+    memcpy(&new_term_attr, &orig_term_attr, sizeof(struct termios));
+    new_term_attr.c_lflag &= ~(ECHO|ICANON);
+    new_term_attr.c_cc[VTIME] = 0;
+    new_term_attr.c_cc[VMIN] = 0;
+    tcsetattr(fileno(stdin), TCSANOW, &new_term_attr);
+
+    /* read a character from the stdin stream without blocking */
+    /*   returns EOF (-1) if no character is available */
+    character = fgetc(stdin);
+
+    /* restore the original terminal attributes */
+    tcsetattr(fileno(stdin), TCSANOW, &orig_term_attr);
+
+    return character;
+}
+
 void init_display(void)
 {
-  initscr();
-  raw();
-  keypad(stdscr, TRUE);
-  echo();
-  start_color();
-  
-  for (int color = 0; color < 8; color++)
-  {
-    init_pair (color, color, COLOR_BLACK);
-  }
+
 }
 
 void shutdown_display(void)
 {
-  endwin();
+  while (getkey() == -1);
 }
 
-void debug_print (bool bold, int color,const char * string, ...)
+void debug_print (bool bold, const char * color,const char * string, ...)
 {
   va_list list;
   va_start (list, string);
-  if (bold)
-  {
-    attron(A_BOLD);
-  }
-  attron (COLOR_PAIR(color));
 
-  vwprintw (stdscr, string, list);
+  printf (color, bold);
+  vprintf (string, list);
 
-  attroff (COLOR_PAIR(color));
-  if (bold)
-  {
-    attroff(A_BOLD);
-  }
-  refresh();
   va_end (list);
 }
 

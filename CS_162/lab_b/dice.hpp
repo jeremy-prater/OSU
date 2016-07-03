@@ -1,5 +1,18 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 3, 2016
+** Description:  Lab B
+*********************************************************************/
+
 #ifndef DICE_H
 #define DICE_H
+
+/*********************************************************************
+** Description: Lab B dice.hpp
+**
+** Function declarations for dice.cpp and loadeddice.cpp
+**
+*********************************************************************/
 
 class Dice
 {
@@ -24,6 +37,5 @@ public:
   LoadedDice();
   LoadedDice(unsigned int numNewFaces);
 };
-
 
 #endif // DICE_H

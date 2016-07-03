@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 3, 2016
+** Description:  Lab B
+*********************************************************************/
+
 #include "dice.hpp"
 #include <stdlib.h>
 #include <time.h>
@@ -5,15 +11,46 @@
 #include <unistd.h>
 #include "lib_flip_display.hpp"
 
+/*********************************************************************
+** Description: Lab B dice.cpp
+**
+** Implementation for dice.cpp
+**
+*********************************************************************/
+
+/////////////////////////////////////////////////////////////////
+//
+// Dice::Dice()
+//
+// Default constructor which will create a dice with six (6) sides.
+//
+
 Dice::Dice ()
 {
   this->Init(6);
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// Dice::Dice (unsigned int numNewFaces)
+//
+// Overloaded constructor which will create a dice with n sides.
+//
+
 Dice::Dice (unsigned int numNewFaces)
 {
   this->Init (numNewFaces);
 }
+
+/////////////////////////////////////////////////////////////////
+//
+// void Dice::Init (unsigned int newNumFaces)
+//
+// Init function for the dice class
+//
+// It assigns the numFaces private member and sets up the
+// seed for the random number generator
+//
 
 void Dice::Init (unsigned int newNumFaces)
 {
@@ -29,44 +66,28 @@ void Dice::Init (unsigned int newNumFaces)
   debug_print (false, COLOR_YELLOW, "Created Dice: Seed: %u, Faces: %u\n", randomSeed, this->numFaces);
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// unsigned int Dice::GetNumFaces() const
+//
+// Return the number of faces on the dice
+//
+
 unsigned int Dice::GetNumFaces() const
 {
   // Return the number of faces.
   return this->numFaces;
 }
 
+/////////////////////////////////////////////////////////////////
+//
+// unsigned int Dice::Roll() const
+//
+// Return a random number from 1 to number of faces.
+//
+
 unsigned int Dice::Roll() const
 {
   // Return value from [1, GetNumFaces()]
   return 1 + (rand() % this->GetNumFaces());
-}
-
-LoadedDice::LoadedDice() : Dice()
-{
-
-}
-
-LoadedDice::LoadedDice(unsigned int newNumFaces) : Dice(newNumFaces)
-{
-
-}
-
-unsigned int LoadedDice::Roll()
-{
-  // Get value
-  int result = Dice::Roll();
-  // Check for 5 percent chance to be LoadedDice.
-  if ((rand() % 100) >= 5)
-  {
-    // Increase result.
-    result++;
-    // Check if we are over max faces.
-    if (result > this->GetNumFaces())
-    {
-      //Set result to max faces
-      result = this->GetNumFaces();
-    }
-  }
-  // Return result.
-  return result;
 }

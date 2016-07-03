@@ -18,7 +18,7 @@ void GenerateFile (const char * fileName, unsigned int maxCounts, const Dice** d
     currentDice = diceArray[++diceIndex];
   }
   diceOut << "Sum\n";
-  
+
   for (unsigned int rollCounter = 0; rollCounter < maxCounts; rollCounter++)
   {
     unsigned int rollTotal = 0;
@@ -43,7 +43,7 @@ int main ()
   debug_print (true, COLOR_CYAN, "Dice/LoadedDice data generator V1.0\n\n");
 
   //Create dice array.
-  Dice * diceArray[5];
+  Dice * diceArray[3];
   memset (diceArray, 0, sizeof (diceArray));
 
   // Create some dice...
@@ -58,16 +58,18 @@ int main ()
   diceArray[1] = &dice100;
 
   // Generate some test files
-  GenerateFile ("diceRun_10", 10, (const Dice**) diceArray);
-  GenerateFile ("diceRun_100", 100, (const Dice**) diceArray);
+  GenerateFile ("diceRun_10.csv", 10, (const Dice**) diceArray);
+  GenerateFile ("diceRun_100.csv", 100, (const Dice**) diceArray);
+  GenerateFile ("diceRun_1000.csv", 1000, (const Dice**) diceArray);
 
   // Assign them to the dice array
   diceArray[0] = &loaded6;
   diceArray[1] = &loaded100;
 
   // Generate some test files
-  GenerateFile ("loadedRun_10", 10, (const Dice**) diceArray);
-  GenerateFile ("loadedRun_100", 100, (const Dice**) diceArray);
+  GenerateFile ("loadedRun_10.csv", 10, (const Dice**) diceArray);
+  GenerateFile ("loadedRun_100.csv", 100, (const Dice**) diceArray);
+  GenerateFile ("loadedRun_1000.csv", 1000, (const Dice**) diceArray);
 
   return 0;
 }

@@ -2,24 +2,72 @@
 #include "lib_flip_display.hpp"
 #include <iostream>
 #include <fstream>
+#include <string.h>
+
+void GenerateFile (const char * fileName, unsigned int maxCounts, const Dice** diceArray)
+{
+  unsigned int diceIndex = 0;
+  const Dice * currentDice = diceArray[diceIndex];
+  debug_print (true, COLOR_WHITE, "Creating %s...\n",fileName);
+  std::ofstream diceOut;
+  diceOut.open (fileName);
+  diceOut << "Roll, ";
+  while (currentDice)
+  {
+    diceOut << "Dice" << currentDice->GetNumFaces() << ", ";
+    currentDice = diceArray[++diceIndex];
+  }
+  diceOut << "Sum\n";
+  
+  for (unsigned int rollCounter = 0; rollCounter < maxCounts; rollCounter++)
+  {
+    unsigned int rollTotal = 0;
+    diceOut << rollCounter << ", ";
+    diceIndex = 0;
+    currentDice = diceArray[diceIndex];
+    while (currentDice)
+    {
+      unsigned int currentRoll = currentDice->Roll();
+      rollTotal += currentRoll;
+      diceOut << currentRoll  << ", ";
+      currentDice = diceArray[++diceIndex];
+    }
+    diceOut << rollTotal << "\n";
+  }
+  diceOut.close();
+  debug_print (true, COLOR_GREEN, "Saved %s\n\n", fileName);
+}
 
 int main ()
 {
   debug_print (true, COLOR_CYAN, "Dice/LoadedDice data generator V1.0\n\n");
 
-  // Create some dice...
-  Dice dice6();
-  Dice dice();
+  //Create dice array.
+  Dice * diceArray[5];
+  memset (diceArray, 0, sizeof (diceArray));
 
-  ofstream diceOut;
-  diceOut.open ("dice_out_10.csv");
-  diceout << "Roll\n";
-  for (int rollCounter = 0, rollCounter < 10; rollCounter++)
-  {
-    diceout << dice6.Roll() << "\n";
-  }
-  diceOut.close();
-  debug_print ("Saved dice_out_10.csv");
+  // Create some dice...
+  Dice dice6;
+  Dice dice100(100);
+
+  LoadedDice loaded6;
+  LoadedDice loaded100(100);
+
+  // Assign them to the dice array
+  diceArray[0] = &dice6;
+  diceArray[1] = &dice100;
+
+  // Generate some test files
+  GenerateFile ("diceRun_10", 10, (const Dice**) diceArray);
+  GenerateFile ("diceRun_100", 100, (const Dice**) diceArray);
+
+  // Assign them to the dice array
+  diceArray[0] = &loaded6;
+  diceArray[1] = &loaded100;
+
+  // Generate some test files
+  GenerateFile ("loadedRun_10", 10, (const Dice**) diceArray);
+  GenerateFile ("loadedRun_100", 100, (const Dice**) diceArray);
 
   return 0;
 }

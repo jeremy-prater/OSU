@@ -32,8 +32,8 @@ public:
 class LoadedDice : public Dice
 {
 public:
+  unsigned int Roll() const;
 
-  unsigned int Roll();
   LoadedDice();
   LoadedDice(unsigned int numNewFaces);
 };

@@ -9,3 +9,4 @@ lab-b: dice.cpp diceMain.cpp lib_flip_display.cpp
 
 clean :
 	rm -f lab-b
+	rm -f *csv

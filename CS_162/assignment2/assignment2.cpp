@@ -2,7 +2,7 @@
 #include <string.h>
 #include "critter.hpp"
 #include "critterAnt.hpp"
-#include "critterDoodlebug.hpp"
+#include "critterDoodleBug.hpp"
 
 const int gridX = 20;
 const int gridY = 20;

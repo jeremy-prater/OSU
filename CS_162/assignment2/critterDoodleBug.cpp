@@ -1,4 +1,4 @@
-#include "critterDoodlebug.hpp"
+#include "critterDoodleBug.hpp"
 
 int CritterDoodleBug::GetDeathSteps() const
 {

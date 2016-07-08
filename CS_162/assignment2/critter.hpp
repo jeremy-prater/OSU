@@ -1,19 +1,19 @@
 #ifndef CRITTER_H
 #define CRITTER_H
 
-#define ANT_BREED_STEPS 8
-#define ANT_DEATH_STEPS 10
-#define DOODLEBUG_DEATH_STEPS 3
-#define DOODLEBUG_BREED_STEPS 3
+#define CRITTER_ANT_BREED_STEPS 8
+#define CRITTER_ANT_DEATH_STEPS 10
+#define CRITTER_DOODLEBUG_DEATH_STEPS 3
+#define CRITTER_DOODLEBUG_BREED_STEPS 3
 
-enum critterType
+enum class critterType
 {
-    noCritter = 0,
-    DoodleBug = 1,
-    Ant       = 2
+    noCritter,
+    CritterDoodleBug,
+    CritterAnt
 };
 
-enum critterMovement
+enum class critterMovement
 {
     CRITTER_UP,
     CRITTER_DOWN,
@@ -25,42 +25,22 @@ enum critterMovement
 class Critter
 {
 private:
-    critterType type;
+    //critterType type;
     int stepCounter;
     int lastBreed;
     int lastEat;
 
 public:
-    Critter();
-    ~Critter();
-
-    virtual int GetDeathSteps();
-    virtual int GetBreedSteps();
+    virtual int GetDeathSteps() const;
+    virtual int GetBreedSteps() const;
 
     void move();
     void eat();
     void breed();
     void die();
-};
 
-class Ant : public Critter
-{
-public:
-    int GetDeathSteps();
-    int GetBreedSteps();
-
-    Ant();
-    ~Ant();
-};
-
-class DoodleBug : public Critter
-{
-public:
-    int GetDeathSteps();
-    int GetBreedSteps();
-
-    DoodleBug();
-    ~DoodleBug();
+    Critter();
+    ~Critter();
 };
 
 #endif // CRITTER_H

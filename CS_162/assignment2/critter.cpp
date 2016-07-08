@@ -1,12 +1,12 @@
 #include "critter.hpp"
 #include <stdio.h>
 
-int Critter::GetDeathSteps()
+int Critter::GetDeathSteps() const
 {
     return 0;
 }
 
-int Critter::GetBreedSteps()
+int Critter::GetBreedSteps() const
 {
     return 0;
 }
@@ -38,5 +38,5 @@ Critter::Critter()
 
 Critter::~Critter()
 {
-
+    
 }

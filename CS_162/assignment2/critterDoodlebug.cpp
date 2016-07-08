@@ -1,21 +1,21 @@
-#include "critter.hpp"
+#include "critterDoodlebug.hpp"
 
-int DoodleBug::GetDeathSteps()
+int CritterDoodleBug::GetDeathSteps() const
 {
-    return DOODLEBUG_DEATH_STEPS;
+    return CRITTER_DOODLEBUG_DEATH_STEPS;
 }
 
-int DoodleBug::GetBreedSteps()
+int CritterDoodleBug::GetBreedSteps() const
 {
-    return DOODLEBUG_BREED_STEPS;
+    return CRITTER_DOODLEBUG_BREED_STEPS;
 }
 
-DoodleBug::DoodleBug() : Critter()
+CritterDoodleBug::CritterDoodleBug() : Critter()
 {
 
 }
 
-DoodleBug::~DoodleBug()
+CritterDoodleBug::~CritterDoodleBug()
 {
 
 }

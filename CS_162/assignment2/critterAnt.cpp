@@ -1,21 +1,21 @@
-#include "critter.hpp"
+#include "critterAnt.hpp"
 
-int Ant::GetDeathSteps()
+int CritterAnt::GetDeathSteps() const
 {
-    return ANT_DEATH_STEPS;
+    return CRITTER_ANT_DEATH_STEPS;
 }
 
-int Ant::GetBreedSteps()
+int CritterAnt::GetBreedSteps() const
 {
-    return ANT_BREED_STEPS;
+    return CRITTER_ANT_BREED_STEPS;
 }
 
-Ant::Ant() : Critter()
+CritterAnt::CritterAnt() : Critter()
 {
 
 }
 
-Ant::~Ant()
+CritterAnt::~CritterAnt()
 {
-
+    
 }

@@ -8,9 +8,9 @@
 
 enum class critterType
 {
-    noCritter,
-    CritterDoodleBug,
-    CritterAnt
+    CritterType__None,
+    CritterType__DoodleBug,
+    CritterType__Ant
 };
 
 enum class critterMovement
@@ -25,7 +25,6 @@ enum class critterMovement
 class Critter
 {
 private:
-    //critterType type;
     int stepCounter;
     int lastBreed;
     int lastEat;
@@ -33,8 +32,9 @@ private:
 public:
     virtual int GetDeathSteps() const;
     virtual int GetBreedSteps() const;
+    virtual critterType GetCritterType() const;
 
-    void move();
+    critterMovement move();
     void eat();
     void breed();
     void die();

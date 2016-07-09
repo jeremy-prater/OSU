@@ -75,3 +75,34 @@ void debug_test_result (bool passed)
     debug_print (true, COLOR_RED, "\tFAILED\n");
   }
 }
+
+void cursor_move_to(int x, int y)
+{
+    printf (CURSOR_GOTO1, x ,y);
+}
+void cursor_move_up(int x)
+{
+    printf (CURSOR_MOVE_UP, x);
+}
+void cursor_move_dn(int x)
+{
+    printf (CURSOR_MOVE_DN, x);
+}
+void cursor_move_lf(int x)
+{
+    printf (CURSOR_MOVE_LF, x);
+}
+void cursor_move_rt(int x)
+{
+    printf (CURSOR_MOVE_RT, x);
+}
+
+void screen_clear()
+{
+    printf (SCREEN_CLEAR);
+}
+
+void erase_tail()
+{
+    printf (ERASE_TAIL);
+}

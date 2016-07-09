@@ -1,5 +1,6 @@
 #include "critter.hpp"
 #include <stdio.h>
+#include <stdlib.h>
 
 int Critter::GetDeathSteps() const
 {
@@ -11,9 +12,14 @@ int Critter::GetBreedSteps() const
     return 0;
 }
 
-void Critter::move()
+critterType Critter::GetCritterType() const
 {
-    printf ("deathSteps: %d\n", this->GetDeathSteps());
+    return critterType::CritterType__None;
+}
+
+critterMovement Critter::move()
+{
+    return (critterMovement)(rand() % (int)critterMovement::CRITTER_NUM_MOVES);
 }
 
 void Critter::eat()
@@ -38,5 +44,5 @@ Critter::Critter()
 
 Critter::~Critter()
 {
-    
+
 }

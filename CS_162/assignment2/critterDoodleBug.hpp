@@ -8,6 +8,7 @@ class CritterDoodleBug : public Critter
 public:
     int GetDeathSteps() const;
     int GetBreedSteps() const;
+    critterType GetCritterType() const;
 
     CritterDoodleBug();
     ~CritterDoodleBug();

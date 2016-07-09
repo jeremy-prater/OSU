@@ -122,6 +122,13 @@ void gridTurn()
                             gridMain[newX][newY] = 0;
                             ((CritterDoodleBug*)gridMain[dX][dY])->EatAnt();
                         }
+                        else if (gridMain[dX][dY]->GetCritterType() == critterType::CritterType__Ant)
+                        {
+                            // Ants eat everything but always die after 10 turns.
+                            debug_print (true, COLOR_YELLOW, "ant %x ate %x...\n", gridMain[dX][dY] ,gridMain[newX][newY]);
+                            delete gridMain[newX][newY];
+                            gridMain[newX][newY] = 0;
+                        }
                         else
                         {
                             validMove = false;

@@ -1,6 +1,7 @@
 #include "critter.hpp"
 #include <stdio.h>
 #include <stdlib.h>
+#include "lib_flip_display.hpp"
 
 int Critter::GetDeathSteps() const
 {
@@ -24,22 +25,40 @@ critterMovement Critter::move()
 
 void Critter::eat()
 {
-
+    stepCounter++;
 }
 
-void Critter::breed()
+bool Critter::breed()
 {
-
+    if ((stepCounter - lastBreed) >= GetBreedSteps())
+    {
+        lastBreed = stepCounter;
+        return true;
+    }
+    return false;
 }
 
-void Critter::die()
+bool Critter::died()
 {
+    return ((stepCounter - lastEat) >= GetDeathSteps());
+}
 
+bool Critter::GetHasMoved() const
+{
+    return hasMoved;
+}
+
+void Critter::SetHasMoved(bool moved)
+{
+    hasMoved = moved;
 }
 
 Critter::Critter()
 {
-
+    stepCounter = 0;
+    lastBreed = 0;
+    lastEat = 0;
+    hasMoved = false;
 }
 
 Critter::~Critter()

@@ -36,6 +36,7 @@
 #define SCREEN_CLEAR "\033[2J"
 #define ERASE_TAIL "\033[K"
 
+int getkey();
 void init_display(void);
 void shutdown_display(void);
 void debug_print (bool bold, const char * color,const char * string, ...);

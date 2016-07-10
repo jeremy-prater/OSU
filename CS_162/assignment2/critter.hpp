@@ -1,10 +1,26 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 9, 2016
+** Description:  critter.hpp
+*********************************************************************/
+
 #ifndef CRITTER_H
 #define CRITTER_H
+
+//////////////////////////////////////////////////////////////////////
+//
+// Default values for critter breed/death
+//
 
 #define CRITTER_ANT_BREED_STEPS 3
 #define CRITTER_ANT_DEATH_STEPS 10
 #define CRITTER_DOODLEBUG_DEATH_STEPS 3
 #define CRITTER_DOODLEBUG_BREED_STEPS 8
+
+//////////////////////////////////////////////////////////////////////
+//
+// enum for types of critter
+//
 
 enum class critterType
 {
@@ -12,6 +28,11 @@ enum class critterType
     CritterType__DoodleBug,
     CritterType__Ant
 };
+
+//////////////////////////////////////////////////////////////////////
+//
+// enum for types of critter movement
+//
 
 enum class critterMovement
 {
@@ -21,6 +42,12 @@ enum class critterMovement
     CRITTER_RIGHT,
     CRITTER_NUM_MOVES
 };
+
+
+//////////////////////////////////////////////////////////////////////
+//
+// Critter base class
+//
 
 class Critter
 {

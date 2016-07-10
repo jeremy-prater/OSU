@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 9, 2016
+** Description:  assignment2.cpp
+*********************************************************************/
+
 #include <stdio.h>
 #include <string.h>
 #include "critter.hpp"
@@ -7,6 +13,19 @@
 #include "lib_flip_display.hpp"
 
 CritterController * myController;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void printHelp()
+//
+// Print out the program usage help info
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void printHelp()
 {
@@ -19,11 +38,26 @@ void printHelp()
     debug_print (false, COLOR_WHITE, "example: ./assigment2 --random --doodledeath 6 --antbreed 6\n\n");
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// int main(int argc, char *argv[])
+//
+// Program entry point
+//
+// Parameters:
+//        int argc - number of command line arguments
+//        char *argv[] - array of char * which are the arguments
+//
+// Return:
+//        int - result
+//
+
 int main(int argc, char *argv[])
 {
     myController = new CritterController();
     debug_print (false, COLOR_WHITE, "\n\n");
 
+    // Setup variables and defaults
     int numAnts = DEFAULT_NUM_ANTS;
     int numDoodleBugs = DEFAULT_NUM_DOODLEBUGS;
 
@@ -106,6 +140,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // If the commnand line parsing failed, print the help menu and exit
     if (failure)
     {
         printHelp();
@@ -113,9 +148,13 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    // Send parameters to the controller
     myController->SetupLimits (DoodlebugBreedTurns, DoodlebugDeathTurns, AntBreedTurns, AntDeathTurns);
+
+    // Generate the critter grid
     myController->SetupGrid (numDoodleBugs, numAnts);
 
+    // Enter main processing loop
     bool running = true;
     bool processEvent = false;
     bool autoRun = false;
@@ -162,6 +201,8 @@ int main(int argc, char *argv[])
         }
         myController->PrintGrid();
     }
+
+    // Program is quitting, delete the controller to release all memory
     delete myController;
     return 0;
 }

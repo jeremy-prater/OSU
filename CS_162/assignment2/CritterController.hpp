@@ -1,10 +1,28 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 9, 2016
+** Description:  critterController.hpp
+*********************************************************************/
+
 #ifndef ASSIGNMENT_2_HPP
 #define ASSIGNMENT_2_HPP
 
 #include "critter.hpp"
 
+//////////////////////////////////////////////////////////////////////
+//
+// Default number of Ants/DoodleBugs
+//
+
 #define DEFAULT_NUM_ANTS 100
 #define DEFAULT_NUM_DOODLEBUGS 20
+
+//////////////////////////////////////////////////////////////////////
+//
+// CritterController class
+//
+// This control the grid and moving critters around
+//
 
 class CritterController
 {
@@ -19,7 +37,7 @@ private:
     int DoodlebugBreedTurns;
     int AntDeathTurns;
     int AntBreedTurns;
-    
+
 public:
     CritterController();
     ~CritterController();

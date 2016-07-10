@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 9, 2016
+** Description:  critterController.cpp
+*********************************************************************/
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -9,15 +15,55 @@
 #include "critterDoodleBug.hpp"
 #include "lib_flip_display.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// CritterController::CritterController()
+//
+// CritterController constructor
+// Setup a default random seed.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 CritterController::CritterController()
 {
     srand(1);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// CritterController::~CritterController()
+//
+// CritterController destructor
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 CritterController::~CritterController()
 {
     DestroyGrid();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::PrintGrid()
+//
+// Print the critter grid
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void CritterController::PrintGrid()
 {
@@ -75,6 +121,22 @@ void CritterController::PrintGrid()
     usleep (100 * 1000);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::SetupLimits (int newDoodleBugBreedTurns, int newDoodleBugDeathTurns, int newAntBreedTurns, int newAntDeathTurns)
+//
+// Setup the death/breed turn counters for this CritterController
+//
+// Parameters:
+//        int newDoodleBugBreedTurns - Turns until DoodleBug breeds
+//        int newDoodleBugDeathTurns - Turns until DoodleBug dies
+//        int newAntBreedTurns - Turns until Ant breeds
+//        int newAntDeathTurns - Turns until Ant dies
+//
+// Return:
+//        None
+//
+
 void CritterController::SetupLimits (int newDoodleBugBreedTurns, int newDoodleBugDeathTurns, int newAntBreedTurns, int newAntDeathTurns)
 {
     DoodlebugBreedTurns = newDoodleBugBreedTurns;
@@ -91,6 +153,19 @@ void CritterController::SetupLimits (int newDoodleBugBreedTurns, int newDoodleBu
     debug_print (false, COLOR_WHITE, "Ant Breed Limit: ");
     debug_print (true, COLOR_CYAN, "%d\n", AntBreedTurns);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::GridTurn()
+//
+// Preform the logic for one turn.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void CritterController::GridTurn()
 {
@@ -209,6 +284,19 @@ void CritterController::GridTurn()
     turnCounter++;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::Randomize ()
+//
+// Seed the random number generator with a random value.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 void CritterController::Randomize ()
 {
     // Seed rand with local system time.
@@ -220,6 +308,20 @@ void CritterController::Randomize ()
     srand(randomSeed); // IRL, check for errors, close the fd, etc...
     debug_print (false, COLOR_YELLOW, "Using random seed : %u\n", randomSeed);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::DestroyGrid()
+//
+// Destroy all critters in the grid.
+// Called on program exit to release all memory.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void CritterController::DestroyGrid()
 {
@@ -236,6 +338,21 @@ void CritterController::DestroyGrid()
     }
 
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CritterController::SetupGrid (int numDoodleBugs, int numAnts)
+//
+// Destroy all critters in the grid.
+// Called on program exit to release all memory.
+//
+// Parameters:
+//        int numDoodleBugs - The number of DoodleBugs to generate
+//        int numAnts - The number of Ants to generate
+//
+// Return:
+//        None
+//
 
 void CritterController::SetupGrid (int numDoodleBugs, int numAnts)
 {

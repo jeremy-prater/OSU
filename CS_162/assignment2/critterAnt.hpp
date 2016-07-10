@@ -6,8 +6,6 @@
 class CritterAnt : public Critter
 {
 public:
-    int GetDeathSteps() const;
-    int GetBreedSteps() const;
     critterType GetCritterType() const;
     void eat();
 

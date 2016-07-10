@@ -1,233 +1,125 @@
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include "critter.hpp"
 #include "critterAnt.hpp"
 #include "critterDoodleBug.hpp"
+#include "CritterController.hpp"
 #include "lib_flip_display.hpp"
 
-const int gridX = 20;
-const int gridY = 20;
+CritterController * myController;
 
-Critter * gridMain[gridX][gridY];
-int turnCounter = 0;
-
-void PrintGrid()
+void printHelp()
 {
-    //screen_clear();
-    //cursor_move_to(0,0);
+    debug_print (true, COLOR_WHITE, "assignment 2 help :\n\n");
+    debug_print (false, COLOR_WHITE, "--random | -r\t\tUse a random sequence for grid generation and movements\n");
+    debug_print (false, COLOR_WHITE, "--doodledeath n\t\tOverride with n turns until a doodlebug dies.\n");
+    debug_print (false, COLOR_WHITE, "--doodlebreed n\t\tOverride with n turns until a doodlebug breeds.\n");
+    debug_print (false, COLOR_WHITE, "--antdeath n\t\tOverride with n turns until a ant dies.\n");
+    debug_print (false, COLOR_WHITE, "--antbreed n\t\tOverride with n turns until a ant breeds.\n\n\n");
+    debug_print (false, COLOR_WHITE, "example: ./assigment2 --random --doodledeath 6 --antbreed 6\n\n");
+}
 
-    debug_print(true, COLOR_GREEN, "\nDoodleBugs and Ants V1.0\n\n");
+int main(int argc, char *argv[])
+{
+    myController = new CritterController();
+    debug_print (false, COLOR_WHITE, "\n\n");
 
-    debug_print(false, COLOR_WHITE, "Round : %d\n\n", turnCounter);
+    int numAnts = DEFAULT_NUM_ANTS;
+    int numDoodleBugs = DEFAULT_NUM_DOODLEBUGS;
 
-    debug_print(true, COLOR_WHITE, "  |01234567890123456789|\n");
-    debug_print(true, COLOR_WHITE, "--|--------------------|--\n");
+    int DoodlebugDeathTurns = CRITTER_DOODLEBUG_DEATH_STEPS;
+    int DoodlebugBreedTurns = CRITTER_DOODLEBUG_BREED_STEPS;
+    int AntDeathTurns = CRITTER_ANT_DEATH_STEPS;
+    int AntBreedTurns = CRITTER_ANT_BREED_STEPS;
 
-    int dbugs = 0;
-    int ants = 0;
-
-    for(int dY=0;dY<gridY;dY++)
+    // Parse command line parameters
+    bool failure = false;
+    for (int curArg = 1; ((curArg < argc) && (!failure)); curArg++)
     {
-        debug_print(true, COLOR_WHITE, "%02d|",dY);
-        for (int dX = 0;dX < gridX;dX++)
+        if ((strcmp (argv[curArg], "--random")==0) || (strcmp (argv[curArg], "-r")==0))
         {
-            if (gridMain[dX][dY] != 0)
+            myController->Randomize();
+        }
+        else if (strcmp (argv[curArg], "--doodledeath")==0)
+        {
+            curArg++;
+            if (curArg < argc)
             {
-                switch (gridMain[dX][dY]->GetCritterType())
+                if (sscanf (argv[curArg], "%d", &DoodlebugDeathTurns) != 1)
                 {
-                    case critterType::CritterType__None:
-                        debug_print(false, COLOR_WHITE, " ");
-                    break;
-
-                    case critterType::CritterType__DoodleBug:
-                        debug_print(true, COLOR_CYAN, "*");
-                        dbugs++;
-                    break;
-
-                    case critterType::CritterType__Ant:
-                    default:
-                        debug_print(true, COLOR_RED, ".");
-                        ants++;
-                    break;
+                    failure = true;
                 }
             }
             else
             {
-                debug_print(false, COLOR_WHITE, " ");
+                failure = true;
             }
         }
-        debug_print(true, COLOR_WHITE, "|\n");
-    }
-    debug_print(true, COLOR_WHITE, "--|--------------------|--\n");
-    debug_print(true, COLOR_WHITE, "  |                    |\n\n");
-
-    debug_print(true, COLOR_WHITE,"DoodleBugs: %d\t\tAnts:%d\n",dbugs, ants);
-
-    debug_print(true, COLOR_WHITE,"\nControls\n\n");
-    debug_print(false, COLOR_WHITE,"(space) - Next Round\n");
-    debug_print(false, COLOR_WHITE,"(d)     - Print Debug Data\n");
-    debug_print(false, COLOR_WHITE,"(g)     - Set the program to automatic. Use (space) to break automatic mode.\n");
-    debug_print(false, COLOR_WHITE,"(q)     - Terminate Program\n\n");
-
-}
-
-void gridTurn()
-{
-    for (int dX = 0; dX < gridX;dX++)
-    {
-        for(int dY = 0; dY < gridY;dY++)
+        else if (strcmp (argv[curArg], "--doodlebreed")==0)
         {
-            if ((gridMain[dX][dY] != 0) && (!gridMain[dX][dY]->GetHasMoved()))
+            curArg++;
+            if (curArg < argc)
             {
-                bool validMove = false;
-                int newX = dX;
-                int newY = dY;
-                critterMovement direction = gridMain[dX][dY]->move();
-
-                switch (direction)
+                if (sscanf (argv[curArg], "%d", &DoodlebugBreedTurns) != 1)
                 {
-                    case critterMovement::CRITTER_UP:
-                    {
-                        newY--;
-                    }
-                    break;
-                    case critterMovement::CRITTER_DOWN:
-                    {
-                        newY++;
-                    }
-                    break;
-                    case critterMovement::CRITTER_LEFT:
-                    {
-                        newX--;
-                    }
-                    break;
-                    case critterMovement::CRITTER_RIGHT:
-                    {
-                        newX++;
-                    }
-                    break;
-                }
-
-                if ((newX >= 0) && (newX < gridX) && (newY >= 0) && (newY < gridY))
-                {
-                    validMove = true;
-                    if (gridMain[newX][newY] != 0)
-                    {
-                        if ((gridMain[dX][dY]->GetCritterType() == critterType::CritterType__DoodleBug) && (gridMain[newX][newY]->GetCritterType() == critterType::CritterType__Ant))
-                        {
-                            // The DoodleBug will eat this ant...
-                            debug_print (true, COLOR_YELLOW, "ant %x eaten...\n", gridMain[newX][newY]);
-                            delete gridMain[newX][newY];
-                            gridMain[newX][newY] = 0;
-                            ((CritterDoodleBug*)gridMain[dX][dY])->EatAnt();
-                        }
-                        else if (gridMain[dX][dY]->GetCritterType() == critterType::CritterType__Ant)
-                        {
-                            // Ants eat everything but always die after 10 turns.
-                            debug_print (true, COLOR_YELLOW, "ant %x ate %x...\n", gridMain[dX][dY] ,gridMain[newX][newY]);
-                            delete gridMain[newX][newY];
-                            gridMain[newX][newY] = 0;
-                        }
-                        else
-                        {
-                            validMove = false;
-                        }
-                    }
-                }
-
-                gridMain[dX][dY]->eat();
-                if (gridMain[dX][dY]->died())
-                {
-                    debug_print (true, COLOR_RED, "%x died...\n", gridMain[dX][dY]);
-                    delete gridMain[dX][dY];
-                    gridMain[dX][dY] = 0;
-                }
-                else if (validMove)
-                {
-                    gridMain[newX][newY] = gridMain[dX][dY];
-                    gridMain[newX][newY]->SetHasMoved(true);
-                    if (gridMain[dX][dY]->breed())
-                    {
-                        debug_print (true, COLOR_CYAN, "%x breeding...\n", gridMain[dX][dY]);
-
-                        if (gridMain[dX][dY]->GetCritterType() == critterType::CritterType__Ant)
-                        {
-                            gridMain[dX][dY] = new CritterAnt();
-                        }
-                        else if (gridMain[dX][dY]->GetCritterType() == critterType::CritterType__DoodleBug)
-                        {
-                            gridMain[dX][dY] = new CritterDoodleBug();
-                        }
-                        else
-                        {
-                            gridMain[dX][dY] = 0;
-                        }
-                    }
-                    else
-                    {
-                        gridMain[dX][dY] = 0;
-                    }
+                    failure = true;
                 }
             }
-        }
-    }
-    for (int dX = 0; dX < gridX;dX++)
-    {
-        for(int dY = 0; dY < gridY;dY++)
-        {
-            if (gridMain[dX][dY] != 0)
+            else
             {
-                gridMain[dX][dY]->SetHasMoved(false);
+                failure = true;
             }
         }
-    }
-    turnCounter++;
-}
-
-void DestroyGrid()
-{
-    for (int dX = 0; dX < gridX;dX++)
-    {
-        for(int dY = 0; dY < gridY;dY++)
+        else if (strcmp (argv[curArg], "--antdeath")==0)
         {
-            if (gridMain[dX][dY] != 0)
+            curArg++;
+            if (curArg < argc)
             {
-                delete gridMain[dX][dY];
-                gridMain[dX][dY] = 0;
+                if (sscanf (argv[curArg], "%d", &AntDeathTurns) != 1)
+                {
+                    failure = true;
+                }
+            }
+            else
+            {
+                failure = true;
             }
         }
-    }
-
-}
-
-int main()
-{
-    for (int t=0;t<20;)
-    {
-        int x = rand() % gridX;
-        int y = rand() % gridY;
-        if (gridMain[x][y] == 0)
+        else if (strcmp (argv[curArg], "--antbreed")==0)
         {
-            gridMain[x][y] = new CritterDoodleBug();
-            t++;
+            curArg++;
+            if (curArg < argc)
+            {
+                if (sscanf (argv[curArg], "%d", &AntBreedTurns) != 1)
+                {
+                    failure = true;
+                }
+            }
+            else
+            {
+                failure = true;
+            }
+        }
+        else
+        {
+            failure = true;
         }
     }
-    for (int t=0;t<100;)
+
+    if (failure)
     {
-        int x = rand() % gridX;
-        int y = rand() % gridY;
-        if (gridMain[x][y] == 0)
-        {
-            gridMain[x][y] = new CritterAnt();
-            t++;
-        }
+        printHelp();
+        delete myController;
+        return -1;
     }
+
+    myController->SetupLimits (DoodlebugBreedTurns, DoodlebugDeathTurns, AntBreedTurns, AntDeathTurns);
+    myController->SetupGrid (numDoodleBugs, numAnts);
 
     bool running = true;
     bool processEvent = false;
     bool autoRun = false;
-    PrintGrid();
+    myController->PrintGrid();
     while (running)
     {
         int key = -1;
@@ -250,7 +142,7 @@ int main()
                 break;
 
                 case ' ':
-                gridTurn();
+                myController->GridTurn();
                 processEvent = true;
                 break;
 
@@ -260,7 +152,7 @@ int main()
             }
             if (autoRun)
             {
-                gridTurn();
+                myController->GridTurn();
                 processEvent = true;
                 if (key != -1)
                 {
@@ -268,10 +160,8 @@ int main()
                 }
             }
         }
-        PrintGrid();
-        usleep (100 * 1000);
+        myController->PrintGrid();
     }
-
-    DestroyGrid();
+    delete myController;
     return 0;
 }

@@ -5,12 +5,22 @@
 
 int Critter::GetDeathSteps() const
 {
-    return 0;
+    return deathTurns;
 }
 
 int Critter::GetBreedSteps() const
 {
-    return 0;
+    return breedTurns;
+}
+
+void Critter::SetBreedTurns (int newBreedTurns)
+{
+    breedTurns = newBreedTurns;
+}
+
+void Critter::SetDeathTurns (int newDeathTurns)
+{
+    deathTurns = newDeathTurns;
 }
 
 critterType Critter::GetCritterType() const

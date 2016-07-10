@@ -1,16 +1,6 @@
 #include "critterDoodleBug.hpp"
 #include "lib_flip_display.hpp"
 
-int CritterDoodleBug::GetDeathSteps() const
-{
-    return CRITTER_DOODLEBUG_DEATH_STEPS;
-}
-
-int CritterDoodleBug::GetBreedSteps() const
-{
-    return CRITTER_DOODLEBUG_BREED_STEPS;
-}
-
 critterType CritterDoodleBug::GetCritterType() const
 {
     return critterType::CritterType__DoodleBug;
@@ -36,6 +26,8 @@ void CritterDoodleBug::EatAnt()
 CritterDoodleBug::CritterDoodleBug() : Critter()
 {
     eatingAnt = false;
+    SetDeathTurns (CRITTER_DOODLEBUG_DEATH_STEPS);
+    SetBreedTurns (CRITTER_DOODLEBUG_BREED_STEPS);
 }
 
 CritterDoodleBug::~CritterDoodleBug()

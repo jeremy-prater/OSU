@@ -29,10 +29,16 @@ protected:
     int lastBreed;
     int lastEat;
     bool hasMoved;
+    int breedTurns;
+    int deathTurns;
+
 
 public:
-    virtual int GetDeathSteps() const;
-    virtual int GetBreedSteps() const;
+    void SetBreedTurns (int breedTurns);
+    void SetDeathTurns (int deathTurns);
+
+    int GetDeathSteps() const;
+    int GetBreedSteps() const;
     virtual critterType GetCritterType() const;
 
     bool GetHasMoved() const;

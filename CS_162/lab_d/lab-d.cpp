@@ -140,7 +140,6 @@ int main(int argc, char * argv[])
     outputEncryption = inputFilename + ".outputEncryption";
     outputOrdered = inputFilename + ".outputOrdered";
 
-
     debug_print (false, COLOR_CYAN, "\n");
     debug_print (false, COLOR_CYAN, "Input file: ");
     debug_print (false, COLOR_WHITE, "%s\n", inputFilename.c_str());

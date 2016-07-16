@@ -7,8 +7,8 @@ class Transformer
 {
 public:
     virtual void doFilter (std::ifstream &in, std::ofstream & out);
-    Transformer();
-    ~Transformer();
+    Transformer() { }
+    ~Transformer() { }
 
 protected:
     virtual char transform (char ch) = 0;
@@ -17,8 +17,8 @@ protected:
 class Copy : public Transformer
 {
 public:
-    Copy();
-    ~Copy();
+    Copy() : Transformer() { }
+    ~Copy() { }
 
 protected:
     virtual char transform (char ch);
@@ -28,7 +28,7 @@ class Encryption : public Transformer
 {
 public:
     Encryption(int keyToUse);
-    ~Encryption();
+    ~Encryption() { }
 private:
     int encryptionKey;
 
@@ -39,8 +39,8 @@ protected:
 class ToUpper : public Transformer
 {
 public:
-    ToUpper();
-    ~ToUpper();
+    ToUpper() : Transformer() { }
+    ~ToUpper() { }
 
 protected:
     virtual char transform (char ch);
@@ -50,8 +50,8 @@ class OrderedOutput : public Transformer
 {
 public:
     void doFilter (std::ifstream &in, std::ofstream & out);
-    OrderedOutput();
-    ~OrderedOutput();
+    OrderedOutput() : Transformer() { }
+    ~OrderedOutput() { }
 
 protected:
     virtual char transform (char ch);

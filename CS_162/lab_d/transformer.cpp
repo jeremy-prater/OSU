@@ -1,25 +1,18 @@
 #include "transformer.hpp"
 
+
 void Transformer::doFilter (std::ifstream &in, std::ofstream & out)
 {
     // Read all ifstream
-    // Call transformer
-    // ofstream write
     char data;
     while (in.get(data))
     {
+        // Call transformer
+        // ofstream write
         out << transform (data);
     }
+
+    // Reset stream for next filter
     in.clear();
     in.seekg (0, std::ios::beg);
-}
-
-Transformer::Transformer()
-{
-
-}
-
-Transformer::~Transformer()
-{
-
 }

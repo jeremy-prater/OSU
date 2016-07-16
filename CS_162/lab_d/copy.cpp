@@ -5,12 +5,12 @@ char Copy::transform (char ch)
     return ch;
 }
 
-Copy::Copy()
+Copy::Copy() : Transformer()
 {
 
 }
 
 Copy::~Copy()
 {
-    
+
 }

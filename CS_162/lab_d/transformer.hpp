@@ -1,14 +1,18 @@
+#ifndef TRANSFORMER_H
+#define TRANSFORMER_H
+
+#include <fstream>
 
 class Transformer
 {
 public:
-    void doFilter (ifstream &in, ofstream & out);
+    virtual void doFilter (std::ifstream &in, std::ofstream & out);
     Transformer();
     ~Transformer();
 
 protected:
     virtual char transform (char ch) = 0;
-}
+};
 
 class Copy : public Transformer
 {
@@ -18,7 +22,7 @@ public:
 
 protected:
     virtual char transform (char ch);
-}
+};
 
 class Encryption : public Transformer
 {
@@ -30,7 +34,7 @@ private:
 
 protected:
     virtual char transform (char ch);
-}
+};
 
 class ToUpper : public Transformer
 {
@@ -40,14 +44,17 @@ public:
 
 protected:
     virtual char transform (char ch);
-}
+};
 
 class OrderedOutput : public Transformer
 {
 public:
+    void doFilter (std::ifstream &in, std::ofstream & out);
     OrderedOutput();
     ~OrderedOutput();
 
 protected:
     virtual char transform (char ch);
-}
+};
+
+#endif // TRANSFORMER_H

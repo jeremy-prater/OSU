@@ -2,15 +2,16 @@
 
 char Encryption::transform (char ch)
 {
-    // Use key here to change ch...
+    int outputCharacter = encryptionKey + ch;
+    return (char)(outputCharacter % 26);
 }
 
-Encryption::Encryption (int keyToUse)
+Encryption::Encryption (int keyToUse)  : Transformer()
 {
     encryptionKey = keyToUse;
 }
 
 Encryption::~Encryption()
 {
-    
+
 }

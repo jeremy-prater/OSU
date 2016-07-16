@@ -3,15 +3,15 @@
 
 char ToUpper::transform (char ch)
 {
-    // Use key here to change ch...
+    // If ch is a lower case, change it to a upper case.
     if ((ch >= LOWER_A) && (ch <= LOWER_Z))
     {
-        ch -= LOWER_UPPER_OFFSET;
+        ch -= LOWER_TO_UPPER_OFFSET;
     }
     return ch;
 }
 
-ToUpper::ToUpper ()
+ToUpper::ToUpper () : Transformer()
 {
 
 }

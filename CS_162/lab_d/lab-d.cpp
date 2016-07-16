@@ -58,14 +58,20 @@ int main(int argc, char * argv[])
     int encryptionKey;
     bool usingKey = false;
 
+    //////////////////////////////////////////////////////////////////
+    //
     // Parse command line parameters
+    //
+    // This will be replaced with argp_parse in future labs...
+    //
+
     bool failure = false;
     for (int curArg = 1; ((curArg < argc) && (!failure)); curArg++)
     {
         if (strcmp (argv[curArg], "--inputFile")==0)
         {
             curArg++;
-            if (curArg < argc)
+            if ((curArg < argc) && (argv[curArg] != __null))
             {
                 inputFilename = string (argv[curArg]);
             }
@@ -77,7 +83,7 @@ int main(int argc, char * argv[])
         else if (strcmp (argv[curArg], "--encryptionKey")==0)
         {
             curArg++;
-            if (curArg < argc)
+            if ((curArg < argc) && (argv[curArg] != __null))
             {
                 if (sscanf (argv[curArg], "%d", &encryptionKey) != 1)
                 {

@@ -29,7 +29,7 @@
 int main (void)
 {
   init_display();
-  debug_print (true, COLOR_GREEN, "CS_162: Lab Aa  Testing...\n\n");
+  debug_print (true, COLOR_GREEN, "CS_162: Lab Ab  Testing...\n\n");
 
   double testResult;
 

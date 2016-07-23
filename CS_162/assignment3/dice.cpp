@@ -63,7 +63,7 @@ void Dice::Init (unsigned int newNumFaces)
   read(fd, &randomSeed, sizeof (unsigned int));
   close(fd);
   srand(randomSeed); // IRL, check for errors, close the fd, etc...
-  debug_print (false, COLOR_YELLOW, "Created Dice: Seed: %u, Faces: %u\n", randomSeed, this->numFaces);
+  debug_print (1, false, COLOR_YELLOW, "Created Dice: Seed: %u, Faces: %u\n", randomSeed, this->numFaces);
 }
 
 /////////////////////////////////////////////////////////////////

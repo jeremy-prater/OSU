@@ -3,6 +3,16 @@
 
 #include "diceCombo.hpp"
 
+typedef enum CharacterTypes
+{
+  CharacterTypeMedusa,
+  CharacterTypeGollum,
+  CharacterTypeReptilePeople,
+  CharacterTypeBlueMen,
+  CharacterTypeHarryPotter,
+  CharacterTypeNumCharacters
+};
+
 class CharacterBase
 {
 protected:

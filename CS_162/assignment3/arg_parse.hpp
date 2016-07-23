@@ -7,7 +7,7 @@
 // Structure definition for application arguments
 struct customArguments
 {
-  char * inputData;
+  bool enableDebug
 };
 
 class customArgParser

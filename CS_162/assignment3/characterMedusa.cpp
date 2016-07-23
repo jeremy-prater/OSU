@@ -1,4 +1,5 @@
 #include "CharacterMedusa.hpp"
+#include "lib_flip_display.hpp"
 
 void CharacterMedusa::SetupAttackDice()
 {
@@ -22,6 +23,7 @@ void CharacterMedusa::SetupStrength()
 
 CharacterMedusa::CharacterMedusa() : CharacterBase()
 {
+  debug_print (1, true, COLOR_CYAN, "Creating Medusa\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

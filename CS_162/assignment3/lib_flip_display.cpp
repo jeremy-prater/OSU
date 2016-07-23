@@ -19,6 +19,18 @@
 **
 *********************************************************************/
 
+int debugLevel = 0;
+
+void setdebuglevel(int level)
+{
+  debugLevel = level;
+}
+
+int GetDebugLevel()
+{
+  return debugLevel;
+}
+
 int getkey()
 {
     int character;
@@ -53,8 +65,13 @@ void shutdown_display(void)
   while (getkey() == -1);
 }
 
-void debug_print (bool bold, const char * color,const char * string, ...)
+void debug_print (int level, bool bold, const char * color,const char * string, ...)
 {
+  if (level > debugLevel)
+  {
+    return;
+  }
+
   va_list list;
   va_start (list, string);
 
@@ -69,11 +86,11 @@ void debug_test_result (bool passed)
 {
   if (passed)
   {
-    debug_print (true, COLOR_GREEN, "\tPASSED\n");
+    debug_print (1, true, COLOR_GREEN, "\tPASSED\n");
   }
   else
   {
-    debug_print (true, COLOR_RED, "\tFAILED\n");
+    debug_print (1, true, COLOR_RED, "\tFAILED\n");
   }
 }
 

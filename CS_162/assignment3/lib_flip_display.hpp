@@ -39,7 +39,9 @@
 int getkey();
 void init_display(void);
 void shutdown_display(void);
-void debug_print (bool bold, const char * color,const char * string, ...);
+void debug_print (int debugLevel, bool bold, const char * color,const char * string, ...);
+void SetDebugLevel (int debuglevel);
+int GetDebugLevel();
 void debug_test_result (bool passed);
 
 void cursor_move_to(int x, int y);

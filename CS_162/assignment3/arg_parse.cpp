@@ -16,7 +16,7 @@ const char * customArgParser::args_doc = "";
 // Terminated with a null entry
 struct argp_option customArgParser::options[] =
 {
-    {"inputData",  'i', "inputData",      0,  "Default data to load into the linked list" },
+    {"debug",  'd', 0,      0,  "Enable Debug output" },
     { 0 }
 };
 
@@ -37,8 +37,8 @@ error_t customArgParser::parse_opt (int key, char *arg, struct argp_state *state
 
   switch (key)
     {
-    case 'i':
-      arguments->inputData = arg;
+    case 'd':
+      arguments->debugEnable = true;
       break;
 
     case ARGP_KEY_ARG:

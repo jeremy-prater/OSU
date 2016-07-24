@@ -23,7 +23,7 @@ void CharacterHarryPotter::SetupStrength()
 
 CharacterHarryPotter::CharacterHarryPotter() : CharacterBase()
 {
-  debug_print (1, true, COLOR_CYAN, "Creating Harry Potter\n");
+  DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Harry Potter\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

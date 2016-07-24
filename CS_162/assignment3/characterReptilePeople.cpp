@@ -23,7 +23,7 @@ void CharacterReptilePeople::SetupStrength()
 
 CharacterReptilePeople::CharacterReptilePeople() : CharacterBase()
 {
-  debug_print (1, true, COLOR_CYAN, "Creating Reptile People\n");
+  DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Reptile People\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

@@ -36,21 +36,27 @@
 #define SCREEN_CLEAR "\033[2J"
 #define ERASE_TAIL "\033[K"
 
-int getkey();
-void init_display(void);
-void shutdown_display(void);
-void debug_print (int debugLevel, bool bold, const char * color,const char * string, ...);
-void SetDebugLevel (int debuglevel);
-int GetDebugLevel();
-void debug_test_result (bool passed);
+class DebugConsole
+{
+private:
+  static int debugLevel;
+public:
+  static int getkey();
+  static void init_display(void);
+  static void shutdown_display(void);
+  static void debug_print (int debugLevel, bool bold, const char * color,const char * string, ...);
+  static void SetDebugLevel (int debuglevel);
+  static int GetDebugLevel();
+  static void debug_test_result (bool passed);
 
-void cursor_move_to(int x, int y);
-void cursor_move_up(int x);
-void cursor_move_dn(int x);
-void cursor_move_lf(int x);
-void cursor_move_rt(int x);
+  static void cursor_move_to(int x, int y);
+  static void cursor_move_up(int x);
+  static void cursor_move_dn(int x);
+  static void cursor_move_lf(int x);
+  static void cursor_move_rt(int x);
 
-void screen_clear();
-void erase_tail();
+  static void screen_clear();
+  static void erase_tail();
+};
 
 #endif // LIB_FLIP_DISPLAY_H

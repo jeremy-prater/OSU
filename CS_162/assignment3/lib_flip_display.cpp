@@ -19,19 +19,19 @@
 **
 *********************************************************************/
 
-int debugLevel = 0;
+int DebugConsole::debugLevel = 0;
 
-void setdebuglevel(int level)
+void DebugConsole::SetDebugLevel(int level)
 {
-  debugLevel = level;
+  DebugConsole::debugLevel = level;
 }
 
-int GetDebugLevel()
+int DebugConsole::GetDebugLevel()
 {
-  return debugLevel;
+  return DebugConsole::debugLevel;
 }
 
-int getkey()
+int DebugConsole::getkey()
 {
     int character;
     struct termios orig_term_attr;
@@ -55,19 +55,19 @@ int getkey()
     return character;
 }
 
-void init_display(void)
+void DebugConsole::init_display(void)
 {
 
 }
 
-void shutdown_display(void)
+void DebugConsole::shutdown_display(void)
 {
   while (getkey() == -1);
 }
 
-void debug_print (int level, bool bold, const char * color,const char * string, ...)
+void DebugConsole::debug_print (int level, bool bold, const char * color,const char * string, ...)
 {
-  if (level > debugLevel)
+  if (level > DebugConsole::debugLevel)
   {
     return;
   }
@@ -82,45 +82,45 @@ void debug_print (int level, bool bold, const char * color,const char * string, 
   va_end (list);
 }
 
-void debug_test_result (bool passed)
+void DebugConsole::debug_test_result (bool passed)
 {
   if (passed)
   {
-    debug_print (1, true, COLOR_GREEN, "\tPASSED\n");
+    DebugConsole::debug_print (1, true, COLOR_GREEN, "\tPASSED\n");
   }
   else
   {
-    debug_print (1, true, COLOR_RED, "\tFAILED\n");
+    DebugConsole::debug_print (1, true, COLOR_RED, "\tFAILED\n");
   }
 }
 
-void cursor_move_to(int x, int y)
+void DebugConsole::cursor_move_to(int x, int y)
 {
     printf (CURSOR_GOTO1, x ,y);
 }
-void cursor_move_up(int x)
+void DebugConsole::cursor_move_up(int x)
 {
     printf (CURSOR_MOVE_UP, x);
 }
-void cursor_move_dn(int x)
+void DebugConsole::cursor_move_dn(int x)
 {
     printf (CURSOR_MOVE_DN, x);
 }
-void cursor_move_lf(int x)
+void DebugConsole::cursor_move_lf(int x)
 {
     printf (CURSOR_MOVE_LF, x);
 }
-void cursor_move_rt(int x)
+void DebugConsole::cursor_move_rt(int x)
 {
     printf (CURSOR_MOVE_RT, x);
 }
 
-void screen_clear()
+void DebugConsole::screen_clear()
 {
     printf (SCREEN_CLEAR);
 }
 
-void erase_tail()
+void DebugConsole::erase_tail()
 {
     printf (ERASE_TAIL);
 }

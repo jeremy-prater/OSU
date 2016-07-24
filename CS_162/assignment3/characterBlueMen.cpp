@@ -23,7 +23,7 @@ void CharacterBlueMen::SetupStrength()
 
 CharacterBlueMen::CharacterBlueMen() : CharacterBase()
 {
-  debug_print (1, true, COLOR_CYAN, "Creating BlueMen\n");
+  DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating BlueMen\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

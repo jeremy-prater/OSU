@@ -31,3 +31,8 @@ void CharacterBase::DefendAttack(unsigned int damage)
     Strength -= (damage - defense);
   }
 }
+
+unsigned int CharacterBase::GetStrength()
+{
+  return Strength;
+}

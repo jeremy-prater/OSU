@@ -23,7 +23,7 @@ void CharacterGollum::SetupStrength()
 
 CharacterGollum::CharacterGollum() : CharacterBase()
 {
-  debug_print (1, true, COLOR_CYAN, "Creating Gollum\n");
+  DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Gollum\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

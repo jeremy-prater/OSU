@@ -20,6 +20,78 @@
 
 using namespace std;
 
+CharacterBase * CreateCharacter(CharacterTypes type)
+{
+  CharacterBase * newCharacter;
+  switch (type)
+  {
+    case CharacterTypeMedusa:
+      newCharacter = (CharacterBase *)new CharacterMedusa();
+    break;
+    case CharacterTypeGollum:
+      newCharacter = (CharacterBase *)new CharacterGollum();
+    break;
+    case CharacterTypeReptilePeople:
+      newCharacter = (CharacterBase *)new CharacterReptilePeople();
+    break;
+    case CharacterTypeBlueMen:
+      newCharacter = (CharacterBase *)new CharacterBlueMen();
+    break;
+    case CharacterTypeHarryPotter:
+      newCharacter = (CharacterBase *)new CharacterHarryPotter();
+    break;
+    default:
+      newCharacter = __null;
+    break;
+  }
+}
+
+CharacterTypes SelectCharacter()
+{
+  CharacterTypes characterSelect = CharacterTypeInvalid;
+  while (characterSelect == -1)
+  {
+    char input;
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "Choose your character\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "---------------------\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "1. Medusa\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "2. Gollum\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "3. Reptile People\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "4. Blue Men\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "5. Harry Potter\n");
+    if (DebugConsole::GetDebugLevel() == 0)
+    {
+      DebugConsole::debug_print (0, true, COLOR_WHITE, "D. Enable Debug output\n");
+    }
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "\n\nEnter Selection: ");
+    cin >> input;
+    switch (input)
+    {
+      case 'd':
+      case 'D':
+        DebugConsole::SetDebugLevel(1);
+        DebugConsole::debug_print (0, false, COLOR_YELLOW, "Debug output enabled!\n");
+      break;
+      case '1':
+        characterSelect = CharacterTypeMedusa;
+      break;
+      case '2':
+        characterSelect = CharacterTypeGollum;
+      break;
+      case '3':
+        characterSelect = CharacterTypeReptilePeople;
+      break;
+      case '4':
+        characterSelect = CharacterTypeBlueMen;
+      break;
+      case '5':
+        characterSelect = CharacterTypeHarryPotter;
+      break;
+    }
+  }
+  return characterSelect;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // int main()
@@ -40,34 +112,24 @@ int main(int argc, char * argv[])
     customArgParser::InitalizeArguments();
     argp_parse (&customArgParser::argp, argc, argv, 0, 0, &customArgParser::arguments);
 
-    debug_print (0, true, COLOR_GREEN, "Welcome to CS_162 Battle Arena (assignment 3)!!\n\n")
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "Welcome to CS_162 Battle Arena (assignment 3)!!\n\n");
 
-    if (customArguments::arguments.enableDebug == true)
+    if (customArgParser::arguments.debugEnable == true)
     {
-      setdebuglevel (1);
-    }
-    int characterSelect = 0;
-    while (characterSelect == 0)
-    {
-      debug_print (0, true, COLOR_WHITE, "Choose your character\n");
-      debug_print (0, true, COLOR_WHITE, "---------------------\n");
-      debug_print (0, true, COLOR_WHITE, "1. Medusa\n");
-      debug_print (0, true, COLOR_WHITE, "2. Gollum\n");
-      debug_print (0, true, COLOR_WHITE, "3. Reptile People\n");
-      debug_print (0, true, COLOR_WHITE, "4. Blue Men\n");
-      debug_print (0, true, COLOR_WHITE, "5. Harry Potter\n");
-      if (GetDebugLevel() == 0)
-      {
-        debug_print (0, true, COLOR_WHITE, "D. Enable Debug output\n");
-      }
-      debug_print (0, false, COLOR_WHITE, "Enter Selection: ");
+      DebugConsole::SetDebugLevel (1);
     }
 
-    CharacterMedusa medusa;
-    CharacterBlueMen bluemen;
-    CharacterGollum gollum;
-    CharacterReptilePeople reptilepeople;
-    CharacterHarryPotter harrypotter;
+    // Create Characters
+    CharacterBase * myCharacter = CreateCharacter (SelectCharacter());
+    CharacterBase * opponent = CreateCharacter ((CharacterTypes) (rand() % CharacterTypeNumCharacters));
 
+    unsigned int currentRound = 0;
+    while (myCharacter->GetStrength() > 0)
+    {
+      
+    }
+
+    delete myCharacter;
+    delete opponent;
     return 0;
 }

@@ -3,8 +3,9 @@
 
 #include "diceCombo.hpp"
 
-typedef enum CharacterTypes
+enum CharacterTypes
 {
+  CharacterTypeInvalid = -1,
   CharacterTypeMedusa,
   CharacterTypeGollum,
   CharacterTypeReptilePeople,
@@ -32,6 +33,8 @@ public:
   virtual unsigned int GenerateAttack ();
   virtual unsigned int GenerateDefense();
   virtual void DefendAttack(unsigned int damage);
+
+  unsigned int GetStrength();
 };
 
 #endif // CHARACTER_BASE_HPP

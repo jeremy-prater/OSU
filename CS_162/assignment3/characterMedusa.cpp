@@ -23,7 +23,7 @@ void CharacterMedusa::SetupStrength()
 
 CharacterMedusa::CharacterMedusa() : CharacterBase()
 {
-  debug_print (1, true, COLOR_CYAN, "Creating Medusa\n");
+  DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Medusa\n");
   SetupAttackDice();
   SetupDefenseDice();
   SetupArmor();

@@ -21,6 +21,11 @@ void CharacterMedusa::SetupStrength()
   Strength = MEDUSA_STRENGTH;
 }
 
+const char * CharacterMedusa::GetName()
+{
+    return MEDUSA_NAME;
+}
+
 CharacterMedusa::CharacterMedusa() : CharacterBase()
 {
   DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Medusa\n");

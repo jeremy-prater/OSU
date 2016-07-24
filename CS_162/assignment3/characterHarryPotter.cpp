@@ -21,6 +21,11 @@ void CharacterHarryPotter::SetupStrength()
   Strength = HARRY_POTTER_STRENGTH;
 }
 
+const char * CharacterHarryPotter::GetName()
+{
+    return HARRY_POTTER_NAME;
+}
+
 CharacterHarryPotter::CharacterHarryPotter() : CharacterBase()
 {
   DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Harry Potter\n");

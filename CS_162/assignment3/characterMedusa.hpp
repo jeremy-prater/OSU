@@ -11,6 +11,8 @@
 #define MEDUSA_ARMOR              3
 #define MEDUSA_STRENGTH           8
 
+#define MEDUSA_NAME              "Medusa"
+
 class CharacterMedusa : public CharacterBase
 {
 public:
@@ -21,6 +23,7 @@ public:
   void SetupDefenseDice();
   void SetupArmor();
   void SetupStrength();
+  const char * GetName();
 };
 
 #endif // CHARACTER_MEDUSA_HPP

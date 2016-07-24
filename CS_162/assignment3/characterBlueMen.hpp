@@ -11,6 +11,8 @@
 #define BLUEMEN_ARMOR              3
 #define BLUEMEN_STRENGTH           12
 
+#define BLUEMEN_NAME               "Blue Men"
+
 class CharacterBlueMen : public CharacterBase
 {
 public:
@@ -21,6 +23,7 @@ public:
   void SetupDefenseDice();
   void SetupArmor();
   void SetupStrength();
+  const char * GetName();
 };
 
 #endif // CHARACTER_BLUEMEN_HPP

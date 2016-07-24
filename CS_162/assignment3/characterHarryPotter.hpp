@@ -12,6 +12,8 @@
 #define HARRY_POTTER_STRENGTH           10
 #define HARRY_POTTER_STRENGTH_HOGWARTS  20
 
+#define HARRY_POTTER_NAME               "Harry Potter"
+
 class CharacterHarryPotter : public CharacterBase
 {
 public:
@@ -22,6 +24,7 @@ public:
   void SetupDefenseDice();
   void SetupArmor();
   void SetupStrength();
+  const char * GetName();
 };
 
 #endif // CHARACTER_HARRY_POTTER_HPP

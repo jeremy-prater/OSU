@@ -21,6 +21,11 @@ void CharacterGollum::SetupStrength()
   Strength = GOLLUM_STRENGTH;
 }
 
+const char * CharacterGollum::GetName()
+{
+    return GOLLUM_NAME;
+}
+
 CharacterGollum::CharacterGollum() : CharacterBase()
 {
   DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Gollum\n");

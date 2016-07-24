@@ -11,6 +11,8 @@
 #define REPTILE_PEOPLE_ARMOR              7
 #define REPTILE_PEOPLE_STRENGTH           18
 
+#define REPTILE_PEOPLE_NAME               "Reptile People"
+
 class CharacterReptilePeople : public CharacterBase
 {
 public:
@@ -21,6 +23,7 @@ public:
   void SetupDefenseDice();
   void SetupArmor();
   void SetupStrength();
+  const char * GetName();
 };
 
 #endif // CHARACTER_REPTILE_PEOPLE_HPP

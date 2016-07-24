@@ -21,6 +21,11 @@ void CharacterBlueMen::SetupStrength()
   Strength = BLUEMEN_STRENGTH;
 }
 
+const char * CharacterBlueMen::GetName()
+{
+    return BLUEMEN_NAME;
+}
+
 CharacterBlueMen::CharacterBlueMen() : CharacterBase()
 {
   DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating BlueMen\n");

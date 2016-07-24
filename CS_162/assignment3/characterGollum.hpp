@@ -11,6 +11,8 @@
 #define GOLLUM_ARMOR              3
 #define GOLLUM_STRENGTH           8
 
+#define GOLLUM_NAME               "Gollum"
+
 class CharacterGollum : public CharacterBase
 {
 public:
@@ -21,6 +23,7 @@ public:
   void SetupDefenseDice();
   void SetupArmor();
   void SetupStrength();
+  const char * GetName();
 };
 
 #endif // CHARACTER_GOLLUM_HPP

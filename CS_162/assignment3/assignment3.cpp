@@ -124,9 +124,33 @@ int main(int argc, char * argv[])
     CharacterBase * opponent = CreateCharacter ((CharacterTypes) (rand() % CharacterTypeNumCharacters));
 
     unsigned int currentRound = 0;
-    while (myCharacter->GetStrength() > 0)
+    bool playing = true;
+    while (playing)
     {
-      
+      DebugConsole::debug_print (0, true, COLOR_GREEN, "%s\tvs.\t%s\t\tRound: %d\n\n", myCharacter->GetName(), opponent->GetName(), ++currentRound);
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Strength %d\n", myCharacter->GetName(), myCharacter->GetStrength());
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Strength %d\n", opponent->GetName(), opponent->GetStrength());
+
+      int myAttack = myCharacter->GenerateAttack();
+      int enemyAttack = opponent->GenerateAttack();
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Attacks with %d\n", myCharacter->GetName(), myAttack);
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Attacks with %d\n", opponent->GetName(), enemyAttack);
+
+      opponent->DefendAttack (myAttack);
+      myCharacter->DefendAttack(enemyAttack);
+
+      if (myCharacter->GetStrength() == 0)
+      {
+          DebugConsole::debug_print (0, false, COLOR_RED, "%s Died!\n", myCharacter->GetName());
+          DebugConsole::debug_print (0, true, COLOR_RED, "You Lose!\n");
+          break;
+      }
+      if (opponent->GetStrength() == 0)
+      {
+          DebugConsole::debug_print (0, false, COLOR_CYAN, "%s Died!\n", opponent->GetName());
+          DebugConsole::debug_print (0, true, COLOR_GREEN, "You Win!\n");
+          break;
+      }
     }
 
     delete myCharacter;

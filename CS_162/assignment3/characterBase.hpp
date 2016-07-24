@@ -30,10 +30,10 @@ public:
   virtual void SetupDefenseDice() = 0;
   virtual void SetupArmor() = 0;
   virtual void SetupStrength() = 0;
+  virtual const char * GetName() = 0;
   virtual unsigned int GenerateAttack ();
   virtual unsigned int GenerateDefense();
   virtual void DefendAttack(unsigned int damage);
-
   unsigned int GetStrength();
 };
 

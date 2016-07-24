@@ -21,6 +21,11 @@ void CharacterReptilePeople::SetupStrength()
   Strength = REPTILE_PEOPLE_STRENGTH;
 }
 
+const char * CharacterReptilePeople::GetName()
+{
+    return REPTILE_PEOPLE_NAME;
+}
+
 CharacterReptilePeople::CharacterReptilePeople() : CharacterBase()
 {
   DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Reptile People\n");

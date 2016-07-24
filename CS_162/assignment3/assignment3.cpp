@@ -132,11 +132,11 @@ int main(int argc, char * argv[])
       DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Strength %d\n", opponent->GetName(), opponent->GetStrength());
 
       int myAttack = myCharacter->GenerateAttack();
-      int enemyAttack = opponent->GenerateAttack();
       DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Attacks with %d\n", myCharacter->GetName(), myAttack);
-      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Attacks with %d\n", opponent->GetName(), enemyAttack);
-
       opponent->DefendAttack (myAttack);
+
+      int enemyAttack = opponent->GenerateAttack();
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "%s Attacks with %d\n", opponent->GetName(), enemyAttack);
       myCharacter->DefendAttack(enemyAttack);
 
       if (myCharacter->GetStrength() == 0)

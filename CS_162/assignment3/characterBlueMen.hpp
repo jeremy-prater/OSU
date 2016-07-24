@@ -15,6 +15,11 @@
 
 class CharacterBlueMen : public CharacterBase
 {
+private:
+  DiceCombo BlueMen2DefensePower;
+  DiceCombo BlueMen1DefensePower;
+  DiceCombo * CurrentDefenseDice;
+
 public:
   CharacterBlueMen();
   ~CharacterBlueMen() { }
@@ -24,6 +29,8 @@ public:
   void SetupArmor();
   void SetupStrength();
   const char * GetName();
+  unsigned int GenerateDefense();
+  void DefendAttack(unsigned int damage);
 };
 
 #endif // CHARACTER_BLUEMEN_HPP

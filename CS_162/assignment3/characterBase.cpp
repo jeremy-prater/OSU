@@ -13,8 +13,11 @@ unsigned int CharacterBase::GenerateDefense()
 
 void CharacterBase::DefendAttack(unsigned int damage)
 {
-  int defense = GenerateDefense() + Armor;
+  int defense = GenerateDefense();
 
+  DebugConsole::debug_print (0, false, COLOR_CYAN, "%s took Defended %d with %d armor!\n", this->GetName(), defense, Armor);
+
+  defense += Armor;
   // Cap defense at the incoming damage
   if (defense > damage)
   {

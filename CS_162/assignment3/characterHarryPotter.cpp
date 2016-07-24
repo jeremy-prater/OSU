@@ -19,6 +19,7 @@ void CharacterHarryPotter::SetupArmor()
 void CharacterHarryPotter::SetupStrength()
 {
   Strength = HARRY_POTTER_STRENGTH;
+  usedHogWarts = false;
 }
 
 const char * CharacterHarryPotter::GetName()
@@ -33,4 +34,15 @@ CharacterHarryPotter::CharacterHarryPotter() : CharacterBase()
   SetupDefenseDice();
   SetupArmor();
   SetupStrength();
+}
+
+void CharacterHarryPotter::DefendAttack(unsigned int damage)
+{
+  CharacterBase::DefendAttack(damage);
+  if ((Strength == 0) && (usedHogWarts == false))
+  {
+    DebugConsole::debug_print (0, true, COLOR_MAGENTA, "Harry Potter used Hogwarts!\n");
+    usedHogWarts = true;
+    Strength = HARRY_POTTER_STRENGTH;
+  }
 }

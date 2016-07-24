@@ -34,3 +34,14 @@ CharacterMedusa::CharacterMedusa() : CharacterBase()
   SetupArmor();
   SetupStrength();
 }
+
+unsigned int CharacterMedusa::GenerateAttack()
+{
+  int damage = CharacterBase::GenerateAttack();
+  if (damage == 12)
+  {
+    DebugConsole::debug_print (0, true, COLOR_MAGENTA, "Medusa used GLARE!\n");
+    return 9999;
+  }
+  return damage;
+}

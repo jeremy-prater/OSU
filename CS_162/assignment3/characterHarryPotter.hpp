@@ -16,6 +16,8 @@
 
 class CharacterHarryPotter : public CharacterBase
 {
+private:
+  bool usedHogWarts;
 public:
   CharacterHarryPotter();
   ~CharacterHarryPotter() { }
@@ -25,6 +27,8 @@ public:
   void SetupArmor();
   void SetupStrength();
   const char * GetName();
+
+  void DefendAttack(unsigned int damage);
 };
 
 #endif // CHARACTER_HARRY_POTTER_HPP

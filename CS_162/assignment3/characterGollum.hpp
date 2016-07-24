@@ -8,6 +8,9 @@
 #define GOLLUM_NUM_DEFENSE_DICE   1
 #define GOLLUM_DEFENSE_DICE_SIDES 6
 
+#define GOLLUM_NUM_JUMP_DICE    3
+#define GOLLUM_JUMP_DICE_SIDES  6
+
 #define GOLLUM_ARMOR              3
 #define GOLLUM_STRENGTH           8
 
@@ -15,6 +18,8 @@
 
 class CharacterGollum : public CharacterBase
 {
+private:
+  DiceCombo JumpPower;
 public:
   CharacterGollum();
   ~CharacterGollum() { }
@@ -24,6 +29,8 @@ public:
   void SetupArmor();
   void SetupStrength();
   const char * GetName();
+
+  unsigned int GenerateAttack();
 };
 
 #endif // CHARACTER_GOLLUM_HPP

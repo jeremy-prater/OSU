@@ -24,6 +24,8 @@ public:
   void SetupArmor();
   void SetupStrength();
   const char * GetName();
+
+  unsigned int GenerateAttack();
 };
 
 #endif // CHARACTER_MEDUSA_HPP

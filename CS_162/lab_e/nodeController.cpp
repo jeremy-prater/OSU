@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 21, 2016
+** Description:  NodeController.cpp
+*********************************************************************/
+
 #include "NodeController.hpp"
 #include <iostream>
 

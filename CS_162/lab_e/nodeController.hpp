@@ -1,7 +1,7 @@
 /*********************************************************************
 ** Author:       Jeremy Prater
-** Date:         July 9, 2016
-** Description:  lab-c.hpp
+** Date:         July 21, 2016
+** Description:  NodeController.hpp
 *********************************************************************/
 
 #ifndef LAB_E_NODE_CONTROLLER_H

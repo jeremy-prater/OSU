@@ -20,77 +20,13 @@
 
 using namespace std;
 
-CharacterBase * CreateCharacter(CharacterTypes type)
-{
-  CharacterBase * newCharacter;
-  switch (type)
-  {
-    case CharacterTypeMedusa:
-      newCharacter = (CharacterBase *)new CharacterMedusa();
-    break;
-    case CharacterTypeGollum:
-      newCharacter = (CharacterBase *)new CharacterGollum();
-    break;
-    case CharacterTypeReptilePeople:
-      newCharacter = (CharacterBase *)new CharacterReptilePeople();
-    break;
-    case CharacterTypeBlueMen:
-      newCharacter = (CharacterBase *)new CharacterBlueMen();
-    break;
-    case CharacterTypeHarryPotter:
-      newCharacter = (CharacterBase *)new CharacterHarryPotter();
-    break;
-    default:
-      newCharacter = __null;
-    break;
-  }
-}
+///////////////////////////////////////////////////////////////////////////////
+//
+// Local function definitions
+//
 
-CharacterTypes SelectCharacter()
-{
-  CharacterTypes characterSelect = CharacterTypeInvalid;
-  while (characterSelect == -1)
-  {
-    char input;
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "Choose your character\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "---------------------\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "1. Medusa\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "2. Gollum\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "3. Reptile People\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "4. Blue Men\n");
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "5. Harry Potter\n");
-    if (DebugConsole::GetDebugLevel() == 0)
-    {
-      DebugConsole::debug_print (0, true, COLOR_WHITE, "D. Enable Debug output\n");
-    }
-    DebugConsole::debug_print (0, false, COLOR_WHITE, "\n\nEnter Selection: ");
-    cin >> input;
-    switch (input)
-    {
-      case 'd':
-      case 'D':
-        DebugConsole::SetDebugLevel(1);
-        DebugConsole::debug_print (0, false, COLOR_YELLOW, "Debug output enabled!\n");
-      break;
-      case '1':
-        characterSelect = CharacterTypeMedusa;
-      break;
-      case '2':
-        characterSelect = CharacterTypeGollum;
-      break;
-      case '3':
-        characterSelect = CharacterTypeReptilePeople;
-      break;
-      case '4':
-        characterSelect = CharacterTypeBlueMen;
-      break;
-      case '5':
-        characterSelect = CharacterTypeHarryPotter;
-      break;
-    }
-  }
-  return characterSelect;
-}
+CharacterBase * CreateCharacter(CharacterTypes type);
+CharacterTypes SelectCharacter();
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -156,4 +92,103 @@ int main(int argc, char * argv[])
     delete myCharacter;
     delete opponent;
     return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// CharacterBase * CreateCharacter(CharacterTypes type)
+//
+// Return a pointer to a new chararcter based on the CharacterType
+//
+// Parameters:
+//        CharcterTypes type - An enum of the type of character to create
+//
+// Return:
+//        CharacterBase * - pointer to the new character
+//
+
+CharacterBase * CreateCharacter(CharacterTypes type)
+{
+  CharacterBase * newCharacter;
+  switch (type)
+  {
+    case CharacterTypeMedusa:
+      newCharacter = (CharacterBase *)new CharacterMedusa();
+    break;
+    case CharacterTypeGollum:
+      newCharacter = (CharacterBase *)new CharacterGollum();
+    break;
+    case CharacterTypeReptilePeople:
+      newCharacter = (CharacterBase *)new CharacterReptilePeople();
+    break;
+    case CharacterTypeBlueMen:
+      newCharacter = (CharacterBase *)new CharacterBlueMen();
+    break;
+    case CharacterTypeHarryPotter:
+      newCharacter = (CharacterBase *)new CharacterHarryPotter();
+    break;
+    default:
+      newCharacter = __null;
+    break;
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// CharacterTypes SelectCharacter()
+//
+// Asks the user for the type of character to play.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        CharcterTypes type - An enum of the type of character the user chose
+//
+
+
+CharacterTypes SelectCharacter()
+{
+  CharacterTypes characterSelect = CharacterTypeInvalid;
+  while (characterSelect == -1)
+  {
+    char input;
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "Choose your character\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "---------------------\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "1. Medusa\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "2. Gollum\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "3. Reptile People\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "4. Blue Men\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "5. Harry Potter\n");
+    if (DebugConsole::GetDebugLevel() == 0)
+    {
+      DebugConsole::debug_print (0, true, COLOR_WHITE, "D. Enable Debug output\n");
+    }
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "\n\nEnter Selection: ");
+    cin >> input;
+    switch (input)
+    {
+      case 'd':
+      case 'D':
+        DebugConsole::SetDebugLevel(1);
+        DebugConsole::debug_print (0, false, COLOR_YELLOW, "Debug output enabled!\n");
+      break;
+      case '1':
+        characterSelect = CharacterTypeMedusa;
+      break;
+      case '2':
+        characterSelect = CharacterTypeGollum;
+      break;
+      case '3':
+        characterSelect = CharacterTypeReptilePeople;
+      break;
+      case '4':
+        characterSelect = CharacterTypeBlueMen;
+      break;
+      case '5':
+        characterSelect = CharacterTypeHarryPotter;
+      break;
+    }
+  }
+  return characterSelect;
 }

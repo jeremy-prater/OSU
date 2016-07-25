@@ -1,7 +1,18 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 22, 2016
+** Description:  CharacterReptilePeople.hpp
+*********************************************************************/
+
 #ifndef CHARACTER_REPTILE_PEOPLE_HPP
 #define CHARACTER_REPTILE_PEOPLE_HPP
 
 #include "characterBase.hpp"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Definitions for Reptile People stats
+//
 
 #define REPTILE_PEOPLE_NUM_ATTACK_DICE    3
 #define REPTILE_PEOPLE_ATTACK_DICE_SIDES  6
@@ -12,6 +23,15 @@
 #define REPTILE_PEOPLE_STRENGTH           18
 
 #define REPTILE_PEOPLE_NAME               "Reptile People"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// class  CharacterReptilePeople
+//
+// This is the derived class for Reptile People
+//
+// This class provides no overloaded functions
+//
 
 class CharacterReptilePeople : public CharacterBase
 {

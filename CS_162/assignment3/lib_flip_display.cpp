@@ -13,9 +13,9 @@
 /*********************************************************************
 **
 ** This file has poor comments because it is for testing and
-** displaying data in the FLIP environment using NCURSES
+** displaying data in the FLIP environment
 **
-** No program logic is contained within this file.
+** No program/assignement logic is contained within this file.
 **
 *********************************************************************/
 

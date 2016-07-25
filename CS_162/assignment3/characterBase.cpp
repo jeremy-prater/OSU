@@ -1,15 +1,63 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 22, 2016
+** Description:  characterBase.cpp
+*********************************************************************/
+
 #include "CharacterBase.hpp"
 #include "lib_flip_display.hpp"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// unsigned int CharacterBase::GenerateAttack()
+//
+// Generate an attack power by rolling all the dice in
+// this creatures AttackPower dice set
+//
+// Parameters:
+//        None
+//
+// Return:
+//        unsigned int - Generated Attack Power
+//
 
 unsigned int CharacterBase::GenerateAttack()
 {
   return AttackPower.RollAllDice();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// unsigned int CharacterBase::GenerateDefense()
+//
+// Generate an defense power by rolling all the dice in
+// this creatures DefensePower dice set
+//
+// Parameters:
+//        None
+//
+// Return:
+//        unsigned int - Generated Defense Power
+//
+
 unsigned int CharacterBase::GenerateDefense()
 {
   return DefensePower.RollAllDice();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void CharacterBase::DefendAttack(unsigned int damage)
+//
+// Calculate remaining strength based on attack damage from an
+// opponent.
+//
+// Parameters:
+//        unsigned int damage - Generated Defense Power
+//
+// Return:
+//        None
+//
 
 void CharacterBase::DefendAttack(unsigned int damage)
 {
@@ -37,6 +85,19 @@ void CharacterBase::DefendAttack(unsigned int damage)
     DebugConsole::debug_print (0, false, COLOR_YELLOW, "%s took %d damage!\n", this->GetName(), (damage - defense));
   }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// unsigned int CharacterBase::GetStrength()
+//
+// Return this characters remaining strength.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        unsigned int - Remaining strength
+//
 
 unsigned int CharacterBase::GetStrength()
 {

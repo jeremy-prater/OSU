@@ -4,6 +4,13 @@
 #include "dice.hpp"
 #include <vector>
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class DiceCombo
+//
+// This class provides an interface for an array (std::vector) of Dice
+//
+
 class DiceCombo
 {
 private:

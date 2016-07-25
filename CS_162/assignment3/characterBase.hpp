@@ -1,7 +1,20 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 22, 2016
+** Description:  characterBase.hpp
+*********************************************************************/
+
 #ifndef CHARACTER_BASE_HPP
 #define CHARACTER_BASE_HPP
 
 #include "diceCombo.hpp"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// enum CharacterTypes
+//
+// List the possible character types
+//
 
 enum CharacterTypes
 {
@@ -13,6 +26,15 @@ enum CharacterTypes
   CharacterTypeHarryPotter,
   CharacterTypeNumCharacters
 };
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// class CharacterBase
+//
+// This is the base class for all chararcters in the game.
+//
+// This is an abstract class. Only derived classes can be created.
+//
 
 class CharacterBase
 {

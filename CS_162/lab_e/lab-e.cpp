@@ -9,6 +9,7 @@
 #include <cstring>
 #include "lib_flip_display.hpp"
 #include "node.hpp"
+#include "NodeController.hpp"
 #include <stdlib.h>
 #include <argp.h>
 
@@ -108,6 +109,19 @@ int main(int argc, char * argv[])
             myController.AddNode(arguments.inputData[position++]);
         }
     }
+    else
+    {
+      debug_print (true, COLOR_CYAN, "\n\nStart typing keys to record Nodes.\nPress ESC to stop and print all nodes.");
+      int key = 0;
+      while ((key = getkey()) != 0x1B)
+      {
+        if (key >= 0x20)
+        {
+          myController.AddNode (key);
+        }
+      }
+    }
+
     debug_print (true, COLOR_CYAN, "\n\nInput string: ");
     myController.PrintAllItems();
     debug_print (true, COLOR_CYAN, "\n\n");

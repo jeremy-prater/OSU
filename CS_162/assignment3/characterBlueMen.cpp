@@ -4,7 +4,7 @@
 ** Description:  characterBlueMen.cpp
 *********************************************************************/
 
-#include "CharacterBlueMen.hpp"
+#include "characterBlueMen.hpp"
 #include "lib_flip_display.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

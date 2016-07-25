@@ -4,7 +4,7 @@
 ** Description:  characterMedusa.cpp
 *********************************************************************/
 
-#include "CharacterMedusa.hpp"
+#include "characterMedusa.hpp"
 #include "lib_flip_display.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

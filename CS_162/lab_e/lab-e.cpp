@@ -9,7 +9,7 @@
 #include <cstring>
 #include "lib_flip_display.hpp"
 #include "node.hpp"
-#include "NodeController.hpp"
+#include "nodeController.hpp"
 #include <stdlib.h>
 #include <argp.h>
 

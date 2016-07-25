@@ -4,7 +4,7 @@
 ** Description:  characterHarryPotter.cpp
 *********************************************************************/
 
-#include "CharacterHarryPotter.hpp"
+#include "characterHarryPotter.hpp"
 #include "lib_flip_display.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@
 ** Description:  NodeController.cpp
 *********************************************************************/
 
-#include "NodeController.hpp"
+#include "nodeController.hpp"
 #include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////

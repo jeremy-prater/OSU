@@ -4,7 +4,7 @@
 ** Description:  characterGollum.cpp
 *********************************************************************/
 
-#include "CharacterGollum.hpp"
+#include "characterGollum.hpp"
 #include "lib_flip_display.hpp"
 #include <stdlib.h>
 

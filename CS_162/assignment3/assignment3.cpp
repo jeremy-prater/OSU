@@ -12,11 +12,11 @@
 #include "arg_parse.hpp"
 #include "assignment3.hpp"
 
-#include "CharacterMedusa.hpp"
-#include "CharacterBlueMen.hpp"
-#include "CharacterGollum.hpp"
-#include "CharacterReptilePeople.hpp"
-#include "CharacterHarryPotter.hpp"
+#include "characterMedusa.hpp"
+#include "characterBlueMen.hpp"
+#include "characterGollum.hpp"
+#include "characterReptilePeople.hpp"
+#include "characterHarryPotter.hpp"
 
 using namespace std;
 

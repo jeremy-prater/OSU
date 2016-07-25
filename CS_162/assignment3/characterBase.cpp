@@ -4,7 +4,7 @@
 ** Description:  characterBase.cpp
 *********************************************************************/
 
-#include "CharacterBase.hpp"
+#include "characterBase.hpp"
 #include "lib_flip_display.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@
 ** Description:  CharacterReptilePeople.cpp
 *********************************************************************/
 
-#include "CharacterReptilePeople.hpp"
+#include "characterReptilePeople.hpp"
 #include "lib_flip_display.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////

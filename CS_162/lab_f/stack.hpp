@@ -1,6 +1,8 @@
 #ifndef LAB_F_STACK_HPP
 #define LAB_F_STACK_HPP
 
+#include "lib_flip_display.hpp"
+
 template <class T>
 class Stack
 {
@@ -28,11 +30,13 @@ template <class T>
 Stack<T>::Stack()
 {
     topOfStack = __null;
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Stack.\n");
 }
 
 template <class T>
 Stack<T>::~Stack()
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Destroying Stack.\n");
     while (!isEmpty())
     {
         pop();
@@ -45,25 +49,29 @@ void Stack<T>::push(const T item)
     if (isEmpty())
     {
         topOfStack = new StackNode();
+        topOfStack->nextNode = __null;
     }
     else
     {
-        topOfStack->nextNode = new StackNode();
-        topOfStack = topOfStack->nextNode;
+        StackNode * oldStackTop = topOfStack;
+        topOfStack = new StackNode();
+        topOfStack->nextNode = oldStackTop;
     }
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Pushing object on stack.\n");
     memcpy (&topOfStack->data, &item, sizeof (T));
-    topOfStack->nextNode = __null;
 }
 
 template <class T>
 T Stack<T>::peek()
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Peeking object on stack.\n");
     if (!isEmpty())
     {
         return topOfStack->data;
     }
     else
     {
+        DebugConsole::debug_print (1, true, COLOR_YELLOW, "Stack is empty.\n");
         return (T)__null;
     }
 }
@@ -76,6 +84,11 @@ void Stack<T>::pop()
         StackNode * nextNode = topOfStack->nextNode;
         delete topOfStack;
         topOfStack = nextNode;
+        DebugConsole::debug_print (1, true, COLOR_CYAN, "Popping object from stack.\n");
+        if (isEmpty())
+        {
+            DebugConsole::debug_print (1, true, COLOR_YELLOW, "Last object popped from stack.\n");
+        }
     }   
 }
 

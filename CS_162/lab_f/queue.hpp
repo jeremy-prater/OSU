@@ -28,6 +28,7 @@ public:
 template <class T>
 Queue<T>::Queue()
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Creating Queue.\n");
     headNode = __null;
     tailNode = __null;
 }
@@ -35,6 +36,7 @@ Queue<T>::Queue()
 template <class T>
 Queue<T>::~Queue()
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Destroying Queue.\n");
     while (!isEmpty())
     {
         removeFront();
@@ -44,6 +46,7 @@ Queue<T>::~Queue()
 template <class T>
 void Queue<T>::addBack(const T item)
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Adding object to Queue.\n");
     if (isEmpty())
     {
         headNode = tailNode = new QueueNode();
@@ -60,12 +63,14 @@ void Queue<T>::addBack(const T item)
 template <class T>
 T Queue<T>::getFront()
 {
+    DebugConsole::debug_print (1, true, COLOR_CYAN, "Getting head object from Queue.\n");
     if (!isEmpty())
     {
         return headNode->data;
     }
     else
     {
+        DebugConsole::debug_print (1, true, COLOR_YELLOW, "Queue is empty.\n");
         return (T)__null;
     }
 }
@@ -75,13 +80,15 @@ void Queue<T>::removeFront()
 {
     if (!isEmpty())
     {
+        DebugConsole::debug_print (1, true, COLOR_CYAN, "Removing head object from Queue.\n");
         QueueNode * nextNode = headNode->nextNode;
         delete headNode;
-        if (tailNode == headNode)
+        headNode = nextNode;
+        if (isEmpty())
         {
-            tailNode = nextNode;
-        }
-        headNode = nextNode;        
+            DebugConsole::debug_print (1, true, COLOR_YELLOW, "Last object removed from Queue.\n");
+            tailNode = __null;
+        }                
     }   
 }
 

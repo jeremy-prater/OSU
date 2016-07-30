@@ -1,7 +1,22 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         July 24, 2016
+** Description:  lib_arg_parse.cpp
+*********************************************************************/
+
 #include <argp.h>
 #include <cstring>
-#include "arg_parse.hpp"
+#include "lib_arg_parse.hpp"
 #include <stdio.h>
+
+/*********************************************************************
+**
+** This file has poor comments because it is for parsing command
+** line arguments
+**
+** No program/assignement logic is contained within this file.
+**
+*********************************************************************/
 
 const char *argp_program_version = "assignment 3 1.0";
 const char *argp_program_bug_address = "<praterj@oregonstate.edu>";

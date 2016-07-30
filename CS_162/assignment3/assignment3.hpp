@@ -1,6 +1,0 @@
-#ifndef ASSIGNMENT_3_HPP
-#define ASSIGNMENT_3_HPP
-
-
-
-#endif // ASSIGNMENT_3_HPP

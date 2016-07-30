@@ -9,7 +9,7 @@
 #include <cstring>
 #include <stdlib.h>
 #include "lib_flip_display.hpp"
-#include "arg_parse.hpp"
+#include "lib_arg_parse.hpp"
 #include "assignment3.hpp"
 
 #include "characterMedusa.hpp"

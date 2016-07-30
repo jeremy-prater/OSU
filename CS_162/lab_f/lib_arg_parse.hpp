@@ -2,7 +2,15 @@
 #define ARG_PARSE_HPP
 
 #include <argp.h>
-#include "arg_parse.hpp"
+
+/*********************************************************************
+**
+** This file has poor comments because it is for parsing command
+** line arguments
+**
+** No program/assignement logic is contained within this file.
+**
+*********************************************************************/
 
 // Structure definition for application arguments
 struct customArguments

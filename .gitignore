@@ -1,6 +1,7 @@
 .metadata
 *.cproject
 *.project
+*.vscode
 
 CS_161/module4/fallDistance
 CS_161/module4/hailstone

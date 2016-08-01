@@ -181,9 +181,9 @@ int main(int argc, char * argv[])
         myStack->push (result);
         stackCounter++;
       }
-      catch (const std::invalid_argument& ia)
+      catch (...)
       {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cout << "Invalid input!" << std::endl;
       }
     }
 
@@ -212,9 +212,9 @@ int main(int argc, char * argv[])
         myQueue->addBack (result);
         queueCounter++;
       }
-      catch (const std::invalid_argument& ia)
+      catch (...)
       {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cout << "Invalid input!" << std::endl;
       }
     }
 

@@ -154,7 +154,7 @@ T Stack<T>::peek()
     else
     {
         // Empty stack, return null
-        DebugConsole::debug_print (1, true, COLOR_YELLOW, "Stack is empty.\n");
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "Attempted %s, but Stack is empty.\n", __func__);
         return (T)__null;
     }
 }

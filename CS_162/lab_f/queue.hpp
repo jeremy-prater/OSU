@@ -152,7 +152,7 @@ T Queue<T>::getFront()
     else
     {
         // return node sinde the queue is empty
-        DebugConsole::debug_print (1, true, COLOR_YELLOW, "Queue is empty.\n");
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "Attempted %s, but Queue is empty.\n", __func__);
         return (T)__null;
     }
 }

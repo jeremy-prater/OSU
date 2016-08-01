@@ -160,6 +160,74 @@ int main(int argc, char * argv[])
     myStack = new Stack<int>();
     myQueue = new Queue<int>();
 
+    string input;
+
+    bool enteringStack = true;
+    bool enteringQueue = true;
+    int stackCounter = 0;
+    int queueCounter = 0;
+    while (enteringStack)
+    {
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "Enter stack contents (int). %d entered. Enter 'q' to finish. : ", stackCounter);
+      cin >> input;
+      if (input.compare("q") == 0)
+      {
+        enteringStack = false;
+        break;
+      }
+      try
+      {
+        int result = stoi (input);
+        myStack->push (result);
+        stackCounter++;
+      }
+      catch (const std::invalid_argument& ia)
+      {
+        std::cerr << "Invalid argument: " << ia.what() << '\n';
+      }
+    }
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Printing stack contents.\n\n");
+    while (!myStack->isEmpty())
+    {
+      DebugConsole::debug_print (0, true, COLOR_WHITE, "stack pop: %d\n", myStack->peek());
+      myStack->pop();
+    }
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Printing stack contents (n+1).\n\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "stack pop: %d\n", myStack->peek());
+    myStack->pop();
+
+    while (enteringQueue)
+    {
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "Enter queue contents (int). %d entered. Enter 'q' to finish. : ", queueCounter);
+      cin >> input;
+      if (input.compare("q") == 0)
+      {
+        enteringQueue = false;
+        break;
+      }
+      try
+      {
+        int result = stoi (input);
+        myQueue->addBack (result);
+        queueCounter++;
+      }
+      catch (const std::invalid_argument& ia)
+      {
+        std::cerr << "Invalid argument: " << ia.what() << '\n';
+      }
+    }
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Printing queue contents.\n\n");
+    while (!myQueue->isEmpty())
+    {
+      DebugConsole::debug_print (0, true, COLOR_WHITE, "queue getFront: %d\n", myQueue->getFront());
+      myQueue->removeFront();
+    }
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Printing queue contents (n+1).\n\n");
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "queue getFront: %d\n", myQueue->getFront());
+    myQueue->removeFront();
+
 
     // Destroy class objects
     delete myStack;

@@ -48,6 +48,7 @@ public:
     virtual bool canUseItemOnTarget (gameObject * target) = 0;
     virtual int useItem(gameObject * target) = 0;
 
+    virtual bool canTake() = 0;
     virtual bool canTalk() = 0;
     virtual string talk() = 0;
     virtual bool CanRead() = 0;

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "gameObject.hpp"
+//#include "gamePlayer.hpp"
 
 #define NUM_CONNECTED_SPACES 4
 #define NUM_OBJECTS_IN_SPACE 5
@@ -22,15 +23,18 @@ enum gameSpaceLocation
     gameSpaceLocationCabinBasement,
     
     gameSpaceLocationTrail3,
-    gameSpaceLocationCaveEntrance,
+    gameSpaceLocationCave,
     gameSpaceLocationCaveRoom,
+
+    gameSpaceLocationTrail4,
+    gameSpaceLocationPond,
 
     gameSpaceLocation_NumLocations
 };
 
 struct gameSpaceDescription
 {
-    string spaceName;
+    std::string spaceName;
     gameSpaceLocation thisSpace;
     gameSpaceLocation connectedSpaces[NUM_CONNECTED_SPACES];
     objectTypes objectsInSpace[NUM_OBJECTS_IN_SPACE];
@@ -40,13 +44,14 @@ class gameSpace
 {
 protected:
     gameSpaceDescription spaceDescription;
-    std::vector<gameObject> objects;
+    std::vector<gameObject *> objects;
 
 public:
     static struct gameSpaceDescription gameSpaceDescriptions[];
     gameSpace(const gameSpaceDescription * spaceDesc);
-    ~gameItem();
+    ~gameSpace();
 
+    virtual bool CanMoveTo (void * player);
 };
 
 

@@ -1,5 +1,5 @@
-#ifndef GAME_ITEM_HPP
-#define GAME_ITEM_HPP
+#ifndef GAME_OBJECT_HPP
+#define GAME_OBJECT_HPP
 
 #include <string>
 #include "gameObject.hpp"
@@ -35,25 +35,23 @@ enum objectTypes
 class gameObject
 {
 protected:
-    unsigned int objectID;
     objectTypes objectType;
 
 public:
-    gameObject(unsigned int id, objectTypes type);
+    gameObject();
     ~gameObject();
 
-    virtual unsigned int GetObjectID();
-    virtual unsigned int GetObjectType();
+    virtual objectTypes GetObjectType() = 0;
 
-    virtual bool canUseItemOnTarget (gameObject * target) = 0;
-    virtual int useItem(gameObject * target) = 0;
+    virtual bool canUseItemOnTarget (gameObject * target);
+    virtual int useItem(gameObject * target);
 
-    virtual bool canTake() = 0;
-    virtual bool canTalk() = 0;
-    virtual string talk() = 0;
-    virtual bool CanRead() = 0;
-    virtual string Read() = 0;
+    virtual bool canTake();
+    virtual bool canTalk();
+    virtual std::string talk();
+    virtual bool canRead();
+    virtual std::string read();
 };
 
 
-#endif // GAME_ITEM_HPP
+#endif // GAME_OBJECT_HPP

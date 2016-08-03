@@ -1,20 +1,46 @@
 #include "gameObject.hpp"
 
-gameObject::gameObject(unsigned int id, unsigned int type)
+gameObject::gameObject()
 {
-    objectID = id;
-    objectType = type;
+
 }
 
 gameObject::~gameObject()
 {
 
 }
-unsigned int gameObject::GetObjectID()
+
+bool gameObject::canUseItemOnTarget(gameObject * target)
 {
-    return objectID;
+    return false;
 }
-unsigned int gameObject::GetObjectType()
+
+int gameObject::useItem(gameObject * target)
 {
-    return objectType;
+    return 0;
+}
+
+bool gameObject::canTake()
+{
+    return false;
+}
+
+bool gameObject::canTalk()
+{
+    return false;
+}
+
+std::string gameObject::talk()
+{
+    return "ERROR: Object can not talk!";
+}
+
+bool gameObject::canRead()
+{
+    return false;
+}
+
+std::string gameObject::read()
+{
+    return "ERROR: Object can not be read!";
 }

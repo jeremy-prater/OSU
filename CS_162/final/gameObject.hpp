@@ -6,6 +6,7 @@
 
 enum objectTypes
 {
+    objectTypeInvalid = -1,
     objectTypeKnife,
 
     objectTypeChest,

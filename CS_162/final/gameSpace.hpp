@@ -9,6 +9,7 @@ class gameSpace;
 
 enum gameSpaceLocation
 {
+    gameSpaceLocationInvalid = -1,
     gameSpaceLocationForest,
     gameSpaceLocationTrail1,
     gameSpaceLocationRiver,
@@ -27,17 +28,19 @@ enum gameSpaceLocation
 struct gameSpaceDescription
 {
     string spaceName;
+    gameSpaceLocation thisSpace;
     gameSpaceLocation connectedSpaces[4];
-    std::vector<gameObject> objects;
+    objectTypes objectsInSpace[5];
 };
 
 class gameSpace
 {
 protected:
     gameSpaceDescription spaceDescription;
-
+    std::vector<gameObject> objects;
 
 public:
+    static struct gameSpaceDescription gameSpaceDescriptions[];
     gameSpace(const gameSpaceDescription * spaceDesc);
     ~gameItem();
 

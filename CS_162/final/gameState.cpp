@@ -130,6 +130,11 @@ void gameState::GameLoop()
             break;
         }
 
+        if (Player->GameWon() == true)
+        {
+            playing = false;
+            DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\n\t\tThank you for freeing me!\n\n\tThe creatures of the forest are saved!!\n\n");
+        }
         if (MovesLeft == 0)
         {
             playing = false;

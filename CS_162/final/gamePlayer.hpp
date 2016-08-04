@@ -11,6 +11,7 @@ class gamePlayer
 private:
     gameSpace * currentSpace;
     gameObject * backpackItems[NUM_ITEMS_INVENTORY];
+    bool gameWon;
 
     // This is a 1:1 mapping to gameSpaceDescription::connectedSpaces
     gameSpaceLocation possibleSpaces[4];
@@ -22,6 +23,8 @@ public:
 
     gameObject ** GetBackpack();
     gameSpace * GetCurrentSpace();
+
+    bool GameWon();
 
     bool CanMoveToSpace (gameSpaceLocation testLocation);
     bool MoveToSpace (gameSpaceLocation moveLocation);

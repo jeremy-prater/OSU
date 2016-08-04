@@ -7,6 +7,7 @@ gamePlayer::gamePlayer(gameSpaceController * instance)
 {
     gameSpaceControllerInstance = instance;
     memset (backpackItems, 0, sizeof (backpackItems));
+    gameWon = false;
 }
 
 gamePlayer::~gamePlayer()
@@ -55,4 +56,9 @@ gameObject ** gamePlayer::GetBackpack()
 gameSpace * gamePlayer::GetCurrentSpace()
 {
     return currentSpace;
+}
+
+bool gamePlayer::GameWon()
+{
+    return gameWon;
 }

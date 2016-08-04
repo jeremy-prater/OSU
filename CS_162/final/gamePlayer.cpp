@@ -32,6 +32,6 @@ bool gamePlayer::MoveToSpace (gameSpaceLocation location)
         return false;
     }  
     currentSpace = gameSpaceControllerInstance->GetGameSpaceByType(location);
-    DebugConsole::debug_print (1, true, COLOR_YELLOW, "[%s] PLayer moved to space %s (0x%p)!\n", __func__, currentSpace->GetSpaceDescription().spaceName.c_str(), currentSpace);    
+    DebugConsole::debug_print (1, true, COLOR_YELLOW, "[%s] Player moved to space %s (0x%p)!\n", __func__, currentSpace->GetSpaceDescription().spaceName.c_str(), currentSpace);    
     return true;
 }

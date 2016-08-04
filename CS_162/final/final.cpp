@@ -15,6 +15,7 @@
 #include "gameSpaceController.hpp"
 #include "gamePlayer.hpp"
 #include "gameObject.hpp"
+#include "gameState.hpp"
 
 using namespace std;
 
@@ -22,7 +23,6 @@ using namespace std;
 //
 // Local function definitions
 //
-
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -51,10 +51,9 @@ int main(int argc, char * argv[])
       DebugConsole::SetDebugLevel (1);
     }
 
-    gameSpaceController myController;
-    gamePlayer player(&myController);
+    gameState * state = new gameState();
 
-    player.MoveToSpace (gameSpaceLocationForest);
+    delete state;
 
     // Exit and return success.
     return 0;

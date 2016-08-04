@@ -284,8 +284,17 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
             }
             break;
         }
+    }   
+}
+
+gameSpace::~gameSpace()
+{
+    int currentObjectIndex = 0;
+    DebugConsole::debug_print (1, true, COLOR_MAGENTA, "Destroying gameSpace %s and %d objects.\n", spaceDescription.spaceName.c_str(), objects.size());
+    while (currentObjectIndex < objects.size())
+    {
+        delete objects[currentObjectIndex++];
     }
-    
 }
 
 bool gameSpace::CanMoveTo(gamePlayer * player)

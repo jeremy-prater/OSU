@@ -54,6 +54,7 @@ public:
     ~gameSpace();
 
     virtual bool CanMoveTo (gamePlayer * player);
+    virtual std::string GetSpaceText () = 0;
 };
 
 

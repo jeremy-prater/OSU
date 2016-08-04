@@ -235,23 +235,49 @@ void gameState::InteractObject (gameObject * object, bool inPack)
             {
                 // Generate list of objects to use.
                 DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\nSelect object to use %s on.\n\n", object->GetName().c_str());
-                int objectID = 0;
+                int maxObjectID = 0;
                 int objectDivider = 0;
                 for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
                 {
                     if (Player->GetBackpack()[currentObject] != __null)
                     {
-                        DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", objectID++, Player->GetBackpack()[currentObject]->GetName().c_str());
+                        DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", (maxObjectID++) + 1, Player->GetBackpack()[currentObject]->GetName().c_str());
                     }
                 }
-                objectDivider = objectID;
+                objectDivider = maxObjectID;
                 for (int currentObject = 0; currentObject < Controller->GetCurrentSpace()->GetObjects().size(); currentObject++)
                 {
-                    DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", objectID++, Controller->GetCurrentSpace()->GetObjects()[currentObject]->GetName().c_str);
+                    DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", (maxObjectID++) + 1, Controller->GetCurrentSpace()->GetObjects()[currentObject]->GetName().c_str());
                 }
                 DebugConsole::debug_print (0, false, COLOR_WHITE, "Enter item number >");
-                std::string objectNum = "";
-                std::cin >> objectNum;
+                std::string objectNumString = "";
+                std::cin >> objectNumString;
+                int objectNum = std::stoi(objectNumString);
+                gameObject * target = __null;
+                if ((objectNum > 0) && (objectNum <= maxObjectID))
+                {
+                    if (objectNum <= objectDivider)
+                    {
+                        // Object is in backpack.
+                        target = Player->GetBackpack()[objectNum - 1];
+                    }
+                    else
+                    {
+                        // Object is in space.
+                        objectNum -= objectDivider;
+                        target = Controller->GetCurrentSpace()->GetObjects()[objectNum - 1];
+                    }
+                }
+                else
+                {
+                    DebugConsole::debug_print (0, true, COLOR_YELLOW, "That is an invalid item.\n\n");
+                    break;
+                }
+                if (target == __null)
+                {
+                    DebugConsole::debug_print (0, true, COLOR_YELLOW, "That is an invalid item.\n\n");
+                    break;                    
+                }
             }
             break;
         }

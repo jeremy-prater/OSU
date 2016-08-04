@@ -2,6 +2,7 @@
 #define GAME_OBJECT_HPP
 
 #include <string>
+#include "classDecl.hpp"
 #include "gameObject.hpp"
 
 enum objectTypes
@@ -10,7 +11,7 @@ enum objectTypes
     objectTypeKnife,
 
     objectTypeChest,
-    objectTypeRing,
+    objectTypeLock,
     objectTypeCrystalOrb,
 
     objectTypeFlower,
@@ -36,9 +37,10 @@ class gameObject
 {
 protected:
     objectTypes objectType;
+    const gameSpaceController * Controller;
 
 public:
-    gameObject();
+    gameObject(const gameSpaceController * controller);
     ~gameObject();
 
     virtual objectTypes GetObjectType() = 0;

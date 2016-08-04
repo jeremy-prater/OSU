@@ -1,8 +1,9 @@
 #include "gameObject.hpp"
+#include "lib_flip_display.hpp"
 
-gameObject::gameObject()
+gameObject::gameObject(const gameSpaceController * controller)
 {
-
+    Controller = controller;
 }
 
 gameObject::~gameObject()

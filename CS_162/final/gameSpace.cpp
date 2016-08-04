@@ -45,15 +45,15 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //
     // Connects to:
     //         Forest
-    //         River
+    //         Cabin
     //
     // Contains Objects:
-    //         None
+    //         Stick
     //
 
     {"Overgrown trail with old stones", gameSpaceLocationTrail2,
     {gameSpaceLocationForest, gameSpaceLocationCabin, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeStick, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -81,12 +81,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         Trail 3    
     //
     // Contains Objects:
-    //         None
+    //         Flowers
     //
 
     {"Trail with over small clearing", gameSpaceLocationTrail4,
     {gameSpaceLocationTrail3, gameSpaceLocationTrail1, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeFlower, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -97,12 +97,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         Trail 1
     //
     // Contains Objects:
-    //         None
+    //         Starfish
     //
 
     {"A river", gameSpaceLocationRiver,
     {gameSpaceLocationTrail1, gameSpaceLocationPond, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeStarFish, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -113,12 +113,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         River
     //
     // Contains Objects:
-    //         None
+    //         Squirtle
     //
 
     {"A pond with some fish", gameSpaceLocationPond,
     {gameSpaceLocationRiver, gameSpaceLocationCabin, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeSquirtle, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -130,12 +130,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         Cabin Basement
     //
     // Contains Objects:
-    //         None
+    //         Teapot, Lock
     //
 
     {"An abandonded log cabin.", gameSpaceLocationCabin,
     {gameSpaceLocationTrail2, gameSpaceLocationPond, gameSpaceLocationCabinBasement, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeTeaPot, objectTypeLock, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -145,12 +145,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         Cabin
     //
     // Contains Objects:
-    //         None
+    //         Lantern, Chest
     //
 
     {"Secret basement in cabin.", gameSpaceLocationCabinBasement,
     {gameSpaceLocationCabin, gameSpaceLocationInvalid, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeLantern, objectTypeChest, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -161,12 +161,12 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     //         Cave Room
     //
     // Contains Objects:
-    //         None
+    //         Magic Door, Orb holder
     //
 
     {"A dark cave.", gameSpaceLocationCave,
     {gameSpaceLocationTrail3, gameSpaceLocationCaveRoom, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
-    {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeOrbHole, objectTypeMagicDoor, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -199,9 +199,10 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 };
 
-gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
+gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, const gameSpaceController * controller)
 {
     DebugConsole::debug_print (1, false, COLOR_WHITE, "Creating gameSpace (%d) %s\n", spaceDesc->thisSpace, spaceDesc->spaceName.c_str());
+    Controller = controller;
     spaceDescription.spaceName = spaceDesc->spaceName;
     spaceDescription.thisSpace = spaceDesc->thisSpace;
     memcpy (spaceDescription.connectedSpaces, spaceDesc->connectedSpaces, sizeof (spaceDescription.connectedSpaces));
@@ -211,71 +212,87 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
     int objectIndex=0;
     for (objectIndex = 0; objectIndex < NUM_OBJECTS_IN_SPACE; objectIndex++)
     {
+        gameObject * newObject = __null;
         switch (spaceDescription.objectsInSpace[objectIndex])
         {
             case objectTypeKnife:
             {
-                objects.push_back(new gameObjectKnife);
+                newObject = new gameObjectKnife(Controller);
             }
+            break;
             case objectTypeChest:
             {
-                objects.push_back(new gameObjectChest);
+                newObject = new gameObjectChest(Controller);
             }
-            case objectTypeRing:
+            break;
+            case objectTypeLock:
             {
-                objects.push_back(new gameObjectRing);
+                newObject = new gameObjectLock(Controller);
             }
+            break;
             case objectTypeCrystalOrb:
             {
-                objects.push_back(new gameObjectCrystalOrb);
+                newObject = new gameObjectCrystalOrb(Controller);
             }
+            break;
             case objectTypeFlower:
             {
-                objects.push_back(new gameObjectFlower);
+                newObject = new gameObjectFlower(Controller);
             }
+            break;
             case objectTypeTeaPot:
             {
-                objects.push_back(new gameObjectTeaPot);
+                newObject = new gameObjectTeaPot(Controller);
             }
+            break;
             case objectTypeElixer:
             {
-                objects.push_back(new gameObjectElixer);
+                newObject = new gameObjectElixer(Controller);
             }
+            break;
             case objectTypeStarFish:
             {
-                objects.push_back(new gameObjectStarFish);
+                newObject = new gameObjectStarFish(Controller);
             }
+            break;
             case objectTypeSquirtle:
             {
-                objects.push_back(new gameObjectSquirtle);
+                newObject = new gameObjectSquirtle(Controller);
             }
+            break;
             case objectTypeStarmie:
             {
-                objects.push_back(new gameObjectStarmie);
+                newObject = new gameObjectStarmie(Controller);
             }
+            break;
             case objectTypeGem:
             {
-                objects.push_back(new gameObjectGem);
+                newObject = new gameObjectGem(Controller);
             }
+            break;
             case objectTypeGemKey:
             {
-                objects.push_back(new gameObjectGemKey);
+                newObject = new gameObjectGemKey(Controller);
             }
+            break;
             case objectTypeOrbHole:
             {
-                objects.push_back(new gameObjectOrbHole);
+                newObject = new gameObjectOrbHole(Controller);
             }
+            break;
             case objectTypeStick:
             {
-                objects.push_back(new gameObjectStick);
+                newObject = new gameObjectStick(Controller);
             }
+            break;
             case objectTypeLantern:
             {
-                objects.push_back(new gameObjectLantern);
+                newObject = new gameObjectLantern(Controller);
             }
+            break;
             case objectTypeMagicDoor:
             {
-                objects.push_back(new gameObjectMagicDoor);
+                newObject = new gameObjectMagicDoor(Controller);
             }
             break;
             default:
@@ -283,6 +300,11 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
                 // Ignore invalid object.
             }
             break;
+        }
+        if (newObject != __null)
+        {
+            DebugConsole::debug_print (1, false, COLOR_WHITE, "Creaing Object %s\n", newObject->GetName().c_str());
+            objects.push_back (newObject);
         }
     }   
 }
@@ -293,6 +315,7 @@ gameSpace::~gameSpace()
     DebugConsole::debug_print (1, true, COLOR_MAGENTA, "Destroying gameSpace %s and %d objects.\n", spaceDescription.spaceName.c_str(), objects.size());
     while (currentObjectIndex < objects.size())
     {
+        DebugConsole::debug_print (1, false, COLOR_MAGENTA, "Destroying Object %s\n", objects[currentObjectIndex]->GetName().c_str());
         delete objects[currentObjectIndex++];
     }
 }
@@ -305,4 +328,9 @@ bool gameSpace::CanMoveTo(gamePlayer * player)
 const gameSpaceDescription gameSpace::GetSpaceDescription()
 {
     return spaceDescription;
+}
+
+std::vector<gameObject *> gameSpace::GetObjects()
+{
+    return objects;
 }

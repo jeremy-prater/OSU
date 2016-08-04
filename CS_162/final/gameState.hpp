@@ -14,6 +14,7 @@ private:
 
 public:
     std::string PrintRound();
+    void InteractObject (gameObject * object);
     void GameLoop();
 
     gameState();

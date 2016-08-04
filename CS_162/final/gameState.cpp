@@ -58,7 +58,7 @@ std::string gameState::PrintRound()
     }
     if (inventoryEmpy)
     {
-        inventory = "Inventory Empty.\n\n";
+        inventory = "Inventory Empty.\n\n\n";
     }
 
     DebugConsole::debug_print (0, true, COLOR_CYAN, "%s", inventory.c_str());
@@ -73,10 +73,25 @@ std::string gameState::PrintRound()
     {
         if (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount] != gameSpaceLocationInvalid)
         {
-            moveList += std::string("\t ") + std::to_string(moveCount + 1) + ": "+Controller->GetGameSpaceByType (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->GetSpaceDescription().spaceName;
+            moveList += std::string("\t ") + std::to_string(moveCount + 1) + ": " + Controller->GetGameSpaceByType (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->GetSpaceDescription().spaceName;
         } 
     }
     DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n\n", moveList.c_str());
+
+    DebugConsole::debug_print (0, true, COLOR_CYAN, "Objects in space: ", inventory.c_str());
+    if (Player->GetCurrentSpace()->GetObjects().size() > 0)
+    {
+        std::string objectList = "";
+        for (int objectCount = 0; objectCount < Player->GetCurrentSpace()->GetObjects().size(); objectCount++)
+        {
+            objectList += std::string("\t ") + std::to_string(objectCount + 1) + ": " + Player->GetCurrentSpace()->GetObjects()[objectCount]->GetName();   
+        }    
+        DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n\n", objectList.c_str());
+    }
+    else
+    {
+        DebugConsole::debug_print (0, false, COLOR_WHITE, "None.\n\n\n");
+    }
 
     DebugConsole::debug_print (0, true, COLOR_WHITE, "Commands:\n\n");
     DebugConsole::debug_print (0, false, COLOR_WHITE, "m<id> - Move to new space. Example : >m2\n");
@@ -116,16 +131,24 @@ void gameState::GameLoop()
                 }
             }
             break;
-            case 'i':
-            case 'I':
-            {
-                //int moveTo = atoi ()
-            }
-            break;
             case 'o':
             case 'O':
             {
-                //int moveTo = atoi ()
+                int objectID = atoi (&commandPtr[1]);
+                if ((objectID > 0) && (objectID <= Player->GetCurrentSpace()->GetObjects().size()))
+                {
+                    InteractObject (Player->GetCurrentSpace()->GetObjects()[objectID - 1]);
+                }
+            }
+            break;
+            case 'i':
+            case 'I':
+            {
+                int objectID = atoi (&commandPtr[1]);
+                if ((objectID > 0) && (objectID <= NUM_ITEMS_INVENTORY) && (Player->GetBackpack()[objectID - 1] != __null))
+                {
+                    InteractObject (Player->GetBackpack()[objectID - 1]);
+                }
             }
             break;
         }
@@ -141,4 +164,27 @@ void gameState::GameLoop()
             DebugConsole::debug_print (0, true, COLOR_RED, "\n\n\t\tTime is up!!\n\nThe creatures of the forest are doomed...\n\n");
         }
     }
+}
+
+void gameState::InteractObject (gameObject * object)
+{
+    DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\nInteracting with %s.\n\n", object->GetName().c_str());
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nCommands: \n\n");
+    if (object->canTalk())
+    {
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "t - Talk to %s\n", object->GetName().c_str());
+    }
+    if (object->canTake())
+    {
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "g - Take to %s\n", object->GetName().c_str());
+    }
+    if (object->canRead())
+    {
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "r - Look at %s\n", object->GetName().c_str());
+    }
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "u - Use %s\n", object->GetName().c_str());
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "c - Walk away from %s\n", object->GetName().c_str());
+    DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nEnter Command >");
+    std::string command;
+    std::cin >> command;
 }

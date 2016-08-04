@@ -46,13 +46,17 @@ class gameSpace
 protected:
     gameSpaceDescription spaceDescription;
     std::vector<gameObject *> objects;
+    const gameSpaceController * Controller;
 
 public:
     static struct gameSpaceDescription gameSpaceDescriptions[];
-    const gameSpaceDescription GetSpaceDescription();
-    gameSpace(const gameSpaceDescription * spaceDesc);
+
+    gameSpace(const gameSpaceDescription * spaceDesc, const gameSpaceController * controller);
     ~gameSpace();
 
+
+    const gameSpaceDescription GetSpaceDescription();
+    std::vector<gameObject *> GetObjects();
     virtual bool CanMoveTo (gamePlayer * player);
     virtual std::string GetSpaceText () = 0;
 };

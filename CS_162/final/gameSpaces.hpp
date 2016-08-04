@@ -6,7 +6,7 @@
 class gameSpaceForest : public gameSpace
 {
 public:
-    gameSpaceForest(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceForest(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceForest() { }
 
     std::string GetSpaceText();
@@ -15,7 +15,7 @@ public:
 class gameSpaceTrail1 : public gameSpace
 {
 public:
-    gameSpaceTrail1(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceTrail1(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceTrail1() { }
 
     std::string GetSpaceText();
@@ -24,7 +24,7 @@ public:
 class gameSpaceRiver : public gameSpace
 {
 public:
-    gameSpaceRiver(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceRiver(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceRiver() { }
 
     std::string GetSpaceText();
@@ -33,7 +33,7 @@ public:
 class gameSpaceTrail2 : public gameSpace
 {
 public:
-    gameSpaceTrail2(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceTrail2(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceTrail2() { }
 
     std::string GetSpaceText();
@@ -42,7 +42,7 @@ public:
 class gameSpaceCabin : public gameSpace
 {
 public:
-    gameSpaceCabin(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceCabin(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceCabin() { }
 
     std::string GetSpaceText();
@@ -51,7 +51,7 @@ public:
 class gameSpaceCabinBasement : public gameSpace
 {
 public:
-    gameSpaceCabinBasement(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceCabinBasement(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceCabinBasement() { }
 
     std::string GetSpaceText();
@@ -60,7 +60,7 @@ public:
 class gameSpaceTrail3 : public gameSpace
 {
 public:
-    gameSpaceTrail3(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceTrail3(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceTrail3() { }
 
     std::string GetSpaceText();
@@ -69,7 +69,7 @@ public:
 class gameSpaceCave : public gameSpace
 {
 public:
-    gameSpaceCave(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceCave(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceCave() { }
 
     std::string GetSpaceText();
@@ -78,7 +78,7 @@ public:
 class gameSpaceCaveRoom : public gameSpace
 {
 public:
-    gameSpaceCaveRoom(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceCaveRoom(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceCaveRoom() { }
 
     std::string GetSpaceText();
@@ -87,7 +87,7 @@ public:
 class gameSpaceTrail4 : public gameSpace
 {
 public:
-    gameSpaceTrail4(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpaceTrail4(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpaceTrail4() { }
 
     std::string GetSpaceText();
@@ -96,7 +96,7 @@ public:
 class gameSpacePond : public gameSpace
 {
 public:
-    gameSpacePond(gameSpaceDescription * location) : gameSpace(location) { }
+    gameSpacePond(gameSpaceDescription * location, const gameSpaceController * controller) : gameSpace(location, controller) { }
     ~gameSpacePond() { }
 
     std::string GetSpaceText();

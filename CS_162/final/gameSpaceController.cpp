@@ -12,57 +12,57 @@ gameSpaceController::gameSpaceController()
         {
             case gameSpaceLocationForest:
             {
-                gameSpaces.push_back (new gameSpaceForest (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceForest (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationTrail1:
             {
-                gameSpaces.push_back (new gameSpaceTrail1 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceTrail1 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationRiver:
             {
-                gameSpaces.push_back (new gameSpaceRiver (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceRiver (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationTrail2:
             {
-                gameSpaces.push_back (new gameSpaceTrail2 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceTrail2 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationCabin:
             {
-                gameSpaces.push_back (new gameSpaceCabin (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceCabin (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationCabinBasement:
             {
-                gameSpaces.push_back (new gameSpaceCabinBasement (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceCabinBasement (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationTrail3:
             {
-                gameSpaces.push_back (new gameSpaceTrail3 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceTrail3 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationCave:
             {
-                gameSpaces.push_back (new gameSpaceCave (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceCave (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationCaveRoom:
             {
-                gameSpaces.push_back (new gameSpaceCaveRoom (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceCaveRoom (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationTrail4:
             {
-                gameSpaces.push_back (new gameSpaceTrail4 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpaceTrail4 (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             case gameSpaceLocationPond:            
             {
-                gameSpaces.push_back (new gameSpacePond (&gameSpace::gameSpaceDescriptions[currentSpaceIndex]));
+                gameSpaces.push_back (new gameSpacePond (&gameSpace::gameSpaceDescriptions[currentSpaceIndex], this));
             }
             break;
             default:

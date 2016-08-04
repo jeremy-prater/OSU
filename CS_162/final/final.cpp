@@ -53,6 +53,8 @@ int main(int argc, char * argv[])
 
     gameState * state = new gameState();
 
+    state->GameLoop();
+
     delete state;
 
     // Exit and return success.

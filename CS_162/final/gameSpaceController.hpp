@@ -14,7 +14,9 @@ public:
     ~gameSpaceController();
     
     gameSpace * GetGameSpaceByType(gameSpaceLocation location);
-  
+    
+    void SetCurrentSpace (gameSpace * space);
+    gameSpace * GetCurrentSpace();
 };
 
 #endif // GAME_SPACE_CONTROLLER_HPP

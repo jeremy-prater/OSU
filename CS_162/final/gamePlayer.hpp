@@ -4,11 +4,13 @@
 #include "classDecl.hpp"
 #include "gameSpace.hpp"
 
+#define NUM_ITEMS_INVENTORY 5
+
 class gamePlayer
 {
 private:
     gameSpace * currentSpace;
-    gameObject * backpackItems[5];
+    gameObject * backpackItems[NUM_ITEMS_INVENTORY];
 
     // This is a 1:1 mapping to gameSpaceDescription::connectedSpaces
     gameSpaceLocation possibleSpaces[4];
@@ -17,6 +19,9 @@ private:
 public:
     gamePlayer (gameSpaceController * instance);
     ~gamePlayer();
+
+    gameObject ** GetBackpack();
+    gameSpace * GetCurrentSpace();
 
     bool CanMoveToSpace (gameSpaceLocation testLocation);
     bool MoveToSpace (gameSpaceLocation moveLocation);

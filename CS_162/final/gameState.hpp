@@ -10,8 +10,12 @@ class gameState
 private:
     gameSpaceController * Controller;
     gamePlayer * Player;
+    int MovesLeft;
 
 public:
+    std::string PrintRound();
+    void GameLoop();
+
     gameState();
     ~gameState();
 };

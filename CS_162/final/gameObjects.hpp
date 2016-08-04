@@ -10,6 +10,7 @@ public:
     ~gameObjectKnife() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectChest : public gameObject
@@ -19,6 +20,7 @@ public:
     ~gameObjectChest() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectRing : public gameObject
@@ -28,6 +30,7 @@ public:
     ~gameObjectRing() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectCrystalOrb : public gameObject
@@ -37,6 +40,7 @@ public:
     ~gameObjectCrystalOrb() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectFlower : public gameObject
@@ -46,6 +50,7 @@ public:
     ~gameObjectFlower() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectTeaPot : public gameObject
@@ -55,6 +60,7 @@ public:
     ~gameObjectTeaPot() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectElixer : public gameObject
@@ -64,6 +70,7 @@ public:
     ~gameObjectElixer() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectStarFish : public gameObject
@@ -73,6 +80,7 @@ public:
     ~gameObjectStarFish() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectSquirtle : public gameObject
@@ -82,6 +90,7 @@ public:
     ~gameObjectSquirtle() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectStarmie : public gameObject
@@ -91,6 +100,7 @@ public:
     ~gameObjectStarmie() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectGem : public gameObject
@@ -100,6 +110,7 @@ public:
     ~gameObjectGem() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectGemKey : public gameObject
@@ -109,6 +120,7 @@ public:
     ~gameObjectGemKey() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectOrbHole : public gameObject
@@ -118,6 +130,7 @@ public:
     ~gameObjectOrbHole() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectStick : public gameObject
@@ -127,6 +140,7 @@ public:
     ~gameObjectStick() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectLantern : public gameObject
@@ -136,6 +150,7 @@ public:
     ~gameObjectLantern() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 class gameObjectMagicDoor : public gameObject
@@ -145,6 +160,7 @@ public:
     ~gameObjectMagicDoor() { }
 
     objectTypes GetObjectType();
+     std::string GetName();
 };
 
 #endif // GAME_OBJECTS_HPP

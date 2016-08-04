@@ -98,3 +98,12 @@ gameSpace * gameSpaceController::GetGameSpaceByType(gameSpaceLocation location)
     DebugConsole::debug_print(1, true, COLOR_RED, "Unable to locate space (%d). Returning null. Program may crash!\n", location);
     return __null;
 }
+
+gameSpace * gameSpaceController::GetCurrentSpace()
+{
+    return currentSpace;
+}
+void  gameSpaceController::SetCurrentSpace(gameSpace * space)
+{
+    currentSpace = space;
+}

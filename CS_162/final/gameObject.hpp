@@ -45,7 +45,9 @@ public:
 
     virtual objectTypes GetObjectType() = 0;
     virtual std::string GetName() = 0;
+    virtual std::string GetText() = 0;
 
+    virtual bool canItemBeUsed(objectTypes objectType);
     virtual bool canUseItemOnTarget (gameObject * target);
     virtual int useItem(gameObject * target);
 

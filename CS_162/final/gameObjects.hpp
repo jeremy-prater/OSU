@@ -11,16 +11,22 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
 class gameObjectChest : public gameObject
 {
+private:
+    bool chestOpened;
+
 public:
-    gameObjectChest(gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectChest(gameSpaceController * controller) : gameObject(controller) { chestOpened=false; }
     ~gameObjectChest() { }
 
+    void OpenChest();
     objectTypes GetObjectType();
+    std::string GetText();
     std::string GetName();
 };
 
@@ -31,6 +37,7 @@ public:
     ~gameObjectLock() { }
 
     objectTypes GetObjectType();
+    std::string GetText();
     std::string GetName();
 };
 
@@ -42,6 +49,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
@@ -53,6 +61,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
@@ -64,6 +73,8 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
+    bool canItemBeUsed(objectTypes objectType);
 };
 
 class gameObjectElixer : public gameObject
@@ -74,6 +85,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
@@ -85,6 +97,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTalk();
     std::string talk();
 };
@@ -97,6 +110,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTalk();
     std::string talk();
 };
@@ -109,6 +123,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTalk();
     std::string talk();
 };
@@ -121,6 +136,7 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();    
 };
 
@@ -132,16 +148,21 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
 };
 
 class gameObjectOrbHole : public gameObject
 {
+private:
+    bool hasOrb;
 public:
-    gameObjectOrbHole(gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectOrbHole(gameSpaceController * controller) : gameObject(controller) { hasOrb=false; }
     ~gameObjectOrbHole() { }
 
+    void SetOrb();
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
 };
 
 class gameObjectStick : public gameObject
@@ -152,28 +173,36 @@ public:
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
 class gameObjectLantern : public gameObject
 {
+private:
+    bool hasStick;
 public:
-    gameObjectLantern(gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectLantern(gameSpaceController * controller) : gameObject(controller) { hasStick=false; }
     ~gameObjectLantern() { }
 
+    void SetStick();
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
     bool canTake();
 };
 
 class gameObjectMagicDoor : public gameObject
 {
+private:
+    bool doorKey;
 public:
-    gameObjectMagicDoor(gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectMagicDoor(gameSpaceController * controller) : gameObject(controller) { doorKey=false; }
     ~gameObjectMagicDoor() { }
 
     objectTypes GetObjectType();
     std::string GetName();
+    std::string GetText();
 };
 
 #endif // GAME_OBJECTS_HPP

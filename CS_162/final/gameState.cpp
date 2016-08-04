@@ -78,19 +78,19 @@ std::string gameState::PrintRound()
     }
     DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n\n", moveList.c_str());
 
-    DebugConsole::debug_print (0, true, COLOR_CYAN, "Objects in space: ", inventory.c_str());
+    DebugConsole::debug_print (0, true, COLOR_CYAN, "Objects in space:\n", inventory.c_str());
     if (Player->GetCurrentSpace()->GetObjects().size() > 0)
     {
         std::string objectList = "";
         for (int objectCount = 0; objectCount < Player->GetCurrentSpace()->GetObjects().size(); objectCount++)
         {
-            objectList += std::string("\t ") + std::to_string(objectCount + 1) + ": " + Player->GetCurrentSpace()->GetObjects()[objectCount]->GetName();   
+            objectList += std::string("\t ") + std::to_string(objectCount + 1) + ": " + Player->GetCurrentSpace()->GetObjects()[objectCount]->GetName() + "\n" + Player->GetCurrentSpace()->GetObjects()[objectCount]->GetText() + "\n\n";   
         }    
-        DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n\n", objectList.c_str());
+        DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n", objectList.c_str());
     }
     else
     {
-        DebugConsole::debug_print (0, false, COLOR_WHITE, "None.\n\n\n");
+        DebugConsole::debug_print (0, false, COLOR_WHITE, "None.\n\n");
     }
 
     DebugConsole::debug_print (0, true, COLOR_WHITE, "Commands:\n\n");
@@ -137,7 +137,7 @@ void gameState::GameLoop()
                 int objectID = atoi (&commandPtr[1]);
                 if ((objectID > 0) && (objectID <= Player->GetCurrentSpace()->GetObjects().size()))
                 {
-                    InteractObject (Player->GetCurrentSpace()->GetObjects()[objectID - 1]);
+                    InteractObject (Player->GetCurrentSpace()->GetObjects()[objectID - 1], false);
                 }
             }
             break;
@@ -147,7 +147,7 @@ void gameState::GameLoop()
                 int objectID = atoi (&commandPtr[1]);
                 if ((objectID > 0) && (objectID <= NUM_ITEMS_INVENTORY) && (Player->GetBackpack()[objectID - 1] != __null))
                 {
-                    InteractObject (Player->GetBackpack()[objectID - 1]);
+                    InteractObject (Player->GetBackpack()[objectID - 1], true);
                 }
             }
             break;
@@ -166,25 +166,94 @@ void gameState::GameLoop()
     }
 }
 
-void gameState::InteractObject (gameObject * object)
+void gameState::InteractObject (gameObject * object, bool inPack)
 {
-    DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\nInteracting with %s.\n\n", object->GetName().c_str());
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nCommands: \n\n");
-    if (object->canTalk())
+    bool commandObject = true;
+    while (commandObject == true)
     {
-        DebugConsole::debug_print (0, true, COLOR_WHITE, "t - Talk to %s\n", object->GetName().c_str());
+        DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\nInteracting with [%s].\n\n", object->GetName().c_str());
+        DebugConsole::debug_print (0, false, COLOR_WHITE, "\n\n%s\n\n\n", object->GetText().c_str());
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nCommands: \n\n");
+        if (object->canTalk())
+        {
+            DebugConsole::debug_print (0, true, COLOR_WHITE, "t - Talk to %s\n", object->GetName().c_str());
+        }
+        if (object->canTake() && !inPack)
+        {
+            DebugConsole::debug_print (0, true, COLOR_WHITE, "g - Take to %s\n", object->GetName().c_str());
+        }
+        if (object->canRead())
+        {
+            DebugConsole::debug_print (0, true, COLOR_WHITE, "r - Look at %s\n", object->GetName().c_str());
+        }
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "u - Use %s\n", object->GetName().c_str());
+        if (!inPack)
+        {
+            DebugConsole::debug_print (0, true, COLOR_WHITE, "c - Walk away from %s\n", object->GetName().c_str());
+        }
+        else
+        {
+            DebugConsole::debug_print (0, true, COLOR_WHITE, "c - Put %s back in backpack\n", object->GetName().c_str());
+        }
+        DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nEnter Command >");
+        std::string command;
+        std::cin >> command;
+        const char * commandPtr = command.c_str();
+        switch (commandPtr[0])
+        {
+            case 'c':
+            case 'C':
+            {
+                commandObject = false;
+            }
+            break;
+            case 't':
+            case 'T':
+            {
+                if (object->canTalk())
+                {
+                    DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\n%s talking.\n\n", object->GetName().c_str());
+                    DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n", object->talk().c_str());
+                }
+            }
+            break;
+            case 'g':
+            case 'G':
+            {
+                if (object->canTake())
+                {
+                    if (Player->AddObjectToBackpack (object))
+                    {
+                        Controller->GetCurrentSpace()->RemoveObject (object);
+                        commandObject = false;
+                    }
+                }
+            }
+            break;
+            case 'u':
+            case 'U':
+            {
+                // Generate list of objects to use.
+                DebugConsole::debug_print (0, true, COLOR_CYAN, "\n\nSelect object to use %s on.\n\n", object->GetName().c_str());
+                int objectID = 0;
+                int objectDivider = 0;
+                for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+                {
+                    if (Player->GetBackpack()[currentObject] != __null)
+                    {
+                        DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", objectID++, Player->GetBackpack()[currentObject]->GetName().c_str());
+                    }
+                }
+                objectDivider = objectID;
+                for (int currentObject = 0; currentObject < Controller->GetCurrentSpace()->GetObjects().size(); currentObject++)
+                {
+                    DebugConsole::debug_print (0, false, COLOR_WHITE, "%d: %s\n", objectID++, Controller->GetCurrentSpace()->GetObjects()[currentObject]->GetName().c_str);
+                }
+                DebugConsole::debug_print (0, false, COLOR_WHITE, "Enter item number >");
+                std::string objectNum = "";
+                std::cin >> objectNum;
+            }
+            break;
+        }
     }
-    if (object->canTake())
-    {
-        DebugConsole::debug_print (0, true, COLOR_WHITE, "g - Take to %s\n", object->GetName().c_str());
-    }
-    if (object->canRead())
-    {
-        DebugConsole::debug_print (0, true, COLOR_WHITE, "r - Look at %s\n", object->GetName().c_str());
-    }
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "u - Use %s\n", object->GetName().c_str());
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "c - Walk away from %s\n", object->GetName().c_str());
-    DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nEnter Command >");
-    std::string command;
-    std::cin >> command;
 }

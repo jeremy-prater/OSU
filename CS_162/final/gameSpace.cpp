@@ -347,3 +347,17 @@ bool gameSpace::ContainsObject (objectTypes type)
     }
     return false;    
 }
+
+void gameSpace::RemoveObject (gameObject * object)
+{
+    int currentObjectIndex = 0;
+    while (currentObjectIndex < objects.size())
+    {
+        if (objects[currentObjectIndex] == object)
+        {
+            objects.erase (objects.begin() + currentObjectIndex);
+            return;
+        }
+    }
+    
+}

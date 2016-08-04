@@ -21,6 +21,7 @@ public:
     gamePlayer (gameSpaceController * instance);
     ~gamePlayer();
 
+    bool AddObjectToBackpack (gameObject * object);
     gameObject ** GetBackpack();
     gameSpace * GetCurrentSpace();
 

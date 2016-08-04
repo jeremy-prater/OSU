@@ -45,3 +45,9 @@ std::string gameObject::read()
 {
     return "ERROR: Object can not be read!";
 }
+
+bool gameObject::canItemBeUsed(objectTypes objectType)
+{
+    // Objects must be explicitly allowed to be used.
+    return false;
+}

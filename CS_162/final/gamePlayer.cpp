@@ -62,3 +62,16 @@ bool gamePlayer::GameWon()
 {
     return gameWon;
 }
+
+bool gamePlayer::AddObjectToBackpack (gameObject * object)
+{
+    for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+    {
+        if (backpackItems[currentObject] == __null)
+        {
+            backpackItems[currentObject] = object;
+            return true;
+        }
+    }
+    return false;
+}

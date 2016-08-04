@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
+
+#include "classDecl.hpp"
 #include "gameObject.hpp"
-//#include "gamePlayer.hpp"
 
 #define NUM_CONNECTED_SPACES 4
 #define NUM_OBJECTS_IN_SPACE 5
@@ -48,10 +49,11 @@ protected:
 
 public:
     static struct gameSpaceDescription gameSpaceDescriptions[];
+    const gameSpaceDescription GetSpaceDescription();
     gameSpace(const gameSpaceDescription * spaceDesc);
     ~gameSpace();
 
-    virtual bool CanMoveTo (void * player);
+    virtual bool CanMoveTo (gamePlayer * player);
 };
 
 

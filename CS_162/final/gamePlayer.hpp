@@ -1,9 +1,8 @@
 #ifndef GAME_PLAYER_HPP
 #define GAME_PLAYER_HPP
 
-#include "gameObjects.hpp"
+#include "classDecl.hpp"
 #include "gameSpace.hpp"
-#include "gameSpaceController.hpp"
 
 class gamePlayer
 {
@@ -20,7 +19,7 @@ public:
     ~gamePlayer();
 
     bool CanMoveToSpace (gameSpaceLocation testLocation);
-    void MoveToSpace (gameSpaceLocation moveLocation);
+    bool MoveToSpace (gameSpaceLocation moveLocation);
 
     bool CanTakeItem(gameObject * object);
     void TakeItem(gameObject * object);

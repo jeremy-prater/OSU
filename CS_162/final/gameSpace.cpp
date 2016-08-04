@@ -280,7 +280,7 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
             break;
             default:
             {
-                // Print object error message...
+                // Ignore invalid object.
             }
             break;
         }
@@ -291,4 +291,9 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc)
 bool gameSpace::CanMoveTo(gamePlayer * player)
 {
     return true;
+}
+
+const gameSpaceDescription gameSpace::GetSpaceDescription()
+{
+    return spaceDescription;
 }

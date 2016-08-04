@@ -23,7 +23,7 @@ gameSpace * gameSpaceController::GetGameSpaceByType(gameSpaceLocation location)
     int index = 0;
     while (index < gameSpaces.size())
     {
-        if (gameSpaces[index]->thisSpace == location)
+        if (gameSpaces[index]->GetSpaceDescription().thisSpace == location)
         return gameSpaces[index];
         index++;
     }

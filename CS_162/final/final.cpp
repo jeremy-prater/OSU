@@ -52,6 +52,9 @@ int main(int argc, char * argv[])
     }
 
     gameSpaceController myController;
+    gamePlayer player(&myController);
+
+    player.MoveToSpace (gameSpaceLocationForest);
 
     // Exit and return success.
     return 0;

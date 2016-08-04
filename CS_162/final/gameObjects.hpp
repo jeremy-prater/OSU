@@ -6,7 +6,7 @@
 class gameObjectKnife : public gameObject
 {
 public:
-    gameObjectKnife(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectKnife(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectKnife() { }
 
     objectTypes GetObjectType();
@@ -17,7 +17,7 @@ public:
 class gameObjectChest : public gameObject
 {
 public:
-    gameObjectChest(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectChest(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectChest() { }
 
     objectTypes GetObjectType();
@@ -27,7 +27,7 @@ public:
 class gameObjectLock : public gameObject
 {
 public:
-    gameObjectLock(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectLock(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectLock() { }
 
     objectTypes GetObjectType();
@@ -37,7 +37,7 @@ public:
 class gameObjectCrystalOrb : public gameObject
 {
 public:
-    gameObjectCrystalOrb(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectCrystalOrb(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectCrystalOrb() { }
 
     objectTypes GetObjectType();
@@ -48,7 +48,7 @@ public:
 class gameObjectFlower : public gameObject
 {
 public:
-    gameObjectFlower(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectFlower(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectFlower() { }
 
     objectTypes GetObjectType();
@@ -59,7 +59,7 @@ public:
 class gameObjectTeaPot : public gameObject
 {
 public:
-    gameObjectTeaPot(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectTeaPot(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectTeaPot() { }
 
     objectTypes GetObjectType();
@@ -69,7 +69,7 @@ public:
 class gameObjectElixer : public gameObject
 {
 public:
-    gameObjectElixer(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectElixer(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectElixer() { }
 
     objectTypes GetObjectType();
@@ -80,7 +80,7 @@ public:
 class gameObjectStarFish : public gameObject
 {
 public:
-    gameObjectStarFish(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectStarFish(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectStarFish() { }
 
     objectTypes GetObjectType();
@@ -92,7 +92,7 @@ public:
 class gameObjectSquirtle : public gameObject
 {
 public:
-    gameObjectSquirtle(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectSquirtle(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectSquirtle() { }
 
     objectTypes GetObjectType();
@@ -104,7 +104,7 @@ public:
 class gameObjectStarmie : public gameObject
 {
 public:
-    gameObjectStarmie(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectStarmie(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectStarmie() { }
 
     objectTypes GetObjectType();
@@ -116,7 +116,7 @@ public:
 class gameObjectGem : public gameObject
 {
 public:
-    gameObjectGem(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectGem(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectGem() { }
 
     objectTypes GetObjectType();
@@ -127,7 +127,7 @@ public:
 class gameObjectGemKey : public gameObject
 {
 public:
-    gameObjectGemKey(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectGemKey(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectGemKey() { }
 
     objectTypes GetObjectType();
@@ -137,7 +137,7 @@ public:
 class gameObjectOrbHole : public gameObject
 {
 public:
-    gameObjectOrbHole(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectOrbHole(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectOrbHole() { }
 
     objectTypes GetObjectType();
@@ -147,7 +147,7 @@ public:
 class gameObjectStick : public gameObject
 {
 public:
-    gameObjectStick(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectStick(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectStick() { }
 
     objectTypes GetObjectType();
@@ -158,7 +158,7 @@ public:
 class gameObjectLantern : public gameObject
 {
 public:
-    gameObjectLantern(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectLantern(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectLantern() { }
 
     objectTypes GetObjectType();
@@ -169,7 +169,7 @@ public:
 class gameObjectMagicDoor : public gameObject
 {
 public:
-    gameObjectMagicDoor(const gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectMagicDoor(gameSpaceController * controller) : gameObject(controller) { }
     ~gameObjectMagicDoor() { }
 
     objectTypes GetObjectType();

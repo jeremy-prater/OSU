@@ -1,7 +1,7 @@
 #include "gameObject.hpp"
 #include "lib_flip_display.hpp"
 
-gameObject::gameObject(const gameSpaceController * controller)
+gameObject::gameObject(gameSpaceController * controller)
 {
     Controller = controller;
 }

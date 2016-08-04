@@ -1,4 +1,5 @@
 #include "gameObjects.hpp"
+#include "gameSpaceController.hpp"
 
 objectTypes gameObjectKnife::GetObjectType() { return objectTypeKnife; }
 objectTypes gameObjectChest::GetObjectType() { return objectTypeChest; }
@@ -59,13 +60,32 @@ bool gameObjectSquirtle::canTalk () { return true; }
 std::string gameObjectSquirtle::talk()
 {
     static bool firstTime = true;
-    if (firstTime == true)
+    static bool rewarded = false;
+    if (Controller->GetGameSpaceByType(gameSpaceLocationRiver)->ContainsObject(objectTypeStarFish))
     {
-        return "\t\tHello traveler...\n\n\tI have a gift for you, but first you need to help my friend. There is a pond a short walk from here.\nMy friend that lives in it is sick and needs the brewed elixer from flowers that grow in this area to heal.\n\nPlease help him and I will reward you!\n\n";
-        firstTime = false;
+        if (firstTime == true)
+        {
+            return "\t\tHello traveler...\n\n\tI have a gift for you, but first you need to help my friend. There is a pond a short walk from here.\nMy friend that lives in it is sick and needs the brewed elixer from flowers that grow in this area to heal.\n\nPlease help him and I will reward you!\n\n";
+            firstTime = false;
+        }
+        else
+        {
+            return "\tHave you found my friend?\n\nIt makes me sad that he is still stick.\nThe flowers that grow in this area will cure him if they are brewed.";
+        }
     }
     else
     {
-        return "\tHave you found my friend?\n\nIt makes me sad that he is still stick.\nThe flowers that grow in this area will cure him if they are brewed.";
+        if (rewarded == false)
+        {
+            // Give reward.
+            rewarded = true;
+            return "\t\tMy friend is healed! Thank you so much!\n\tHere is a specal gem that I have been saving. I think it came from a nearby cave.";
+            // Add gem to inventory or space...?
+        }
+        else
+        {
+            // Thanks
+            return "Thanks again!";
+        }
     }
 }

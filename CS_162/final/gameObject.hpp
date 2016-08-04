@@ -37,10 +37,10 @@ class gameObject
 {
 protected:
     objectTypes objectType;
-    const gameSpaceController * Controller;
+    gameSpaceController * Controller;
 
 public:
-    gameObject(const gameSpaceController * controller);
+    gameObject(gameSpaceController * controller);
     ~gameObject();
 
     virtual objectTypes GetObjectType() = 0;

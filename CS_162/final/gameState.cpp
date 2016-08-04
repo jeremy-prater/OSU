@@ -42,7 +42,7 @@ std::string gameState::PrintRound()
     
 
     DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\n\nLocation [%s]\n\n", Controller->GetCurrentSpace()->GetSpaceDescription().spaceName.c_str());
-    DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n", Controller->GetCurrentSpace()->GetSpaceText().c_str());
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "%s\n\n\n\n\n\n", Controller->GetCurrentSpace()->GetSpaceText().c_str());
 
     std::string inventory = "Inventory: ";
     std::string inventoryList = "";

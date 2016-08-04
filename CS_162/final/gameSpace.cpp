@@ -199,7 +199,7 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 };
 
-gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, const gameSpaceController * controller)
+gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, gameSpaceController * controller)
 {
     DebugConsole::debug_print (1, false, COLOR_WHITE, "Creating gameSpace (%d) %s\n", spaceDesc->thisSpace, spaceDesc->spaceName.c_str());
     Controller = controller;
@@ -333,4 +333,17 @@ const gameSpaceDescription gameSpace::GetSpaceDescription()
 std::vector<gameObject *> gameSpace::GetObjects()
 {
     return objects;
+}
+
+bool gameSpace::ContainsObject (objectTypes type)
+{
+    int currentObjectIndex = 0;
+    while (currentObjectIndex < objects.size())
+    {
+        if (objects[currentObjectIndex]->GetObjectType() == type)
+        {
+            return true;
+        }
+    }
+    return false;    
 }

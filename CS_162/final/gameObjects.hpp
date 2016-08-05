@@ -13,8 +13,9 @@ public:
     std::string GetName();
     std::string GetText();
     bool canTake();
+    bool canUseItemOnTarget(gameObject * object);
 };
-
+    
 class gameObjectChest : public gameObject
 {
 private:
@@ -51,6 +52,7 @@ public:
     std::string GetName();
     std::string GetText();
     bool canTake();
+    bool canUseItemOnTarget(gameObject * object);
 };
 
 class gameObjectFlower : public gameObject
@@ -63,6 +65,8 @@ public:
     std::string GetName();
     std::string GetText();
     bool canTake();
+    bool canUseItemOnTarget(gameObject * object);
+    void useItem(gameObject * object);
 };
 
 class gameObjectTeaPot : public gameObject
@@ -74,7 +78,6 @@ public:
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
-    bool canItemBeUsed(objectTypes objectType);
 };
 
 class gameObjectElixer : public gameObject
@@ -87,6 +90,7 @@ public:
     std::string GetName();
     std::string GetText();
     bool canTake();
+    bool canUseItemOnTarget(gameObject * object);
 };
 
 class gameObjectStarFish : public gameObject
@@ -137,7 +141,7 @@ public:
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
-    bool canTake();    
+    bool canTake();
 };
 
 class gameObjectGemKey : public gameObject
@@ -149,6 +153,7 @@ public:
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
+    bool canUseItemOnTarget(gameObject * object);
 };
 
 class gameObjectOrbHole : public gameObject
@@ -160,6 +165,7 @@ public:
     ~gameObjectOrbHole() { }
 
     void SetOrb();
+    bool GetHasOrb();
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
@@ -175,6 +181,7 @@ public:
     std::string GetName();
     std::string GetText();
     bool canTake();
+    bool canUseItemOnTarget(gameObject * object);
 };
 
 class gameObjectLantern : public gameObject

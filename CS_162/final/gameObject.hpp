@@ -40,6 +40,8 @@ protected:
     gameSpaceController * Controller;
 
 public:
+    static gameObject * CreateObjectFromType (objectTypes type, gameSpaceController * controller);
+    
     gameObject(gameSpaceController * controller);
     ~gameObject();
 
@@ -47,9 +49,8 @@ public:
     virtual std::string GetName() = 0;
     virtual std::string GetText() = 0;
 
-    virtual bool canItemBeUsed(objectTypes objectType);
     virtual bool canUseItemOnTarget (gameObject * target);
-    virtual int useItem(gameObject * target);
+    virtual void useItem(gameObject * target);
 
     virtual bool canTake();
     virtual bool canTalk();

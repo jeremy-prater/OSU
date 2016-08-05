@@ -8,6 +8,7 @@ gameState::gameState()
 {
     Controller = new gameSpaceController();
     Player = new gamePlayer(Controller);
+    Controller->SetPlayer(Player);
     Player->MoveToSpace (gameSpaceLocationForest);
     MovesLeft = 50;  
 }
@@ -20,6 +21,8 @@ gameState::~gameState()
 
 std::string gameState::PrintRound()
 {
+    Player->SortAndRecycleItems();
+    
     if (DebugConsole::GetDebugLevel() == 0)
     {
         DebugConsole::screen_clear();
@@ -220,9 +223,9 @@ void gameState::InteractObject (gameObject * object, bool inPack)
             case 'g':
             case 'G':
             {
-                if (object->canTake())
+                if (object->canTake() && !inPack)
                 {
-                    if (Player->AddObjectToBackpack (object))
+                    if (Player->MoveObjectToBackpack (object))
                     {
                         Controller->GetCurrentSpace()->RemoveObject (object);
                         commandObject = false;
@@ -276,7 +279,21 @@ void gameState::InteractObject (gameObject * object, bool inPack)
                 if (target == __null)
                 {
                     DebugConsole::debug_print (0, true, COLOR_YELLOW, "That is an invalid item.\n\n");
-                    break;                    
+                    break;
+                }
+                if (!object->canUseItemOnTarget(target))
+                {
+                    DebugConsole::debug_print (0, true, COLOR_YELLOW, "\n\nUsing %s on %s...\n\n", object->GetName().c_str(), target->GetName().c_str());
+                    DebugConsole::debug_print (0, true, COLOR_YELLOW, "That doesn't work...\n\n");
+                    break;
+                }
+                else
+                {
+                    DebugConsole::debug_print (0, true, COLOR_GREEN, "Using %s on %s...\n\n", object->GetName().c_str(), target->GetName().c_str());
+                    object->useItem(target);
+                    Player->SortAndRecycleItems();
+                    commandObject = false;
+                    break;
                 }
             }
             break;

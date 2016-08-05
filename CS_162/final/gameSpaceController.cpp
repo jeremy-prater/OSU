@@ -1,5 +1,6 @@
 #include "gameSpaceController.hpp"
 #include "gameSpaces.hpp"
+#include "gameObjects.hpp"
 #include "lib_flip_display.hpp"
 
 gameSpaceController::gameSpaceController()
@@ -106,4 +107,14 @@ gameSpace * gameSpaceController::GetCurrentSpace()
 void  gameSpaceController::SetCurrentSpace(gameSpace * space)
 {
     currentSpace = space;
+}
+
+void gameSpaceController::SetPlayer (gamePlayer * player)
+{
+    Player = player;
+}
+
+gamePlayer * gameSpaceController::GetPlayer()
+{
+    return Player;
 }

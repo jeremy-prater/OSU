@@ -7,6 +7,7 @@ gamePlayer::gamePlayer(gameSpaceController * instance)
 {
     gameSpaceControllerInstance = instance;
     memset (backpackItems, 0, sizeof (backpackItems));
+    memset (recycleItems, 0, sizeof (recycleItems));
     gameWon = false;
 }
 
@@ -63,7 +64,7 @@ bool gamePlayer::GameWon()
     return gameWon;
 }
 
-bool gamePlayer::AddObjectToBackpack (gameObject * object)
+bool gamePlayer::MoveObjectToBackpack (gameObject * object)
 {
     for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
     {
@@ -74,4 +75,56 @@ bool gamePlayer::AddObjectToBackpack (gameObject * object)
         }
     }
     return false;
+}
+
+void gamePlayer::DestroyObjectInBackpack (gameObject * object)
+{
+    for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+    {
+        if (backpackItems[currentObject] == object)
+        {
+            //delete object;
+            recycleItems[currentObject] = backpackItems[currentObject]; 
+            backpackItems[currentObject] = __null;
+            return;
+        }
+    }    
+}
+
+void gamePlayer::CreateObjectInBackpack (objectTypes type)
+{
+    for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+    {
+        if (backpackItems[currentObject] == __null)
+        {
+            gameObject * newObject = gameObject::CreateObjectFromType (type, gameSpaceControllerInstance);
+            DebugConsole::debug_print (1, false, COLOR_WHITE, "Creaing Object %s in backpack\n", newObject->GetName().c_str());
+            backpackItems[currentObject] = newObject;
+            return;
+        }
+    }    
+}
+
+void gamePlayer::SortAndRecycleItems()
+{
+    for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+    {
+        if (recycleItems[currentObject] != __null)
+        {
+            delete recycleItems[currentObject];
+            recycleItems[currentObject] = __null; 
+        }
+    }        
+    int numItemsInBackpack = 0;
+    for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
+    {
+        if (backpackItems[currentObject] != __null)
+        {
+            numItemsInBackpack++;
+        }
+    }
+    for (int currentObject = 0; currentObject < numItemsInBackpack; currentObject++)
+    {
+        
+    }
 }

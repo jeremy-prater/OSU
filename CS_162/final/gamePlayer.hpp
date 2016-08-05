@@ -11,6 +11,7 @@ class gamePlayer
 private:
     gameSpace * currentSpace;
     gameObject * backpackItems[NUM_ITEMS_INVENTORY];
+    gameObject * recycleItems[NUM_ITEMS_INVENTORY];
     bool gameWon;
 
     // This is a 1:1 mapping to gameSpaceDescription::connectedSpaces
@@ -21,7 +22,11 @@ public:
     gamePlayer (gameSpaceController * instance);
     ~gamePlayer();
 
-    bool AddObjectToBackpack (gameObject * object);
+    void CreateObjectInBackpack(objectTypes type);
+    bool MoveObjectToBackpack (gameObject * object);
+    void DestroyObjectInBackpack (gameObject * object);
+    void SortAndRecycleItems();
+
     gameObject ** GetBackpack();
     gameSpace * GetCurrentSpace();
 

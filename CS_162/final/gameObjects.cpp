@@ -1,5 +1,14 @@
 #include "gameObjects.hpp"
+#include "gamePlayer.hpp"
 #include "gameSpaceController.hpp"
+#include "lib_flip_display.hpp"
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// objectTypes ...::GetObjectType()
+//
+// Return the type of the object from derived classes
+//
 
 objectTypes gameObjectKnife::GetObjectType() { return objectTypeKnife; }
 objectTypes gameObjectChest::GetObjectType() { return objectTypeChest; }
@@ -18,6 +27,13 @@ objectTypes gameObjectStick::GetObjectType() { return objectTypeStick; }
 objectTypes gameObjectLantern::GetObjectType() { return objectTypeLantern; }
 objectTypes gameObjectMagicDoor::GetObjectType() { return objectTypeMagicDoor; }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// std::string ...::GetName()
+//
+// Return the name of the object from derived classes
+//
+
 std::string gameObjectKnife::GetName() { return "Knife"; }
 std::string gameObjectChest::GetName() { return "Chest"; }
 std::string gameObjectLock::GetName() { return "Lock"; }
@@ -35,26 +51,83 @@ std::string gameObjectStick::GetName() { return "Stick"; }
 std::string gameObjectLantern::GetName() { return "Lantern"; }
 std::string gameObjectMagicDoor::GetName() { return "MagicDoor"; }
 
-//bool gameObjectKnife::canItemBeUsed(objectTypes objectType) { return objectTypeKnife; }
-//bool gameObjectChest::canItemBeUsed(objectTypes objectType) { return objectTypeChest; }
-//bool gameObjectLock::canItemBeUsed(objectTypes objectType) { return objectTypeLock; }
-//bool gameObjectCrystalOrb::canItemBeUsed(objectTypes objectType) { return objectTypeCrystalOrb; }
-//bool gameObjectFlower::canItemBeUsed(objectTypes objectType) { return objectTypeFlower; }
-bool gameObjectTeaPot::canItemBeUsed(objectTypes objectType)
-{
-    return (objectType == objectTypeFlower);
-}
-//bool gameObjectElixer::canItemBeUsed(objectTypes objectType) { return objectTypeElixer; }
-//bool gameObjectStarFish::canItemBeUsed(objectTypes objectType) { return booltarFish; }
-//bool gameObjectSquirtle::canItemBeUsed(objectTypes objectType) { return boolquirtle; }
-//bool gameObjectStarmie::canItemBeUsed(objectTypes objectType) { return booltarmie; }
-//bool gameObjectGem::canItemBeUsed(objectTypes objectType) { return objectTypeGem; }
-//bool gameObjectGemKey::canItemBeUsed(objectTypes objectType) { return objectTypeGemKey; }
-//bool gameObjectOrbHole::canItemBeUsed(objectTypes objectType) { return objectTypeOrbHole; }
-//bool gameObjectStick::canItemBeUsed(objectTypes objectType) { return booltick; }
-//bool gameObjectLantern::canItemBeUsed(objectTypes objectType) { return objectTypeLantern; }
-//bool gameObjectMagicDoor::canItemBeUsed(objectTypes objectType) { return objectTypeMagicDoor; }
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// bool ...::canUseItemOnTarget(gameObject * object)
+//
+// Return true if a object can be used on another object for derived classes
+//
 
+bool gameObjectKnife::canUseItemOnTarget(gameObject * object)
+{
+    // Knife can be used on Gem and Lock
+    return ((object->GetObjectType() == objectTypeGem) || (object->GetObjectType() == objectTypeLock));
+
+}
+//bool gameObjectChest::canUseItemOnTarget(gameObject * object) { return false; }
+//bool gameObjectLock::canUseItemOnTarget(gameObject * object) { return false; }
+bool gameObjectCrystalOrb::canUseItemOnTarget(gameObject * object)
+{
+    // Orb can be used on OrbHole
+    return (object->GetObjectType() == objectTypeOrbHole);
+}
+bool gameObjectFlower::canUseItemOnTarget(gameObject * object)
+{
+    // Flower can be used on Teapot
+    return (object->GetObjectType() == objectTypeTeaPot);
+} 
+//bool gameObjectTeaPot::canUseItemOnTarget(gameObject * object) { return false; }
+bool gameObjectElixer::canUseItemOnTarget(gameObject * object)
+{
+    // Elixer can be used on Starfish
+    return (object->GetObjectType() == objectTypeElixer);
+}
+//bool gameObjectStarFish::canUseItemOnTarget(gameObject * object) { return false; }
+//bool gameObjectSquirtle::canUseItemOnTarget(gameObject * object) { return false; }
+//bool gameObjectStarmie::canUseItemOnTarget(gameObject * object) { return false; }
+//bool gameObjectGem::canUseItemOnTarget(gameObject * object) { return false; }
+bool gameObjectGemKey::canUseItemOnTarget(gameObject * object)
+{
+    // GemKey can be used on MagicDoor
+    gameObjectOrbHole * orbHole = (gameObjectOrbHole *)Controller->GetGameSpaceByType(gameSpaceLocationCave)->GetObject(objectTypeOrbHole);
+    if (!orbHole->GetHasOrb())
+    {
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "\n\nThe door doesn't seem to accept the key...\n\n");
+        return false;
+    }
+    return (object->GetObjectType() == objectTypeMagicDoor);
+}
+//bool gameObjectOrbHole::canUseItemOnTarget(gameObject * object) { return false; }
+bool gameObjectStick::canUseItemOnTarget(gameObject * object)
+{
+    // Stick can be used on Lantern
+    return (object->GetObjectType() == objectTypeLantern);
+}
+//bool gameObjectLantern::canUseItemOnTarget(gameObject * object) { return false; }
+//bool gameObjectMagicDoor::canUseItemOnTarget(gameObject * object) { return false; }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void ...::useItem(gameObject * target)
+//
+// Logic for object to object interactions.
+//
+
+void gameObjectFlower::useItem(gameObject * object)
+{
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nThe flowers slowly boil down into a sparkling thick liquid with a sweet smell.\n\n");
+    Controller->GetPlayer()->CreateObjectInBackpack(objectTypeElixer);
+    // Delete this object somehow...
+    Controller->GetPlayer()->DestroyObjectInBackpack (this);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// std::string ...::GetText()
+//
+// Return the text describing an object for derived classes
+//
 
 std::string gameObjectKnife::GetText() { return "A rusty old knife with an intricate wooden handle.\n\nEngraved on the handle are the letters \"JP\"\n\n"; }
 std::string gameObjectChest::GetText()
@@ -117,6 +190,13 @@ std::string gameObjectMagicDoor::GetText()
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// bool ...::canTake()
+//
+// Return true if an object can be placed in the backpack for derived classes
+//
+
 bool gameObjectStick::canTake() { return true; }
 bool gameObjectFlower::canTake() { return true; }
 bool gameObjectCrystalOrb::canTake() { return true; }
@@ -126,16 +206,24 @@ bool gameObjectElixer::canTake() { return true; }
 bool gameObjectLantern::canTake() { return true; }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// bool ...::canTalk ()
+// std::string ...::talk()
+//
+// Return true if an object can talk and the text string for derived classes
+//
+
 bool gameObjectStarFish::canTalk () { return true; }
 std::string gameObjectStarFish::talk()
 {
-    return "Not yet";
+    return "\nBLURRB... BLURRBBB....\n\nI am very sick.\n\nSomeone is poisoning the creatures of this land.\n\nHelp us... BLURBB.. BLURB..\n\n";
 }
 
 bool gameObjectStarmie::canTalk () { return true; }
 std::string gameObjectStarmie::talk()
 {
-    return "Not yet";
+    return "Thank you so much!\n\nI have been transformed into a stronger creature!";
 }
 
 bool gameObjectSquirtle::canTalk () { return true; }
@@ -170,4 +258,22 @@ std::string gameObjectSquirtle::talk()
             return "Thanks again!";
         }
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void gameObjectOrbHole::SetOrb
+// bool gameObjectOrbHole::GetHasOrb()
+//
+// Logic for controlling the Orb holder int the cave.
+//
+
+void gameObjectOrbHole::SetOrb()
+{
+    hasOrb = true;
+}
+
+bool gameObjectOrbHole::GetHasOrb()
+{
+    return hasOrb;
 }

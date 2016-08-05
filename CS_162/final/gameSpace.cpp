@@ -212,100 +212,7 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, gameSpaceController
     int objectIndex=0;
     for (objectIndex = 0; objectIndex < NUM_OBJECTS_IN_SPACE; objectIndex++)
     {
-        gameObject * newObject = __null;
-        switch (spaceDescription.objectsInSpace[objectIndex])
-        {
-            case objectTypeKnife:
-            {
-                newObject = new gameObjectKnife(Controller);
-            }
-            break;
-            case objectTypeChest:
-            {
-                newObject = new gameObjectChest(Controller);
-            }
-            break;
-            case objectTypeLock:
-            {
-                newObject = new gameObjectLock(Controller);
-            }
-            break;
-            case objectTypeCrystalOrb:
-            {
-                newObject = new gameObjectCrystalOrb(Controller);
-            }
-            break;
-            case objectTypeFlower:
-            {
-                newObject = new gameObjectFlower(Controller);
-            }
-            break;
-            case objectTypeTeaPot:
-            {
-                newObject = new gameObjectTeaPot(Controller);
-            }
-            break;
-            case objectTypeElixer:
-            {
-                newObject = new gameObjectElixer(Controller);
-            }
-            break;
-            case objectTypeStarFish:
-            {
-                newObject = new gameObjectStarFish(Controller);
-            }
-            break;
-            case objectTypeSquirtle:
-            {
-                newObject = new gameObjectSquirtle(Controller);
-            }
-            break;
-            case objectTypeStarmie:
-            {
-                newObject = new gameObjectStarmie(Controller);
-            }
-            break;
-            case objectTypeGem:
-            {
-                newObject = new gameObjectGem(Controller);
-            }
-            break;
-            case objectTypeGemKey:
-            {
-                newObject = new gameObjectGemKey(Controller);
-            }
-            break;
-            case objectTypeOrbHole:
-            {
-                newObject = new gameObjectOrbHole(Controller);
-            }
-            break;
-            case objectTypeStick:
-            {
-                newObject = new gameObjectStick(Controller);
-            }
-            break;
-            case objectTypeLantern:
-            {
-                newObject = new gameObjectLantern(Controller);
-            }
-            break;
-            case objectTypeMagicDoor:
-            {
-                newObject = new gameObjectMagicDoor(Controller);
-            }
-            break;
-            default:
-            {
-                // Ignore invalid object.
-            }
-            break;
-        }
-        if (newObject != __null)
-        {
-            DebugConsole::debug_print (1, false, COLOR_WHITE, "Creaing Object %s\n", newObject->GetName().c_str());
-            objects.push_back (newObject);
-        }
+        CreateObject(spaceDescription.objectsInSpace[objectIndex]);
     }   
 }
 
@@ -348,6 +255,19 @@ bool gameSpace::ContainsObject (objectTypes type)
     return false;    
 }
 
+gameObject * gameSpace::GetObject (objectTypes type)
+{
+    int currentObjectIndex = 0;
+    while (currentObjectIndex < objects.size())
+    {
+        if (objects[currentObjectIndex]->GetObjectType() == type)
+        {
+            return objects[currentObjectIndex];
+        }
+    }
+    return __null;
+}
+
 void gameSpace::RemoveObject (gameObject * object)
 {
     int currentObjectIndex = 0;
@@ -360,4 +280,29 @@ void gameSpace::RemoveObject (gameObject * object)
         }
     }
     
+}
+
+void gameSpace::DestroyObject (gameObject * object)
+{
+    int currentObjectIndex = 0;
+    while (currentObjectIndex < objects.size())
+    {
+        if (objects[currentObjectIndex] == object)
+        {
+            delete objects[currentObjectIndex];
+            objects.erase (objects.begin() + currentObjectIndex);
+            return;
+        }
+    }
+    
+}
+
+void gameSpace::CreateObject (objectTypes type)
+{
+    gameObject * newObject = gameObject::CreateObjectFromType(type, Controller);
+    if (newObject != __null)
+    {
+        DebugConsole::debug_print (1, false, COLOR_WHITE, "Creaing Object %s\n", newObject->GetName().c_str());
+        objects.push_back (newObject);
+    }
 }

@@ -55,9 +55,12 @@ public:
     ~gameSpace();
 
     bool ContainsObject (objectTypes type);
+    gameObject * GetObject (objectTypes type);
     const gameSpaceDescription GetSpaceDescription();
     std::vector<gameObject *> GetObjects();
+    void CreateObject (objectTypes type);
     void RemoveObject (gameObject * object);
+    void DestroyObject (gameObject * object);
     virtual bool CanMoveTo (gamePlayer * player);
     virtual std::string GetSpaceText () = 0;
 };

@@ -64,6 +64,11 @@ bool gamePlayer::GameWon()
     return gameWon;
 }
 
+void gamePlayer::SetWin()
+{
+    gameWon = true;
+}
+
 bool gamePlayer::MoveObjectToBackpack (gameObject * object)
 {
     for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
@@ -118,6 +123,7 @@ void gamePlayer::SortAndRecycleItems()
     int numItemsInBackpack = 0;
     for (int currentObject = 0; currentObject < NUM_ITEMS_INVENTORY; currentObject++)
     {
+
         if (backpackItems[currentObject] != __null)
         {
             numItemsInBackpack++;
@@ -125,6 +131,18 @@ void gamePlayer::SortAndRecycleItems()
     }
     for (int currentObject = 0; currentObject < numItemsInBackpack; currentObject++)
     {
-        
+        if (backpackItems[currentObject] == __null)
+        {
+            for (int nextObject = currentObject; nextObject < NUM_ITEMS_INVENTORY; nextObject++)
+            {
+                if (backpackItems[nextObject] != __null)
+                {
+                    gameObject * swapObject = backpackItems[nextObject];
+                    backpackItems[nextObject] = backpackItems[currentObject];
+                    backpackItems[currentObject] = swapObject;
+                    break;
+                }                   
+            }
+        }        
     }
 }

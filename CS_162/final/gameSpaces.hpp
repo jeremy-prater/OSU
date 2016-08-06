@@ -55,6 +55,7 @@ public:
     ~gameSpaceCabinBasement() { }
 
     std::string GetSpaceText();
+    bool CanMoveTo(gamePlayer * player);
 };
 
 class gameSpaceTrail3 : public gameSpace
@@ -73,6 +74,7 @@ public:
     ~gameSpaceCave() { }
 
     std::string GetSpaceText();
+    bool CanMoveTo(gamePlayer * player);
 };
 
 class gameSpaceCaveRoom : public gameSpace
@@ -82,6 +84,7 @@ public:
     ~gameSpaceCaveRoom() { }
 
     std::string GetSpaceText();
+    bool CanMoveTo(gamePlayer * player);
 };
 
 class gameSpaceTrail4 : public gameSpace

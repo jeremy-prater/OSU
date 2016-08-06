@@ -14,6 +14,7 @@ public:
     std::string GetText();
     bool canTake();
     bool canUseItemOnTarget(gameObject * object);
+    void useItem(gameObject * object);
 };
     
 class gameObjectChest : public gameObject
@@ -26,6 +27,7 @@ public:
     ~gameObjectChest() { }
 
     void OpenChest();
+    bool GetChestOpen();
     objectTypes GetObjectType();
     std::string GetText();
     std::string GetName();
@@ -33,10 +35,14 @@ public:
 
 class gameObjectLock : public gameObject
 {
+private:
+    bool lockBroken;
 public:
-    gameObjectLock(gameSpaceController * controller) : gameObject(controller) { }
+    gameObjectLock(gameSpaceController * controller) : gameObject(controller) { lockBroken = false; }
     ~gameObjectLock() { }
 
+    void BreakLock();
+    bool GetLockBroken();
     objectTypes GetObjectType();
     std::string GetText();
     std::string GetName();
@@ -53,6 +59,7 @@ public:
     std::string GetText();
     bool canTake();
     bool canUseItemOnTarget(gameObject * object);
+    void useItem (gameObject * object);
 };
 
 class gameObjectFlower : public gameObject
@@ -91,6 +98,7 @@ public:
     std::string GetText();
     bool canTake();
     bool canUseItemOnTarget(gameObject * object);
+    void useItem(gameObject * object);
 };
 
 class gameObjectStarFish : public gameObject
@@ -154,6 +162,7 @@ public:
     std::string GetName();
     std::string GetText();
     bool canUseItemOnTarget(gameObject * object);
+    void useItem (gameObject * object);
 };
 
 class gameObjectOrbHole : public gameObject
@@ -161,14 +170,14 @@ class gameObjectOrbHole : public gameObject
 private:
     bool hasOrb;
 public:
-    gameObjectOrbHole(gameSpaceController * controller) : gameObject(controller) { hasOrb=false; }
+    gameObjectOrbHole(gameSpaceController * controller) : gameObject(controller) { hasOrb = false; }
     ~gameObjectOrbHole() { }
 
-    void SetOrb();
-    bool GetHasOrb();
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
+    void SetOrb();
+    bool HasOrb();    
 };
 
 class gameObjectStick : public gameObject
@@ -182,6 +191,7 @@ public:
     std::string GetText();
     bool canTake();
     bool canUseItemOnTarget(gameObject * object);
+    void useItem(gameObject * object);
 };
 
 class gameObjectLantern : public gameObject
@@ -189,14 +199,16 @@ class gameObjectLantern : public gameObject
 private:
     bool hasStick;
 public:
-    gameObjectLantern(gameSpaceController * controller) : gameObject(controller) { hasStick=false; }
+    gameObjectLantern(gameSpaceController * controller) : gameObject(controller) { hasStick = false; }
     ~gameObjectLantern() { }
 
-    void SetStick();
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
     bool canTake();
+
+    void SetStick();
+    bool HasStick();
 };
 
 class gameObjectMagicDoor : public gameObject
@@ -204,12 +216,14 @@ class gameObjectMagicDoor : public gameObject
 private:
     bool doorKey;
 public:
-    gameObjectMagicDoor(gameSpaceController * controller) : gameObject(controller) { doorKey=false; }
+    gameObjectMagicDoor(gameSpaceController * controller) : gameObject(controller) { doorKey = false; }
     ~gameObjectMagicDoor() { }
 
     objectTypes GetObjectType();
     std::string GetName();
     std::string GetText();
+    void SetKey();
+    bool HasKey();
 };
 
 #endif // GAME_OBJECTS_HPP

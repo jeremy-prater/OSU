@@ -30,6 +30,7 @@ public:
     gameObject ** GetBackpack();
     gameSpace * GetCurrentSpace();
 
+    void SetWin();
     bool GameWon();
 
     bool CanMoveToSpace (gameSpaceLocation testLocation);

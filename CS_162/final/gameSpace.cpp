@@ -30,13 +30,14 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     // Connects to:
     //         Forest
     //         River
+    //         Trail 4
     //
     // Contains Objects:
     //         None
     //
 
     {"Nice smooth trail", gameSpaceLocationTrail1,
-    {gameSpaceLocationForest, gameSpaceLocationRiver, gameSpaceLocationInvalid, gameSpaceLocationInvalid},
+    {gameSpaceLocationForest, gameSpaceLocationRiver, gameSpaceLocationTrail4, gameSpaceLocationInvalid},
     {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +136,7 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
 
     {"An abandonded log cabin.", gameSpaceLocationCabin,
     {gameSpaceLocationTrail2, gameSpaceLocationPond, gameSpaceLocationCabinBasement, gameSpaceLocationInvalid},
-    {objectTypeTeaPot, objectTypeLock, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
+    {objectTypeTeaPot, objectTypeLock, objectTypeKnife, objectTypeInvalid, objectTypeInvalid}},
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -251,6 +252,7 @@ bool gameSpace::ContainsObject (objectTypes type)
         {
             return true;
         }
+        currentObjectIndex++;
     }
     return false;    
 }
@@ -264,6 +266,7 @@ gameObject * gameSpace::GetObject (objectTypes type)
         {
             return objects[currentObjectIndex];
         }
+        currentObjectIndex++;
     }
     return __null;
 }
@@ -278,6 +281,7 @@ void gameSpace::RemoveObject (gameObject * object)
             objects.erase (objects.begin() + currentObjectIndex);
             return;
         }
+        currentObjectIndex++;
     }
     
 }
@@ -293,6 +297,7 @@ void gameSpace::DestroyObject (gameObject * object)
             objects.erase (objects.begin() + currentObjectIndex);
             return;
         }
+        currentObjectIndex++;        
     }
     
 }

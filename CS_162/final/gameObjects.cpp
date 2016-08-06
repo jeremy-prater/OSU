@@ -61,7 +61,7 @@ std::string gameObjectMagicDoor::GetName() { return "MagicDoor"; }
 bool gameObjectKnife::canUseItemOnTarget(gameObject * object)
 {
     // Knife can be used on Gem and Lock
-    return ((object->GetObjectType() == objectTypeGem) || (object->GetObjectType() == objectTypeLock));
+    return ((object->GetObjectType() == objectTypeGem) || (object->GetObjectType() == objectTypeLock) || (object->GetObjectType() == objectTypeChest));
 
 }
 //bool gameObjectChest::canUseItemOnTarget(gameObject * object) { return false; }
@@ -80,7 +80,7 @@ bool gameObjectFlower::canUseItemOnTarget(gameObject * object)
 bool gameObjectElixer::canUseItemOnTarget(gameObject * object)
 {
     // Elixer can be used on Starfish
-    return (object->GetObjectType() == objectTypeElixer);
+    return (object->GetObjectType() == objectTypeStarFish);
 }
 //bool gameObjectStarFish::canUseItemOnTarget(gameObject * object) { return false; }
 //bool gameObjectSquirtle::canUseItemOnTarget(gameObject * object) { return false; }
@@ -90,7 +90,7 @@ bool gameObjectGemKey::canUseItemOnTarget(gameObject * object)
 {
     // GemKey can be used on MagicDoor
     gameObjectOrbHole * orbHole = (gameObjectOrbHole *)Controller->GetGameSpaceByType(gameSpaceLocationCave)->GetObject(objectTypeOrbHole);
-    if (!orbHole->GetHasOrb())
+    if (!orbHole->HasOrb())
     {
         DebugConsole::debug_print (0, true, COLOR_YELLOW, "\n\nThe door doesn't seem to accept the key...\n\n");
         return false;
@@ -115,10 +115,67 @@ bool gameObjectStick::canUseItemOnTarget(gameObject * object)
 
 void gameObjectFlower::useItem(gameObject * object)
 {
+    // This can only be called if object->GetType() == objectTypeTeapot
     DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nThe flowers slowly boil down into a sparkling thick liquid with a sweet smell.\n\n");
     Controller->GetPlayer()->CreateObjectInBackpack(objectTypeElixer);
     // Delete this object somehow...
     Controller->GetPlayer()->DestroyObjectInBackpack (this);
+}
+
+void gameObjectKnife::useItem(gameObject * object)
+{
+    if (object->GetObjectType() == objectTypeLock)
+    {
+        DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou jam the knife into the lock tumbler and the springs snap.\nThe lock is free to rotate.\nYou remove the lock and set it aside.\nYou remove the latch to the basement door.\n\n");
+        gameObjectLock * lock = (gameObjectLock *)object;
+        lock->BreakLock();
+    }
+    if (object->GetObjectType() == objectTypeChest)
+    {
+        DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou jam the knife between the lid of the chest near the latch and push.\nThe rusty metal snaps easily.\nYou open the chest and see a crystal orb.\n\n");
+        Controller->GetCurrentSpace()->CreateObject(objectTypeCrystalOrb);
+        gameObjectChest * chest = (gameObjectChest *) object;
+        chest->OpenChest();
+    }
+    if (object->GetObjectType() == objectTypeGem)
+    {
+        DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou use the knife to scrape some of the Gem away and it slides apart.\nInside is a hexagonal stone that looks like a key.\n\n");
+        Controller->GetPlayer()->DestroyObjectInBackpack(object);
+        Controller->GetPlayer()->CreateObjectInBackpack(objectTypeGemKey);
+    }
+}
+
+void gameObjectElixer::useItem(gameObject * object)
+{
+    // This can be only used on Starfish
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou pour the elixer on the star fish...\n\nIt starts changing into something else.\n\n");
+    Controller->GetCurrentSpace()->DestroyObject(object);
+    Controller->GetCurrentSpace()->CreateObject(objectTypeStarmie);
+    Controller->GetPlayer()->DestroyObjectInBackpack(this);
+}
+
+void gameObjectStick::useItem(gameObject * object)
+{
+   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the stick inside of the lantern and light it on fire.\nThe latern glows brightly.\n\n");
+   gameObjectLantern * lantern = (gameObjectLantern *) object;
+   lantern->SetStick();
+   Controller->GetPlayer()->DestroyObjectInBackpack(this);
+}
+
+void gameObjectCrystalOrb::useItem (gameObject * object)
+{
+   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the orb near the orb holder.\nThe orb is slowly drawn in by some type of force.\nThe orb fits fully inside of the orb holder and the symbols around the holder begin to glow.\n\n");
+   gameObjectOrbHole * orbHole = (gameObjectOrbHole *) object;
+   orbHole->SetOrb();
+   Controller->GetPlayer()->DestroyObjectInBackpack(this);
+}
+
+void gameObjectGemKey::useItem (gameObject * object)
+{
+   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the key into the door.\nThe door hisses with air releasing as it unseals.\n\n");
+   gameObjectMagicDoor * magicDoor = (gameObjectMagicDoor *) object;
+   magicDoor->SetKey();
+   Controller->GetPlayer()->DestroyObjectInBackpack(this);
 }
 
 
@@ -143,14 +200,31 @@ std::string gameObjectChest::GetText()
 }
 std::string gameObjectLock::GetText()
 {
-    return "An old lock.\n\nThe tumbler looks intact.\n\n";
+    if (lockBroken)
+    {
+        return "A broken old lock.\n\nThe tumbler is broken and can spin freely.\n\n";
+    }
+    else
+    {
+        return "An old lock.\n\nThe tumbler looks intact.\n\n";
+    }
 }
 std::string gameObjectCrystalOrb::GetText() { return "A small glowing crystal orb.\n\nIt appears to emit a type of blue light.\n\n"; }
 std::string gameObjectFlower::GetText() { return "A group of small orange flowers with many pedals.\n\n"; }
 std::string gameObjectTeaPot::GetText() { return "A Teapot\n\n"; }
 std::string gameObjectElixer::GetText() { return "The elixer brewed from orange flowers.\n\n"; }
 std::string gameObjectStarFish::GetText() { return "A Starfish covered in some type of goo.\n\nIt looks sick.\n\n"; }
-std::string gameObjectSquirtle::GetText() { return "A Squirtle (some type of turtle).\n\nIt appears to be sad.\n\n"; }
+std::string gameObjectSquirtle::GetText()
+{
+    if (Controller->GetGameSpaceByType(gameSpaceLocationRiver)->ContainsObject(objectTypeStarmie) == true)
+    {
+        return "A Squirtle (some type of turtle).\n\nIt appears to be happy.\n\n";
+    }
+    else
+    {
+        return "A Squirtle (some type of turtle).\n\nIt appears to be sad.\n\n";
+    }
+}
 std::string gameObjectStarmie::GetText() { return "A happy Starmie.\n\nIt is swimming back and forth.\n\n"; }
 std::string gameObjectGem::GetText() { return "A glowing green gem.\n\nIt appears to slide apart and something is inside.\n\n"; }
 std::string gameObjectGemKey::GetText() { return "A key from the green gem.\n\n"; }
@@ -249,9 +323,8 @@ std::string gameObjectSquirtle::talk()
         {
             // Give reward.
             rewarded = true;
-            return "\t\tMy friend is healed! Thank you so much!\n\tHere is a specal gem that I have been saving. I think it came from a nearby cave.";
-            // Add gem to inventory or space...?
-        }
+            Controller->GetPlayer()->CreateObjectInBackpack(objectTypeGem);
+            return "\t\tMy friend is healed! Thank you so much!\n\tHere is a specal gem that I have been saving. I think it came from a nearby cave.";        }
         else
         {
             // Thanks
@@ -262,10 +335,10 @@ std::string gameObjectSquirtle::talk()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
-// void gameObjectOrbHole::SetOrb
-// bool gameObjectOrbHole::GetHasOrb()
+// void gameObjectOrbHole::SetOrb()
+// bool gameObjectOrbHole::HasOrb()
 //
-// Logic for controlling the Orb holder int the cave.
+// Logic for controlling the Orb holder in the cave.
 //
 
 void gameObjectOrbHole::SetOrb()
@@ -273,7 +346,78 @@ void gameObjectOrbHole::SetOrb()
     hasOrb = true;
 }
 
-bool gameObjectOrbHole::GetHasOrb()
+bool gameObjectOrbHole::HasOrb()
 {
     return hasOrb;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void gameObjectLock::BreakLock()
+// bool gameObjectLock::GetLockBroken()
+//
+// Logic for controlling the lock in the cabin.
+//
+
+void gameObjectLock::BreakLock()
+{
+    lockBroken = true;
+}
+
+bool gameObjectLock::GetLockBroken()
+{
+    return lockBroken;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void gameObjectLantern::SetStick()
+// bool gameObjectLantern::HasStick()
+//
+// Logic for controlling the stick and lantern.
+//
+
+void gameObjectLantern::SetStick()
+{
+    hasStick = true;
+}
+
+bool gameObjectLantern::HasStick()
+{
+    return hasStick;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void gameObjectMagicDoor::SetKey()
+// bool gameObjectMagicDoor::HasKey()
+//
+// Logic for controlling the MagicDoor and Key
+//
+
+void gameObjectMagicDoor::SetKey()
+{
+    doorKey = true;
+}
+bool gameObjectMagicDoor::HasKey()
+{
+    return doorKey;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// void gameObjectChest::OpenChest();
+// bool gameObjectChest::GetChestOpen();
+//
+// Logic for controlling the lockedchest
+//
+
+void gameObjectChest::OpenChest()
+{
+    chestOpened = true;
+}
+
+bool gameObjectChest::GetChestOpen()
+{
+    return chestOpened;
 }

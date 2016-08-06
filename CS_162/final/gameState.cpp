@@ -1,6 +1,7 @@
 #include "gameState.hpp"
 #include "gameSpaceController.hpp"
 #include "gamePlayer.hpp"
+#include "gameObject.hpp"
 #include <iostream>
 #include "lib_flip_display.hpp"
 
@@ -23,11 +24,6 @@ std::string gameState::PrintRound()
 {
     Player->SortAndRecycleItems();
     
-    if (DebugConsole::GetDebugLevel() == 0)
-    {
-        DebugConsole::screen_clear();
-    }
-
     DebugConsole::debug_print (0, false, COLOR_CYAN, "Moves left: ");
 
     if (MovesLeft <= 10)
@@ -74,7 +70,8 @@ std::string gameState::PrintRound()
     std::string moveList = "";
     for (int moveCount = 0; moveCount < NUM_CONNECTED_SPACES; moveCount++)
     {
-        if (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount] != gameSpaceLocationInvalid)
+        if ((Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount] != gameSpaceLocationInvalid))
+            //&& Controller->GetGameSpaceByType(Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->CanMoveTo(Player))
         {
             moveList += std::string("\t ") + std::to_string(moveCount + 1) + ": " + Controller->GetGameSpaceByType (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->GetSpaceDescription().spaceName;
         } 
@@ -104,6 +101,10 @@ std::string gameState::PrintRound()
     DebugConsole::debug_print (0, false, COLOR_WHITE, "\n\nEnter Command >");
     std::string command;
     std::cin >> command;
+    if (DebugConsole::GetDebugLevel() == 0)
+    {
+        DebugConsole::screen_clear();
+    }
     return command;
 }
 
@@ -130,6 +131,11 @@ void gameState::GameLoop()
                     if (Player->MoveToSpace (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveTo - 1]))
                     {
                         MovesLeft--;
+                        if (Player->GetCurrentSpace()->GetSpaceDescription().thisSpace == gameSpaceLocationCaveRoom)
+                        {
+                            // You win!
+                            Player->SetWin();
+                        }
                     }
                 }
             }
@@ -201,6 +207,10 @@ void gameState::InteractObject (gameObject * object, bool inPack)
         DebugConsole::debug_print (0, true, COLOR_WHITE, "\n\nEnter Command >");
         std::string command;
         std::cin >> command;
+        if (DebugConsole::GetDebugLevel() == 0)
+        {
+            DebugConsole::screen_clear();
+        }
         const char * commandPtr = command.c_str();
         switch (commandPtr[0])
         {

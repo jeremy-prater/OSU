@@ -1,4 +1,16 @@
+#include "classDecl.hpp"
 #include "gameSpaces.hpp"
+#include "gameObjects.hpp"
+#include "gamePlayer.hpp"
+#include "gameSpaceController.hpp"
+#include "lib_flip_display.hpp"
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// std::string ...::GetSpaceText()
+//
+// Return the text for a space.
+//
 
 std::string gameSpaceForest::GetSpaceText()
 {
@@ -51,4 +63,56 @@ std::string gameSpaceTrail4::GetSpaceText()
 std::string gameSpacePond::GetSpaceText()
 {
     return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+// bool ...::CanMoveTo(gamePlayer * player)
+//
+// Return true if the player can move in to a space.
+//
+
+bool gameSpaceCabinBasement::CanMoveTo(gamePlayer * player)
+{
+    gameObjectLock * lock = (gameObjectLock*) Controller->GetGameSpaceByType(gameSpaceLocationCabin)->GetObject(objectTypeLock);
+    if (!lock->GetLockBroken())
+    {
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "\nThe basement door is locked.\n\n");
+    }
+    return lock->GetLockBroken();
+}
+
+bool gameSpaceCave::CanMoveTo(gamePlayer * player)
+{
+    gameObjectLantern * lantern = __null;
+    for (int objectIndex = 0; objectIndex < NUM_ITEMS_INVENTORY; objectIndex++)
+    {
+        if ((player->GetBackpack()[objectIndex] != __null) && (player->GetBackpack()[objectIndex]->GetObjectType() == objectTypeLantern))
+        {
+            lantern = (gameObjectLantern*)player->GetBackpack()[objectIndex];
+        }    
+    }
+    if (lantern == __null)
+    {
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "It is too dark to to in the cave.\nYou must find a light.\n\n");
+        return false;
+    }
+    if (!lantern->HasStick())
+    {
+        DebugConsole::debug_print (0, true, COLOR_YELLOW, "It is too dark to to in the cave.\nYou must find something to burn in the lantern.\n\n");
+    }
+    return lantern->HasStick();
+}
+
+bool gameSpaceCaveRoom::CanMoveTo(gamePlayer * player)
+{
+    // The player must be in the Cave for this to be called
+    gameSpaceCave * cave = (gameSpaceCave*)player->GetCurrentSpace();
+    gameObjectOrbHole * orbHole = (gameObjectOrbHole *) cave->GetObject(objectTypeOrbHole);
+    gameObjectMagicDoor * magicDoor = (gameObjectMagicDoor *) cave->GetObject(objectTypeMagicDoor);
+    if (!((orbHole->HasOrb()) && (magicDoor->HasKey())))
+    {
+       DebugConsole::debug_print (0, true, COLOR_YELLOW, "The door is sealed shut.\n\n");
+    }
+    return ((orbHole->HasOrb()) && (magicDoor->HasKey()));
 }

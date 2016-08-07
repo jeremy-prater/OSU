@@ -3,6 +3,22 @@
 
 #include <string>
 
+/////////////////////////////////////////////////
+//
+// class fileLoader
+//
+// A class for loading CSV files
+//
+// This class can preform the following functions
+//
+//    - Linear Search
+//    - Bubble sort
+//    - Binary Search
+//    - Print Data
+//    - Save Data
+//    - Get the raw buffer pointer
+//
+
 class fileLoader
 {
 private:

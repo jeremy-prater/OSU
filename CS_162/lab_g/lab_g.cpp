@@ -11,8 +11,7 @@
 #include "lib_flip_display.hpp"
 #include "lib_arg_parse.hpp"
 
-#include "stack.hpp"
-#include "queue.hpp"
+#include "fileLoader.hpp"
 
 using namespace std;
 
@@ -50,6 +49,41 @@ int main(int argc, char * argv[])
 
     DebugConsole::debug_print (0, true, COLOR_GREEN, "CS_162 lab_g\n\n");
 
+    fileLoader loader("rand_integer.txt");
+    fileLoader loader0("rand_integer_0.txt");
+
+    int searchValue;
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Linear search for values in rand_integer.txt\n\nEnter value to find: ");
+    cin >> searchValue;
+    loader.LinearSearch(searchValue);
+
+    loader.BubbleSort();
+
+    loader.SaveData("rand_integer_sorted.txt");
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Binary search for values in rand_integer_sorted.txt\n\nFinding 0.\n\n");    
+    searchValue = 0;
+    loader.BinarySearch(searchValue);
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Binary search for values in rand_integer_sorted.txt\n\nEnter value to find: ");
+    cin >> searchValue;
+    loader.BinarySearch(searchValue);
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Linear search for values in rand_integer_0.txt\n\nEnter value to find: ");
+    cin >> searchValue;
+    loader0.LinearSearch(searchValue);
+
+    loader0.BubbleSort();
+
+    loader0.SaveData("rand_integer_0_sorted.txt");
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Binary search for values in rand_integer_0_sorted.txt\n\nFinding 0.\n\n");    
+    searchValue = 0;
+    loader0.BinarySearch(searchValue);
+
+    DebugConsole::debug_print (0, false, COLOR_WHITE, "Binary search for values in rand_integer_0_sorted.txt\n\nEnter value to find: ");
+    cin >> searchValue;
+    loader0.BinarySearch(searchValue);
     // Exit and return success.
     return 0;
 }

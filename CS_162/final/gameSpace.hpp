@@ -16,7 +16,12 @@
 #define NUM_CONNECTED_SPACES 4
 #define NUM_OBJECTS_IN_SPACE 5
 
-class gameSpace;
+///////////////////////////////////////////////////////////////////////////////
+//
+// enum gameSpaceLocation
+//
+// A list of all possible locations in the game
+//
 
 enum gameSpaceLocation
 {
@@ -39,6 +44,13 @@ enum gameSpaceLocation
     gameSpaceLocation_NumLocations
 };
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// struct gameSpaceDescription
+//
+// A struture defining the meta-data that describes a game location
+//
+
 struct gameSpaceDescription
 {
     std::string spaceName;
@@ -46,6 +58,13 @@ struct gameSpaceDescription
     gameSpaceLocation connectedSpaces[NUM_CONNECTED_SPACES];
     objectTypes objectsInSpace[NUM_OBJECTS_IN_SPACE];
 };
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameSpace
+//
+// The abstract base class for all locations in the game
+//
 
 class gameSpace
 {

@@ -12,6 +12,13 @@
 
 #define NUM_ITEMS_INVENTORY 5
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gamePlayer
+//
+// The class for the gamePlayer
+//
+
 class gamePlayer
 {
 private:

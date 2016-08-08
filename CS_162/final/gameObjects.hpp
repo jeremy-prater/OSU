@@ -9,6 +9,14 @@
 
 #include "gameObject.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameObject...
+//
+// The derived classes for all objects in the game
+// based off of gameObject with overloaded virtual functions
+//
+
 class gameObjectKnife : public gameObject
 {
 public:

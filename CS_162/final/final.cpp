@@ -51,10 +51,13 @@ int main(int argc, char * argv[])
       DebugConsole::SetDebugLevel (1);
     }
 
+    // Create the game state object
     gameState * state = new gameState();
 
+    // Start the game
     state->GameLoop();
 
+    // Clean up any left over objects
     delete state;
 
     // Exit and return success.

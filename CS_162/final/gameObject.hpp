@@ -11,6 +11,13 @@
 #include "classDecl.hpp"
 #include "gameObject.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// enum objectTypes
+//
+// A list of all possible objects in the game
+//
+
 enum objectTypes
 {
     objectTypeInvalid = -1,
@@ -39,6 +46,13 @@ enum objectTypes
     objectType_NumObjects
 };
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameObject
+//
+// The abstract base class for all objects in the game
+//
+
 class gameObject
 {
 protected:
@@ -61,8 +75,6 @@ public:
     virtual bool canTake();
     virtual bool canTalk();
     virtual std::string talk();
-    virtual bool canRead();
-    virtual std::string read();
 };
 
 

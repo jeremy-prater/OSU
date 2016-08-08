@@ -9,6 +9,22 @@
 #include "gameObjects.hpp"
 #include "lib_flip_display.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpaceController::gameSpaceController()
+//
+// gameSpaceController constuctor
+//
+// Interates through the list of gameSpaces defined in gameSpace::gameSpaceDescriptions
+//  and constructs the gameSpace object which creates gameObjects inside of it.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 gameSpaceController::gameSpaceController()
 {
     int currentSpaceIndex = 0;
@@ -83,6 +99,21 @@ gameSpaceController::gameSpaceController()
     DebugConsole::debug_print(1, true, COLOR_CYAN, "Parsed %d gameSpaceDescriptions\n", currentSpaceIndex);    
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpaceController::~gameSpaceController()
+//
+// gameSpaceController destructor
+//
+// Destroys all gameSpaces
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 gameSpaceController::~gameSpaceController()
 {
     int currentSpaceIndex = 0;
@@ -92,6 +123,19 @@ gameSpaceController::~gameSpaceController()
         delete gameSpaces[currentSpaceIndex++];
     }    
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpace * gameSpaceController::GetGameSpaceByType(gameSpaceLocation location)
+//
+// Get a game space object by location
+//
+// Parameters:
+//        gameSpaceLocation location
+//
+// Return:
+//        gameSpace * - instance of the gameSpace, or null if it is not found.
+//
 
 gameSpace * gameSpaceController::GetGameSpaceByType(gameSpaceLocation location)
 {
@@ -106,19 +150,71 @@ gameSpace * gameSpaceController::GetGameSpaceByType(gameSpaceLocation location)
     return __null;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpace * gameSpaceController::GetCurrentSpace()
+//
+// Returns the current space that the player has informed it is on.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        gameSpace * - The last reported position of the player
+//
+
 gameSpace * gameSpaceController::GetCurrentSpace()
 {
     return currentSpace;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void  gameSpaceController::SetCurrentSpace(gameSpace * space)
+//
+// Called by the player to update it's current gameSpace
+//
+// Parameters:
+//        gameSpace * space - current player location
+//
+// Return:
+//        None
+//
+
 void  gameSpaceController::SetCurrentSpace(gameSpace * space)
 {
     currentSpace = space;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameSpaceController::SetPlayer (gamePlayer * player)
+//
+// Called by the player to pair a gameSpaceController to a player instance
+//
+// Parameters:
+//        gamePlayer * player - instance of a gamePlayer
+//
+// Return:
+//        None
+//
+
 void gameSpaceController::SetPlayer (gamePlayer * player)
 {
     Player = player;
 }
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameSpaceController::GetPlayer ()
+//
+// Called by gameSpaces and gameObjects to get information about the player
+//
+// Parameters:
+//        None
+//
+// Return:
+//        gamePlayer * - the current player
+//
 
 gamePlayer * gameSpaceController::GetPlayer()
 {

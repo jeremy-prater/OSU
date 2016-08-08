@@ -43,19 +43,19 @@ objectTypes gameObjectMagicDoor::GetObjectType() { return objectTypeMagicDoor; }
 std::string gameObjectKnife::GetName() { return "Knife"; }
 std::string gameObjectChest::GetName() { return "Chest"; }
 std::string gameObjectLock::GetName() { return "Lock"; }
-std::string gameObjectCrystalOrb::GetName() { return "CrystalOrb"; }
-std::string gameObjectFlower::GetName() { return "Flower"; }
-std::string gameObjectTeaPot::GetName() { return "TeaPot"; }
+std::string gameObjectCrystalOrb::GetName() { return "Crystal Orb"; }
+std::string gameObjectFlower::GetName() { return "Flowers"; }
+std::string gameObjectTeaPot::GetName() { return "Teapot"; }
 std::string gameObjectElixer::GetName() { return "Elixer"; }
 std::string gameObjectStarFish::GetName() { return "StarFish"; }
 std::string gameObjectSquirtle::GetName() { return "Squirtle"; }
 std::string gameObjectStarmie::GetName() { return "Starmie"; }
 std::string gameObjectGem::GetName() { return "Gem"; }
 std::string gameObjectGemKey::GetName() { return "Gem Key"; }
-std::string gameObjectOrbHole::GetName() { return "OrbHole"; }
+std::string gameObjectOrbHole::GetName() { return "Orb Holder"; }
 std::string gameObjectStick::GetName() { return "Stick"; }
 std::string gameObjectLantern::GetName() { return "Lantern"; }
-std::string gameObjectMagicDoor::GetName() { return "MagicDoor"; }
+std::string gameObjectMagicDoor::GetName() { return "Magic Door"; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -70,8 +70,6 @@ bool gameObjectKnife::canUseItemOnTarget(gameObject * object)
     return ((object->GetObjectType() == objectTypeGem) || (object->GetObjectType() == objectTypeLock) || (object->GetObjectType() == objectTypeChest));
 
 }
-//bool gameObjectChest::canUseItemOnTarget(gameObject * object) { return false; }
-//bool gameObjectLock::canUseItemOnTarget(gameObject * object) { return false; }
 bool gameObjectCrystalOrb::canUseItemOnTarget(gameObject * object)
 {
     // Orb can be used on OrbHole
@@ -82,16 +80,11 @@ bool gameObjectFlower::canUseItemOnTarget(gameObject * object)
     // Flower can be used on Teapot
     return (object->GetObjectType() == objectTypeTeaPot);
 } 
-//bool gameObjectTeaPot::canUseItemOnTarget(gameObject * object) { return false; }
 bool gameObjectElixer::canUseItemOnTarget(gameObject * object)
 {
     // Elixer can be used on Starfish
     return (object->GetObjectType() == objectTypeStarFish);
 }
-//bool gameObjectStarFish::canUseItemOnTarget(gameObject * object) { return false; }
-//bool gameObjectSquirtle::canUseItemOnTarget(gameObject * object) { return false; }
-//bool gameObjectStarmie::canUseItemOnTarget(gameObject * object) { return false; }
-//bool gameObjectGem::canUseItemOnTarget(gameObject * object) { return false; }
 bool gameObjectGemKey::canUseItemOnTarget(gameObject * object)
 {
     // GemKey can be used on MagicDoor
@@ -103,14 +96,11 @@ bool gameObjectGemKey::canUseItemOnTarget(gameObject * object)
     }
     return (object->GetObjectType() == objectTypeMagicDoor);
 }
-//bool gameObjectOrbHole::canUseItemOnTarget(gameObject * object) { return false; }
 bool gameObjectStick::canUseItemOnTarget(gameObject * object)
 {
     // Stick can be used on Lantern
     return (object->GetObjectType() == objectTypeLantern);
 }
-//bool gameObjectLantern::canUseItemOnTarget(gameObject * object) { return false; }
-//bool gameObjectMagicDoor::canUseItemOnTarget(gameObject * object) { return false; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -162,26 +152,29 @@ void gameObjectElixer::useItem(gameObject * object)
 
 void gameObjectStick::useItem(gameObject * object)
 {
-   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the stick inside of the lantern and light it on fire.\nThe latern glows brightly.\n\n");
-   gameObjectLantern * lantern = (gameObjectLantern *) object;
-   lantern->SetStick();
-   Controller->GetPlayer()->DestroyObjectInBackpack(this);
+    // This can be only used on lantern
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the stick inside of the lantern and light it on fire.\nThe latern glows brightly.\n\n");
+    gameObjectLantern * lantern = (gameObjectLantern *) object;
+    lantern->SetStick();
+    Controller->GetPlayer()->DestroyObjectInBackpack(this);
 }
 
 void gameObjectCrystalOrb::useItem (gameObject * object)
 {
-   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the orb near the orb holder.\nThe orb is slowly drawn in by some type of force.\nThe orb fits fully inside of the orb holder and the symbols around the holder begin to glow.\n\n");
-   gameObjectOrbHole * orbHole = (gameObjectOrbHole *) object;
-   orbHole->SetOrb();
-   Controller->GetPlayer()->DestroyObjectInBackpack(this);
+    // This can be only used on Orb Holder
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the orb near the orb holder.\nThe orb is slowly drawn in by some type of force.\nThe orb fits fully inside of the orb holder and the symbols around the holder begin to glow.\n\n");
+    gameObjectOrbHole * orbHole = (gameObjectOrbHole *) object;
+    orbHole->SetOrb();
+    Controller->GetPlayer()->DestroyObjectInBackpack(this);
 }
 
 void gameObjectGemKey::useItem (gameObject * object)
 {
-   DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the key into the door.\nThe door hisses with air releasing as it unseals.\n\n");
-   gameObjectMagicDoor * magicDoor = (gameObjectMagicDoor *) object;
-   magicDoor->SetKey();
-   Controller->GetPlayer()->DestroyObjectInBackpack(this);
+    // This can be only used on the magic door
+    DebugConsole::debug_print (0, true, COLOR_GREEN, "\n\nYou put the key into the door.\nThe door hisses with air releasing as it unseals.\n\n");
+    gameObjectMagicDoor * magicDoor = (gameObjectMagicDoor *) object;
+    magicDoor->SetKey();
+    Controller->GetPlayer()->DestroyObjectInBackpack(this);
 }
 
 

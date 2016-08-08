@@ -205,6 +205,20 @@ struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
     {objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid, objectTypeInvalid}},
 };
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, gameSpaceController * controller)
+//
+// gameSpace constructor
+//
+// Parameters:
+//        const gameSpaceDescription * spaceDesc - the description of the location
+//        gameSpaceController * Controller - The gamespace controller
+//
+// Return:
+//        None
+//
+
 gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, gameSpaceController * controller)
 {
     DebugConsole::debug_print (1, false, COLOR_WHITE, "Creating gameSpace (%d) %s\n", spaceDesc->thisSpace, spaceDesc->spaceName.c_str());
@@ -222,6 +236,19 @@ gameSpace::gameSpace(const gameSpaceDescription * spaceDesc, gameSpaceController
     }   
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameSpace::~gameSpace()
+//
+// gameSpace destructor - Delete all objects in space (dynamic objects)
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 gameSpace::~gameSpace()
 {
     int currentObjectIndex = 0;
@@ -233,20 +260,75 @@ gameSpace::~gameSpace()
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// bool gameSpace::CanMoveTo(gamePlayer * player)
+//
+// Determine if a player can move into a space - the default is true
+// Derived classes will overload this function to create custom logic
+// i.e. you can only enter the cave if you have a lantern with a stick in it.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        bool - true if the player can move to that space
+//
+
 bool gameSpace::CanMoveTo(gamePlayer * player)
 {
     return true;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// const gameSpaceDescription gameSpace::GetSpaceDescription()
+//
+// Returns the description structure of the space.
+//
+// Parameters:
+//        None
+//
+// Return:
+//        const gameSpaceDescription - The description used when creating the space
+//
 
 const gameSpaceDescription gameSpace::GetSpaceDescription()
 {
     return spaceDescription;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// std::vector<gameObject *> gameSpace::GetObjects()
+//
+// Returns the array of objects in the space
+//
+// Parameters:
+//        None
+//
+// Return:
+//        std::vector<gameObject *> - Array of objects in space.
+//
+
 std::vector<gameObject *> gameSpace::GetObjects()
 {
     return objects;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// bool gameSpace::ContainsObject (objectTypes type)
+//
+// Returns true if an object exists in the space.
+// Objects are matched by type, not by pointer address
+//
+// Parameters:
+//        objectTypes type - Type of object to test for.
+//
+// Return:
+//        bool - true if that type of object exists in the space.
+//
 
 bool gameSpace::ContainsObject (objectTypes type)
 {
@@ -262,6 +344,20 @@ bool gameSpace::ContainsObject (objectTypes type)
     return false;    
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameObject * gameSpace::GetObject (objectTypes type)
+//
+// Returns the instance of an object by object type in a space.
+// Uses a linear search.
+//
+// Parameters:
+//        objectTypes type - Type of object to get.
+//
+// Return:
+//        gameObject * - Pointer to the object, or null if it does not exist in space.
+//
+
 gameObject * gameSpace::GetObject (objectTypes type)
 {
     int currentObjectIndex = 0;
@@ -275,6 +371,24 @@ gameObject * gameSpace::GetObject (objectTypes type)
     }
     return __null;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameSpace::RemoveObject (gameObject * object)
+//
+// Remove an object from a space by instance.
+// Uses a linear search.
+//
+//        !!!!!!!!!!!! THIS DOES NOT DELETE THE OBJECT !!!!!!!!!!!!
+//
+// This function is used to transfer objects to the player's backpack
+//
+// Parameters:
+//        gameObject * object - instance of object to remove from space.
+//
+// Return:
+//        None
+//
 
 void gameSpace::RemoveObject (gameObject * object)
 {
@@ -291,6 +405,20 @@ void gameSpace::RemoveObject (gameObject * object)
     
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameSpace::RemoveObject (gameObject * object)
+//
+// Delete an object from a space by instance.
+// Uses a linear search.
+//
+// Parameters:
+//        gameObject * object - instance of object to delete from space.
+//
+// Return:
+//        None
+//
+
 void gameSpace::DestroyObject (gameObject * object)
 {
     int currentObjectIndex = 0;
@@ -306,6 +434,19 @@ void gameSpace::DestroyObject (gameObject * object)
     }
     
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameSpace::CreateObject (objectTypes type)
+//
+// Create a new object in the space of type (type)
+//
+// Parameters:
+//        objectTypes type - Type of the new object to create.
+//
+// Return:
+//        None
+//
 
 void gameSpace::CreateObject (objectTypes type)
 {

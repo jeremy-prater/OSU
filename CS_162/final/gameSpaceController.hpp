@@ -9,6 +9,13 @@
 
 #include "gameSpace.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameSpaceController
+//
+// A class that is used as a data transport layer between gameState/gameObject/gamePlayer
+//
+
 class gameSpaceController
 {
 private:

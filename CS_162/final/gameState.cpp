@@ -197,10 +197,6 @@ void gameState::InteractObject (gameObject * object, bool inPack)
         {
             DebugConsole::debug_print (0, true, COLOR_WHITE, "g - Take to %s\n", object->GetName().c_str());
         }
-        if (object->canRead())
-        {
-            DebugConsole::debug_print (0, true, COLOR_WHITE, "r - Look at %s\n", object->GetName().c_str());
-        }
         DebugConsole::debug_print (0, true, COLOR_WHITE, "u - Use %s\n", object->GetName().c_str());
         if (!inPack)
         {

@@ -9,6 +9,25 @@
 #include "gameObjects.hpp"
 #include "lib_flip_display.hpp"
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Sequence of events to complete game.
+//
+// 1. Goto trail 4, get Flowers
+// 2. Goto trail 2, get stick
+// 3. Goto cabin, use flowers on teapot
+// 4. Take knife
+// 5. Use knife on lock
+// 6. Goto cabin basement, use knife on chest
+// 7. Take lantern and crystal orb
+// 8. Goto river, use Elixer on Starfish
+// 9. Goto pont, talk to Squirtle
+// 10. Use knife of gem
+// 11. Use stick on lantern
+// 11. Goto cave
+// 12. Use orb on orb holder, use key on gem.
+// 13. Goto cave room
+
 struct gameSpaceDescription gameSpace::gameSpaceDescriptions [] = {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////

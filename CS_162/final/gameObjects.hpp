@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameObjects.hpp
+*********************************************************************/
+
 #ifndef GAME_OBJECTS_HPP
 #define GAME_OBJECTS_HPP
 

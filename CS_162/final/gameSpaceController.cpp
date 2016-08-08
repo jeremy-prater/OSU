@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameSpaceController.cpp
+*********************************************************************/
+
 #include "gameSpaceController.hpp"
 #include "gameSpaces.hpp"
 #include "gameObjects.hpp"

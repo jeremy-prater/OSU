@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gamePlayer.cpp
+*********************************************************************/
+
 #include <string.h>
 #include "gamePlayer.hpp"
 #include "gameSpaceController.hpp"

@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameState.cpp
+*********************************************************************/
+
 #include "gameState.hpp"
 #include "gameSpaceController.hpp"
 #include "gamePlayer.hpp"

@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gamePlayer.hpp
+*********************************************************************/
+
 #ifndef GAME_PLAYER_HPP
 #define GAME_PLAYER_HPP
 

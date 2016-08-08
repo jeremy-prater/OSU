@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameState.hpp
+*********************************************************************/
+
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 

@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameObject.cpp
+*********************************************************************/
+
 #include "gameObject.hpp"
 #include "gameObjects.hpp"
 #include "lib_flip_display.hpp"

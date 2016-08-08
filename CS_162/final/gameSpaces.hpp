@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameSpaces.hpp
+*********************************************************************/
+
 #ifndef GAME_SPACES_HPP
 #define GAME_SPACES_HPP
 

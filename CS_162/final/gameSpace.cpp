@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameSpace.cpp
+*********************************************************************/
 
 #include <string.h>
 #include "gameSpace.hpp"

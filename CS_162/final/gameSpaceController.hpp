@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 1, 2016
+** Description:  gameSpaceController.hpp
+*********************************************************************/
+
 #ifndef GAME_SPACE_CONTROLLER_HPP
 #define GAME_SPACE_CONTROLLER_HPP
 

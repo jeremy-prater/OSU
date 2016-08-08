@@ -11,6 +11,21 @@
 #include <iostream>
 #include "lib_flip_display.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameState::gameState()
+//
+// gameState constructor
+//
+// Creates a new class for managing the state of the game and user input
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 gameState::gameState()
 {
     Controller = new gameSpaceController();
@@ -20,11 +35,40 @@ gameState::gameState()
     MovesLeft = 50;  
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameState::~gameState()
+//
+// gameState destructor
+//
+// Delete the gameController and gamePlayer
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 gameState::~gameState()
 {
     delete Controller;
     delete Player;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// gameState::PrintRound()
+//
+// Print out the current location/objects/player data
+//
+//
+// Parameters:
+//        None
+//
+// Return:
+//        std::string - input from user.
+//
 
 std::string gameState::PrintRound()
 {
@@ -78,6 +122,9 @@ std::string gameState::PrintRound()
     {
         if ((Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount] != gameSpaceLocationInvalid))
             //&& Controller->GetGameSpaceByType(Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->CanMoveTo(Player))
+            // This was to control which connected gameSpaces are visible to the player.
+            //but it created a zero-based index issue with game locations. A better solution was to add/delete values from the gameSpace metadata which defines the connected spaces.
+            // This was used to hide the CabinBasement until the lock is broken.
         {
             moveList += std::string("\t ") + std::to_string(moveCount + 1) + ": " + Controller->GetGameSpaceByType (Player->GetCurrentSpace()->GetSpaceDescription().connectedSpaces[moveCount])->GetSpaceDescription().spaceName;
         } 
@@ -113,6 +160,20 @@ std::string gameState::PrintRound()
     }
     return command;
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameState::GameLoop()
+//
+// Main logic processing for gameState. Process user input and determines win/lose
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void gameState::GameLoop()
 {
@@ -180,6 +241,21 @@ void gameState::GameLoop()
         }
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void gameState::InteractObject (gameObject * object, bool inPack)
+//
+// Print out the current information about the current object the user
+// is interacting with. Accept input from user and process.
+//
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void gameState::InteractObject (gameObject * object, bool inPack)
 {

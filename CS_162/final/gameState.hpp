@@ -11,6 +11,14 @@
 #include "gameSpace.hpp"
 #include "gameObject.hpp"
 
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameSpaceController
+//
+// Current state of the game. Controls user input and win/lose conditions.
+//
+
 class gameState
 {
 private:

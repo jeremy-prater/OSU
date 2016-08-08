@@ -9,6 +9,14 @@
 
 #include "gameSpace.hpp"
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// class gameSpace...
+//
+// The derived classes for all locaions in the game
+// based off of gameSpace with overloaded virtual functions
+//
+
 class gameSpaceForest : public gameSpace
 {
 public:

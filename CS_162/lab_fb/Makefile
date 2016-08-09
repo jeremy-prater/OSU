@@ -3,7 +3,7 @@
 # Lab Fb makefile
 
 sources_test = lib_arg_parse.cpp lib_flip_display.cpp lab_fb_test.cpp queue.cpp stack.cpp
-sources      = lib_arg_parse.cpp lib_flip_display.cpp lab_fb.cpp queue.cpp stack.cpp
+sources      = lib_arg_parse.cpp lib_flip_display.cpp lab_fb.cpp queue.cpp calculator.cpp stack.cpp
 
 all : lab_fb_test lab_fb
 

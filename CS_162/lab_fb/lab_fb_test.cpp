@@ -12,6 +12,7 @@
 #include "lib_arg_parse.hpp"
 
 #include "stack.hpp"
+#include "queue.hpp"
 
 using namespace std;
 

@@ -13,7 +13,7 @@ private:
     void add();
     void subtract();
     void multiply();
-    void subtract();
+    void divide();
 
 public:
     Calculator();
@@ -22,6 +22,6 @@ public:
     void PrintStack();
     void ProcessInput();
     void CalculatorLoop();
-}
+};
 
 #endif // CALCULATOR_HPP

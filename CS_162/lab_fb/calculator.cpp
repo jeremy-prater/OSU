@@ -23,7 +23,7 @@ void Calculator::add()
     }
     else
     {
-        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __FUNC__);
+        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __func__);
     }
 }
 
@@ -37,7 +37,7 @@ void Calculator::subtract()
     }
     else
     {
-        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __FUNC__);
+        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __func__);
     }
 }
 
@@ -51,7 +51,7 @@ void Calculator::multiply()
     }
     else
     {
-        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __FUNC__);
+        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __func__);
     }
 }
 
@@ -65,7 +65,7 @@ void Calculator::divide()
     }
     else
     {
-        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __FUNC__);
+        DebugConsole::debug_print (0, true, COLOR_RED, "Input Error. Insufficent input for %s", __func__);
     }
 }
 

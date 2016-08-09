@@ -71,7 +71,7 @@ void Calculator::divide()
 
 void Calculator::PrintStack()
 {
-    DebugConsole::debug_print (0, true, COLOR_CYAN, "Stack Depth: %d. Stack Contents:\n\n");
+    DebugConsole::debug_print (0, true, COLOR_CYAN, "Stack Depth: %d. Stack Contents:\n\n", stackDepth);
     Stack * newStack = new Stack;
     while (!calcStack->isEmpty())
     {
@@ -102,7 +102,7 @@ void Calculator::ProcessInput()
     char * resultString;
     long numberInput = strtol(input.c_str(), &resultString, 10);
     DebugConsole::debug_print(0, false, "%x:%x:%d:%s", input.c_str(), resultString, *resultString, resultString);
-    if (*resultString == 0)
+    if (resultString == 0)
     {
         // The result is a number.
         // Push it onto the stack.

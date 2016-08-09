@@ -101,7 +101,7 @@ void Calculator::ProcessInput()
     std::cin >> input;
     char * resultString;
     long numberInput = strtol(input.c_str(), &resultString, 10);
-    if (**resultString == 0)
+    if (*resultString == 0)
     {
         // The result is a number.
         // Push it onto the stack.

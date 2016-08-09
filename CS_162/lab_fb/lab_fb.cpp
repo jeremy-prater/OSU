@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
     }
 
     Calculator myCalc;
-    myCalc->CalculatorLoop();
+    myCalc.CalculatorLoop();
 
     // Exit and return success.
     return 0;

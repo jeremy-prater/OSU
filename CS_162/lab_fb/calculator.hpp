@@ -1,7 +1,7 @@
 #ifndef CALCULATOR_HPP
 #define CALCULATOR_HPP
 
-#include "stack.hpp"
+#include "Stack.hpp"
 
 class Calculator
 {

@@ -11,7 +11,7 @@
 #include "lib_flip_display.hpp"
 #include "lib_arg_parse.hpp"
 
-#include "stack.hpp"
+#include "Stack.hpp"
 #include "calculator.hpp"
 
 using namespace std;

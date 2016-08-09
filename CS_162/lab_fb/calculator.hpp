@@ -6,9 +6,19 @@
 class Calculator
 {
 private:
-    Stack calcStack;
+    Stack * calcStack;
+    int stackDepth;
+    bool running;
+
+    void add();
+    void subtract();
+    void multiply();
+    void subtract();
 
 public:
+    Calculator();
+    ~Calculator();
+
     void PrintStack();
     void ProcessInput();
     void CalculatorLoop();

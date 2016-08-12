@@ -3,6 +3,13 @@
 
 #include "Stack.hpp"
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// class Calculator
+//
+// A class that preforms RNP notation calculations
+//
+
 class Calculator
 {
 private:

@@ -15,7 +15,6 @@ lab_fb_test : $(sources_test)
 lab_fb : $(sources)
 
 	g++ $(sources) -g -std=c++11 -o lab-fb
-	./lab-fb
 
 clean :
 	rm -f lab-fb-test

@@ -43,19 +43,15 @@ int fileCreator::createFileDirect(std::string fileName, int numItems)
     try
     {
         outputFile = new std::ofstream(fileName.c_str());
-        if (!outputFile->good())
-        {
-            throw std::string ("File access error");
-        }
     }
     catch (const std::exception& ex)
     {
         DebugConsole::debug_print(0, true, COLOR_RED, "File error! Filename:%s, error %s\n\n", fileName.c_str(), ex.what());
         return -1;
     }
-    catch (std::string error)
+    if (!outputFile->good())
     {
-        DebugConsole::debug_print(0, true, COLOR_RED, "File error! Filename:%s, error %s\n\n", fileName.c_str(), error.c_str());
+        DebugConsole::debug_print(0, true, COLOR_RED, "File access error! %s\n\n", fileName.c_str());
         return -1;
     }
     DebugConsole::debug_print (0, true, COLOR_CYAN, "Generating %d items into file %s!\n\n", numItems, fileName.c_str());

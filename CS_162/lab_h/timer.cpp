@@ -1,15 +1,61 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 12, 2016
+** Description:  timer.cpp
+**
+*********************************************************************/
+
 #include <time.h>
 #include "timer.hpp"
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void SortTimer::Start()
+//
+// Record the start time for the timer
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void SortTimer::Start()
 {
 	clock_gettime (CLOCK_REALTIME, &start);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// void SortTimer::Stop()
+//
+// Record the start time for the timer
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
+
 void SortTimer::Stop()
 {
 	clock_gettime (CLOCK_REALTIME, &end);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// struct timespec SortTimer::GetElapsed()
+//
+// Calculate the time difference between start and stop
+//
+// Parameters:
+//        None
+//
+// Return:
+//        struct timespec - difference between start and stop.
+//
 
 struct timespec SortTimer::GetElapsed()
 {

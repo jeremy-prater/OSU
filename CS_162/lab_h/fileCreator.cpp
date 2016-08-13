@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 12, 2016
+** Description:  fileCreator.cpp
+*********************************************************************/
+
 #include "fileCreator.hpp"
 #include <fstream>
 #include <iostream>

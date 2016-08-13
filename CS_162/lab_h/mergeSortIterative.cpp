@@ -4,7 +4,7 @@
 ** Description:  mergeSort_Iterate.cpp
 **
 ** Source code downloaded from :
-** https://gist.github.com/codeblocks/898596
+** http://www.geeksforgeeks.org/iterative-merge-sort/
 **
 ** Code adapted and added to a class
 **
@@ -19,11 +19,38 @@
 #define min(a,b) (((a)<(b))?(a):(b))
 #define max(a,b) (((a)>(b))?(a):(b))
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// mergeSortIterate::mergeSortIterate(int * newbuffer, int newbufferSize)
+//
+// Iterative mergeSort constructor
+//
+// Parameters:
+//        int * newbuffer - Pointer to memory to sort
+//        int newbufferSize - Number of items to sort
+//
+// Return:
+//        None
+//
+
 mergeSortIterate::mergeSortIterate(int * newbuffer, int newbufferSize)
 {
   buffer = newbuffer;
   bufferSize = newbufferSize;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// void mergeSortIterate::mergeSort()
+//
+// Preform the iterative merge sort with timing markers
+//
+// Parameters:
+//        None
+//
+// Return:
+//        None
+//
 
 void mergeSortIterate::mergeSort()
 {
@@ -35,6 +62,11 @@ void mergeSortIterate::mergeSort()
   struct timespec elapsed = myTimer.GetElapsed();
   DebugConsole::debug_print (0, true, COLOR_CYAN, "mergeSort Iterate took %d.%d\n\n", elapsed.tv_sec, elapsed.tv_nsec);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Source code from : http://www.geeksforgeeks.org/iterative-merge-sort/
+//
 
 /* Iterative mergesort function to sort arr[0...n-1] */
 int mergeSortIterate::merge_sort(int * arr,int n)

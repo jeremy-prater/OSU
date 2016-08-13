@@ -19,11 +19,11 @@
 **
 *********************************************************************/
 
-const char *argp_program_version = "assignment 3 1.0";
+const char *argp_program_version = "Lab-H 1.0";
 const char *argp_program_bug_address = "<praterj@oregonstate.edu>";
 
 // Description of the program
-const char * customArgParser::doc = "assignment 3 - Fantasy Game";
+const char * customArgParser::doc = "Lab-H mergesort testing";
 
 // Description of accepted arguments
 const char * customArgParser::args_doc = "";

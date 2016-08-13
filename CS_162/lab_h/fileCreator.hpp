@@ -1,3 +1,9 @@
+/*********************************************************************
+** Author:       Jeremy Prater
+** Date:         August 12, 2016
+** Description:  fileCreator.hpp
+*********************************************************************/
+
 #ifndef FILE_CREATOR_HPP
 #define FILE_CREATOR_HPP
 

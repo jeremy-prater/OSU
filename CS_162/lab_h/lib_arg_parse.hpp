@@ -2,7 +2,6 @@
 #define ARG_PARSE_HPP
 
 #include <argp.h>
-#include <string>
 
 /*********************************************************************
 **
@@ -17,7 +16,7 @@
 struct customArguments
 {
   bool debugEnable;
-  std::string filename;
+  const char * filename;
   bool hasFilename;
 };
 

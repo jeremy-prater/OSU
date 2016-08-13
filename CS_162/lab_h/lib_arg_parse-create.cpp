@@ -9,6 +9,7 @@
 #include "lib_arg_parse-create.hpp"
 #include "lib_flip_display.hpp"
 #include <stdio.h>
+#include <string>
 
 /*********************************************************************
 **
@@ -74,8 +75,8 @@ error_t customArgParser::parse_opt (int key, char *arg, struct argp_state *state
       break;
     
     case 'f':
-      arguments->filename = std::string (arg);
-      DebugConsole::debug_print (0, false, COLOR_WHITE, "Using filename: %s\n", arguments->filename.c_str());
+      arguments->filename = arg;
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "Using filename: %s\n", arguments->filename);
       arguments->validState++;
       break;
 

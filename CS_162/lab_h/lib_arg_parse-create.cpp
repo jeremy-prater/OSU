@@ -9,7 +9,6 @@
 #include "lib_arg_parse-create.hpp"
 #include "lib_flip_display.hpp"
 #include <stdio.h>
-#include <string>
 
 /*********************************************************************
 **
@@ -61,14 +60,10 @@ error_t customArgParser::parse_opt (int key, char *arg, struct argp_state *state
       break;
     
     case 'c':
-      try
+      DebugConsole::debug_print (0, false, COLOR_WHITE, "Using number: %s\n", arg);
+      if (sscanf (arg, "%d", &arguments->numItems) != 1)
       {
-        DebugConsole::debug_print (0, false, COLOR_WHITE, "Using number: %s\n", arg);
-        arguments->numItems = std::stoi (std::string(arg), __null, 10);
-      }
-      catch (const std::exception& error)
-      {
-        DebugConsole::debug_print(0, true, COLOR_RED, "Invalid Number: %s\n\n", error.what());
+        DebugConsole::debug_print(0, true, COLOR_RED, "Invalid Number: %s\n\n", arg);
         return -1;
       }
       arguments->validState++;

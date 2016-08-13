@@ -9,7 +9,6 @@
 #include "lib_arg_parse.hpp"
 #include "lib_flip_display.hpp"
 #include <stdio.h>
-#include <string>
 
 /*********************************************************************
 **

@@ -44,6 +44,7 @@ storageAddResult   DWORD ?       ; Memory to store the add result
 storageSubResult   DWORD ?       ; Memory to store the sub result
 storageMulResult   DWORD ?       ; Memory to store the mul result
 storageDivResult   DWORD ?       ; Memory to store the div result
+storageDivRem      DWORD ?       ; Memory to store the div remainder
 
 primaryInput       BYTE 30 DUP (?); Memory to check if we are quitting
 primaryInputLength DWORD ($-primaryInput)
@@ -141,19 +142,20 @@ INPUTPASSED:
 
 	mov		eax, inputFirstNum
 	cmp     inputSecondNum ,0    ; Check operand 2 for zero - prevent division by zero error
-	je      DIV0DETECTED
+	je      DISPLAYRESULTS
 	
 	div     inputSecondNum       ; Preform integer division
 	mov     storageDivResult, eax
+	mov     storageDivRem   , edx
 
 	; Preform floating point division
 	fild    inputFirstNum    ; Load first operand into ST(0) Convert DWORD->REAL
 	fidiv   inputSecondNum   ; Loadn and divide first/second and store result in ST(0)
 	fimul   FloatRounder     ; Multiply ST(0) by 1000
-	frndint
+	frndint                  ; Round the float number to integer
 	fidiv   FloatRounder     ; Divide ST(0) by 1000 (round to .001)
 
-DIV0DETECTED:
+DISPLAYRESULTS:
 ; display the results
 	mov     eax, inputFirstNum
 	call    WriteInt
@@ -212,6 +214,10 @@ SHOWDIVISON:
 	mov		edx, OFFSET mathEqual
 	call	WriteString
 	mov     eax, storageDivResult
+	call    WriteInt
+	mov		edx, OFFSET mathRemainder
+	call	WriteString
+	mov     eax, storageDivRem
 	call    WriteInt
 	call    CrLf
 

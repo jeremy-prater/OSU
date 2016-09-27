@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:42:29
 (Elementary Arithemic     (Project01.asm		     Page 1 - 1
 
 
@@ -37,10 +37,10 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
 			      C 
 
  00000000			.data
- 00000000 20 20 20 20 20	messageTitle       BYTE  "                     Elementary Arithmetc            by       Jeremy Prater" ,0
+ 00000000 20 20 20 20 20	messageTitle       BYTE  "              Mostly Elementary Arithmetc            by       Jeremy Prater" ,0
 	   20 20 20 20 20
-	   20 20 20 20 20
-	   20 20 20 20 20
+	   20 20 20 20 4D
+	   6F 73 74 6C 79
 	   20 45 6C 65 6D
 	   65 6E 74 61 72
 	   79 20 41 72 69
@@ -258,6 +258,8 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  000000BA  7E 16			JLE     INPUTPASSED     ; User input is ok, jump to calculations
 
 					; Tell user to fix input and try again!
+					; This should be allowed with floating point division. IE: 3/4 = .75
+					; But it's extra credit!
  000000BC  BA 0000012D R		mov		edx, OFFSET messageLessthan
  000000C1  E8 00000000 E		call	WriteString
  000000C6  E8 00000000 E		call	CrLf
@@ -265,25 +267,30 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  000000D0  EB 83			JMP MAINLOOP
 
 				; calculate the required values
- 000000D2			INPUTPASSED:	
+ 000000D2			INPUTPASSED:
+					; Preform addition
  000000D2  A1 00000272 R		mov		eax, inputFirstNum
  000000D7  03 05 00000276 R		add     eax, inputSecondNum
  000000DD  A3 0000027A R		mov     storageAddResult, eax
-
+					
+					; Preform subtraction
  000000E2  A1 00000272 R		mov		eax, inputFirstNum
  000000E7  2B 05 00000276 R		sub     eax, inputSecondNum
  000000ED  A3 0000027E R		mov     storageSubResult, eax
-
+					
+					; Preform mul
  000000F2  A1 00000272 R		mov		eax, inputFirstNum
  000000F7  F7 25 00000276 R		mul     inputSecondNum
  000000FD  A3 00000282 R		mov     storageMulResult, eax
 
+					; Check for div/0
  00000102  A1 00000272 R		mov		eax, inputFirstNum
  00000107  83 3D 00000276 R		cmp     inputSecondNum ,0    ; Check operand 2 for zero - prevent division by zero error
 	   00
  0000010E  74 2B			je      DISPLAYRESULTS
 					
- 00000110  F7 35 00000276 R		div     inputSecondNum       ; Preform integer division
+					; Preform integer division
+ 00000110  F7 35 00000276 R		div     inputSecondNum
  00000116  A3 00000286 R		mov     storageDivResult, eax
  0000011B  89 15 0000028A R		mov     storageDivRem   , edx
 
@@ -296,6 +303,8 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
 
  0000013B			DISPLAYRESULTS:
 				; display the results
+
+					; Print addition
  0000013B  A1 00000272 R		mov     eax, inputFirstNum
  00000140  E8 00000000 E		call    WriteInt
  00000145  BA 00000252 R		mov		edx, OFFSET mathAdd
@@ -308,6 +317,7 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  00000168  E8 00000000 E		call    WriteInt
  0000016D  E8 00000000 E		call    CrLf
 
+					; Print subtraction
  00000172  A1 00000272 R		mov     eax, inputFirstNum
  00000177  E8 00000000 E		call    WriteInt
  0000017C  BA 00000256 R		mov		edx, OFFSET mathSub
@@ -320,6 +330,7 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  0000019F  E8 00000000 E		call    WriteInt
  000001A4  E8 00000000 E		call    CrLf
 
+					; Print mul
  000001A9  A1 00000272 R		mov     eax, inputFirstNum
  000001AE  E8 00000000 E		call    WriteInt
  000001B3  BA 0000025A R		mov		edx, OFFSET mathMul
@@ -345,6 +356,7 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  000001FD  E9 FFFFFE53			JMP    MAINLOOP
 
  00000202			SHOWDIVISON:
+					; Print division
  00000202  A1 00000272 R		mov     eax, inputFirstNum
  00000207  E8 00000000 E		call    WriteInt
  0000020C  BA 0000025E R		mov		edx, OFFSET mathDiv
@@ -361,6 +373,7 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
  00000243  E8 00000000 E		call    WriteInt
  00000248  E8 00000000 E		call    CrLf
 
+					; Print floating point division
  0000024D  A1 00000272 R		mov     eax, inputFirstNum
  00000252  E8 00000000 E		call    WriteInt
  00000257  BA 0000025E R		mov		edx, OFFSET mathDiv
@@ -391,7 +404,7 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
 				END main
 
 
-Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:33:48
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:42:29
 (Elementary Arithemic     (Project01.asm		     Symbols 2 - 1
 
 

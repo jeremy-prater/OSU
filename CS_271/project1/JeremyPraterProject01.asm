@@ -16,7 +16,7 @@ TITLE Elementary Arithemic     (Project01.asm)
 INCLUDE Irvine32.inc
 
 .data
-messageTitle       BYTE  "                     Elementary Arithmetc            by       Jeremy Prater" ,0
+messageTitle       BYTE  "              Mostly Elementary Arithmetc            by       Jeremy Prater" ,0
 messageInstruction BYTE  "Enter 2 numbers, and I'll show you the sum, difference, product, quotient, and remainder." ,0
 messageFirstNum    BYTE  "Enter First Number (q to quit): " ,0
 messageSecondNum   BYTE  "Enter Second Number: " ,0
@@ -120,6 +120,8 @@ MAINLOOP:
 	JLE     INPUTPASSED     ; User input is ok, jump to calculations
 
 	; Tell user to fix input and try again!
+	; This should be allowed with floating point division. IE: 3/4 = .75
+	; But it's extra credit!
 	mov		edx, OFFSET messageLessthan
 	call	WriteString
 	call	CrLf
@@ -127,24 +129,29 @@ MAINLOOP:
 	JMP MAINLOOP
 
 ; calculate the required values
-INPUTPASSED:	
+INPUTPASSED:
+	; Preform addition
 	mov		eax, inputFirstNum
 	add     eax, inputSecondNum
 	mov     storageAddResult, eax
-
+	
+	; Preform subtraction
 	mov		eax, inputFirstNum
 	sub     eax, inputSecondNum
 	mov     storageSubResult, eax
-
+	
+	; Preform mul
 	mov		eax, inputFirstNum
 	mul     inputSecondNum
 	mov     storageMulResult, eax
 
+	; Check for div/0
 	mov		eax, inputFirstNum
 	cmp     inputSecondNum ,0    ; Check operand 2 for zero - prevent division by zero error
 	je      DISPLAYRESULTS
 	
-	div     inputSecondNum       ; Preform integer division
+	; Preform integer division
+	div     inputSecondNum
 	mov     storageDivResult, eax
 	mov     storageDivRem   , edx
 
@@ -157,6 +164,8 @@ INPUTPASSED:
 
 DISPLAYRESULTS:
 ; display the results
+
+	; Print addition
 	mov     eax, inputFirstNum
 	call    WriteInt
 	mov		edx, OFFSET mathAdd
@@ -169,6 +178,7 @@ DISPLAYRESULTS:
 	call    WriteInt
 	call    CrLf
 
+	; Print subtraction
 	mov     eax, inputFirstNum
 	call    WriteInt
 	mov		edx, OFFSET mathSub
@@ -181,6 +191,7 @@ DISPLAYRESULTS:
 	call    WriteInt
 	call    CrLf
 
+	; Print mul
 	mov     eax, inputFirstNum
 	call    WriteInt
 	mov		edx, OFFSET mathMul
@@ -205,6 +216,7 @@ DISPLAYRESULTS:
 	JMP    MAINLOOP
 
 SHOWDIVISON:
+	; Print division
 	mov     eax, inputFirstNum
 	call    WriteInt
 	mov		edx, OFFSET mathDiv
@@ -221,6 +233,7 @@ SHOWDIVISON:
 	call    WriteInt
 	call    CrLf
 
+	; Print floating point division
 	mov     eax, inputFirstNum
 	call    WriteInt
 	mov		edx, OFFSET mathDiv

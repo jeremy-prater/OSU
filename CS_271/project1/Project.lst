@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/25/16 23:53:27
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:24:04
 (Elementary Arithemic     (Project01.asm		     Page 1 - 1
 
 
@@ -71,22 +71,28 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/25/16 23:53:27
 	   61 6E 64 20 72
 	   65 6D 61 69 6E
 	   64 65 72 2E 00
- 000000A6 45 6E 74 65 72	messageFirstNum    BYTE  "Enter First Number: " ,0
+ 000000A6 45 6E 74 65 72	messageFirstNum    BYTE  "Enter First Number (q to quit): " ,0
 	   20 46 69 72 73
 	   74 20 4E 75 6D
-	   62 65 72 3A 20
-	   00
- 000000BB 45 6E 74 65 72	messageSecondNum   BYTE  "Enter Second Number: " ,0
+	   62 65 72 20 28
+	   71 20 74 6F 20
+	   71 75 69 74 29
+	   3A 20 00
+ 000000C7 45 6E 74 65 72	messageSecondNum   BYTE  "Enter Second Number: " ,0
 	   20 53 65 63 6F
 	   6E 64 20 4E 75
 	   6D 62 65 72 3A
 	   20 00
- 000000D1 20 2D 2D 20 44	messageDivideByZ   BYTE  " -- DIVIDE BY ZERO --" ,0
+ 000000DD 45 52 52 4F 52	messageDivideByZ   BYTE  "ERROR: You can not : -- DIVIDE BY ZERO --" ,0
+	   3A 20 59 6F 75
+	   20 63 61 6E 20
+	   6E 6F 74 20 3A
+	   20 2D 2D 20 44
 	   49 56 49 44 45
 	   20 42 59 20 5A
 	   45 52 4F 20 2D
 	   2D 00
- 000000E7 78 38 36 20 41	messageExit        BYTE  "x86 Assembly is pretty cool, eh? Bye!" ,0
+ 00000107 78 38 36 20 41	messageExit        BYTE  "x86 Assembly is pretty cool, eh? Bye!" ,0
 	   73 73 65 6D 62
 	   6C 79 20 69 73
 	   20 70 72 65 74
@@ -95,22 +101,92 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/25/16 23:53:27
 	   68 3F 20 42 79
 	   65 21 00
 
- 0000010D 20 2B 20		mathAdd            BYTE  " + "
- 00000110 20 2D 20		mathSub            BYTE  " - "
- 00000113 20 2A 20		mathMul            BYTE  " * "
- 00000116 20 2F 20		mathDiv            BYTE  " / "
- 00000119 20 3D 20		mathEqual          BYTE  " = "
- 0000011C 20 72 65 6D 61	mathRemainder      BYTE  " remainder "
+ 0000012D 54 68 65 20 73	messageLessthan    BYTE  "The second input must be less than or equal to the first!!" ,0
+	   65 63 6F 6E 64
+	   20 69 6E 70 75
+	   74 20 6D 75 73
+	   74 20 62 65 20
+	   6C 65 73 73 20
+	   74 68 61 6E 20
+	   6F 72 20 65 71
+	   75 61 6C 20 74
+	   6F 20 74 68 65
+	   20 66 69 72 73
+	   74 21 21 00
+
+ 00000168 2A 2A 20 45 43	messageEC1         BYTE  "** EC1: Repeat until the user chooses to quit" ,0
+	   31 3A 20 52 65
+	   70 65 61 74 20
+	   75 6E 74 69 6C
+	   20 74 68 65 20
+	   75 73 65 72 20
+	   63 68 6F 6F 73
+	   65 73 20 74 6F
+	   20 71 75 69 74
+	   00
+ 00000196 2A 2A 20 45 43	messageEC2         BYTE  "** EC2: Validate the second number to be less than the first" ,0
+	   32 3A 20 56 61
+	   6C 69 64 61 74
+	   65 20 74 68 65
+	   20 73 65 63 6F
+	   6E 64 20 6E 75
+	   6D 62 65 72 20
+	   74 6F 20 62 65
+	   20 6C 65 73 73
+	   20 74 68 61 6E
+	   20 74 68 65 20
+	   66 69 72 73 74
+	   00
+ 000001D3 2A 2A 20 45 43	messageEC3         BYTE  "** EC3: Calculate and display the quotient as a floating point number, rounded to nearest .001" ,0
+	   33 3A 20 43 61
+	   6C 63 75 6C 61
+	   74 65 20 61 6E
+	   64 20 64 69 73
+	   70 6C 61 79 20
+	   74 68 65 20 71
+	   75 6F 74 69 65
+	   6E 74 20 61 73
+	   20 61 20 66 6C
+	   6F 61 74 69 6E
+	   67 20 70 6F 69
+	   6E 74 20 6E 75
+	   6D 62 65 72 2C
+	   20 72 6F 75 6E
+	   64 65 64 20 74
+	   6F 20 6E 65 61
+	   72 65 73 74 20
+	   2E 30 30 31 00
+ 00000232 2A 2A 20 45 43	messageEC4         BYTE  "** EC4: Catch divide by zero :)" ,0
+	   34 3A 20 43 61
+	   74 63 68 20 64
+	   69 76 69 64 65
+	   20 62 79 20 7A
+	   65 72 6F 20 3A
+	   29 00
+
+ 00000252 20 2B 20 00		mathAdd            BYTE  " + " ,0
+ 00000256 20 2D 20 00		mathSub            BYTE  " - " ,0
+ 0000025A 20 2A 20 00		mathMul            BYTE  " * " ,0
+ 0000025E 20 2F 20 00		mathDiv            BYTE  " / " ,0
+ 00000262 20 3D 20 00		mathEqual          BYTE  " = " ,0
+ 00000266 20 72 65 6D 61	mathRemainder      BYTE  " remainder " ,0
 	   69 6E 64 65 72
-	   20
+	   20 00
 
- 00000127 00000000		inputFirstNum      DWORD ?       ; first integer entered by user
- 0000012B 00000000		inputSecondNum     DWORD ?       ; second integer entered by user
+ 00000272 00000000		inputFirstNum      DWORD ?       ; first integer entered by user
+ 00000276 00000000		inputSecondNum     DWORD ?       ; second integer entered by user
 
- 0000012F 00000000		storageAddResult   DWORD ?       ; Memory to store the add result
- 00000133 00000000		storageSubResult   DWORD ?       ; Memory to store the sub result
- 00000137 00000000		storageMulResult   DWORD ?       ; Memory to store the mul result
- 0000013B 00000000		storageDivResult   DWORD ?       ; Memory to store the div result
+ 0000027A 00000000		storageAddResult   DWORD ?       ; Memory to store the add result
+ 0000027E 00000000		storageSubResult   DWORD ?       ; Memory to store the sub result
+ 00000282 00000000		storageMulResult   DWORD ?       ; Memory to store the mul result
+ 00000286 00000000		storageDivResult   DWORD ?       ; Memory to store the div result
+
+ 0000028A  0000001E [		primaryInput       BYTE 30 DUP (?); Memory to check if we are quitting
+	    00
+	   ]
+ 000002A8 0000001E		primaryInputLength DWORD ($-primaryInput)
+
+ 000002AC 03E8			FloatRounder       WORD 1000     ; This is actually 1/1000 = .001. Used for float rounding
 
  00000000			.code
  00000000			main PROC
@@ -122,61 +198,194 @@ Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/25/16 23:53:27
  0000000A  E8 00000000 E		call	CrLf
  0000000F  E8 00000000 E		call	CrLf
 
-				; get the data
- 00000014  BA 0000004C R		mov		edx, OFFSET messageInstruction
+				; Display extra credit information
+ 00000014  BA 00000168 R		mov		edx, OFFSET messageEC1
  00000019  E8 00000000 E		call	WriteString
  0000001E  E8 00000000 E		call	CrLf
 
- 00000023  BA 000000A6 R		mov		edx, OFFSET messageFirstNum
+ 00000023  BA 00000196 R		mov		edx, OFFSET messageEC2
  00000028  E8 00000000 E		call	WriteString
+ 0000002D  E8 00000000 E		call	CrLf
 
- 0000002D  E8 00000000 E		call	ReadInt
- 00000032  A3 00000127 R		mov		inputFirstNum, eax
+ 00000032  BA 000001D3 R		mov		edx, OFFSET messageEC3
+ 00000037  E8 00000000 E		call	WriteString
+ 0000003C  E8 00000000 E		call	CrLf
 
- 00000037  BA 000000BB R		mov		edx, OFFSET messageSecondNum
- 0000003C  E8 00000000 E		call	WriteString
+ 00000041  BA 00000232 R		mov		edx, OFFSET messageEC4
+ 00000046  E8 00000000 E		call	WriteString
+ 0000004B  E8 00000000 E		call	CrLf
+ 00000050  E8 00000000 E		call	CrLf
 
- 00000041  E8 00000000 E		call	ReadInt
- 00000046  A3 0000012B R		mov		inputSecondNum, eax
+				; Main loop
+ 00000055			MAINLOOP:
 
+				; get the data
+ 00000055  BA 0000004C R		mov		edx, OFFSET messageInstruction
+ 0000005A  E8 00000000 E		call	WriteString
+ 0000005F  E8 00000000 E		call	CrLf
+
+ 00000064  BA 000000A6 R		mov		edx, OFFSET messageFirstNum
+ 00000069  E8 00000000 E		call	WriteString
+
+ 0000006E  BA 0000028A R		mov		edx, OFFSET primaryInput
+ 00000073  8B 0D 000002A8 R		mov		ecx, primaryInputLength
+ 00000079  E8 00000000 E		call	ReadString
+
+				; Check if we should exit now
+ 0000007E  A0 0000028A R	    MOV     AL, primaryInput
+ 00000083  3C 71			CMP     AL, 'q'
+ 00000085  0F 84 000001DF		JE      USEREXIT
+
+				; Continue processing
+
+					; Convert string to integer!
+ 0000008B  BA 0000028A R		mov		edx, OFFSET primaryInput
+ 00000090  8B 0D 000002A8 R		mov		ecx, primaryInputLength
+ 00000096  E8 00000000 E		call    ParseInteger32
+ 0000009B  A3 00000272 R		mov		inputFirstNum, eax
+
+					; Continue with user data
+ 000000A0  BA 000000C7 R		mov		edx, OFFSET messageSecondNum
+ 000000A5  E8 00000000 E		call	WriteString
+
+ 000000AA  E8 00000000 E		call	ReadInt
+ 000000AF  A3 00000276 R		mov		inputSecondNum, eax
+
+				; Check if inputSecondNum < inputFirstNum
+					; Second num is already in EAX
+ 000000B4  3B 05 00000272 R		CMP     EAX, inputFirstNum
+ 000000BA  7E 16			JLE     INPUTPASSED     ; User input is ok, jump to calculations
+
+					; Tell user to fix input and try again!
+ 000000BC  BA 0000012D R		mov		edx, OFFSET messageLessthan
+ 000000C1  E8 00000000 E		call	WriteString
+ 000000C6  E8 00000000 E		call	CrLf
+ 000000CB  E8 00000000 E		call	CrLf
+ 000000D0  EB 83			JMP MAINLOOP
 
 				; calculate the required values
- 0000004B  A1 00000127 R		mov		eax, inputFirstNum
- 00000050  03 05 0000012B R		add     eax, inputSecondNum
- 00000056  A3 0000012F R		mov     storageAddResult, eax
+ 000000D2			INPUTPASSED:	
+ 000000D2  A1 00000272 R		mov		eax, inputFirstNum
+ 000000D7  03 05 00000276 R		add     eax, inputSecondNum
+ 000000DD  A3 0000027A R		mov     storageAddResult, eax
 
- 0000005B  A1 00000127 R		mov		eax, inputFirstNum
- 00000060  2B 05 0000012B R		sub     eax, inputSecondNum
- 00000066  A3 00000133 R		mov     storageSubResult, eax
+ 000000E2  A1 00000272 R		mov		eax, inputFirstNum
+ 000000E7  2B 05 00000276 R		sub     eax, inputSecondNum
+ 000000ED  A3 0000027E R		mov     storageSubResult, eax
 
- 0000006B  A1 00000127 R		mov		eax, inputFirstNum
- 00000070  F7 25 0000012B R		mul     inputSecondNum
- 00000076  A3 00000137 R		mov     storageMulResult, eax
+ 000000F2  A1 00000272 R		mov		eax, inputFirstNum
+ 000000F7  F7 25 00000276 R		mul     inputSecondNum
+ 000000FD  A3 00000282 R		mov     storageMulResult, eax
 
- 0000007B  A1 00000127 R		mov		eax, inputFirstNum
- 00000080  F7 35 0000012B R		div     inputSecondNum
- 00000086  A3 0000013B R		mov     storageDivResult, eax
+ 00000102  A1 00000272 R		mov		eax, inputFirstNum
+ 00000107  83 3D 00000276 R		cmp     inputSecondNum ,0    ; Check operand 2 for zero - prevent division by zero error
+	   00
+ 0000010E  74 25			je      DIV0DETECTED
 					
+ 00000110  F7 35 00000276 R		div     inputSecondNum       ; Preform integer division
+ 00000116  A3 00000286 R		mov     storageDivResult, eax
+
+					; Preform floating point division
+ 0000011B  DB 05 00000272 R		fild    inputFirstNum    ; Load first operand into ST(0) Convert DWORD->REAL
+ 00000121  DA 35 00000276 R		fidiv   inputSecondNum   ; Loadn and divide first/second and store result in ST(0)
+ 00000127  DE 0D 000002AC R		fimul   FloatRounder     ; Multiply ST(0) by 1000
+ 0000012D  D9 FC			frndint
+ 0000012F  DE 35 000002AC R		fidiv   FloatRounder     ; Divide ST(0) by 1000 (round to .001)
+
+ 00000135			DIV0DETECTED:
 				; display the results
-					;call    WriteDec
-					;call	WriteString
-					;call	CrLf
-					
+ 00000135  A1 00000272 R		mov     eax, inputFirstNum
+ 0000013A  E8 00000000 E		call    WriteInt
+ 0000013F  BA 00000252 R		mov		edx, OFFSET mathAdd
+ 00000144  E8 00000000 E		call	WriteString
+ 00000149  A1 00000276 R		mov     eax, inputSecondNum
+ 0000014E  E8 00000000 E		call    WriteInt
+ 00000153  BA 00000262 R		mov		edx, OFFSET mathEqual
+ 00000158  E8 00000000 E		call	WriteString
+ 0000015D  A1 0000027A R		mov     eax, storageAddResult
+ 00000162  E8 00000000 E		call    WriteInt
+ 00000167  E8 00000000 E		call    CrLf
+
+ 0000016C  A1 00000272 R		mov     eax, inputFirstNum
+ 00000171  E8 00000000 E		call    WriteInt
+ 00000176  BA 00000256 R		mov		edx, OFFSET mathSub
+ 0000017B  E8 00000000 E		call	WriteString
+ 00000180  A1 00000276 R		mov     eax, inputSecondNum
+ 00000185  E8 00000000 E		call    WriteInt
+ 0000018A  BA 00000262 R		mov		edx, OFFSET mathEqual
+ 0000018F  E8 00000000 E		call	WriteString
+ 00000194  A1 0000027E R		mov     eax, storageSubResult
+ 00000199  E8 00000000 E		call    WriteInt
+ 0000019E  E8 00000000 E		call    CrLf
+
+ 000001A3  A1 00000272 R		mov     eax, inputFirstNum
+ 000001A8  E8 00000000 E		call    WriteInt
+ 000001AD  BA 0000025A R		mov		edx, OFFSET mathMul
+ 000001B2  E8 00000000 E		call	WriteString
+ 000001B7  A1 00000276 R		mov     eax, inputSecondNum
+ 000001BC  E8 00000000 E		call    WriteInt
+ 000001C1  BA 00000262 R		mov		edx, OFFSET mathEqual
+ 000001C6  E8 00000000 E		call	WriteString
+ 000001CB  A1 00000282 R		mov     eax, storageMulResult
+ 000001D0  E8 00000000 E		call    WriteInt
+ 000001D5  E8 00000000 E		call    CrLf
+
+					; Check for zero in second operand
+ 000001DA  83 3D 00000276 R		CMP    inputSecondNum, 0
+	   00
+ 000001E1  75 19			JNE    SHOWDIVISON  ; The second operand is not zero!
+
+ 000001E3  BA 000000DD R		mov		edx, OFFSET messageDivideByZ     ; Print dov/0 error!!
+ 000001E8  E8 00000000 E		call	WriteString
+ 000001ED  E8 00000000 E		call	CrLf
+ 000001F2  E8 00000000 E		call	CrLf
+
+ 000001F7  E9 FFFFFE59			JMP    MAINLOOP
+
+ 000001FC			SHOWDIVISON:
+ 000001FC  A1 00000272 R		mov     eax, inputFirstNum
+ 00000201  E8 00000000 E		call    WriteInt
+ 00000206  BA 0000025E R		mov		edx, OFFSET mathDiv
+ 0000020B  E8 00000000 E		call	WriteString
+ 00000210  A1 00000276 R		mov     eax, inputSecondNum
+ 00000215  E8 00000000 E		call    WriteInt
+ 0000021A  BA 00000262 R		mov		edx, OFFSET mathEqual
+ 0000021F  E8 00000000 E		call	WriteString
+ 00000224  A1 00000286 R		mov     eax, storageDivResult
+ 00000229  E8 00000000 E		call    WriteInt
+ 0000022E  E8 00000000 E		call    CrLf
+
+ 00000233  A1 00000272 R		mov     eax, inputFirstNum
+ 00000238  E8 00000000 E		call    WriteInt
+ 0000023D  BA 0000025E R		mov		edx, OFFSET mathDiv
+ 00000242  E8 00000000 E		call	WriteString
+ 00000247  A1 00000276 R		mov     eax, inputSecondNum
+ 0000024C  E8 00000000 E		call    WriteInt
+ 00000251  BA 00000262 R		mov		edx, OFFSET mathEqual
+ 00000256  E8 00000000 E		call	WriteString
+ 0000025B  E8 00000000 E		call    WriteFloat       ; The result is already in ST(0)
+ 00000260  E8 00000000 E		call    CrLf
+
+
+				; return to main loop (this should be a procedure!)
+ 00000265  E9 FFFFFDEB			JMP     MAINLOOP
+
+ 0000026A			USEREXIT:
 				; say goodbye 
- 0000008B  BA 000000E7 R		mov		edx, OFFSET messageExit
- 00000090  E8 00000000 E		call	WriteString
- 00000095  E8 00000000 E		call	CrLf
- 0000009A  E8 00000000 E		call	CrLf
+ 0000026A  BA 00000107 R		mov		edx, OFFSET messageExit
+ 0000026F  E8 00000000 E		call	WriteString
+ 00000274  E8 00000000 E		call	CrLf
+ 00000279  E8 00000000 E		call	CrLf
 
 					exit	; exit to operating system
- 0000009F  6A 00	   *	    push   +000000000h
- 000000A1  E8 00000000 E   *	    call   ExitProcess
- 000000A6			main ENDP
+ 0000027E  6A 00	   *	    push   +000000000h
+ 00000280  E8 00000000 E   *	    call   ExitProcess
+ 00000285			main ENDP
 
 				END main
 
 
-Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/25/16 23:53:27
+Microsoft (R) Macro Assembler Version 14.00.24210.0	    09/26/16 22:24:04
 (Elementary Arithemic     (Project01.asm		     Symbols 2 - 1
 
 
@@ -270,8 +479,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000013F Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000000A6 Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 000002AE Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000285 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -378,7 +587,12 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000A6 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000285 Public STDCALL
+  MAINLOOP . . . . . . . . . . .	L Near	 00000055 _TEXT	
+  INPUTPASSED  . . . . . . . . .	L Near	 000000D2 _TEXT	
+  DIV0DETECTED . . . . . . . . .	L Near	 00000135 _TEXT	
+  SHOWDIVISON  . . . . . . . . .	L Near	 000001FC _TEXT	
+  USEREXIT . . . . . . . . . . .	L Near	 0000026A _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -440,6 +654,7 @@ FILE_WRITE_DATA  . . . . . . . .	Number	 00000002h
 FOCUS_EVENT  . . . . . . . . . .	Number	 00000010h   
 FORMAT_MESSAGE_ALLOCATE_BUFFER .	Number	 00000100h   
 FORMAT_MESSAGE_FROM_SYSTEM . . .	Number	 00001000h   
+FloatRounder . . . . . . . . . .	Word	 000002AC _DATA	
 FormatMessage  . . . . . . . . .	Text   	 FormatMessageA
 GENERIC_ALL  . . . . . . . . . .	Number	 10000000h   
 GENERIC_EXECUTE  . . . . . . . .	Number	 20000000h   
@@ -604,8 +819,8 @@ cyan . . . . . . . . . . . . . .	Number	 00000003h
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
-inputFirstNum  . . . . . . . . .	DWord	 00000127 _DATA	
-inputSecondNum . . . . . . . . .	DWord	 0000012B _DATA	
+inputFirstNum  . . . . . . . . .	DWord	 00000272 _DATA	
+inputSecondNum . . . . . . . . .	DWord	 00000276 _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -613,23 +828,30 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-mathAdd  . . . . . . . . . . . .	Byte	 0000010D _DATA	
-mathDiv  . . . . . . . . . . . .	Byte	 00000116 _DATA	
-mathEqual  . . . . . . . . . . .	Byte	 00000119 _DATA	
-mathMul  . . . . . . . . . . . .	Byte	 00000113 _DATA	
-mathRemainder  . . . . . . . . .	Byte	 0000011C _DATA	
-mathSub  . . . . . . . . . . . .	Byte	 00000110 _DATA	
-messageDivideByZ . . . . . . . .	Byte	 000000D1 _DATA	
-messageExit  . . . . . . . . . .	Byte	 000000E7 _DATA	
+mathAdd  . . . . . . . . . . . .	Byte	 00000252 _DATA	
+mathDiv  . . . . . . . . . . . .	Byte	 0000025E _DATA	
+mathEqual  . . . . . . . . . . .	Byte	 00000262 _DATA	
+mathMul  . . . . . . . . . . . .	Byte	 0000025A _DATA	
+mathRemainder  . . . . . . . . .	Byte	 00000266 _DATA	
+mathSub  . . . . . . . . . . . .	Byte	 00000256 _DATA	
+messageDivideByZ . . . . . . . .	Byte	 000000DD _DATA	
+messageEC1 . . . . . . . . . . .	Byte	 00000168 _DATA	
+messageEC2 . . . . . . . . . . .	Byte	 00000196 _DATA	
+messageEC3 . . . . . . . . . . .	Byte	 000001D3 _DATA	
+messageEC4 . . . . . . . . . . .	Byte	 00000232 _DATA	
+messageExit  . . . . . . . . . .	Byte	 00000107 _DATA	
 messageFirstNum  . . . . . . . .	Byte	 000000A6 _DATA	
 messageInstruction . . . . . . .	Byte	 0000004C _DATA	
-messageSecondNum . . . . . . . .	Byte	 000000BB _DATA	
+messageLessthan  . . . . . . . .	Byte	 0000012D _DATA	
+messageSecondNum . . . . . . . .	Byte	 000000C7 _DATA	
 messageTitle . . . . . . . . . .	Byte	 00000000 _DATA	
+primaryInputLength . . . . . . .	DWord	 000002A8 _DATA	
+primaryInput . . . . . . . . . .	Byte	 0000028A _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-storageAddResult . . . . . . . .	DWord	 0000012F _DATA	
-storageDivResult . . . . . . . .	DWord	 0000013B _DATA	
-storageMulResult . . . . . . . .	DWord	 00000137 _DATA	
-storageSubResult . . . . . . . .	DWord	 00000133 _DATA	
+storageAddResult . . . . . . . .	DWord	 0000027A _DATA	
+storageDivResult . . . . . . . .	DWord	 00000286 _DATA	
+storageMulResult . . . . . . . .	DWord	 00000282 _DATA	
+storageSubResult . . . . . . . .	DWord	 0000027E _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   

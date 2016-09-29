@@ -5,11 +5,14 @@
  */
  
 #include <stdio.h>
-#include<stdlib.h>
-#include<math.h>
+#include <stdlib.h>
+#include <math.h>
 
 #define NUM_STUDENTS 10
 #define MAX_SCORE    100
+
+#define false        0
+#define true         1
 
 struct student{
 	int id;
@@ -18,18 +21,18 @@ struct student{
 
 struct student* allocate(){
      /*Allocate memory for ten students*/
-     void * memory = malloc (sizeof(struct student) * MAX_STUDENTS);
+     void * memory = malloc (sizeof(struct student) * NUM_STUDENTS);
 
      /*return the pointer*/
-     return (student*) memory;
+     return (struct student*) memory;
 }
 
 void generate(struct student* students){
      /*Generate random and unique ID and scores for ten students, ID being between 1 and 10, scores between 0 and 100*/
-     for (int studentIndex = 0; studentIndex < MAX_STUDENTS; studentIndex++)
+     for (int studentIndex = 0; studentIndex < NUM_STUDENTS; studentIndex++)
      {
-         bool idCheck = false;
-         bool scoreCheck = false;
+         char idCheck = false;
+         char scoreCheck = false;
 
          int newID;
          int newScore;
@@ -38,7 +41,7 @@ void generate(struct student* students){
          while (!idCheck)
          {
              idCheck = true;
-             newID = rand() % MAX_STUDENTS;
+             newID = rand() % NUM_STUDENTS;
 
              // Linear unsorted search for same ID
              for (int studentSearch = 0; studentSearch < studentIndex; studentSearch++)
@@ -83,7 +86,7 @@ void output(struct student* students){
               ID3 score3
               ...
               ID10 score10*/
-     for (int studentIndex = 0; studentIndex < MAX_STUDENTS; studentIndex++)
+     for (int studentIndex = 0; studentIndex < NUM_STUDENTS; studentIndex++)
      {
          printf("%u\t%u\n", students[studentIndex].id, students[studentIndex].score);
      }
@@ -91,10 +94,10 @@ void output(struct student* students){
 
 void summary(struct student* students){
      /*Compute and print the minimum, maximum and average scores of the ten students*/
-     int min = 0xFFFFFFFF;
-     int max = 0x00000000;
+     int min = 100;
+     int max = 0;
      int avg = 0;
-     for (int studentIndex = 0; studentIndex < MAX_STUDENTS; studentIndex++)
+     for (int studentIndex = 0; studentIndex < NUM_STUDENTS; studentIndex++)
      {
          if (min > students[studentIndex].score)
          {
@@ -104,7 +107,7 @@ void summary(struct student* students){
          {
              max = students[studentIndex].score;
          }
-         avg += students[studentIndex].score
+         avg += students[studentIndex].score;
      }
      avg /= NUM_STUDENTS;
 

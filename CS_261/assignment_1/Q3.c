@@ -42,18 +42,20 @@ int main(){
     }
     
     /*Print the contents of the array.*/
+    printf ("\n -- Unsorted --\n");
     for (int index = 0; index < n; index++)
     {
-        printf ("%d: %d\n", index, memory[index]);
+        printf ("%d:\t%08x\n", index, memory[index]);
     }
 
     /*Pass this array along with n to the sort() function of part a.*/
     sort (memory, n);
     
-    /*Print the contents of the array.*/    
+    /*Print the contents of the array.*/
+    printf ("\n -- Sorted --\n");    
     for (int index = 0; index < n; index++)
     {
-        printf ("%d: %d\n", index, memory[index]);
+        printf ("%d:\t%08x\n", index, memory[index]);
     }
     
     return 0;

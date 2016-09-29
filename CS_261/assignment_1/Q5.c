@@ -19,14 +19,48 @@ char toLowerCase(char ch){
 
 void sticky(char* word){
      /*Convert to sticky caps*/
+     int index = 0;
+     while (word[index] != 0)
+     {
+         // Check if even or odd letter
+         if ((index & 1) == 1)
+         {
+             // Letter is odd, convert to lower
+             // Check if the case is upper
+             if ((word[index] >= 'A') && (word[index] <= 'Z'))
+             {
+                 // Letter is between A and Z. Convert!
+                 word[index] = toLowerCase(word[index]);
+             }
+         }
+         else
+         {
+             // Letter is even, convert to upper
+             // Check if the case is lower
+             if ((word[index] >= 'a') && (word[index] <= 'z'))
+             {
+                 // Letter is between a and z. Convert!
+                 word[index] = toUpperCase(word[index]);
+             }
+         }
+
+         // Increment index
+         index++;
+     }
 }
 
 int main(){
+    char stringBuffer[64];
+
     /*Read word from the keyboard using scanf*/
-    
+    printf ("\nEnter a word: ");
+    scanf ("%64s", stringBuffer);
+
     /*Call sticky*/
-    
+    sticky (stringBuffer);
+
     /*Print the new word*/
-    
+    printf ("%s\n\n", stringBuffer);
+
     return 0;
 }

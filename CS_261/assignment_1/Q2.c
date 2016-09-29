@@ -44,7 +44,7 @@ int main(){
     printf ("z = %d\n", z);
  
     /*Is the return value different than the value of z?  Why?*/
-    printf ("foo(..) == z because I set z to the result of foo(...)\n");
+    printf ("z equals 13, the return of foo(..) because \n\t*a=(5*2)=10\n\t*b=(6/2)=3\n\tc= *a + *b\n\tc=10+3=13\n");
 
     return 0;
 }

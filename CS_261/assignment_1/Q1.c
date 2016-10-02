@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.1*/
 /* Name: Jeremy Prater
  * Date: Sept 23, 2016
- * Solution description: 
+ * Solution description: Generate and print unique student id and score
  */
  
 #include <stdio.h>

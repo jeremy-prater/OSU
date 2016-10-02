@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.2*/
-/* Name:
- * Date:
- * Solution description:
+/* Name: Jeremy Prater
+ * Date: Sept 23, 2016
+ * Solution description: Pass pointers into a function
  */
  
 #include <stdio.h>

@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.5*/
-/* Name:
- * Date:
- * Solution description:
+/* Name: Jeremy Prater
+ * Date: Sept 23, 2016
+ * Solution description: Convert a word into StIcKy CaPs
  */
  
 #include <stdio.h>

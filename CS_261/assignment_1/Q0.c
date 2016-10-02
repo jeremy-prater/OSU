@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q. 0*/
 /* Name: Jeremy Prater
  * Date: Sept 23, 2016
- * Solution description:
+ * Solution description: Point pointer addresses and values
  */
  
 #include <stdio.h>

@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.3*/
-/* Name:
- * Date:
- * Solution description:
+/* Name: Jeremy Prater
+ * Date: Sept 23, 2016
+ * Solution description: Sort an array of integers
  */
  
 #include <stdio.h>

@@ -1,7 +1,7 @@
 /* CS261- Assignment 1 - Q.4*/
-/* Name:
- * Date:
- * Solution description:
+/* Name: Jeremy Prater
+ * Date: Sept 23, 2016
+ * Solution description: Generate an array of student id and scores and sort them. Print results.
  */
  
 #include <stdio.h>

@@ -37,7 +37,7 @@ Add	Capacity	O(n)
 32	32	        1
 
 Total unit Costs: 57
-Big O: O(1.8125) (57/32)
+Big O: O(1)+
 
 
 
@@ -70,8 +70,8 @@ Add	Capacity	O(n)
 22	22      	1
 23	24      	24
 24	24      	1
-25	26      	26  
-26	26  	    1
+25	26      	26
+26	26  	  	1
 27	28      	28
 28	28      	1
 29	30      	30
@@ -80,10 +80,21 @@ Add	Capacity	O(n)
 32	32	        1
 
 Total unit Costs: 271
-Big O: O(8.46875) (271/32)
+Big O: O(N/2)
 
 
 3. Suppose that a dynamic array stack doubles its capacity when it is full, and shrinks (on Pop only) its capacity by
 half when the array is half full or less. Can you devise a sequence of N push() and pop() operations which will result in poor
 performance (O(N^2) total cost)? How might you adjust the array's shrinking policy to avoid this? (Hint: You may assume that the
 initial capacity of the array is N/2.)
+
+Initial capacity is N/2 (4)
+
+N	Capacity	Size	Action	
+8	4		4	Initial	
+8	8		5	1	Push
+8	4		4	-1	Pop
+8	4		3	-1	Pop
+8	4		4	1	Push
+
+By changing the resizing algoritm for shrinking to N/4 instead of N/2, that would prevent excessive reallocations.

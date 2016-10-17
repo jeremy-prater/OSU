@@ -14,6 +14,15 @@
 #include <sys/resource.h>
 
 // Function to get current memory usage in KB (Max Resident Set Size)
+int parseLine(char* line) {
+	int i = strlen(line);
+	while (*line < '0' || *line > '9') line++;
+	line[i - 3] = '\0';
+	i = atoi(line);
+	return i;
+}
+
+// Function to get current memory usage in KB (Max Resident Set Size)
 int getMemoryUsage() { //Note: this value is in KB!
 	FILE* file = fopen("/proc/self/status", "r");
 	int result = -1;

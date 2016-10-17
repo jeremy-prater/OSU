@@ -93,7 +93,7 @@ void _dynArrSetCapacity(DynArr *v, int newCap)
 {
 	/* FIXME: You will write this function */
 	assert(v != 0);
-	v->data = (TYPE *) realloc (v->data, newCap);
+	v->data = (TYPE *) realloc (v->data, sizeof(TYPE) * newCap);
 	v->capacity = newCap;
 }
 

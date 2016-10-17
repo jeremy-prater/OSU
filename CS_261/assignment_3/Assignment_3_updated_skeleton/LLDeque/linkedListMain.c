@@ -14,12 +14,20 @@
 #include <sys/resource.h>
 
 // Function to get current memory usage in KB (Max Resident Set Size)
-long getMemoryUsage()
-{
-	int who = RUSAGE_SELF;
-	struct rusage usage;
-	getrusage(who, &usage);
-	return usage.ru_maxrss;
+int getMemoryUsage() { //Note: this value is in KB!
+	FILE* file = fopen("/proc/self/status", "r");
+	int result = -1;
+	char line[128];
+
+
+	while (fgets(line, 128, file) != NULL) {
+		if (strncmp(line, "VmRSS:", 6) == 0) {
+			result = parseLine(line);
+			break;
+		}
+	}
+	fclose(file);
+	return result;
 }
 #endif
 

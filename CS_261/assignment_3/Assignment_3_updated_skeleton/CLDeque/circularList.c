@@ -207,11 +207,17 @@ void circularListReverse(struct CircularList* list)
 {
 	assert (list != 0);
 	assert (list->size > 0);
-	struct Link * currentLink = list->sentinel->next;
-	struct Link * reverseLink = list->sentinel;
-	while (currentLink != list->sentinel)
+	struct Link * endLink = list->sentinel;
+	struct Link * curLink = list->sentinel->prev;
+	struct Link * lastLink = list->sentinel;
+	while (curLink != endLink)
 	{
-		//reverseLink->prev = currentLink;
-		currentLink = currentLink->next;
+		lastLink->next = curLink;
+		struct Link * cacheLink = curLink->prev;
+		curLink->prev = lastLink;
+		lastLink = curLink;
+		curLink = cacheLink;
 	}
+	lastLink->next = list->sentinel;
+	list->sentinel->prev = lastLink;
 }

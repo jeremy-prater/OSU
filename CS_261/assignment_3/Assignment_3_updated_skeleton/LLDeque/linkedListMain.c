@@ -12,6 +12,7 @@
 #ifdef MEMORY_TEST_INCLUDED
 // This header is needed for memory usage calculation.
 #include <sys/resource.h>
+#include <string.h>
 
 // Function to get current memory usage in KB (Max Resident Set Size)
 int parseLine(char* line) {

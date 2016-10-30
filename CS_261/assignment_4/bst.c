@@ -66,6 +66,7 @@ void _freeBST(struct Node *node)
 	if (node != 0) {
 		_freeBST(node->left);
 		_freeBST(node->right);
+		//free(node->val);
 		free(node);
 	}
 }
@@ -125,18 +126,27 @@ int sizeBSTree(struct BSTree *tree) { return tree->cnt; }
 struct Node *_addNode(struct Node *cur, TYPE val)
 {
 	// Find end node
-	switch ( compare ( ((struct data *)(cur->val))->number, ((struct data *)(val))->number) )
+	if (!cur)
+	{
+		// This our new node
+		cur = malloc(sizeof (struct Node)); 
+		cur->left = cur->right = 0;
+		cur->val = val;
+		return cur;
+	}
+
+	switch ( compare (cur->val, val) )
 	{
 		case -1:
 		{
 			// The incoming value is greater than this node number
 			// Check if right node is empty
-			if (cur->right == __null)
+			if (cur->right == 0)
 			{
 				// This our new node
-				cur->right = malloc(sizeof (struct data)); 
-				cur->right->left = cur->right->right = __null;
-				cur->right->value = val;
+				cur->right = malloc(sizeof (struct Node)); 
+				cur->right->left = cur->right->right = 0;
+				cur->right->val = val;
 				return cur;
 			}
 			else
@@ -150,13 +160,13 @@ struct Node *_addNode(struct Node *cur, TYPE val)
 		{
 			// The incoming value is less than this node number
 			// Check if left node is empty
-			if (cur->left == __null)
+			if (cur->left == 0)
 			{
 				// This our new node
 				// This our new node
-				cur->left = malloc(sizeof (struct data)); 
-				cur->left->left = cur->left->right = __null;
-				cur->left->value = val;
+				cur->left = malloc(sizeof (struct Node)); 
+				cur->left->left = cur->left->right = 0;
+				cur->left->val = val;
 				return cur;
 			}
 			else
@@ -188,7 +198,14 @@ struct Node *_addNode(struct Node *cur, TYPE val)
  */
 void addBSTree(struct BSTree *tree, TYPE val)
 {
-	tree->root = _addNode(tree->root, val);
+	if (!tree->root)
+	{
+		tree->root = _addNode(tree->root, val);
+	}
+	else
+	{
+		_addNode(tree->root, val);
+	}
 	tree->cnt++;
 }
 
@@ -206,16 +223,21 @@ void addBSTree(struct BSTree *tree, TYPE val)
 /*----------------------------------------------------------------------------*/
 int containsBSTree(struct BSTree *tree, TYPE val)
 {
-	struct data * curNode = tree->root;
-	int containTest = 0;
-	while (containTest = compare( ((struct data*)(curNode->val)->number), ((struct data*)val->number)) )
+	struct Node * curNode = tree->root;
+	if (curNode == NULL)
 	{
-		switch (containsTest)
+		return 0;
+	}
+
+	int containTest = 0;
+	while ((containTest = compare(curNode->val, val)) != 0)
+	{
+		switch (containTest)
 		{
-			case -1:
+			case 1:
 			{
 				// Check if we have a left path
-				if (curNode->left == __null)
+				if (curNode->left == 0)
 				{
 					// The node is taken, this is not our node;
 					return 0;
@@ -227,10 +249,10 @@ int containsBSTree(struct BSTree *tree, TYPE val)
 				}
 			}
 			break;
-			case 1:
+			case -1:
 			{
 				// Check if we have a right path
-				if (curNode->right == __null)
+				if (curNode->right == 0)
 				{
 					// The node is taken, this is not our node;
 					return 0;
@@ -258,10 +280,15 @@ int containsBSTree(struct BSTree *tree, TYPE val)
 /*----------------------------------------------------------------------------*/
 TYPE _leftMost(struct Node *cur)
 {
-	if (cur->left == __null)
+	if (!cur)
+	{
+		return NULL;
+	}
+
+	if (cur->left == 0)
 	{
 		// The left node is null. This is our node.
-		return cur->value;
+		return cur->val;
 	}
 	else
 	{
@@ -285,7 +312,25 @@ Note:  If you do this iteratively, the above hint does not apply.
 /*----------------------------------------------------------------------------*/
 struct Node *_removeLeftMost(struct Node *cur)
 {
-	return _removeNode (_leftMost(cur));
+	struct Node * result = cur->right;
+	if (cur->left != NULL)
+	{
+		if (cur->left->left == NULL)
+		{
+			// The left node has no left, so that is the last one!
+			result = cur->left->right;
+			free(cur->left->val);
+			free(cur->left);
+			cur->left = NULL;
+			return result;
+		}
+		else
+		{
+			// Keep searching
+			return (_removeLeftMost(cur->left));
+		}
+	}
+	return result;
 }
 /*
  recursive helper function to remove a node from the tree
@@ -299,37 +344,39 @@ struct Node *_removeLeftMost(struct Node *cur)
 /*----------------------------------------------------------------------------*/
 struct Node *_removeNode(struct Node *cur, TYPE val)
 {
-	switch (compare( ((struct data*)(curNode->val)->number), ((struct data*)val->number)) )
+	switch (compare(cur->val, val))
 	{
-		case -1:
+		case 1:
 		{
 			// Check if we have a left path
-			if (curNode->left->value == val)
+			if (compare(cur->left->val, val) == 0)
 			{
 				// The left node is the node to delete
-				free (curNode->left);
-				curNode->left = __null;
+				free (cur->left->val);
+				free (cur->left);
+				cur->left = 0;
 				return cur;
 			}
 			else
 			{
-				return _removeNode(curNode->left, val);
+				return _removeNode(cur->left, val);
 			}
 		}
 		break;
-		case 1:
+		case -1:
 		{
 			// Check if we have a right path
-			if (curNode->right->value == val)
+			if (compare(cur->right->val, val) == 0)
 			{
 				// The right node is the node to delete
-				free (curNode->right);
-				curNode->right = __null;
+				free (cur->right->val);
+				free (cur->right);
+				cur->right = 0;
 				return cur;
 			}
 			else
 			{
-				return _removeNode(curNode->right, val);
+				return _removeNode(cur->right, val);
 			}
 		}
 		break;
@@ -506,6 +553,7 @@ void testAddNode() {
         return;
     }
     else printf("addNode() test: PASS when adding 10 as left of left of root\n");
+	deleteBSTree (tree);
 }
 
 /*
@@ -538,7 +586,7 @@ void testContainsBSTree() {
 
      //check containsBSTree fucntion when the tree does not contain a node    
     printTestResult(!containsBSTree(tree, &myData5), "containsBSTree", "when test containing 111, which is not in the tree");
-    
+    deleteBSTree (tree);
 }
 
 /*
@@ -562,7 +610,7 @@ void testLeftMost() {
 	printTestResult(compare(_leftMost(tree->root->left->left), &myData4) == 0, "_leftMost", "left most of left of left of root");
     
 	printTestResult(compare(_leftMost(tree->root->right), &myData3) == 0, "_leftMost", "left most of right of root");
-
+	deleteBSTree (tree);
 }
 
 void testRemoveLeftMost() {
@@ -571,13 +619,14 @@ void testRemoveLeftMost() {
     
     cur = _removeLeftMost(tree->root);
 
-	printTestResult(cur == tree->root, "_removeLeftMost", "removing leftmost of root 1st try");
+	printTestResult(cur == NULL, "_removeLeftMost", "removing leftmost of root 1st try");
     
     cur = _removeLeftMost(tree->root->right);
     printTestResult(cur == NULL, "_removeLeftMost", "removing leftmost of right of root 1st try");
    
  	cur = _removeLeftMost(tree->root);
-    printTestResult(cur == tree->root, "_removeLeftMost", "removing leftmost of root 2st try");
+    printTestResult(cur == NULL, "_removeLeftMost", "removing leftmost of root 2st try");
+	deleteBSTree (tree);
 }
 
 void testRemoveNode() {
@@ -605,6 +654,7 @@ void testRemoveNode() {
         
     cur = _removeNode(tree->root, &myData1);
     printTestResult(cur == NULL, "_removeNode", "remove right of root 4st try");       
+	deleteBSTree (tree);
 }
 
 /*

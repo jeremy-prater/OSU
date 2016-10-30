@@ -28,16 +28,16 @@ int compare(TYPE left, TYPE right)
     struct data * leftNode = (struct data *)left;
     struct data * rightNode = (struct data *)right;
     if (leftNode->number < rightNode->number) { return -1; }
-    if (leftNode->number > rightNode->number) { return 1; }
-    if (leftNode->number == rightNode->number) { return 0; }
+    else if (leftNode->number > rightNode->number) { return 1; }
+    return 0;
 }
 
 /*Define this function, type casting the value of void * to the desired type*/
 void print_type(TYPE curval)
 {
-    printf ("Node dump of Address :p\n", curval);
+    printf ("Node dump of Address : %p\n", curval);
     printf (" -- Number : %u\n", ((struct data*)curval)->number);
-    printf (" -- Name : %s\n\n", ((struct data*)curval)->name);
+    printf (" -- Name   : %s\n\n", ((struct data*)curval)->name);
 }
 
 

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/01/16 20:29:12
+Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 #Integer Accumulator (Project03.asm			     Page 1 - 1
 
 
@@ -44,119 +44,121 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/01/16 20:29:12
 	   65 72 65 6D 79
 	   20 50 72 61 74
 	   65 72 00
- 0000003F 57 68 61 74 20	messageEnterName    BYTE  "What is your name? ", 0
+ 0000003F 2A 2A 20 45 43	messageEC1          BYTE  "** EC1: Align output columns." ,0
+	   31 3A 20 41 6C
+	   69 67 6E 20 6F
+	   75 74 70 75 74
+	   20 63 6F 6C 75
+	   6D 6E 73 2E 00
+ 0000005D 2A 2A 20 45 43	messageEC2          BYTE  "** EC2: Display more composites, but show them one page at a time.", 0
+	   32 3A 20 44 69
+	   73 70 6C 61 79
+	   20 6D 6F 72 65
+	   20 63 6F 6D 70
+	   6F 73 69 74 65
+	   73 2C 20 62 75
+	   74 20 73 68 6F
+	   77 20 74 68 65
+	   6D 20 6F 6E 65
+	   20 70 61 67 65
+	   20 61 74 20 61
+	   20 74 69 6D 65
+	   2E 00
+
+ 000000A0 57 68 61 74 20	messageEnterName    BYTE  "What is your name? ", 0
 	   69 73 20 79 6F
 	   75 72 20 6E 61
 	   6D 65 3F 20 00
- 00000053 48 65 6C 6C 6F	messageHello        BYTE  "Hello, ", 0
+ 000000B4 48 65 6C 6C 6F	messageHello        BYTE  "Hello, ", 0
 	   2C 20 00
- 0000005B 45 6E 74 65 72	messageInstruction1 BYTE  "Enter a numbers between [-100,-1].", 0
-	   20 61 20 6E 75
-	   6D 62 65 72 73
-	   20 62 65 74 77
-	   65 65 6E 20 5B
-	   2D 31 30 30 2C
-	   2D 31 5D 2E 00
- 0000007E 45 6E 74 65 72	messageInstruction2 BYTE  "Enter a positive number to exit.", 0
-	   20 61 20 70 6F
-	   73 69 74 69 76
-	   65 20 6E 75 6D
-	   62 65 72 20 74
-	   6F 20 65 78 69
-	   74 2E 00
- 0000009F 3A 20 45 6E 74	messageGetNumber    BYTE  ": Enter a number : ", 0
-	   65 72 20 61 20
+
+ 000000BC 45 6E 74 65 72	messageInstruction1 BYTE  "Enter the number of composite numbers you would like to see.", 0
+	   20 74 68 65 20
 	   6E 75 6D 62 65
-	   72 20 3A 20 00
- 000000B3 20 69 73 20 6F	messageNumberRange  BYTE  " is out of range.", 0
+	   72 20 6F 66 20
+	   63 6F 6D 70 6F
+	   73 69 74 65 20
+	   6E 75 6D 62 65
+	   72 73 20 79 6F
+	   75 20 77 6F 75
+	   6C 64 20 6C 69
+	   6B 65 20 74 6F
+	   20 73 65 65 2E
+	   00
+ 000000F9 54 68 65 20 6D	messageInstruction2 BYTE  "The maximum number of composites to display is 400.", 0
+	   61 78 69 6D 75
+	   6D 20 6E 75 6D
+	   62 65 72 20 6F
+	   66 20 63 6F 6D
+	   70 6F 73 69 74
+	   65 73 20 74 6F
+	   20 64 69 73 70
+	   6C 61 79 20 69
+	   73 20 34 30 30
+	   2E 00
+
+ 0000012D 45 6E 74 65 72	messageGetNumber    BYTE  "Enter the number number of composites to display [1, 400] : ", 0
+	   20 74 68 65 20
+	   6E 75 6D 62 65
+	   72 20 6E 75 6D
+	   62 65 72 20 6F
+	   66 20 63 6F 6D
+	   70 6F 73 69 74
+	   65 73 20 74 6F
+	   20 64 69 73 70
+	   6C 61 79 20 5B
+	   31 2C 20 34 30
+	   30 5D 20 3A 20
+	   00
+ 0000016A 20 69 73 20 6F	messageRangeError   BYTE  " is out of range. Try again.", 0
 	   75 74 20 6F 66
 	   20 72 61 6E 67
-	   65 2E 00
- 000000C5 59 6F 75 20 65	messageTotal1       BYTE  "You entered " ,0
-	   6E 74 65 72 65
-	   64 20 00
- 000000D2 20 76 61 6C 69	messageTotal2       BYTE  " valid numbers." ,0
-	   64 20 6E 75 6D
-	   62 65 72 73 2E
-	   00
- 000000E2 54 68 65 20 73	messageSum          BYTE  "The sum of valid negative integers is : " ,0
-	   75 6D 20 6F 66
-	   20 76 61 6C 69
-	   64 20 6E 65 67
-	   61 74 69 76 65
-	   20 69 6E 74 65
-	   67 65 72 73 20
-	   69 73 20 3A 20
-	   00
- 0000010B 54 68 65 20 69	messageAvgInt       BYTE  "The integer average of the valid negative integers is : ", 0
-	   6E 74 65 67 65
-	   72 20 61 76 65
-	   72 61 67 65 20
-	   6F 66 20 74 68
-	   65 20 76 61 6C
-	   69 64 20 6E 65
-	   67 61 74 69 76
-	   65 20 69 6E 74
-	   65 67 65 72 73
-	   20 69 73 20 3A
-	   20 00
- 00000144 54 68 65 20 66	messageAvgFloat     BYTE  "The floating point average of the valid negative integers is : ", 0
-	   6C 6F 61 74 69
-	   6E 67 20 70 6F
-	   69 6E 74 20 61
-	   76 65 72 61 67
-	   65 20 6F 66 20
-	   74 68 65 20 76
-	   61 6C 69 64 20
-	   6E 65 67 61 74
-	   69 76 65 20 69
-	   6E 74 65 67 65
-	   72 73 20 69 73
-	   20 3A 20 00
- 00000184 47 6F 6F 64 20	messageExit1        BYTE  "Good bye " ,0
+	   65 2E 20 54 72
+	   79 20 61 67 61
+	   69 6E 2E 00
+
+ 00000187 41 73 73 65 6D	messageExit1        BYTE  "Assembly language is pretty powerful.", 0
+	   62 6C 79 20 6C
+	   61 6E 67 75 61
+	   67 65 20 69 73
+	   20 70 72 65 74
+	   74 79 20 70 6F
+	   77 65 72 66 75
+	   6C 2E 00
+ 000001AD 49 20 73 68 6F	messageExit2        BYTE  "I should make a real-time thread scheduler!" ,0
+	   75 6C 64 20 6D
+	   61 6B 65 20 61
+	   20 72 65 61 6C
+	   2D 74 69 6D 65
+	   20 74 68 72 65
+	   61 64 20 73 63
+	   68 65 64 75 6C
+	   65 72 21 00
+ 000001D9 47 6F 6F 64 20	messageExit3        BYTE  "Good bye ", 0
 	   62 79 65 20 00
- 0000018E 21 00			messageExit2        BYTE  "!" ,0
+ 000001E3 21 00			messageExit4        BYTE  "!" ,0
 
- 00000190 2A 2A 20 45 43	messageEC1          BYTE  "** EC1: Number the lines during user input." ,0
-	   31 3A 20 4E 75
-	   6D 62 65 72 20
-	   74 68 65 20 6C
-	   69 6E 65 73 20
-	   64 75 72 69 6E
-	   67 20 75 73 65
-	   72 20 69 6E 70
-	   75 74 2E 00
- 000001BC 2A 2A 20 45 43	messageEC2          BYTE  "** EC2: Calculate and display the average in floating point to the nearest .001", 0
-	   32 3A 20 43 61
-	   6C 63 75 6C 61
-	   74 65 20 61 6E
-	   64 20 64 69 73
-	   70 6C 61 79 20
-	   74 68 65 20 61
-	   76 65 72 61 67
-	   65 20 69 6E 20
-	   66 6C 6F 61 74
-	   69 6E 67 20 70
-	   6F 69 6E 74 20
-	   74 6F 20 74 68
-	   65 20 6E 65 61
-	   72 65 73 74 20
-	   2E 30 30 31 00
+ 000001E5 20 00			messageSpace        BYTE  " " ,0
 
- 0000020C  0000001E [		storageName         BYTE 30 DUP (?) ; Memory to store user name
+ 000001E7  0000001E [		storageName         BYTE 30 DUP (?) ; Memory to store user name
 	    00
 	   ]
- 0000022A 0000001E		storageNameLength   DWORD ($-storageName)
+ 00000205 0000001E		storageNameLength   DWORD ($-storageName)
 
-
- 0000022E 03E8			FloatRounder       WORD 1000     ; This is actually 1/1000 = .001. Used for float rounding
- 00000230 00000000		FloatDividend      DWORD ?       ; first integer entered by user
- 00000234 00000000		FloatDivisor       DWORD ?       ; second integer entered by user
+ 00000209 000493E0		maxUserInput        DWORD 300000
+ 0000020D 00000000		columnNumber        DWORD 0
+ 00000211 00			rowNumber           BYTE  0
+ 00000212 00000000		cNumbersFound       DWORD 0
 
  00000000			.code
- 00000000			main PROC
 
-				;Main procedure requirements
+				;--------------------------------------------------------
+				;
+				; Display the introduction
+				;
+				;--------------------------------------------------------
+
+ 00000000			displayIntro PROC
 				; introduction
  00000000  BA 00000000 R		mov		edx, OFFSET messageTitle
  00000005  E8 00000000 E		call	WriteString
@@ -164,145 +166,286 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/01/16 20:29:12
  0000000F  E8 00000000 E		call	CrLf
 
 				; Display extra credit information
- 00000014  BA 00000190 R		mov		edx, OFFSET messageEC1
+ 00000014  BA 0000003F R		mov		edx, OFFSET messageEC1
  00000019  E8 00000000 E		call	WriteString
  0000001E  E8 00000000 E		call	CrLf
- 00000023  BA 000001BC R		mov	edx, OFFSET messageEC2
+ 00000023  BA 0000005D R		mov	edx, OFFSET messageEC2
  00000028  E8 00000000 E		call	WriteString
  0000002D  E8 00000000 E		call	CrLf
  00000032  E8 00000000 E		call	CrLf
+ 00000037  C3				ret
+ 00000038			displayIntro ENDP
 
+				;--------------------------------------------------------
+				;
+				; Get and print the user name
+				;
+				;--------------------------------------------------------
+
+ 00000038			getUsername PROC
 				; Get the user name
- 00000037  BA 0000003F R		mov		edx, OFFSET messageEnterName
- 0000003C  E8 00000000 E		call	WriteString
- 00000041  BA 0000020C R		mov		edx, OFFSET storageName
- 00000046  8B 0D 0000022A R		mov		ecx, storageNameLength
- 0000004C  E8 00000000 E		call	ReadString
+ 00000038  BA 000000A0 R		mov		edx, OFFSET messageEnterName
+ 0000003D  E8 00000000 E		call	WriteString
+ 00000042  BA 000001E7 R		mov		edx, OFFSET storageName
+ 00000047  8B 0D 00000205 R		mov		ecx, storageNameLength
+ 0000004D  E8 00000000 E		call	ReadString
 
 				; Display the username
- 00000051  BA 00000053 R		mov     edx, OFFSET messageHello
- 00000056  E8 00000000 E		call    WriteString
- 0000005B  BA 0000020C R		mov     edx, OFFSET storageName
- 00000060  E8 00000000 E		call    WriteString
- 00000065  E8 00000000 E		call    CrLf
+ 00000052  BA 000000B4 R		mov     edx, OFFSET messageHello
+ 00000057  E8 00000000 E		call    WriteString
+ 0000005C  BA 000001E7 R		mov     edx, OFFSET storageName
+ 00000061  E8 00000000 E		call    WriteString
+ 00000066  E8 00000000 E		call    CrLf
 
- 0000006A			SHOWINSTRUCTIONS:
+ 0000006B  C3				ret
+ 0000006C			getUsername ENDP
 
-				; Display instructions
- 0000006A  BA 0000005B R	    mov     edx, OFFSET messageInstruction1
- 0000006F  E8 00000000 E		call    WriteString
- 00000074  E8 00000000 E		call    CrLf
+				;--------------------------------------------------------
+				;
+				; Display the instructions for the application
+				;
+				;--------------------------------------------------------
 
- 00000079  BA 0000007E R	    mov     edx, OFFSET messageInstruction2
- 0000007E  E8 00000000 E		call    WriteString
- 00000083  E8 00000000 E		call    CrLf
+ 0000006C			displayInstructions PROC
+					; Display instructions
 
-					; Setup the Accumulator and Counter
- 00000088  BB 00000000			mov     ebx, 0 ; This is the accumulator
- 0000008D  B9 00000000			mov     ecx, 0 ; This is the counter
+ 0000006C  BA 000000BC R	    mov     edx, OFFSET messageInstruction1
+ 00000071  E8 00000000 E		call    WriteString
+ 00000076  E8 00000000 E		call    CrLf
 
- 00000092			NEXTINPUT:
+ 0000007B  BA 000000F9 R	    mov     edx, OFFSET messageInstruction2
+ 00000080  E8 00000000 E		call    WriteString
+ 00000085  E8 00000000 E		call    CrLf
 
-				; Get integer input
- 00000092  8B C1		    mov     eax, ecx ; Move the counter into eax
- 00000094  40				inc     eax      ; Add one for the user count
- 00000095  E8 00000000 E		call    WriteDec
- 0000009A  BA 0000009F R	    mov     edx, OFFSET messageGetNumber
- 0000009F  E8 00000000 E		call    WriteString
- 000000A4  E8 00000000 E		call    ReadInt                        ; Result is in EAX
+ 0000008A  C3				ret
+ 0000008B			displayInstructions ENDP
 
-				; Verify input is int the range [-100, -1]
-					; Input number is in EAX
- 000000A9  83 F8 00			cmp      eax, 0
- 000000AC  7D 20			jge      CALCRESULTS
- 000000AE  83 F8 9C			cmp      eax, -100
- 000000B1  7D 16			jge      ACCUMULATEINT
+				;--------------------------------------------------------
+				;
+				; Get user input
+				;
+				;--------------------------------------------------------
 
-					; The input is below -100 and above -1
-					; Print error and return to input
- 000000B3  E8 00000000 E	    call     WriteInt
- 000000B8  BA 000000B3 R		mov      edx, OFFSET messageNumberRange
- 000000BD  E8 00000000 E		call     WriteString
- 000000C2  E8 00000000 E		call     CrLf
- 000000C7  EB C9			jmp      NEXTINPUT
+ 0000008B			getInput PROC
+
+ 0000008B			USERINPUT:
+ 0000008B  BA 0000012D R	    mov     edx, OFFSET messageGetNumber
+ 00000090  E8 00000000 E		call    WriteString
+ 00000095  E8 00000000 E		call    ReadInt                        ; Result is in EAX
+
+					; Check input and return to start if it is out of range
+ 0000009A  83 F8 01			cmp     eax, 1
+ 0000009D  7C 0A			jl      INPUTINVALID
+ 0000009F  3B 05 00000209 R		cmp     eax, maxUserInput
+ 000000A5  7F 02			jg      INPUTINVALID
+
+					; The input is valid
+ 000000A7  EB 16			jmp     INPUTVALID
+
+ 000000A9			INPUTINVALID:
+					; The invalid number is in eax, print the error and return to the start of user input
+ 000000A9  E8 00000000 E	    call    WriteDec
+ 000000AE  BA 0000016A R		mov     edx, OFFSET messageRangeError
+ 000000B3  E8 00000000 E		call    WriteString
+ 000000B8  E8 00000000 E		call    CrLf
+ 000000BD  EB CC			jmp     GETINPUT
 					
-					;jl      SHOWINSTRUCTIONS
-					;cmp     eax, 46
-					;jg      SHOWINSTRUCTIONS
- 000000C9			ACCUMULATEINT:
-					
-					; Input is valid
-					; eax contains the user input
-					; ebx is the accumulator
-					; ecx is the counter
+ 000000BF			INPUTVALID:
+ 000000BF  C3				ret
+ 000000C0			getInput ENDP
 
- 000000C9  03 D8			add      ebx, eax
- 000000CB  41				inc      ecx
- 000000CC  EB C4			jmp      NEXTINPUT
+				;--------------------------------------------------------
+				;
+				; Display the exit text for the application
+				;
+				;--------------------------------------------------------
 
- 000000CE			CALCRESULTS:
-					; ebx contains the integer accumulator
-					; ecx contains the counter
-
-					; Print the total sum
- 000000CE  BA 000000E2 R		mov      edx, OFFSET messageSum
- 000000D3  E8 00000000 E		call     WriteString
- 000000D8  8B C3			mov      eax, ebx
- 000000DA  E8 00000000 E		call     WriteInt
- 000000DF  E8 00000000 E		call     CrLf
-
-					; Print the integer average
-					; Move total into EAX
- 000000E4  8B C3			mov      eax, ebx
-					; Sign extend into EDX
- 000000E6  99				cdq
-					; Preform signed division into eax:edx
- 000000E7  F7 F9			idiv     ecx
-					; Print result from EAX
-					; We discard the remainder at this point by loading a string offset into EDX
- 000000E9  BA 0000010B R		mov     edx, OFFSET messageAvgInt
- 000000EE  E8 00000000 E		call    WriteString
- 000000F3  E8 00000000 E		call    WriteInt
- 000000F8  E8 00000000 E		call    CrLf
-
-					; Now print the floating point answer
-					; EBX - sum
-					; ECX - counter
-					; Preform floating point division
- 000000FD  89 1D 00000230 R		mov     FloatDividend, ebx
- 00000103  89 0D 00000234 R		mov     FloatDivisor, ecx
- 00000109  DB 05 00000230 R		fild    FloatDividend    ; Load first operand into ST(0) Convert DWORD->REAL
- 0000010F  DA 35 00000234 R		fidiv   FloatDivisor     ; Loadn and divide first/second and store result in ST(0)
- 00000115  DE 0D 0000022E R		fimul   FloatRounder     ; Multiply ST(0) by 1000
- 0000011B  D9 FC			frndint                  ; Round the float number to integer
- 0000011D  DE 35 0000022E R		fidiv   FloatRounder     ; Divide ST(0) by 1000 (round to .001)
-
-					; Print float division messsage and result
- 00000123  BA 00000144 R		mov     edx, OFFSET messageAvgFloat
- 00000128  E8 00000000 E		call    WriteString
- 0000012D  E8 00000000 E		call    WriteFloat
- 00000132  E8 00000000 E		call    CrLf
-
-
- 00000137			GOODBYE:
+ 000000C0			displayExit PROC
 				; Show goodbye
- 00000137  E8 00000000 E		call    CrLf
- 0000013C  E8 00000000 E		call    CrLf
- 00000141  BA 00000184 R		mov     edx, OFFSET messageExit1
- 00000146  E8 00000000 E		call    WriteString
- 0000014B  BA 0000020C R		mov     edx, OFFSET storageName
- 00000150  E8 00000000 E		call    WriteString
- 00000155  BA 0000018E R		mov     edx, OFFSET messageExit2
- 0000015A  E8 00000000 E		call    WriteString
- 0000015F  E8 00000000 E		call    CrLf
+ 000000C0  E8 00000000 E		call    CrLf
+ 000000C5  E8 00000000 E		call    CrLf
+ 000000CA  BA 00000187 R		mov     edx, OFFSET messageExit1
+ 000000CF  E8 00000000 E		call    WriteString
+ 000000D4  E8 00000000 E		call    CrLf
+ 000000D9  BA 000001AD R		mov     edx, OFFSET messageExit2
+ 000000DE  E8 00000000 E		call    WriteString
+ 000000E3  E8 00000000 E		call    CrLf
+ 000000E8  BA 000001D9 R		mov     edx, OFFSET messageExit3
+ 000000ED  E8 00000000 E		call    WriteString
+ 000000F2  BA 000001E7 R		mov     edx, OFFSET storageName
+ 000000F7  E8 00000000 E		call    WriteString
+ 000000FC  BA 000001E3 R		mov     edx, OFFSET messageExit4
+ 00000101  E8 00000000 E		call    WriteString
+ 00000106  E8 00000000 E		call    CrLf
+ 0000010B  C3				ret
+ 0000010C			displayExit ENDP
 
+				;--------------------------------------------------------
+				;
+				; Pause the output and wait for user input
+				;
+				;--------------------------------------------------------
+
+ 0000010C			PauseOutput PROC
+ 0000010C  E8 00000000 E		call CrLf
+ 00000111  E8 00000000 E		call WaitMsg
+ 00000116  E8 00000000 E		call CrLf
+ 0000011B  E8 00000000 E		call CrLf
+ 00000120  C3				ret
+ 00000121			PauseOutput ENDP
+
+				;--------------------------------------------------------
+				;
+				; Display spaces based on the size of the number
+				;
+				;--------------------------------------------------------
+
+ 00000121			WriteColumnSpaces PROC
+ 00000121  BA 000001E5 R		mov     edx, OFFSET messageSpace
+
+					;cmp     eax, 1000000
+					;jge     COLUMNSPACE1
+					;call    WriteString
+
+				;COLUMNSPACE1:
+ 00000126  3D 000186A0			cmp     eax, 100000
+ 0000012B  7D 05			jge     COLUMNSPACE2
+ 0000012D  E8 00000000 E		call    WriteString
+
+ 00000132			COLUMNSPACE2:
+ 00000132  3D 00002710			cmp     eax, 10000
+ 00000137  7D 05			jge     COLUMNSPACE3
+ 00000139  E8 00000000 E		call    WriteString
+
+ 0000013E			COLUMNSPACE3:
+ 0000013E  3D 000003E8			cmp     eax, 1000
+ 00000143  7D 05			jge     COLUMNSPACE4
+ 00000145  E8 00000000 E		call    WriteString
+
+ 0000014A			COLUMNSPACE4:
+ 0000014A  83 F8 64			cmp     eax, 100
+ 0000014D  7D 05			jge     COLUMNSPACE5
+ 0000014F  E8 00000000 E		call    WriteString
+
+ 00000154			COLUMNSPACE5:
+ 00000154  83 F8 0A			cmp     eax, 10
+ 00000157  7D 05			jge     COLUMNSPACE6
+ 00000159  E8 00000000 E		call    WriteString
+
+ 0000015E			COLUMNSPACE6:
+ 0000015E  E8 00000000 E		call    WriteString
+ 00000163  C3				ret
+ 00000164			WriteColumnSpaces ENDP
+
+				;--------------------------------------------------------
+				;
+				; Entry point for displaying composite numbers
+				;
+				;--------------------------------------------------------
+
+ 00000164			showComposites PROC
+ 00000164  8B C8			mov  ecx, eax ; Move the user value into the loop counter
+ 00000166  B8 00000002			mov  eax, 2
+
+ 0000016B			COMPOSITELOOP:
+ 0000016B  51				push ecx
+ 0000016C  E8 0000000B			call isComposite ; This function modifies ECX
+ 00000171  59				pop  ecx
+ 00000172  40				inc eax
+ 00000173  39 0D 00000212 R		cmp cNumbersFound, ecx
+ 00000179  75 F0			jne COMPOSITELOOP
+
+ 0000017B  C3				ret
+ 0000017C			showComposites ENDP
+
+				;--------------------------------------------------------
+				;
+				; A function to print a single number as a composite
+				;
+				;--------------------------------------------------------
+
+ 0000017C			isComposite PROC
+					; EAX contains the number to check as a composite
+ 0000017C  8B C8			mov    ecx, eax ; Setup loop counter
+ 0000017E  49				dec    ecx      ; We don't want to divide by it's self, so reduce count by one
+
+ 0000017F  8B D8			mov    ebx, eax ; EBX will contain the original number
+ 00000181			COMPOSITECHECKLOOP:
+ 00000181  83 F9 01			cmp   ecx, 1    ; 1 is not a composite number
+ 00000184  74 73			je    NOTCOMPOSITE
+
+ 00000186  8B C3			mov    eax, ebx ; Restore the original number into eax
+ 00000188  BA 00000000			mov    edx, 0   ; Clear edx
+ 0000018D  F7 F1			div    ecx      ; Divide by the loop counter
+ 0000018F  83 FA 00			cmp    edx, 0   ; If there is no remainder, then this is a composite number
+ 00000192  75 65			jne    NOTCOMPOSITE
+
+ 00000194  8B 15 00000212 R		mov    edx, cNumbersFound
+ 0000019A  42				inc    edx
+ 0000019B  89 15 00000212 R		mov    cNumbersFound, edx
+
+ 000001A1  8B C3			mov    eax, ebx ; Restore the original number into eax
+ 000001A3  E8 FFFFFF79			call   WriteColumnSpaces
+ 000001A8  E8 00000000 E		call   WriteDec
+
+ 000001AD  A1 0000020D R		mov    eax, columnNumber
+ 000001B2  40				inc    eax
+ 000001B3  A3 0000020D R		mov    columnNumber, eax
+
+					; We have printed 10 numbers, so do a CrLf
+ 000001B8  83 F8 0A			cmp    eax, 10
+ 000001BB  75 39			jne    COMPOSITECOLUMN
+ 000001BD  C7 05 0000020D R		mov    columnNumber, 0
+	   00000000
+ 000001C7  E8 00000000 E		call   CrLf
+
+					; Pause the print out and display message if we have hit the console size
+					
+ 000001CC  B8 00000000			mov    eax, 0
+ 000001D1  A0 00000211 R		mov    al, rowNumber
+ 000001D6  FE C0			inc    al
+ 000001D8  A2 00000211 R		mov    rowNumber, al
+ 000001DD  E8 00000000 E		call   GetMaxXY
+ 000001E2  38 35 00000211 R		cmp    rowNumber, dh
+ 000001E8  75 0C			jne    COMPOSITECOLUMN
+					
+ 000001EA  C6 05 00000211 R		mov    rowNumber, 0
+	   00
+ 000001F1  E8 FFFFFF16			call   PauseOutput
+
+ 000001F6			COMPOSITECOLUMN:
+
+ 000001F6  8B C3			mov    eax, ebx ; Restore the original number into eax
+ 000001F8  C3				ret             ; Exit the procedure now that we found the composite number
+
+ 000001F9			NOTCOMPOSITE:
+ 000001F9  E2 86			loop COMPOSITECHECKLOOP
+ 000001FB  8B C3			mov    eax, ebx ; Restore the original number into eax
+ 000001FD  C3				ret
+ 000001FE			isComposite ENDP
+
+				;--------------------------------------------------------
+				;
+				; Program entry point
+				;
+				;--------------------------------------------------------
+
+ 000001FE			main PROC
+					
+ 000001FE  E8 FFFFFDFD			call displayIntro
+ 00000203  E8 FFFFFE30			call getUsername
+ 00000208  E8 FFFFFE5F			call displayInstructions
+ 0000020D  E8 FFFFFE79			call getInput
+ 00000212  E8 FFFFFF4D			call showComposites
+
+ 00000217  E8 FFFFFEA4			call displayExit
 					exit	; exit to operating system
- 00000164  6A 00	   *	    push   +000000000h
- 00000166  E8 00000000 E   *	    call   ExitProcess
- 0000016B			main ENDP
+ 0000021C  6A 00	   *	    push   +000000000h
+ 0000021E  E8 00000000 E   *	    call   ExitProcess
+ 00000223			main ENDP
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/01/16 20:29:12
+Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 #Integer Accumulator (Project03.asm			     Symbols 2 - 1
 
 
@@ -396,8 +539,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000238 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000016B Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000216 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000223 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -451,6 +594,7 @@ MsgBox . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 OpenInputFile  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ParseDecimal32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ParseInteger32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+PauseOutput  . . . . . . . . . .	P Near	 0000010C _TEXT	Length= 00000015 Public STDCALL
 PeekConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Random32 . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 RandomRange  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -490,6 +634,12 @@ WaitMsg  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteBinB  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteBin . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteChar  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteColumnSpaces  . . . . . . .	P Near	 00000121 _TEXT	Length= 00000043 Public STDCALL
+  COLUMNSPACE2 . . . . . . . . .	L Near	 00000132 _TEXT	
+  COLUMNSPACE3 . . . . . . . . .	L Near	 0000013E _TEXT	
+  COLUMNSPACE4 . . . . . . . . .	L Near	 0000014A _TEXT	
+  COLUMNSPACE5 . . . . . . . . .	L Near	 00000154 _TEXT	
+  COLUMNSPACE6 . . . . . . . . .	L Near	 0000015E _TEXT	
 WriteConsoleA  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteConsoleOutputAttribute  . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteConsoleOutputCharacterA . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -504,14 +654,23 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000016B Public STDCALL
-  SHOWINSTRUCTIONS . . . . . . .	L Near	 0000006A _TEXT	
-  NEXTINPUT  . . . . . . . . . .	L Near	 00000092 _TEXT	
-  ACCUMULATEINT  . . . . . . . .	L Near	 000000C9 _TEXT	
-  CALCRESULTS  . . . . . . . . .	L Near	 000000CE _TEXT	
-  GOODBYE  . . . . . . . . . . .	L Near	 00000137 _TEXT	
+displayExit  . . . . . . . . . .	P Near	 000000C0 _TEXT	Length= 0000004C Public STDCALL
+displayInstructions  . . . . . .	P Near	 0000006C _TEXT	Length= 0000001F Public STDCALL
+displayIntro . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000038 Public STDCALL
+getInput . . . . . . . . . . . .	P Near	 0000008B _TEXT	Length= 00000035 Public STDCALL
+  USERINPUT  . . . . . . . . . .	L Near	 0000008B _TEXT	
+  INPUTINVALID . . . . . . . . .	L Near	 000000A9 _TEXT	
+  INPUTVALID . . . . . . . . . .	L Near	 000000BF _TEXT	
+getUsername  . . . . . . . . . .	P Near	 00000038 _TEXT	Length= 00000034 Public STDCALL
+isComposite  . . . . . . . . . .	P Near	 0000017C _TEXT	Length= 00000082 Public STDCALL
+  COMPOSITECHECKLOOP . . . . . .	L Near	 00000181 _TEXT	
+  COMPOSITECOLUMN  . . . . . . .	L Near	 000001F6 _TEXT	
+  NOTCOMPOSITE . . . . . . . . .	L Near	 000001F9 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 000001FE _TEXT	Length= 00000025 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
+showComposites . . . . . . . . .	P Near	 00000164 _TEXT	Length= 00000018 Public STDCALL
+  COMPOSITELOOP  . . . . . . . .	L Near	 0000016B _TEXT	
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 
 
@@ -571,9 +730,6 @@ FILE_WRITE_DATA  . . . . . . . .	Number	 00000002h
 FOCUS_EVENT  . . . . . . . . . .	Number	 00000010h   
 FORMAT_MESSAGE_ALLOCATE_BUFFER .	Number	 00000100h   
 FORMAT_MESSAGE_FROM_SYSTEM . . .	Number	 00001000h   
-FloatDividend  . . . . . . . . .	DWord	 00000230 _DATA	
-FloatDivisor . . . . . . . . . .	DWord	 00000234 _DATA	
-FloatRounder . . . . . . . . . .	Word	 0000022E _DATA	
 FormatMessage  . . . . . . . . .	Text   	 FormatMessageA
 GENERIC_ALL  . . . . . . . . . .	Number	 10000000h   
 GENERIC_EXECUTE  . . . . . . . .	Number	 20000000h   
@@ -734,6 +890,8 @@ WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
+cNumbersFound  . . . . . . . . .	DWord	 00000212 _DATA	
+columnNumber . . . . . . . . . .	DWord	 0000020D _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 gray . . . . . . . . . . . . . .	Number	 00000008h   
@@ -745,25 +903,25 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-messageAvgFloat  . . . . . . . .	Byte	 00000144 _DATA	
-messageAvgInt  . . . . . . . . .	Byte	 0000010B _DATA	
-messageEC1 . . . . . . . . . . .	Byte	 00000190 _DATA	
-messageEC2 . . . . . . . . . . .	Byte	 000001BC _DATA	
-messageEnterName . . . . . . . .	Byte	 0000003F _DATA	
-messageExit1 . . . . . . . . . .	Byte	 00000184 _DATA	
-messageExit2 . . . . . . . . . .	Byte	 0000018E _DATA	
-messageGetNumber . . . . . . . .	Byte	 0000009F _DATA	
-messageHello . . . . . . . . . .	Byte	 00000053 _DATA	
-messageInstruction1  . . . . . .	Byte	 0000005B _DATA	
-messageInstruction2  . . . . . .	Byte	 0000007E _DATA	
-messageNumberRange . . . . . . .	Byte	 000000B3 _DATA	
-messageSum . . . . . . . . . . .	Byte	 000000E2 _DATA	
+maxUserInput . . . . . . . . . .	DWord	 00000209 _DATA	
+messageEC1 . . . . . . . . . . .	Byte	 0000003F _DATA	
+messageEC2 . . . . . . . . . . .	Byte	 0000005D _DATA	
+messageEnterName . . . . . . . .	Byte	 000000A0 _DATA	
+messageExit1 . . . . . . . . . .	Byte	 00000187 _DATA	
+messageExit2 . . . . . . . . . .	Byte	 000001AD _DATA	
+messageExit3 . . . . . . . . . .	Byte	 000001D9 _DATA	
+messageExit4 . . . . . . . . . .	Byte	 000001E3 _DATA	
+messageGetNumber . . . . . . . .	Byte	 0000012D _DATA	
+messageHello . . . . . . . . . .	Byte	 000000B4 _DATA	
+messageInstruction1  . . . . . .	Byte	 000000BC _DATA	
+messageInstruction2  . . . . . .	Byte	 000000F9 _DATA	
+messageRangeError  . . . . . . .	Byte	 0000016A _DATA	
+messageSpace . . . . . . . . . .	Byte	 000001E5 _DATA	
 messageTitle . . . . . . . . . .	Byte	 00000000 _DATA	
-messageTotal1  . . . . . . . . .	Byte	 000000C5 _DATA	
-messageTotal2  . . . . . . . . .	Byte	 000000D2 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-storageNameLength  . . . . . . .	DWord	 0000022A _DATA	
-storageName  . . . . . . . . . .	Byte	 0000020C _DATA	
+rowNumber  . . . . . . . . . . .	Byte	 00000211 _DATA	
+storageNameLength  . . . . . . .	DWord	 00000205 _DATA	
+storageName  . . . . . . . . . .	Byte	 000001E7 _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   

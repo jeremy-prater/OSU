@@ -1,16 +1,18 @@
-TITLE Integer Accumulator (Project03.asm)
+TITLE Composite Numbers (Project04.asm)
 
 ; Author: Jeremy Prater
-; Course / Project ID : CS-271 / Project 03                Date: 10/25/2016
-; Description:  This program will introduce the programmer, print instructions,
-;                  get user input, validate input, generate and print a
-;                  fibonacci sequence, exit
+; Course / Project ID : CS-271 / Project 04                Date: 11/06/2016
+; Description:  Write a program to calculate composite numbers. First, the user is
+; instructed to enter the number of composites to be displayed, and is prompted to
+; enter an integer in the range [1,400]
+;
+; The range has been extended to [1, 300000] allow for pausing of the printed output
 ;
 
 INCLUDE Irvine32.inc
 
 .data
-messageTitle        BYTE  "            Integer Accumulator         by       Jeremy Prater", 0
+messageTitle        BYTE  "            Composite Numbers         by       Jeremy Prater", 0
 messageEC1          BYTE  "** EC1: Align output columns." ,0
 messageEC2          BYTE  "** EC2: Display more composites, but show them one page at a time.", 0
 
@@ -18,9 +20,9 @@ messageEnterName    BYTE  "What is your name? ", 0
 messageHello        BYTE  "Hello, ", 0
 
 messageInstruction1 BYTE  "Enter the number of composite numbers you would like to see.", 0
-messageInstruction2 BYTE  "The maximum number of composites to display is 400.", 0
+messageInstruction2 BYTE  "The maximum number of composites to display is 300000.", 0
 
-messageGetNumber    BYTE  "Enter the number number of composites to display [1, 400] : ", 0
+messageGetNumber    BYTE  "Enter the number number of composites to display [1, 300000] : ", 0
 messageRangeError   BYTE  " is out of range. Try again.", 0
 
 messageExit1        BYTE  "Assembly language is pretty powerful.", 0

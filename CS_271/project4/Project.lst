@@ -1,14 +1,16 @@
-Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
-#Integer Accumulator (Project03.asm			     Page 1 - 1
+Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/06/16 13:45:29
+!Composite Numbers (Project04.asm			     Page 1 - 1
 
 
-				TITLE Integer Accumulator (Project03.asm)
+				TITLE Composite Numbers (Project04.asm)
 
 				; Author: Jeremy Prater
-				; Course / Project ID : CS-271 / Project 03                Date: 10/25/2016
-				; Description:  This program will introduce the programmer, print instructions,
-				;                  get user input, validate input, generate and print a
-				;                  fibonacci sequence, exit
+				; Course / Project ID : CS-271 / Project 04                Date: 11/06/2016
+				; Description:  Write a program to calculate composite numbers. First, the user is
+				; instructed to enter the number of composites to be displayed, and is prompted to
+				; enter an integer in the range [1,400]
+				;
+				; The range has been extended to [1, 300000] allow for pausing of the printed output
 				;
 
 				INCLUDE Irvine32.inc
@@ -31,26 +33,26 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 			      C 
 
  00000000			.data
- 00000000 20 20 20 20 20	messageTitle        BYTE  "            Integer Accumulator         by       Jeremy Prater", 0
+ 00000000 20 20 20 20 20	messageTitle        BYTE  "            Composite Numbers         by       Jeremy Prater", 0
 	   20 20 20 20 20
-	   20 20 49 6E 74
-	   65 67 65 72 20
-	   41 63 63 75 6D
-	   75 6C 61 74 6F
-	   72 20 20 20 20
+	   20 20 43 6F 6D
+	   70 6F 73 69 74
+	   65 20 4E 75 6D
+	   62 65 72 73 20
 	   20 20 20 20 20
-	   62 79 20 20 20
-	   20 20 20 20 4A
-	   65 72 65 6D 79
-	   20 50 72 61 74
-	   65 72 00
- 0000003F 2A 2A 20 45 43	messageEC1          BYTE  "** EC1: Align output columns." ,0
+	   20 20 20 62 79
+	   20 20 20 20 20
+	   20 20 4A 65 72
+	   65 6D 79 20 50
+	   72 61 74 65 72
+	   00
+ 0000003D 2A 2A 20 45 43	messageEC1          BYTE  "** EC1: Align output columns." ,0
 	   31 3A 20 41 6C
 	   69 67 6E 20 6F
 	   75 74 70 75 74
 	   20 63 6F 6C 75
 	   6D 6E 73 2E 00
- 0000005D 2A 2A 20 45 43	messageEC2          BYTE  "** EC2: Display more composites, but show them one page at a time.", 0
+ 0000005B 2A 2A 20 45 43	messageEC2          BYTE  "** EC2: Display more composites, but show them one page at a time.", 0
 	   32 3A 20 44 69
 	   73 70 6C 61 79
 	   20 6D 6F 72 65
@@ -65,14 +67,14 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   20 74 69 6D 65
 	   2E 00
 
- 000000A0 57 68 61 74 20	messageEnterName    BYTE  "What is your name? ", 0
+ 0000009E 57 68 61 74 20	messageEnterName    BYTE  "What is your name? ", 0
 	   69 73 20 79 6F
 	   75 72 20 6E 61
 	   6D 65 3F 20 00
- 000000B4 48 65 6C 6C 6F	messageHello        BYTE  "Hello, ", 0
+ 000000B2 48 65 6C 6C 6F	messageHello        BYTE  "Hello, ", 0
 	   2C 20 00
 
- 000000BC 45 6E 74 65 72	messageInstruction1 BYTE  "Enter the number of composite numbers you would like to see.", 0
+ 000000BA 45 6E 74 65 72	messageInstruction1 BYTE  "Enter the number of composite numbers you would like to see.", 0
 	   20 74 68 65 20
 	   6E 75 6D 62 65
 	   72 20 6F 66 20
@@ -85,7 +87,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   6B 65 20 74 6F
 	   20 73 65 65 2E
 	   00
- 000000F9 54 68 65 20 6D	messageInstruction2 BYTE  "The maximum number of composites to display is 400.", 0
+ 000000F7 54 68 65 20 6D	messageInstruction2 BYTE  "The maximum number of composites to display is 300000.", 0
 	   61 78 69 6D 75
 	   6D 20 6E 75 6D
 	   62 65 72 20 6F
@@ -94,10 +96,10 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   65 73 20 74 6F
 	   20 64 69 73 70
 	   6C 61 79 20 69
-	   73 20 34 30 30
-	   2E 00
+	   73 20 33 30 30
+	   30 30 30 2E 00
 
- 0000012D 45 6E 74 65 72	messageGetNumber    BYTE  "Enter the number number of composites to display [1, 400] : ", 0
+ 0000012E 45 6E 74 65 72	messageGetNumber    BYTE  "Enter the number number of composites to display [1, 300000] : ", 0
 	   20 74 68 65 20
 	   6E 75 6D 62 65
 	   72 20 6E 75 6D
@@ -107,17 +109,17 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   65 73 20 74 6F
 	   20 64 69 73 70
 	   6C 61 79 20 5B
-	   31 2C 20 34 30
-	   30 5D 20 3A 20
-	   00
- 0000016A 20 69 73 20 6F	messageRangeError   BYTE  " is out of range. Try again.", 0
+	   31 2C 20 33 30
+	   30 30 30 30 5D
+	   20 3A 20 00
+ 0000016E 20 69 73 20 6F	messageRangeError   BYTE  " is out of range. Try again.", 0
 	   75 74 20 6F 66
 	   20 72 61 6E 67
 	   65 2E 20 54 72
 	   79 20 61 67 61
 	   69 6E 2E 00
 
- 00000187 41 73 73 65 6D	messageExit1        BYTE  "Assembly language is pretty powerful.", 0
+ 0000018B 41 73 73 65 6D	messageExit1        BYTE  "Assembly language is pretty powerful.", 0
 	   62 6C 79 20 6C
 	   61 6E 67 75 61
 	   67 65 20 69 73
@@ -125,7 +127,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   74 79 20 70 6F
 	   77 65 72 66 75
 	   6C 2E 00
- 000001AD 49 20 73 68 6F	messageExit2        BYTE  "I should make a real-time thread scheduler!" ,0
+ 000001B1 49 20 73 68 6F	messageExit2        BYTE  "I should make a real-time thread scheduler!" ,0
 	   75 6C 64 20 6D
 	   61 6B 65 20 61
 	   20 72 65 61 6C
@@ -134,21 +136,21 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 	   61 64 20 73 63
 	   68 65 64 75 6C
 	   65 72 21 00
- 000001D9 47 6F 6F 64 20	messageExit3        BYTE  "Good bye ", 0
+ 000001DD 47 6F 6F 64 20	messageExit3        BYTE  "Good bye ", 0
 	   62 79 65 20 00
- 000001E3 21 00			messageExit4        BYTE  "!" ,0
+ 000001E7 21 00			messageExit4        BYTE  "!" ,0
 
- 000001E5 20 00			messageSpace        BYTE  " " ,0
+ 000001E9 20 00			messageSpace        BYTE  " " ,0
 
- 000001E7  0000001E [		storageName         BYTE 30 DUP (?) ; Memory to store user name
+ 000001EB  0000001E [		storageName         BYTE 30 DUP (?) ; Memory to store user name
 	    00
 	   ]
- 00000205 0000001E		storageNameLength   DWORD ($-storageName)
+ 00000209 0000001E		storageNameLength   DWORD ($-storageName)
 
- 00000209 000493E0		maxUserInput        DWORD 300000
- 0000020D 00000000		columnNumber        DWORD 0
- 00000211 00			rowNumber           BYTE  0
- 00000212 00000000		cNumbersFound       DWORD 0
+ 0000020D 000493E0		maxUserInput        DWORD 300000
+ 00000211 00000000		columnNumber        DWORD 0
+ 00000215 00			rowNumber           BYTE  0
+ 00000216 00000000		cNumbersFound       DWORD 0
 
  00000000			.code
 
@@ -166,10 +168,10 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  0000000F  E8 00000000 E		call	CrLf
 
 				; Display extra credit information
- 00000014  BA 0000003F R		mov		edx, OFFSET messageEC1
+ 00000014  BA 0000003D R		mov		edx, OFFSET messageEC1
  00000019  E8 00000000 E		call	WriteString
  0000001E  E8 00000000 E		call	CrLf
- 00000023  BA 0000005D R		mov	edx, OFFSET messageEC2
+ 00000023  BA 0000005B R		mov	edx, OFFSET messageEC2
  00000028  E8 00000000 E		call	WriteString
  0000002D  E8 00000000 E		call	CrLf
  00000032  E8 00000000 E		call	CrLf
@@ -184,16 +186,16 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 
  00000038			getUsername PROC
 				; Get the user name
- 00000038  BA 000000A0 R		mov		edx, OFFSET messageEnterName
+ 00000038  BA 0000009E R		mov		edx, OFFSET messageEnterName
  0000003D  E8 00000000 E		call	WriteString
- 00000042  BA 000001E7 R		mov		edx, OFFSET storageName
- 00000047  8B 0D 00000205 R		mov		ecx, storageNameLength
+ 00000042  BA 000001EB R		mov		edx, OFFSET storageName
+ 00000047  8B 0D 00000209 R		mov		ecx, storageNameLength
  0000004D  E8 00000000 E		call	ReadString
 
 				; Display the username
- 00000052  BA 000000B4 R		mov     edx, OFFSET messageHello
+ 00000052  BA 000000B2 R		mov     edx, OFFSET messageHello
  00000057  E8 00000000 E		call    WriteString
- 0000005C  BA 000001E7 R		mov     edx, OFFSET storageName
+ 0000005C  BA 000001EB R		mov     edx, OFFSET storageName
  00000061  E8 00000000 E		call    WriteString
  00000066  E8 00000000 E		call    CrLf
 
@@ -209,11 +211,11 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  0000006C			displayInstructions PROC
 					; Display instructions
 
- 0000006C  BA 000000BC R	    mov     edx, OFFSET messageInstruction1
+ 0000006C  BA 000000BA R	    mov     edx, OFFSET messageInstruction1
  00000071  E8 00000000 E		call    WriteString
  00000076  E8 00000000 E		call    CrLf
 
- 0000007B  BA 000000F9 R	    mov     edx, OFFSET messageInstruction2
+ 0000007B  BA 000000F7 R	    mov     edx, OFFSET messageInstruction2
  00000080  E8 00000000 E		call    WriteString
  00000085  E8 00000000 E		call    CrLf
 
@@ -229,14 +231,14 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  0000008B			getInput PROC
 
  0000008B			USERINPUT:
- 0000008B  BA 0000012D R	    mov     edx, OFFSET messageGetNumber
+ 0000008B  BA 0000012E R	    mov     edx, OFFSET messageGetNumber
  00000090  E8 00000000 E		call    WriteString
  00000095  E8 00000000 E		call    ReadInt                        ; Result is in EAX
 
 					; Check input and return to start if it is out of range
  0000009A  83 F8 01			cmp     eax, 1
  0000009D  7C 0A			jl      INPUTINVALID
- 0000009F  3B 05 00000209 R		cmp     eax, maxUserInput
+ 0000009F  3B 05 0000020D R		cmp     eax, maxUserInput
  000000A5  7F 02			jg      INPUTINVALID
 
 					; The input is valid
@@ -245,7 +247,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  000000A9			INPUTINVALID:
 					; The invalid number is in eax, print the error and return to the start of user input
  000000A9  E8 00000000 E	    call    WriteDec
- 000000AE  BA 0000016A R		mov     edx, OFFSET messageRangeError
+ 000000AE  BA 0000016E R		mov     edx, OFFSET messageRangeError
  000000B3  E8 00000000 E		call    WriteString
  000000B8  E8 00000000 E		call    CrLf
  000000BD  EB CC			jmp     GETINPUT
@@ -264,17 +266,17 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 				; Show goodbye
  000000C0  E8 00000000 E		call    CrLf
  000000C5  E8 00000000 E		call    CrLf
- 000000CA  BA 00000187 R		mov     edx, OFFSET messageExit1
+ 000000CA  BA 0000018B R		mov     edx, OFFSET messageExit1
  000000CF  E8 00000000 E		call    WriteString
  000000D4  E8 00000000 E		call    CrLf
- 000000D9  BA 000001AD R		mov     edx, OFFSET messageExit2
+ 000000D9  BA 000001B1 R		mov     edx, OFFSET messageExit2
  000000DE  E8 00000000 E		call    WriteString
  000000E3  E8 00000000 E		call    CrLf
- 000000E8  BA 000001D9 R		mov     edx, OFFSET messageExit3
+ 000000E8  BA 000001DD R		mov     edx, OFFSET messageExit3
  000000ED  E8 00000000 E		call    WriteString
- 000000F2  BA 000001E7 R		mov     edx, OFFSET storageName
+ 000000F2  BA 000001EB R		mov     edx, OFFSET storageName
  000000F7  E8 00000000 E		call    WriteString
- 000000FC  BA 000001E3 R		mov     edx, OFFSET messageExit4
+ 000000FC  BA 000001E7 R		mov     edx, OFFSET messageExit4
  00000101  E8 00000000 E		call    WriteString
  00000106  E8 00000000 E		call    CrLf
  0000010B  C3				ret
@@ -301,7 +303,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
 				;--------------------------------------------------------
 
  00000121			WriteColumnSpaces PROC
- 00000121  BA 000001E5 R		mov     edx, OFFSET messageSpace
+ 00000121  BA 000001E9 R		mov     edx, OFFSET messageSpace
 
 					;cmp     eax, 1000000
 					;jge     COLUMNSPACE1
@@ -352,7 +354,7 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  0000016C  E8 0000000B			call isComposite ; This function modifies ECX
  00000171  59				pop  ecx
  00000172  40				inc eax
- 00000173  39 0D 00000212 R		cmp cNumbersFound, ecx
+ 00000173  39 0D 00000216 R		cmp cNumbersFound, ecx
  00000179  75 F0			jne COMPOSITELOOP
 
  0000017B  C3				ret
@@ -380,36 +382,36 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  0000018F  83 FA 00			cmp    edx, 0   ; If there is no remainder, then this is a composite number
  00000192  75 65			jne    NOTCOMPOSITE
 
- 00000194  8B 15 00000212 R		mov    edx, cNumbersFound
+ 00000194  8B 15 00000216 R		mov    edx, cNumbersFound
  0000019A  42				inc    edx
- 0000019B  89 15 00000212 R		mov    cNumbersFound, edx
+ 0000019B  89 15 00000216 R		mov    cNumbersFound, edx
 
  000001A1  8B C3			mov    eax, ebx ; Restore the original number into eax
  000001A3  E8 FFFFFF79			call   WriteColumnSpaces
  000001A8  E8 00000000 E		call   WriteDec
 
- 000001AD  A1 0000020D R		mov    eax, columnNumber
+ 000001AD  A1 00000211 R		mov    eax, columnNumber
  000001B2  40				inc    eax
- 000001B3  A3 0000020D R		mov    columnNumber, eax
+ 000001B3  A3 00000211 R		mov    columnNumber, eax
 
 					; We have printed 10 numbers, so do a CrLf
  000001B8  83 F8 0A			cmp    eax, 10
  000001BB  75 39			jne    COMPOSITECOLUMN
- 000001BD  C7 05 0000020D R		mov    columnNumber, 0
+ 000001BD  C7 05 00000211 R		mov    columnNumber, 0
 	   00000000
  000001C7  E8 00000000 E		call   CrLf
 
 					; Pause the print out and display message if we have hit the console size
 					
  000001CC  B8 00000000			mov    eax, 0
- 000001D1  A0 00000211 R		mov    al, rowNumber
+ 000001D1  A0 00000215 R		mov    al, rowNumber
  000001D6  FE C0			inc    al
- 000001D8  A2 00000211 R		mov    rowNumber, al
+ 000001D8  A2 00000215 R		mov    rowNumber, al
  000001DD  E8 00000000 E		call   GetMaxXY
- 000001E2  38 35 00000211 R		cmp    rowNumber, dh
+ 000001E2  38 35 00000215 R		cmp    rowNumber, dh
  000001E8  75 0C			jne    COMPOSITECOLUMN
 					
- 000001EA  C6 05 00000211 R		mov    rowNumber, 0
+ 000001EA  C6 05 00000215 R		mov    rowNumber, 0
 	   00
  000001F1  E8 FFFFFF16			call   PauseOutput
 
@@ -445,8 +447,8 @@ Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
  00000223			main ENDP
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/05/16 21:16:46
-#Integer Accumulator (Project03.asm			     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 14.00.23506.0	    11/06/16 13:45:29
+!Composite Numbers (Project04.asm			     Symbols 2 - 1
 
 
 
@@ -539,7 +541,7 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000216 Para	  Public  'DATA'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000021A Para	  Public  'DATA'	
 _TEXT  . . . . . . . . . . . . .	32 Bit	 00000223 Para	  Public  'CODE'	
 
 
@@ -890,8 +892,8 @@ WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
-cNumbersFound  . . . . . . . . .	DWord	 00000212 _DATA	
-columnNumber . . . . . . . . . .	DWord	 0000020D _DATA	
+cNumbersFound  . . . . . . . . .	DWord	 00000216 _DATA	
+columnNumber . . . . . . . . . .	DWord	 00000211 _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 gray . . . . . . . . . . . . . .	Number	 00000008h   
@@ -903,25 +905,25 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-maxUserInput . . . . . . . . . .	DWord	 00000209 _DATA	
-messageEC1 . . . . . . . . . . .	Byte	 0000003F _DATA	
-messageEC2 . . . . . . . . . . .	Byte	 0000005D _DATA	
-messageEnterName . . . . . . . .	Byte	 000000A0 _DATA	
-messageExit1 . . . . . . . . . .	Byte	 00000187 _DATA	
-messageExit2 . . . . . . . . . .	Byte	 000001AD _DATA	
-messageExit3 . . . . . . . . . .	Byte	 000001D9 _DATA	
-messageExit4 . . . . . . . . . .	Byte	 000001E3 _DATA	
-messageGetNumber . . . . . . . .	Byte	 0000012D _DATA	
-messageHello . . . . . . . . . .	Byte	 000000B4 _DATA	
-messageInstruction1  . . . . . .	Byte	 000000BC _DATA	
-messageInstruction2  . . . . . .	Byte	 000000F9 _DATA	
-messageRangeError  . . . . . . .	Byte	 0000016A _DATA	
-messageSpace . . . . . . . . . .	Byte	 000001E5 _DATA	
+maxUserInput . . . . . . . . . .	DWord	 0000020D _DATA	
+messageEC1 . . . . . . . . . . .	Byte	 0000003D _DATA	
+messageEC2 . . . . . . . . . . .	Byte	 0000005B _DATA	
+messageEnterName . . . . . . . .	Byte	 0000009E _DATA	
+messageExit1 . . . . . . . . . .	Byte	 0000018B _DATA	
+messageExit2 . . . . . . . . . .	Byte	 000001B1 _DATA	
+messageExit3 . . . . . . . . . .	Byte	 000001DD _DATA	
+messageExit4 . . . . . . . . . .	Byte	 000001E7 _DATA	
+messageGetNumber . . . . . . . .	Byte	 0000012E _DATA	
+messageHello . . . . . . . . . .	Byte	 000000B2 _DATA	
+messageInstruction1  . . . . . .	Byte	 000000BA _DATA	
+messageInstruction2  . . . . . .	Byte	 000000F7 _DATA	
+messageRangeError  . . . . . . .	Byte	 0000016E _DATA	
+messageSpace . . . . . . . . . .	Byte	 000001E9 _DATA	
 messageTitle . . . . . . . . . .	Byte	 00000000 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-rowNumber  . . . . . . . . . . .	Byte	 00000211 _DATA	
-storageNameLength  . . . . . . .	DWord	 00000205 _DATA	
-storageName  . . . . . . . . . .	Byte	 000001E7 _DATA	
+rowNumber  . . . . . . . . . . .	Byte	 00000215 _DATA	
+storageNameLength  . . . . . . .	DWord	 00000209 _DATA	
+storageName  . . . . . . . . . .	Byte	 000001EB _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   

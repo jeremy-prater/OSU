@@ -17,8 +17,12 @@
  */
 Task* taskNew(int priority, char* name)
 {
-    // FIXME: implement
-    return NULL;
+    Task * newTask = (Task *) malloc (sizeof (Task));
+    newTask->priority = priority;
+    memset (newTask->name, 0, TASK_NAME_SIZE);
+    strncpy (newTask->name, name, TASK_NAME_SIZE);
+
+    return newTask;
 }
 
 /**
@@ -41,8 +45,20 @@ void taskDelete(Task* task)
  */
 int taskCompare(void* left, void* right)
 {
-    // FIXME: implement
-    return 0;
+    Task * leftTask = (Task *)left;
+    Task * rightTask = (Task *)right;
+    if (leftTask->priority < rightTask->priority)
+    {
+        return -1;
+    }
+    else if (leftTask->priority > rightTask->priority)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /**

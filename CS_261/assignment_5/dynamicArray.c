@@ -226,7 +226,40 @@ int dyOrderedContains(DynamicArray* bag, TYPE value, compareFunction compare)
  */
 void adjustHeap(DynamicArray* heap, int last, int position, compareFunction compare)
 {
-    // FIXME: implement
+    //assert (heap != 0);
+    //assert (last < dySize(heap));
+    //assert (position < dySize(heap));
+    int leftIndex = (position * 2) + 1;
+    int rightIndex = (position * 2) + 2;
+    if (rightIndex < last)
+    {
+        // Find smallest child.
+        int priorityCheck = compare (dyGet (heap, leftIndex), dyGet (heap, rightIndex));
+        int minIndex = 0;
+        if (priorityCheck == 1)
+        {
+            minIndex = rightIndex;
+        }
+        else
+        {
+            minIndex = leftIndex;
+        }
+        if (compare(dyGet(heap, position), dyGet (heap, minIndex)) == 1)
+        {
+            dySwap (heap, position, minIndex);
+            adjustHeap(heap, last, minIndex, compare);
+        }
+
+    }
+    else if (leftIndex < last)
+    {
+        if (compare(dyGet(heap, position), dyGet (heap, leftIndex)) == 1)
+        {
+            dySwap (heap, position, leftIndex);
+            adjustHeap(heap, last, leftIndex, compare);
+        }
+    }
+    return;
 }
 
 /**
@@ -236,7 +269,13 @@ void adjustHeap(DynamicArray* heap, int last, int position, compareFunction comp
  */
 void buildHeap(DynamicArray* heap, compareFunction compare)
 {
-    // FIXME: implement
+    int max = dySize(heap);
+    int i = (max/2) - 1;
+    while (i >= 0)
+    {
+        adjustHeap (heap, max, i, compare);
+        i--;
+    }
 }
 
 /**
@@ -247,7 +286,23 @@ void buildHeap(DynamicArray* heap, compareFunction compare)
  */
 void dyHeapAdd(DynamicArray* heap, TYPE value, compareFunction compare)
 {
-    // FIXME: implement
+    int parent;
+    int pos = dySize(heap);
+    dyAdd (heap, value);
+
+    while (pos >= 0)
+    {
+        parent = (pos-1)/2;
+        if (compare (dyGet (heap, pos), dyGet(heap, parent)) == -1)
+        {
+            dySwap (heap, pos, parent);
+            pos = parent;
+        }
+        else
+        {
+            return;
+        }
+    }
 }
 
 /**
@@ -257,7 +312,12 @@ void dyHeapAdd(DynamicArray* heap, TYPE value, compareFunction compare)
  */
 void dyHeapRemoveMin(DynamicArray* heap, compareFunction compare)
 {
-    // FIXME: implement
+    assert (heap != 0);
+    assert (dySize(heap) > 0);
+    int last = dySize(heap) - 1;
+    dyPut (heap, dyGet (heap, last), 0);
+    dyRemoveAt (heap, last);
+    adjustHeap (heap, last, 0, compare);
 }
 
 /**
@@ -267,8 +327,7 @@ void dyHeapRemoveMin(DynamicArray* heap, compareFunction compare)
  */
 TYPE dyHeapGetMin(DynamicArray* heap)
 {
-    // FIXME: implement
-    return NULL;
+    return heap->data[0];
 }
 
 /**
@@ -278,7 +337,14 @@ TYPE dyHeapGetMin(DynamicArray* heap)
  */
 void dyHeapSort(DynamicArray* heap, compareFunction compare)
 {
-    // FIXME: implement
+	buildHeap(heap, compare);
+    int last = dySize(heap) - 1;
+    while (last >= 0)
+    {
+		dySwap(heap, 0, last);
+        last--;
+		adjustHeap(heap, last, 0, compare);
+	}
 }
 
 // --- Iterator ---

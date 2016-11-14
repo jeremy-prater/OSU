@@ -362,17 +362,7 @@ int hashMapEmptyBuckets(HashMap* map)
 float hashMapTableLoad(HashMap* map)
 {
     assert (map);
-    int numLinks = 0;
-    for (int index=0; index<hashMapCapacity(map); index++)
-    {
-        struct HashLink * curLink = map->table[index];
-        while (curLink)
-        {
-            numLinks++;
-            curLink = curLink->next;
-        }
-    }
-    return ((float)numLinks) / ((float)map->capacity);
+    return ((float)map->size) / ((float)map->capacity);
 }
 
 /**

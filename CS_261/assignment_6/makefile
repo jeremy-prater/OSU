@@ -4,13 +4,13 @@ CFLAGS = -g -Wall -std=c99
 all : tests prog
 
 prog : main.o hashMap.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -pg -o $@ $^
 
 tests : tests.o hashMap.o CuTest.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -pg -o $@ $^
 
 spellChecker : spellChecker.o hashMap.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -pg -o $@ $^
 
 main.o : main.c hashMap.h
 

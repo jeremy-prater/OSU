@@ -53,23 +53,19 @@ char* nextWord(FILE* file)
  * @param file
  * @param map
  */
-static char dictBuffer[MAX_STRING_LENGTH];
 
 void loadDictionary(FILE* file, HashMap* map)
 {
     int counter = 0;
     int totalCount = 0;
-    int maxCount = 109584;    
+    int maxCount = 109584;
+    char * curWord;
     printf ("Loading dictionary...\r");
     fflush (stdout);
-    while (!feof(file))
+    while ((curWord = nextWord(file)) != 0)
     {
-        fgets (dictBuffer, MAX_STRING_LENGTH, file);
-        if (dictBuffer[strlen(dictBuffer) - 1] == '\n')
-        {
-            dictBuffer[strlen(dictBuffer) - 1] = 0;
-        }
-        hashMapPut (map, dictBuffer, 1);
+        hashMapPut (map, curWord, 1);
+        free (curWord);
         counter++;
         totalCount++;
         if (counter == 1000)
@@ -94,7 +90,7 @@ void loadDictionary(FILE* file, HashMap* map)
 int main(int argc, const char** argv)
 {
     // FIXME: implement
-    HashMap* map = hashMapNew(10000);
+    HashMap* map = hashMapNew(1000);
     char wordMatch;
     FILE* file = fopen("dictionary.txt", "r");
     clock_t timer = clock();
@@ -102,9 +98,8 @@ int main(int argc, const char** argv)
     timer = clock() - timer;
     printf("Dictionary loaded in %f seconds\n", (float)timer / (float)CLOCKS_PER_SEC);
     fclose(file);
-    
     char inputBuffer[256];
-    int quit = 0;
+    int quit = 1;
     while (!quit)
     {
         printf("Enter a word or \"quit\" to quit: ");
@@ -133,7 +128,11 @@ int main(int argc, const char** argv)
             quit = 1;
         }
     }
-    
+    printf("\nRan in %f seconds\n", (float)timer / (float)CLOCKS_PER_SEC);
+    printf("Empty buckets: %d\n", hashMapEmptyBuckets(map));
+    printf("Number of links: %d\n", hashMapSize(map));
+    printf("Number of buckets: %d\n", hashMapCapacity(map));
+    printf("Table load: %f\n", hashMapTableLoad(map));
     hashMapDelete(map);
     return 0;
 }

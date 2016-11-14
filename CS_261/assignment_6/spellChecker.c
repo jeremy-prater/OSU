@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_STRING_LENGTH 1024
+
 /**
  * Allocates a string for the next word in the file and returns it. This string
  * is null terminated. Returns NULL after reaching the end of the file.
@@ -51,9 +53,34 @@ char* nextWord(FILE* file)
  * @param file
  * @param map
  */
+static char dictBuffer[MAX_STRING_LENGTH];
+
 void loadDictionary(FILE* file, HashMap* map)
 {
-    // FIXME: implement
+    int counter = 0;
+    int totalCount = 0;
+    int maxCount = 109584;    
+    printf ("Loading dictionary...\r");
+    fflush (stdout);
+    while (!feof(file))
+    {
+        fgets (dictBuffer, MAX_STRING_LENGTH, file);
+        if (dictBuffer[strlen(dictBuffer) - 1] == '\n')
+        {
+            dictBuffer[strlen(dictBuffer) - 1] = 0;
+        }
+        hashMapPut (map, dictBuffer, 1);
+        counter++;
+        totalCount++;
+        if (counter == 1000)
+        {
+            printf ("Loading dictionary... [%.2f%%]\r", (((float) totalCount) * 100.0f) / (float) maxCount);
+            fflush (stdout);
+            counter = 0;
+        }
+    }
+    printf ("Loading dictionary... [%.2f%%]\n", (((float) totalCount) * 100.0f) / (float) maxCount);
+    printf ("Dictionary load complete.\n\n");
 }
 
 /**
@@ -67,8 +94,8 @@ void loadDictionary(FILE* file, HashMap* map)
 int main(int argc, const char** argv)
 {
     // FIXME: implement
-    HashMap* map = hashMapNew(1000);
-    
+    HashMap* map = hashMapNew(10000);
+    char wordMatch;
     FILE* file = fopen("dictionary.txt", "r");
     clock_t timer = clock();
     loadDictionary(file, map);
@@ -84,7 +111,23 @@ int main(int argc, const char** argv)
         scanf("%s", inputBuffer);
         
         // Implement the spell checker code here..
-        
+        wordMatch = 0;
+        if (hashMapContainsKey (map, inputBuffer))
+        {
+            printf ("The word [%s] is in the dictionary!\n", inputBuffer);
+        }
+        else
+        {
+            while (wordMatch == 0)
+            {
+                inputBuffer [strlen (inputBuffer) - 1] = 0;
+                if (hashMapContainsKey (map, inputBuffer))
+                {
+                    printf ("[%s] is the closest match!\n", inputBuffer);
+                    wordMatch = 1;
+                }
+            }
+        }        
         if (strcmp(inputBuffer, "quit") == 0)
         {
             quit = 1;

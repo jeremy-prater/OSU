@@ -5,6 +5,9 @@
 #include <time.h>
 #include <assert.h>
 
+#define MAX_STRING_LENGTH 1024
+#define STRING_SEPS " .!,?;\n"
+
 /**
  * Allocates a string for the next word in the file and returns it. This string
  * is null terminated. Returns NULL after reaching the end of the file.
@@ -54,9 +57,12 @@ char* nextWord(FILE* file)
  * @param argv
  * @return
  */
+
+static char readBuffer[MAX_STRING_LENGTH];
+
+
 int main(int argc, const char** argv)
 {
-    // FIXME: implement
     const char* fileName = "input1.txt";
     if (argc > 1)
     {
@@ -69,7 +75,37 @@ int main(int argc, const char** argv)
     HashMap* map = hashMapNew(10);
     
     // --- Concordance code begins here ---
-    // Be sure to free the word after you are done with it here.
+    printf ("Opened [%s]\n", fileName);
+    FILE * file = fopen (fileName, "r");
+    if (file == NULL)
+    {
+        printf ("File not found! [%s]\n", fileName);
+    }
+    while (!feof(file))
+    {
+        fgets (readBuffer, MAX_STRING_LENGTH, file);
+        if (readBuffer[strlen(readBuffer) - 1] == '\n')
+        {
+            readBuffer[strlen(readBuffer) - 1] = 0;
+        }
+        printf ("Read Line [%s]\n", readBuffer);
+        char * curString = strtok (readBuffer, STRING_SEPS);
+        while (curString)
+        {
+            printf (" -- Token: [%s]\n", curString);
+            int * value = hashMapGet(map, curString);
+            if (value == NULL)
+            {
+                hashMapPut(map, curString, 1);
+            }
+            else
+            {
+                hashMapPut(map, curString, (*value)+1);                
+            }
+            curString = strtok (NULL, STRING_SEPS);
+        }   
+    }
+    fclose (file);
     // --- Concordance code ends here ---
     
     hashMapPrint(map);

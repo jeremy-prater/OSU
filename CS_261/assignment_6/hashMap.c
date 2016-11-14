@@ -251,7 +251,6 @@ void hashMapRemove(HashMap* map, const char* key)
     int index = HASH_FUNCTION(key);
     index %= map->capacity;
     struct HashLink * curLink = map->table[index];
-    
     // Case 1 : Bucket does not exist
     // The index was not found so add it!
     if (curLink == NULL)

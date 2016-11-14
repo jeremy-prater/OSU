@@ -82,7 +82,17 @@ void hashMapInit(HashMap* map, int capacity)
  */
 void hashMapCleanUp(HashMap* map)
 {
-    // FIXME: implement
+    for (int index = 0; index < hashMapCapacity(map); index++)
+    {
+        struct HashLink * curTable = map->table[index];
+        struct HashLink * delTable = curTable;
+        while (curTable)
+        {
+            curTable = curTable->next;
+            hashLinkDelete (delTable);
+            delTable = curTable;
+        }
+    }
 }
 
 /**
@@ -122,7 +132,18 @@ void hashMapDelete(HashMap* map)
  */
 int* hashMapGet(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    assert (map);
+    int index = HASH_FUNCTION(key);
+    index %= map->capacity;
+    struct HashLink * curLink = map->table[index];
+    while (curLink)
+    {
+        if (strcmp (curLink->key, key) == 0)
+        {
+            return &curLink->value;
+        }
+        curLink = curLink->next;
+    }
     return NULL;
 }
 
@@ -139,7 +160,23 @@ int* hashMapGet(HashMap* map, const char* key)
  */
 void resizeTable(HashMap* map, int capacity)
 {
-    // FIXME: implement
+    assert (map);
+    int oldCapacity = map->capacity;
+    map->capacity = capacity;
+    struct HashLink ** oldTable = map->table;
+    hashMapInit (map, capacity);
+    for (int index=0; index < oldCapacity; index++)
+    {
+        struct HashLink * curLink = oldTable[index];
+        while (curLink)
+        {
+            struct HashLink * delLink = curLink;
+            hashMapPut (map, curLink->key, curLink->value);
+            curLink = curLink->next;
+            hashLinkDelete (delLink);
+        }
+    }
+    free (oldTable);
 }
 
 /**
@@ -157,7 +194,48 @@ void resizeTable(HashMap* map, int capacity)
  */
 void hashMapPut(HashMap* map, const char* key, int value)
 {
-    // FIXME: implement
+    assert (map);
+    int index = HASH_FUNCTION(key);
+    index %= map->capacity;
+    struct HashLink * curLink = map->table[index];
+    struct HashLink * lastLink = curLink;
+    
+    // Case 1 : Bucket does not exist
+    // The index was not found so add it!
+    if (curLink == NULL)
+    {
+        map->table[index] = hashLinkNew (key, value, NULL);
+        map->size++;
+        if (hashMapTableLoad (map) >= MAX_TABLE_LOAD)
+        {
+            resizeTable(map, map->capacity * 2);
+        }
+        return;
+    }
+
+    while (curLink)
+    {
+        // Case 2 : Bucket exists and contains the key
+        // Update existing value
+        if (strcmp (curLink->key, key) == 0)
+        {
+             curLink->value = value;
+             return;
+        }
+        if (curLink->next)
+        {
+            lastLink = curLink->next;
+        }
+        curLink = curLink->next;
+    }
+
+    // Case 3 : Bucket exists and does not contain key
+    lastLink->next = hashLinkNew (key, value, NULL);
+    map->size++;
+    if (hashMapTableLoad (map) >= MAX_TABLE_LOAD)
+    {
+        resizeTable(map, map->capacity * 2);
+    }
 }
 
 /**
@@ -169,7 +247,41 @@ void hashMapPut(HashMap* map, const char* key, int value)
  */
 void hashMapRemove(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    assert (map);
+    int index = HASH_FUNCTION(key);
+    index %= map->capacity;
+    struct HashLink * curLink = map->table[index];
+    
+    // Case 1 : Bucket does not exist
+    // The index was not found so add it!
+    if (curLink == NULL)
+    {
+        return;
+    }
+    // Case 2 : The first element of the HashLink is the element
+    if (strcmp (curLink->key, key) == 0)
+    {
+        struct HashLink * nextLink = curLink->next;
+        map->table[index] = nextLink;
+        hashLinkDelete (curLink);
+        map->size--;
+        return;
+    }
+    while (curLink)
+    {
+        // Case 3 : Bucket contains the key
+        if (curLink->next)
+        {
+            if (strcmp (curLink->next->key, key) == 0)
+            {
+                hashLinkDelete (curLink->next);
+                map->size--;
+                curLink->next = curLink->next->next;
+                return;
+            }
+        }
+        curLink = curLink->next;
+    }
 }
 
 /**
@@ -184,7 +296,18 @@ void hashMapRemove(HashMap* map, const char* key)
  */
 int hashMapContainsKey(HashMap* map, const char* key)
 {
-    // FIXME: implement
+    assert (map);
+    int index = HASH_FUNCTION(key);
+    index %= map->capacity;
+    struct HashLink * curLink = map->table[index];
+    while (curLink)
+    {
+        if (strcmp (curLink->key, key) == 0)
+        {
+            return 1;
+        }
+        curLink = curLink->next;
+    }
     return 0;
 }
 
@@ -195,8 +318,8 @@ int hashMapContainsKey(HashMap* map, const char* key)
  */
 int hashMapSize(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    assert (map);
+    return map->size;
 }
 
 /**
@@ -206,8 +329,8 @@ int hashMapSize(HashMap* map)
  */
 int hashMapCapacity(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    assert (map);
+    return map->capacity;
 }
 
 /**
@@ -217,8 +340,16 @@ int hashMapCapacity(HashMap* map)
  */
 int hashMapEmptyBuckets(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    assert (map);
+    int emptyBuckets=0;
+    for (int index=0; index < hashMapCapacity(map); index++)
+    {
+        if (map->table[index] == NULL)
+        {
+            emptyBuckets++;
+        }
+    }
+    return emptyBuckets;
 }
 
 /**
@@ -231,8 +362,18 @@ int hashMapEmptyBuckets(HashMap* map)
  */
 float hashMapTableLoad(HashMap* map)
 {
-    // FIXME: implement
-    return 0;
+    assert (map);
+    int numLinks = 0;
+    for (int index=0; index<hashMapCapacity(map); index++)
+    {
+        struct HashLink * curLink = map->table[index];
+        while (curLink)
+        {
+            numLinks++;
+            curLink = curLink->next;
+        }
+    }
+    return ((float)numLinks) / ((float)map->capacity);
 }
 
 /**

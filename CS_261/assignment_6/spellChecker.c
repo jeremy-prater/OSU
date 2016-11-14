@@ -99,7 +99,7 @@ int main(int argc, const char** argv)
     printf("Dictionary loaded in %f seconds\n", (float)timer / (float)CLOCKS_PER_SEC);
     fclose(file);
     char inputBuffer[256];
-    int quit = 1;
+    int quit = 0;
     while (!quit)
     {
         printf("Enter a word or \"quit\" to quit: ");

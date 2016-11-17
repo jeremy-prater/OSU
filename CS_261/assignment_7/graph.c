@@ -123,40 +123,43 @@ int dfsRecursive(Graph* graph, Vertex* source, Vertex* destination)
  */
 int dfsIterative(Graph* graph, Vertex* source, Vertex* destination)
 {
-    // FIXME: Implement
     Deque * vertexDeque = dequeNew();
-    bool searching = true;
+    char searching = 1;
     clearVisited(graph);
     Vertex * curVertex = source;
 
     while (searching)
     {
-        curVertex->isVisited = true;
+        // Check if the current vertex is the destination vertex
+        if (curVertex == destination)
+        {
+            dequeDelete(vertexDeque);                
+            return 1;
+        }
+        curVertex->isVisited = 1;
+
         // Add neighbor verticies of current vertex into the deque.
         for (int index = 0; index < curVertex->numNeighbors; index++)
         {
-            // Check if the next neighbor is the destination vertex
-            if (curVertex->neighbors[index] == destination)
+            if (curVertex->neighbors[index]->isVisited == 0)
             {
-                dequeClear(vertexDeque);                
-                return 1;
-            }
-            if (curVertex->neighbors[index]->isVisited == false)
-            {
-                dequePushBack(vertexDeque, (void*)curVertex->neighbors[index]);
+                dequePushFront(vertexDeque, (void*)curVertex->neighbors[index]);
             }
         }
+
         // Check if there are any verticies left to visit.
         if (dequeIsEmpty(vertexDeque))
         {
-            searching = false;
+            searching = 0;
             break;
         }
+
         // Move to the next vertex (depth first, so take first vertex from Deque)
-        curVertex = dequeBack(vertexDeque);
+        curVertex = dequeFront(vertexDeque);
+        dequePopFront(vertexDeque);
     }
 
-    dequeClear(vertexDeque);
+    dequeDelete(vertexDeque);
     return 0;
 }
 
@@ -173,7 +176,43 @@ int dfsIterative(Graph* graph, Vertex* source, Vertex* destination)
  */
 int bfsIterative(Graph* graph, Vertex* source, Vertex* destination)
 {
-    // FIXME: Implement
+    Deque * vertexDeque = dequeNew();
+    char searching = 1;
+    clearVisited(graph);
+    Vertex * curVertex = source;
+
+    while (searching)
+    {
+        // Check if the current vertex is the destination vertex
+        if (curVertex == destination)
+        {
+            dequeDelete(vertexDeque);                
+            return 1;
+        }
+        curVertex->isVisited = 1;
+
+        // Add neighbor verticies of current vertex into the deque.
+        for (int index = 0; index < curVertex->numNeighbors; index++)
+        {
+            if (curVertex->neighbors[index]->isVisited == 0)
+            {
+                dequePushFront(vertexDeque, (void*)curVertex->neighbors[index]);
+            }
+        }
+        
+        // Check if there are any verticies left to visit.
+        if (dequeIsEmpty(vertexDeque))
+        {
+            searching = 0;
+            break;
+        }
+        
+        // Move to the next vertex (breadth first, so take last vertex from Deque)
+        curVertex = dequeBack(vertexDeque);
+        dequePopBack(vertexDeque);
+    }
+
+    dequeDelete(vertexDeque);
     return 0;
 }
 

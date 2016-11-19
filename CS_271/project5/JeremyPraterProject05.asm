@@ -211,6 +211,68 @@ SKIPCRLF:
 	ret     12             ; Discard parameters on the stack (3x DWORD)
 displayList ENDP
 
+	;--------------------------------------------------------
+;
+; PROCEDURE : displayMedian
+;             Display the median of the values.
+;             If the size is even, then average the two middle values
+;
+; PARAMETERS : [EBP + 12] (value)     dataNumGen - the number of items to generate
+;              [EBP +  8] (reference) dataArray  - the memory address of the start of the array
+;
+;--------------------------------------------------------
+displayMedian PROC
+	push    esp      ; Save stack pointer
+	mov     ebp, esp ; copy stack into base pointer
+
+	mov     eax, [ebp + 12]
+	mov     ebx, eax
+	and     ebx, 1
+	cmp     ebx, 1
+
+	je     ODD
+
+	; The count of the array is is even
+	; Get the two middle numbers, sum, divide by 2 and leave in EAX
+	; EAX contains the count
+	mov     edx ,0
+	mov     ebx, 2
+	div     ebx
+	mov     ebx, eax
+	dec     ebx
+	mov     ecx, [ebp + 8]
+	mov     edx, ecx
+	imul    eax, 4
+	imul    ebx, 4
+	add     ecx, eax
+	add     edx, ebx
+	mov     eax, [ecx]
+	mov     ebx, [edx]
+	add     eax, ebx
+	mov     edx, 0
+	mov     ebx, 2
+	div     ebx
+	jmp     FINISHED
+
+ODD:
+	; The count of the array is odd
+	; Divide the count by 2, add 1, get the data at that index
+	; Leave data in EAX
+	mov     edx ,0
+	mov     ebx, 2
+	div     ebx
+	mov     ecx, [ebp + 8]
+	imul    eax, 4
+	add     ecx, eax
+	mov     eax, [ecx]
+
+FINISHED:
+	call    WriteDec
+
+	pop     ebp            ; Restore base pointer
+	ret     8              ; Discard parameters on the stack (2x DWORD)
+displayMedian ENDP
+
 ;--------------------------------------------------------
 ;
 ; PROCEDURE : sortList
@@ -228,6 +290,7 @@ displayList ENDP
 ;	}
 ;	exchange(array[a], array[b]);
 ;}
+
 sortList PROC
 	push    esp      ; Save stack pointer
 	mov     ebp, esp ; copy stack into base pointer
@@ -239,16 +302,73 @@ OUTERLOOP:
 	mov     ecx, eax
 	inc     ecx
 INNERLOOP:
+	; Compare array [a] to [b]
+
+	; EAX will be the new [a]
+	; EBX will be the new [b]
+	; ECX is a memory offset counter
+	push    eax
+	push    ebx
+	push    ecx
+
+	mov     eax, ecx
+	imul    eax, 4
+	mov     ecx, [ebp + 8]
+	add     ecx, eax
+	mov     ecx, [ecx]
+
+	mov     eax, ebx
+	imul    eax, 4
+	mov     ebx, [ebp + 8]
+	add     ebx, eax
+	mov     ebx, [ebx]
+
+	cmp     ecx, ebx
+
+	; Restore eax, ebx, ecx
+	pop    ecx
+	pop    ebx
+	pop    eax
+
+	jle    NOMATCH
+	mov    ebx, ecx
+
+	; Setup the stack to swap the data elements [a] and [b]
+NOMATCH:
+
 
 	inc     ecx             ; End of inner loop
 	mov     edx, [ebp + 12] ; Set EDX to the number of random numbers
-	mov     edx, [edx]
 	cmp     ecx, edx
 	jl      INNERLOOP
 
+	; Exchange the item identified by the inner loop
+	push    eax
+	push    ebx
+	push    ecx
+	push    ebp ; Push EBP because we are calling swap, which will distrupt EBP
+
+	mov     ecx, eax
+	imul    ecx, 4
+	mov     eax, [ebp + 8]
+	add     eax, ecx
+
+	mov     ecx, ebx
+	imul    ecx, 4
+	mov     ebx, [ebp + 8]
+	add     ebx, ecx
+
+	push    eax
+	push    ebx
+	call    swapData
+
+	pop     ebp
+	pop     ecx
+	pop     ebx
+	pop     eax
+
 	inc     eax             ; End of outer loop
 	mov     edx, [ebp + 12] ; Set EDX to the number of random numbers
-	mov     edx, [edx]
 	dec     edx             ; EDX Minus 1
 	cmp     eax, edx
 	jl      OUTERLOOP
@@ -320,13 +440,23 @@ main PROC
 	push dataNumGen                ; Parameter 2 - number of random numbers to print
 	push OFFSET messageArrayUnsort ; Parameter 3 - title for the table
 	call displayList
-
-	; Display the unsorted array
-	push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
-	push dataNumGen                ; Parameter 2 - number of random numbers to sort
+	
+	; Sort array
+	push dataNumGen                ; Parameter 1 - number of random numbers to sort
+	push OFFSET dataArray          ; Parameter 2 - offset of memory to store result (array)
 	call sortList
-	
-	
+
+	; Display Median
+	mov  edx, OFFSET messageMedianVal
+	call CrLf
+	call CrLf
+	call WriteString
+	push dataNumGen                ; Parameter 1 - number of random numbers to sort
+	push OFFSET dataArray          ; Parameter 2 - offset of memory to store result (array)
+	call displayMedian
+	call CrLf
+	call CrLf
+
 	; Display the unsorted array
 	push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
 	push dataNumGen                ; Parameter 2 - number of random numbers to print

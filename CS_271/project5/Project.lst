@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/19/16 00:13:13
 .Random Number Generator Sorter (Project05.asm		     Page 1 - 1
 
 
@@ -324,6 +324,68 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
  00000128  C2 000C			ret     12             ; Discard parameters on the stack (3x DWORD)
  0000012B			displayList ENDP
 
+					;--------------------------------------------------------
+				;
+				; PROCEDURE : displayMedian
+				;             Display the median of the values.
+				;             If the size is even, then average the two middle values
+				;
+				; PARAMETERS : [EBP + 12] (value)     dataNumGen - the number of items to generate
+				;              [EBP +  8] (reference) dataArray  - the memory address of the start of the array
+				;
+				;--------------------------------------------------------
+ 0000012B			displayMedian PROC
+ 0000012B  54				push    esp      ; Save stack pointer
+ 0000012C  8B EC			mov     ebp, esp ; copy stack into base pointer
+
+ 0000012E  8B 45 0C			mov     eax, [ebp + 12]
+ 00000131  8B D8			mov     ebx, eax
+ 00000133  83 E3 01			and     ebx, 1
+ 00000136  83 FB 01			cmp     ebx, 1
+
+ 00000139  74 32			je     ODD
+
+					; The count of the array is is even
+					; Get the two middle numbers, sum, divide by 2 and leave in EAX
+					; EAX contains the count
+ 0000013B  BA 00000000			mov     edx ,0
+ 00000140  BB 00000002			mov     ebx, 2
+ 00000145  F7 F3			div     ebx
+ 00000147  8B D8			mov     ebx, eax
+ 00000149  4B				dec     ebx
+ 0000014A  8B 4D 08			mov     ecx, [ebp + 8]
+ 0000014D  8B D1			mov     edx, ecx
+ 0000014F  6B C0 04			imul    eax, 4
+ 00000152  6B DB 04			imul    ebx, 4
+ 00000155  03 C8			add     ecx, eax
+ 00000157  03 D3			add     edx, ebx
+ 00000159  8B 01			mov     eax, [ecx]
+ 0000015B  8B 1A			mov     ebx, [edx]
+ 0000015D  03 C3			add     eax, ebx
+ 0000015F  BA 00000000			mov     edx, 0
+ 00000164  BB 00000002			mov     ebx, 2
+ 00000169  F7 F3			div     ebx
+ 0000016B  EB 16			jmp     FINISHED
+
+ 0000016D			ODD:
+					; The count of the array is odd
+					; Divide the count by 2, add 1, get the data at that index
+					; Leave data in EAX
+ 0000016D  BA 00000000			mov     edx ,0
+ 00000172  BB 00000002			mov     ebx, 2
+ 00000177  F7 F3			div     ebx
+ 00000179  8B 4D 08			mov     ecx, [ebp + 8]
+ 0000017C  6B C0 04			imul    eax, 4
+ 0000017F  03 C8			add     ecx, eax
+ 00000181  8B 01			mov     eax, [ecx]
+
+ 00000183			FINISHED:
+ 00000183  E8 00000000 E		call    WriteDec
+
+ 00000188  5D				pop     ebp            ; Restore base pointer
+ 00000189  C2 0008			ret     8              ; Discard parameters on the stack (2x DWORD)
+ 0000018C			displayMedian ENDP
+
 				;--------------------------------------------------------
 				;
 				; PROCEDURE : sortList
@@ -333,14 +395,100 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
 				;              [EBP +  8] (reference) dataArray  - the memory address of the start of the array
 				;
 				;--------------------------------------------------------
+				;for(a=0; a<request-1; a++) {
+				;	b = a;
+				;	for(c=a+1; c<request; c++) {
+				;		if(array[c] > array[b])
+				;		b = c;
+				;	}
+				;	exchange(array[a], array[b]);
+				;}
 
- 0000012B			sortList PROC
- 0000012B  54				push    esp      ; Save stack pointer
- 0000012C  8B EC			mov     ebp, esp ; copy stack into base pointer
+ 0000018C			sortList PROC
+ 0000018C  54				push    esp      ; Save stack pointer
+ 0000018D  8B EC			mov     ebp, esp ; copy stack into base pointer
 
- 0000012E  5D				pop     ebp            ; Restore base pointer
- 0000012F  C2 0008			ret     8              ; Discard parameters on the stack (2x DWORD)
- 00000132			sortList ENDP
+ 0000018F  B8 00000000			mov     eax, 0
+ 00000194			OUTERLOOP:
+ 00000194  8B D8			mov     ebx, eax
+
+ 00000196  8B C8			mov     ecx, eax
+ 00000198  41				inc     ecx
+ 00000199			INNERLOOP:
+					; Compare array [a] to [b]
+
+					; EAX will be the new [a]
+					; EBX will be the new [b]
+					; ECX is a memory offset counter
+ 00000199  50				push    eax
+ 0000019A  53				push    ebx
+ 0000019B  51				push    ecx
+
+ 0000019C  8B C1			mov     eax, ecx
+ 0000019E  6B C0 04			imul    eax, 4
+ 000001A1  8B 4D 08			mov     ecx, [ebp + 8]
+ 000001A4  03 C8			add     ecx, eax
+ 000001A6  8B 09			mov     ecx, [ecx]
+
+ 000001A8  8B C3			mov     eax, ebx
+ 000001AA  6B C0 04			imul    eax, 4
+ 000001AD  8B 5D 08			mov     ebx, [ebp + 8]
+ 000001B0  03 D8			add     ebx, eax
+ 000001B2  8B 1B			mov     ebx, [ebx]
+
+ 000001B4  3B CB			cmp     ecx, ebx
+
+					; Restore eax, ebx, ecx
+ 000001B6  59				pop    ecx
+ 000001B7  5B				pop    ebx
+ 000001B8  58				pop    eax
+
+ 000001B9  7E 02			jle    NOMATCH
+ 000001BB  8B D9			mov    ebx, ecx
+
+					; Setup the stack to swap the data elements [a] and [b]
+ 000001BD			NOMATCH:
+
+
+ 000001BD  41				inc     ecx             ; End of inner loop
+ 000001BE  8B 55 0C			mov     edx, [ebp + 12] ; Set EDX to the number of random numbers
+ 000001C1  3B CA			cmp     ecx, edx
+ 000001C3  7C D4			jl      INNERLOOP
+
+					; Exchange the item identified by the inner loop
+ 000001C5  50				push    eax
+ 000001C6  53				push    ebx
+ 000001C7  51				push    ecx
+ 000001C8  55				push    ebp ; Push EBP because we are calling swap, which will distrupt EBP
+
+ 000001C9  8B C8			mov     ecx, eax
+ 000001CB  6B C9 04			imul    ecx, 4
+ 000001CE  8B 45 08			mov     eax, [ebp + 8]
+ 000001D1  03 C1			add     eax, ecx
+
+ 000001D3  8B CB			mov     ecx, ebx
+ 000001D5  6B C9 04			imul    ecx, 4
+ 000001D8  8B 5D 08			mov     ebx, [ebp + 8]
+ 000001DB  03 D9			add     ebx, ecx
+
+ 000001DD  50				push    eax
+ 000001DE  53				push    ebx
+ 000001DF  E8 00000011			call    swapData
+
+ 000001E4  5D				pop     ebp
+ 000001E5  59				pop     ecx
+ 000001E6  5B				pop     ebx
+ 000001E7  58				pop     eax
+
+ 000001E8  40				inc     eax             ; End of outer loop
+ 000001E9  8B 55 0C			mov     edx, [ebp + 12] ; Set EDX to the number of random numbers
+ 000001EC  4A				dec     edx             ; EDX Minus 1
+ 000001ED  3B C2			cmp     eax, edx
+ 000001EF  7C A3			jl      OUTERLOOP
+
+ 000001F1  5D				pop     ebp            ; Restore base pointer
+ 000001F2  C2 0008			ret     8              ; Discard parameters on the stack (2x DWORD)
+ 000001F5			sortList ENDP
 
 				;--------------------------------------------------------
 				;
@@ -352,32 +500,32 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
 				;
 				;--------------------------------------------------------
 
- 00000132			swapData PROC
- 00000132  54				push    esp      ; Save stack pointer
- 00000133  8B EC			mov     ebp, esp ; copy stack into base pointer
+ 000001F5			swapData PROC
+ 000001F5  54				push    esp      ; Save stack pointer
+ 000001F6  8B EC			mov     ebp, esp ; copy stack into base pointer
 
- 00000135  50				push    eax ; Save all registers
- 00000136  53				push    ebx
- 00000137  51				push    ecx
- 00000138  52				push    edx
+ 000001F8  50				push    eax ; Save all registers
+ 000001F9  53				push    ebx
+ 000001FA  51				push    ecx
+ 000001FB  52				push    edx
 
- 00000139  8B 4D 08			mov     ecx, [ebp +  8] ; Get the memory offsets of the two items to swap
- 0000013C  8B 55 0C			mov     edx, [ebp + 12]
+ 000001FC  8B 4D 08			mov     ecx, [ebp +  8] ; Get the memory offsets of the two items to swap
+ 000001FF  8B 55 0C			mov     edx, [ebp + 12]
 
- 0000013F  8B 01			mov     eax, [ecx] ; Cache the two values to swap in eax/ebx
- 00000141  8B 1A			mov     ebx, [edx]
+ 00000202  8B 01			mov     eax, [ecx] ; Cache the two values to swap in eax/ebx
+ 00000204  8B 1A			mov     ebx, [edx]
 
- 00000143  89 19			mov     [ecx], ebx ; Restore the cached values into the opposite memory addresses
- 00000145  89 02			mov     [edx], eax
+ 00000206  89 19			mov     [ecx], ebx ; Restore the cached values into the opposite memory addresses
+ 00000208  89 02			mov     [edx], eax
 
- 00000147  5A				pop     edx ; Restore all registers
- 00000148  59				pop     ecx
- 00000149  5B				pop     ebx
- 0000014A  58				pop     eax
+ 0000020A  5A				pop     edx ; Restore all registers
+ 0000020B  59				pop     ecx
+ 0000020C  5B				pop     ebx
+ 0000020D  58				pop     eax
 
- 0000014B  5D				pop     ebp            ; Restore base pointer
- 0000014C  C2 0008			ret     8              ; Discard parameters on the stack (2x DWORD)
- 0000014F			swapData ENDP
+ 0000020E  5D				pop     ebp            ; Restore base pointer
+ 0000020F  C2 0008			ret     8              ; Discard parameters on the stack (2x DWORD)
+ 00000212			swapData ENDP
 
 
 				;--------------------------------------------------------
@@ -386,46 +534,56 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
 				;
 				;--------------------------------------------------------
 
- 0000014F			main PROC
+ 00000212			main PROC
 					
- 0000014F  E8 FFFFFEAC			call displayIntro
- 00000154  E8 FFFFFEDF			call displayInstructions
+ 00000212  E8 FFFFFDE9			call displayIntro
+ 00000217  E8 FFFFFE1C			call displayInstructions
 
 					; Get user data
- 00000159  68 000001F0 R		push OFFSET dataNumGen ; Parameter 1 - offset of memory to store result
- 0000015E  E8 FFFFFF03			call getData
+ 0000021C  68 000001F0 R		push OFFSET dataNumGen ; Parameter 1 - offset of memory to store result
+ 00000221  E8 FFFFFE40			call getData
 
 					; Fill Array
- 00000163  FF 35 000001F0 R		push dataNumGen        ; Parameter 1 - number of random numbers to generate
- 00000169  68 000001F4 R		push OFFSET dataArray  ; Parameter 2 - offset of memory to store result (array)
- 0000016E  E8 FFFFFF32			call fillArray
+ 00000226  FF 35 000001F0 R		push dataNumGen        ; Parameter 1 - number of random numbers to generate
+ 0000022C  68 000001F4 R		push OFFSET dataArray  ; Parameter 2 - offset of memory to store result (array)
+ 00000231  E8 FFFFFE6F			call fillArray
 
 					; Display the unsorted array
- 00000173  68 000001F4 R		push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
- 00000178  FF 35 000001F0 R		push dataNumGen                ; Parameter 2 - number of random numbers to print
- 0000017E  68 000001B3 R		push OFFSET messageArrayUnsort ; Parameter 3 - title for the table
- 00000183  E8 FFFFFF49			call displayList
+ 00000236  68 000001F4 R		push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
+ 0000023B  FF 35 000001F0 R		push dataNumGen                ; Parameter 2 - number of random numbers to print
+ 00000241  68 000001B3 R		push OFFSET messageArrayUnsort ; Parameter 3 - title for the table
+ 00000246  E8 FFFFFE86			call displayList
+					
+					; Sort array
+ 0000024B  FF 35 000001F0 R		push dataNumGen                ; Parameter 1 - number of random numbers to sort
+ 00000251  68 000001F4 R		push OFFSET dataArray          ; Parameter 2 - offset of memory to store result (array)
+ 00000256  E8 FFFFFF31			call sortList
+
+					; Display Median
+ 0000025B  BA 000001D0 R		mov  edx, OFFSET messageMedianVal
+ 00000260  E8 00000000 E		call CrLf
+ 00000265  E8 00000000 E		call CrLf
+ 0000026A  E8 00000000 E		call WriteString
+ 0000026F  FF 35 000001F0 R		push dataNumGen                ; Parameter 1 - number of random numbers to sort
+ 00000275  68 000001F4 R		push OFFSET dataArray          ; Parameter 2 - offset of memory to store result (array)
+ 0000027A  E8 FFFFFEAC			call displayMedian
+ 0000027F  E8 00000000 E		call CrLf
+ 00000284  E8 00000000 E		call CrLf
 
 					; Display the unsorted array
- 00000188  68 000001F4 R		push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
- 0000018D  FF 35 000001F0 R		push dataNumGen                ; Parameter 2 - number of random numbers to sort
- 00000193  E8 FFFFFF93			call sortList
-					
-					
-					; Display the unsorted array
- 00000198  68 000001F4 R		push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
- 0000019D  FF 35 000001F0 R		push dataNumGen                ; Parameter 2 - number of random numbers to print
- 000001A3  68 000001DF R		push OFFSET messageArraySort   ; Parameter 3 - title for the table
- 000001A8  E8 FFFFFF24			call displayList
+ 00000289  68 000001F4 R		push OFFSET dataArray          ; Parameter 1 - offset of memory to store result (array)
+ 0000028E  FF 35 000001F0 R		push dataNumGen                ; Parameter 2 - number of random numbers to print
+ 00000294  68 000001DF R		push OFFSET messageArraySort   ; Parameter 3 - title for the table
+ 00000299  E8 FFFFFE33			call displayList
 
 
 					exit	; exit to operating system
- 000001AD  6A 00	   *	    push   +000000000h
- 000001AF  E8 00000000 E   *	    call   ExitProcess
- 000001B4			main ENDP
+ 0000029E  6A 00	   *	    push   +000000000h
+ 000002A0  E8 00000000 E   *	    call   ExitProcess
+ 000002A5			main ENDP
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/15/16 22:51:13
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/19/16 00:13:13
 .Random Number Generator Sorter (Project05.asm		     Symbols 2 - 1
 
 
@@ -520,7 +678,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 00000514 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000001B4 Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000002A5 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -632,17 +790,23 @@ displayIntro . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000038 Public 
 displayList  . . . . . . . . . .	P Near	 000000D1 _TEXT	Length= 0000005A Public STDCALL
   LOOPPRINT  . . . . . . . . . .	L Near	 000000F8 _TEXT	
   SKIPCRLF . . . . . . . . . . .	L Near	 00000125 _TEXT	
+displayMedian  . . . . . . . . .	P Near	 0000012B _TEXT	Length= 00000061 Public STDCALL
+  ODD  . . . . . . . . . . . . .	L Near	 0000016D _TEXT	
+  FINISHED . . . . . . . . . . .	L Near	 00000183 _TEXT	
 fillArray  . . . . . . . . . . .	P Near	 000000A5 _TEXT	Length= 0000002C Public STDCALL
   FILLLOOP . . . . . . . . . . .	L Near	 000000B8 _TEXT	
 getData  . . . . . . . . . . . .	P Near	 00000066 _TEXT	Length= 0000003F Public STDCALL
   USERINPUT  . . . . . . . . . .	L Near	 00000069 _TEXT	
   INPUTINVALID . . . . . . . . .	L Near	 00000086 _TEXT	
   INPUTVALID . . . . . . . . . .	L Near	 0000009C _TEXT	
-main . . . . . . . . . . . . . .	P Near	 0000014F _TEXT	Length= 00000065 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000212 _TEXT	Length= 00000093 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
-sortList . . . . . . . . . . . .	P Near	 0000012B _TEXT	Length= 00000007 Public STDCALL
-swapData . . . . . . . . . . . .	P Near	 00000132 _TEXT	Length= 0000001D Public STDCALL
+sortList . . . . . . . . . . . .	P Near	 0000018C _TEXT	Length= 00000069 Public STDCALL
+  OUTERLOOP  . . . . . . . . . .	L Near	 00000194 _TEXT	
+  INNERLOOP  . . . . . . . . . .	L Near	 00000199 _TEXT	
+  NOMATCH  . . . . . . . . . . .	L Near	 000001BD _TEXT	
+swapData . . . . . . . . . . . .	P Near	 000001F5 _TEXT	Length= 0000001D Public STDCALL
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 
 

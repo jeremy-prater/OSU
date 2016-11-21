@@ -13,8 +13,7 @@ INCLUDE Irvine32.inc
 
 .data
 messageTitle        BYTE  "       Random Number Generator Sorter         by       Jeremy Prater", 0
-messageEC1          BYTE  "** EC1: Align output columns." ,0
-messageEC2          BYTE  "** EC2: Display more composites, but show them one page at a time.", 0
+messageEC1          BYTE  " -- NO EC this week. Getting ready for the holidays." ,0
 
 messageIntro1       BYTE  "This program generates random numbers in the range [100 .. 999],", 0
 messageIntro2       BYTE  "displays the original list, sorts the list, and calculates the", 0
@@ -55,9 +54,6 @@ displayIntro PROC
 
 ; Display extra credit information
 	mov		edx, OFFSET messageEC1
-	call	WriteString
-	call	CrLf
-	mov	edx, OFFSET messageEC2
 	call	WriteString
 	call	CrLf
 	call	CrLf

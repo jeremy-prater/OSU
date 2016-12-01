@@ -1,6 +1,13 @@
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/27/16 20:07:29
-JeremyPraterProject06.asm				     Page 1 - 1
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
+Low Level IO (Project06.asm				     Page 1 - 1
 
+
+				TITLE Low Level IO (Project06.asm)
+
+				; Author: Jeremy Prater
+				; Course / Project ID : CS-271 / Project 06                Date: 11/30/2016
+				; Description:  
+				;
 
 				INCLUDE Irvine32.inc
 			      C ; Include file for Irvine32.lib             (Irvine32.inc)
@@ -22,45 +29,341 @@ JeremyPraterProject06.asm				     Page 1 - 1
 			      C 
 
  00000000			.data
+ 00000000 20 20 20 20 20	messageTitle        BYTE  "       Low-level I/O Proc and Macro      by       Jeremy Prater", 0
+	   20 20 4C 6F 77
+	   2D 6C 65 76 65
+	   6C 20 49 2F 4F
+	   20 50 72 6F 63
+	   20 61 6E 64 20
+	   4D 61 63 72 6F
+	   20 20 20 20 20
+	   20 62 79 20 20
+	   20 20 20 20 20
+	   4A 65 72 65 6D
+	   79 20 50 72 61
+	   74 65 72 00
+ 00000040 20 2D 2D 20 4E	messageEC1          BYTE  " -- NO EC this week. Getting ready for the holidays." ,0
+	   4F 20 45 43 20
+	   74 68 69 73 20
+	   77 65 65 6B 2E
+	   20 47 65 74 74
+	   69 6E 67 20 72
+	   65 61 64 79 20
+	   66 6F 72 20 74
+	   68 65 20 68 6F
+	   6C 69 64 61 79
+	   73 2E 00
+
+ 00000075 50 6C 65 61 73	messageIntro1       BYTE  "Please enter 10 unsigned integers", 0
+	   65 20 65 6E 74
+	   65 72 20 31 30
+	   20 75 6E 73 69
+	   67 6E 65 64 20
+	   69 6E 74 65 67
+	   65 72 73 00
+ 00000097 50 6C 65 61 73	messageIntro2       BYTE  "Please enter numbers less than max uint32.", 0
+	   65 20 65 6E 74
+	   65 72 20 6E 75
+	   6D 62 65 72 73
+	   20 6C 65 73 73
+	   20 74 68 61 6E
+	   20 6D 61 78 20
+	   75 69 6E 74 33
+	   32 2E 00
+ 000000C2 4F 6E 63 65 20	messageIntro3       BYTE  "Once all numbers are entered, the sum and average will be displayed.", 0
+	   61 6C 6C 20 6E
+	   75 6D 62 65 72
+	   73 20 61 72 65
+	   20 65 6E 74 65
+	   72 65 64 2C 20
+	   74 68 65 20 73
+	   75 6D 20 61 6E
+	   64 20 61 76 65
+	   72 61 67 65 20
+	   77 69 6C 6C 20
+	   62 65 20 64 69
+	   73 70 6C 61 79
+	   65 64 2E 00
+
+ 00000107 50 6C 65 61 73	messageUserGetCount BYTE  "Please enter a 32 bit unsigned integer : ", 0
+	   65 20 65 6E 74
+	   65 72 20 61 20
+	   33 32 20 62 69
+	   74 20 75 6E 73
+	   69 67 6E 65 64
+	   20 69 6E 74 65
+	   67 65 72 20 3A
+	   20 00
+ 00000131 45 52 52 4F 52	messageUserInvalid  BYTE  "ERROR : Invalid number.", 0
+	   20 3A 20 49 6E
+	   76 61 6C 69 64
+	   20 6E 75 6D 62
+	   65 72 2E 00
+ 00000149 59 6F 75 20 65	messageNumberArray  BYTE  "You entered the following numbers:", 0
+	   6E 74 65 72 65
+	   64 20 74 68 65
+	   20 66 6F 6C 6C
+	   6F 77 69 6E 67
+	   20 6E 75 6D 62
+	   65 72 73 3A 00
+ 0000016C 54 68 65 20 73	messageNumberSum    BYTE  "The sum of the numbers is : ", 0
+	   75 6D 20 6F 66
+	   20 74 68 65 20
+	   6E 75 6D 62 65
+	   72 73 20 69 73
+	   20 3A 20 00
+ 00000189 54 68 65 20 61	messageNumberAvg    BYTE  "The avgerage of the numbers is :", 0
+	   76 67 65 72 61
+	   67 65 20 6F 66
+	   20 74 68 65 20
+	   6E 75 6D 62 65
+	   72 73 20 69 73
+	   20 3A 00
+
+ 000001AA  00000020 [		userString          BYTE  (32) DUP (?)
+	    00
+	   ]
+ 000001CA  0000000A [		userData            DWORD (10) DUP (?)
+	    00000000
+	   ]
 
  00000000			.code
 
- 00000000			rcrsn PROC
- 00000000  55			   push ebp
- 00000001  8B EC		   mov ebp,esp
- 00000003  8B 45 0C		   mov eax,[ebp + 12]
- 00000006  8B 5D 08		   mov ebx,[ebp + 8]
- 00000009  3B C3		   cmp eax,ebx
- 0000000B  7C 02		   jl recurse
- 0000000D  EB 15		   jmp quit
- 0000000F			recurse:
- 0000000F  40			   inc eax
- 00000010  50			   push eax
- 00000011  53			   push ebx
- 00000012  E8 FFFFFFE9		   call rcrsn
- 00000017  8B 45 0C		   mov eax,[ebp + 12]
- 0000001A  E8 00000000 E	   call WriteDec
-				   ;Space 2
- 0000001F  E8 00000000 E	   call CrLf
- 00000024			quit:
- 00000024  5D			   pop ebp
- 00000025  C2 0008		   ret 8
- 00000028			rcrsn ENDP
+				;--------------------------------------------------------
+				;
+				; MACRO : getString
+				;         Read a string from the user input
+				;
+				; PARAMETERS : memory address to store number
+				;
+				;--------------------------------------------------------
 
- 00000028			main PROC
- 00000028  6A 04		   push 4
- 0000002A  6A 0A		   push 10
- 0000002C  E8 FFFFFFCF		   call rcrsn
-				   exit
- 00000031  6A 00	   *	    push   +000000000h
- 00000033  E8 00000000 E   *	    call   ExitProcess
- 00000038			main ENDP
+				getString MACRO buffer
+					push ecx
+					push edx
+					mov  edx, OFFSET buffer
+					mov  ecx, (SIZEOF buffer)-1
+					call ReadString
+					pop  edx
+					pop  ecx
+				ENDM
+
+				;--------------------------------------------------------
+				;
+				; MACRO : displayString
+				;         Write a string to the console
+				;
+				; PARAMETERS : OFFSET mem - memory address of the string to write
+				;              BOOL (0/1) - Print CrLf
+				;
+				;--------------------------------------------------------
+
+				displayString MACRO buffer, eol
+					LOCAL NOCRLF
+
+					push edx
+					mov  edx, OFFSET buffer
+					call WriteString
+					push eax
+					mov  eax, eol
+					cmp  eax, 0
+					je   NOCRLF
+					call CrLf
+				NOCRLF:
+					pop  eax
+					pop  edx
+				ENDM
+
+				;--------------------------------------------------------
+				;
+				; PROCEDURE : displayIntro
+				;             Display the introduction
+				;
+				; PARAMETERS : None
+				;
+				;--------------------------------------------------------
+
+ 00000000			displayIntro PROC
+				; introduction
+					displayString  messageTitle, 1
+ 00000000  52		     1		push edx
+ 00000001  BA 00000000 R     1		mov  edx, OFFSET messageTitle
+ 00000006  E8 00000000 E     1		call WriteString
+ 0000000B  50		     1		push eax
+ 0000000C  B8 00000001	     1		mov  eax, 1
+ 00000011  83 F8 00	     1		cmp  eax, 0
+ 00000014  74 05	     1		je   ??0000
+ 00000016  E8 00000000 E     1		call CrLf
+ 0000001B		     1	??0000:
+ 0000001B  58		     1		pop  eax
+ 0000001C  5A		     1		pop  edx
+ 0000001D  E8 00000000 E		call	CrLf
+
+				; Display extra credit information
+					displayString messageEC1, 1
+ 00000022  52		     1		push edx
+ 00000023  BA 00000040 R     1		mov  edx, OFFSET messageEC1
+ 00000028  E8 00000000 E     1		call WriteString
+ 0000002D  50		     1		push eax
+ 0000002E  B8 00000001	     1		mov  eax, 1
+ 00000033  83 F8 00	     1		cmp  eax, 0
+ 00000036  74 05	     1		je   ??0001
+ 00000038  E8 00000000 E     1		call CrLf
+ 0000003D		     1	??0001:
+ 0000003D  58		     1		pop  eax
+ 0000003E  5A		     1		pop  edx
+ 0000003F  E8 00000000 E		call	CrLf
+ 00000044  C3				ret
+ 00000045			displayIntro ENDP
+
+				;--------------------------------------------------------
+				;
+				; PROCEDURE : displayInstructions
+				;             Display the instructions for the application
+				;
+				; PARAMETERS : None
+				;
+				;--------------------------------------------------------
+
+ 00000045			displayInstructions PROC
+					; Display instructions
+				    displayString messageIntro1, 1
+ 00000045  52		     1		push edx
+ 00000046  BA 00000075 R     1		mov  edx, OFFSET messageIntro1
+ 0000004B  E8 00000000 E     1		call WriteString
+ 00000050  50		     1		push eax
+ 00000051  B8 00000001	     1		mov  eax, 1
+ 00000056  83 F8 00	     1		cmp  eax, 0
+ 00000059  74 05	     1		je   ??0002
+ 0000005B  E8 00000000 E     1		call CrLf
+ 00000060		     1	??0002:
+ 00000060  58		     1		pop  eax
+ 00000061  5A		     1		pop  edx
+				    displayString messageIntro2, 1
+ 00000062  52		     1		push edx
+ 00000063  BA 00000097 R     1		mov  edx, OFFSET messageIntro2
+ 00000068  E8 00000000 E     1		call WriteString
+ 0000006D  50		     1		push eax
+ 0000006E  B8 00000001	     1		mov  eax, 1
+ 00000073  83 F8 00	     1		cmp  eax, 0
+ 00000076  74 05	     1		je   ??0003
+ 00000078  E8 00000000 E     1		call CrLf
+ 0000007D		     1	??0003:
+ 0000007D  58		     1		pop  eax
+ 0000007E  5A		     1		pop  edx
+				    displayString messageIntro3, 1
+ 0000007F  52		     1		push edx
+ 00000080  BA 000000C2 R     1		mov  edx, OFFSET messageIntro3
+ 00000085  E8 00000000 E     1		call WriteString
+ 0000008A  50		     1		push eax
+ 0000008B  B8 00000001	     1		mov  eax, 1
+ 00000090  83 F8 00	     1		cmp  eax, 0
+ 00000093  74 05	     1		je   ??0004
+ 00000095  E8 00000000 E     1		call CrLf
+ 0000009A		     1	??0004:
+ 0000009A  58		     1		pop  eax
+ 0000009B  5A		     1		pop  edx
+ 0000009C  C3				ret
+ 0000009D			displayInstructions ENDP
+
+				;--------------------------------------------------------
+				;
+				; PROCEDURE : ReadVal
+				;             Read unsigned integer from input into register
+				;
+				; -- Uses getString Macro to get input string
+				; PARAMETERS : Memory address to store converted string integer
+				;
+				;--------------------------------------------------------
+
+ 0000009D			ReadVal PROC
+ 0000009D			START:
+					displayString messageUserGetCount ,0
+ 0000009D  52		     1		push edx
+ 0000009E  BA 00000107 R     1		mov  edx, OFFSET messageUserGetCount
+ 000000A3  E8 00000000 E     1		call WriteString
+ 000000A8  50		     1		push eax
+ 000000A9  B8 00000000	     1		mov  eax, 0
+ 000000AE  83 F8 00	     1		cmp  eax, 0
+ 000000B1  74 05	     1		je   ??0005
+ 000000B3  E8 00000000 E     1		call CrLf
+ 000000B8		     1	??0005:
+ 000000B8  58		     1		pop  eax
+ 000000B9  5A		     1		pop  edx
+					getString     userString
+ 000000BA  51		     1		push ecx
+ 000000BB  52		     1		push edx
+ 000000BC  BA 000001AA R     1		mov  edx, OFFSET userString
+ 000000C1  B9 0000001F	     1		mov  ecx, (SIZEOF userString)-1
+ 000000C6  E8 00000000 E     1		call ReadString
+ 000000CB  5A		     1		pop  edx
+ 000000CC  59		     1		pop  ecx
+					; EAX contains string length
+
+ 000000CD  83 F8 0B			cmp    EAX, 11
+ 000000D0  7F 00			jg     INPUTFAIL
+
+ 000000D2			INPUTFAIL:
+					displayString messageUserInvalid, 1
+ 000000D2  52		     1		push edx
+ 000000D3  BA 00000131 R     1		mov  edx, OFFSET messageUserInvalid
+ 000000D8  E8 00000000 E     1		call WriteString
+ 000000DD  50		     1		push eax
+ 000000DE  B8 00000001	     1		mov  eax, 1
+ 000000E3  83 F8 00	     1		cmp  eax, 0
+ 000000E6  74 05	     1		je   ??0006
+ 000000E8  E8 00000000 E     1		call CrLf
+ 000000ED		     1	??0006:
+ 000000ED  58		     1		pop  eax
+ 000000EE  5A		     1		pop  edx
+ 000000EF  EB AC			jmp    START
+
+ 000000F1			INPUTPASS:
+ 000000F1			ReadVal ENDP
+
+				;--------------------------------------------------------
+				;
+				; PROCEDURE : WriteVal
+				;             Write unsigned integer from register to output
+				;
+				; -- Uses displayString Macro to output the value
+				; PARAMETERS : None
+				;
+				;--------------------------------------------------------
+
+ 000000F1			WriteVal PROC
+
+ 000000F1			WriteVal ENDP
+
+				;--------------------------------------------------------
+				;
+				; Program entry point
+				;
+				;--------------------------------------------------------
+
+ 000000F1			main PROC
+					
+ 000000F1  E8 FFFFFF0A			call displayIntro
+ 000000F6  E8 FFFFFF4A			call displayInstructions
+
+					exit	; exit to operating system
+ 000000FB  6A 00	   *	    push   +000000000h
+ 000000FD  E8 00000000 E   *	    call   ExitProcess
+ 00000102			main ENDP
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    11/27/16 20:07:29
-JeremyPraterProject06.asm				     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
+Low Level IO (Project06.asm				     Symbols 2 - 1
 
 
+
+
+Macros:
+
+                N a m e                 Type
+
+displayString  . . . . . . . . .	Proc
+getString  . . . . . . . . . . .	Proc
 
 
 Structures and Unions:
@@ -151,8 +454,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000038 Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 000001F2 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000102 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -222,6 +525,12 @@ ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ReadKeyFlush . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadKey  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadString . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+ReadVal  . . . . . . . . . . . .	P Near	 0000009D _TEXT	Length= 00000054 Public STDCALL
+  START  . . . . . . . . . . . .	L Near	 0000009D _TEXT	
+  ??0005 . . . . . . . . . . . .	L Near	 000000B8 _TEXT	
+  INPUTFAIL  . . . . . . . . . .	L Near	 000000D2 _TEXT	
+  ??0006 . . . . . . . . . . . .	L Near	 000000ED _TEXT	
+  INPUTPASS  . . . . . . . . . .	L Near	 000000F1 _TEXT	
 SetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleCursorPosition . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -258,12 +567,17 @@ WriteStackFrameName  . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+WriteVal . . . . . . . . . . . .	P Near	 000000F1 _TEXT	Length= 00000000 Public STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000028 _TEXT	Length= 00000010 Public STDCALL
+displayInstructions  . . . . . .	P Near	 00000045 _TEXT	Length= 00000058 Public STDCALL
+  ??0002 . . . . . . . . . . . .	L Near	 00000060 _TEXT	
+  ??0003 . . . . . . . . . . . .	L Near	 0000007D _TEXT	
+  ??0004 . . . . . . . . . . . .	L Near	 0000009A _TEXT	
+displayIntro . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000045 Public STDCALL
+  ??0000 . . . . . . . . . . . .	L Near	 0000001B _TEXT	
+  ??0001 . . . . . . . . . . . .	L Near	 0000003D _TEXT	
+main . . . . . . . . . . . . . .	P Near	 000000F1 _TEXT	Length= 00000011 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
-rcrsn  . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000028 Public STDCALL
-  recurse  . . . . . . . . . . .	L Near	 0000000F _TEXT	
-  quit . . . . . . . . . . . . .	L Near	 00000024 _TEXT	
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 
@@ -495,7 +809,19 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
+messageEC1 . . . . . . . . . . .	Byte	 00000040 _DATA	
+messageIntro1  . . . . . . . . .	Byte	 00000075 _DATA	
+messageIntro2  . . . . . . . . .	Byte	 00000097 _DATA	
+messageIntro3  . . . . . . . . .	Byte	 000000C2 _DATA	
+messageNumberArray . . . . . . .	Byte	 00000149 _DATA	
+messageNumberAvg . . . . . . . .	Byte	 00000189 _DATA	
+messageNumberSum . . . . . . . .	Byte	 0000016C _DATA	
+messageTitle . . . . . . . . . .	Byte	 00000000 _DATA	
+messageUserGetCount  . . . . . .	Byte	 00000107 _DATA	
+messageUserInvalid . . . . . . .	Byte	 00000131 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
+userData . . . . . . . . . . . .	DWord	 000001CA _DATA	
+userString . . . . . . . . . . .	Byte	 000001AA _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   

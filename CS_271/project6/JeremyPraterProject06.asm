@@ -119,6 +119,11 @@ displayInstructions ENDP
 ;--------------------------------------------------------
 
 ReadVal PROC
+	push    esp      ; Save stack pointer
+	mov     ebp, esp ; copy stack into base pointer
+
+	mov     ebx, [ebp +	8] ; Address to store result number in
+
 START:
 	displayString messageUserGetCount ,0
 	getString     userString
@@ -126,12 +131,16 @@ START:
 
 	cmp    EAX, 11
 	jg     INPUTFAIL
+	
+	
+	jmp    INPUTPASS
 
 INPUTFAIL:
 	displayString messageUserInvalid, 1
 	jmp    START
 
 INPUTPASS:
+	ret 4 ; Discard stack storage
 ReadVal ENDP
 
 ;--------------------------------------------------------
@@ -158,7 +167,11 @@ main PROC
 	
 	call displayIntro
 	call displayInstructions
+	mov  ecx, 10
+GETUSERDATA:
 
+	call ReadVal
+	loop GETUSERDATA
 	exit	; exit to operating system
 main ENDP
 

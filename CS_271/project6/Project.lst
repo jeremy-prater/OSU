@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 21:05:22
 Low Level IO (Project06.asm				     Page 1 - 1
 
 
@@ -301,25 +301,27 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
 					; EAX contains string length
 
  000000CD  83 F8 0B			cmp    EAX, 11
- 000000D0  7F 00			jg     INPUTFAIL
+ 000000D0  7F 02			jg     INPUTFAIL
+ 000000D2  EB 1F			jmp    INPUTPASS
 
- 000000D2			INPUTFAIL:
+ 000000D4			INPUTFAIL:
 					displayString messageUserInvalid, 1
- 000000D2  52		     1		push edx
- 000000D3  BA 00000131 R     1		mov  edx, OFFSET messageUserInvalid
- 000000D8  E8 00000000 E     1		call WriteString
- 000000DD  50		     1		push eax
- 000000DE  B8 00000001	     1		mov  eax, 1
- 000000E3  83 F8 00	     1		cmp  eax, 0
- 000000E6  74 05	     1		je   ??0006
- 000000E8  E8 00000000 E     1		call CrLf
- 000000ED		     1	??0006:
- 000000ED  58		     1		pop  eax
- 000000EE  5A		     1		pop  edx
- 000000EF  EB AC			jmp    START
+ 000000D4  52		     1		push edx
+ 000000D5  BA 00000131 R     1		mov  edx, OFFSET messageUserInvalid
+ 000000DA  E8 00000000 E     1		call WriteString
+ 000000DF  50		     1		push eax
+ 000000E0  B8 00000001	     1		mov  eax, 1
+ 000000E5  83 F8 00	     1		cmp  eax, 0
+ 000000E8  74 05	     1		je   ??0006
+ 000000EA  E8 00000000 E     1		call CrLf
+ 000000EF		     1	??0006:
+ 000000EF  58		     1		pop  eax
+ 000000F0  5A		     1		pop  edx
+ 000000F1  EB AA			jmp    START
 
- 000000F1			INPUTPASS:
- 000000F1			ReadVal ENDP
+ 000000F3			INPUTPASS:
+ 000000F3  C3				ret
+ 000000F4			ReadVal ENDP
 
 				;--------------------------------------------------------
 				;
@@ -331,9 +333,9 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
 				;
 				;--------------------------------------------------------
 
- 000000F1			WriteVal PROC
+ 000000F4			WriteVal PROC
 
- 000000F1			WriteVal ENDP
+ 000000F4			WriteVal ENDP
 
 				;--------------------------------------------------------
 				;
@@ -341,18 +343,22 @@ Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
 				;
 				;--------------------------------------------------------
 
- 000000F1			main PROC
+ 000000F4			main PROC
 					
- 000000F1  E8 FFFFFF0A			call displayIntro
- 000000F6  E8 FFFFFF4A			call displayInstructions
+ 000000F4  E8 FFFFFF07			call displayIntro
+ 000000F9  E8 FFFFFF47			call displayInstructions
+ 000000FE  B9 0000000A			mov  ecx, 10
+ 00000103			GETUSERDATA:
 
+ 00000103  E8 FFFFFF95			call ReadVal
+ 00000108  E2 F9			loop GETUSERDATA
 					exit	; exit to operating system
- 000000FB  6A 00	   *	    push   +000000000h
- 000000FD  E8 00000000 E   *	    call   ExitProcess
- 00000102			main ENDP
+ 0000010A  6A 00	   *	    push   +000000000h
+ 0000010C  E8 00000000 E   *	    call   ExitProcess
+ 00000111			main ENDP
 
 				END main
-Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 00:28:55
+Microsoft (R) Macro Assembler Version 14.00.23918.0	    12/01/16 21:05:22
 Low Level IO (Project06.asm				     Symbols 2 - 1
 
 
@@ -455,7 +461,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 000001F2 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000102 Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000111 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -525,12 +531,12 @@ ReadInt  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ReadKeyFlush . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadKey  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadString . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-ReadVal  . . . . . . . . . . . .	P Near	 0000009D _TEXT	Length= 00000054 Public STDCALL
+ReadVal  . . . . . . . . . . . .	P Near	 0000009D _TEXT	Length= 00000057 Public STDCALL
   START  . . . . . . . . . . . .	L Near	 0000009D _TEXT	
   ??0005 . . . . . . . . . . . .	L Near	 000000B8 _TEXT	
-  INPUTFAIL  . . . . . . . . . .	L Near	 000000D2 _TEXT	
-  ??0006 . . . . . . . . . . . .	L Near	 000000ED _TEXT	
-  INPUTPASS  . . . . . . . . . .	L Near	 000000F1 _TEXT	
+  INPUTFAIL  . . . . . . . . . .	L Near	 000000D4 _TEXT	
+  ??0006 . . . . . . . . . . . .	L Near	 000000EF _TEXT	
+  INPUTPASS  . . . . . . . . . .	L Near	 000000F3 _TEXT	
 SetConsoleCursorInfo . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleCursorPosition . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 SetConsoleMode . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -567,7 +573,7 @@ WriteStackFrameName  . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-WriteVal . . . . . . . . . . . .	P Near	 000000F1 _TEXT	Length= 00000000 Public STDCALL
+WriteVal . . . . . . . . . . . .	P Near	 000000F4 _TEXT	Length= 00000000 Public STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 displayInstructions  . . . . . .	P Near	 00000045 _TEXT	Length= 00000058 Public STDCALL
   ??0002 . . . . . . . . . . . .	L Near	 00000060 _TEXT	
@@ -576,7 +582,8 @@ displayInstructions  . . . . . .	P Near	 00000045 _TEXT	Length= 00000058 Public 
 displayIntro . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000045 Public STDCALL
   ??0000 . . . . . . . . . . . .	L Near	 0000001B _TEXT	
   ??0001 . . . . . . . . . . . .	L Near	 0000003D _TEXT	
-main . . . . . . . . . . . . . .	P Near	 000000F1 _TEXT	Length= 00000011 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 000000F4 _TEXT	Length= 0000001D Public STDCALL
+  GETUSERDATA  . . . . . . . . .	L Near	 00000103 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C

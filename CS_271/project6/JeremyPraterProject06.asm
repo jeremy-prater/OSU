@@ -215,6 +215,11 @@ WriteVal PROC
 	push    ebx
 	push    ecx
 	push    edx
+	
+	; IMPORTANT! Allocate space on the stack to store
+	; local variable if we have printed a non-zero number
+	; This is to delete leading zeros and determine if the
+	; actual number is zero
 	sub     esp, 4
 	mov     BYTE PTR [ebp - 4], 0
 
@@ -352,13 +357,13 @@ SUMUSERDATA:
 	loop SUMUSERDATA
 	mov  ecx, OFFSET userSum
 	mov  [ecx], ebx
-
+	; Display the sum of the numbers
 	call CrLf
 	displayString messageNumberSum, 0
 	push ecx
 	call WriteVal
 	call CrLf
-
+	; Load the sum data into registers
 	mov  ecx, OFFSET userSum
 	mov  eax, [ecx]
 	mov  edx, 0

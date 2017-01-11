@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteCond %{SERVER_PORT}  !^443$
+RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+
+Action php-script /cgi-bin/cgiwrap/praterj/php5
+AddHandler php-script .php .phtml
+
+# Use mod_rewrite to enable "Clean URLs" for a PmWiki installation.
+RewriteEngine On
+# Define the rewrite base.
+RewriteBase /~praterj/wiki
+# Send requests without parameters to pmwiki.php.
+RewriteRule ^$           index.php  [L]
+# Send requests to pmwiki.php, appending the query string part.
+RewriteRule ^([A-Z0-9\xa0-\xff].*)$ index.php?n=$1  [QSA,L]
+

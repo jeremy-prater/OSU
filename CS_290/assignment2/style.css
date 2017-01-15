@@ -2,6 +2,16 @@ body {
     background-color:#373737
 }
 
+.customTable .customTable-primaryColumn
+{
+    font-style: italic;
+}
+
+.customTable .customTable-assignment2
+{
+    vertical-align:top
+}
+
 .customTable
 {
     font-family:Arial, sans-serif;
@@ -22,14 +32,4 @@ body {
 .customTable th
 {
     font-size:20px;
-}
-
-.customTable .customTable-primaryColumn
-{
-    font-style: italic;
-}
-
-.customTable .customTable-assignment2
-{
-    vertical-align:top
 }

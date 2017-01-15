@@ -2,6 +2,26 @@ body {
     background-color:#373737
 }
 
+.nav_items
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    float: right;
+}
+
+.nav_item_bar
+{
+    display: inline;
+}
+
+.nav_header
+{
+    background-color: #615042;
+    float: left;
+    width: 100%;
+}
 .customTable .customTable-primaryColumn
 {
     font-style: italic;

@@ -8,18 +8,25 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    float: right;
 }
 
 .nav_item_bar
 {
     display: inline;
+    text-align: center;
+}
+
+.nav_item_bar .nav_item_bar_logo
+{
+}
+
+.nav_item_bar .nav_item_bar_nav
+{
 }
 
 .nav_header
 {
     background-color: #615042;
-    float: left;
     width: 100%;
 }
 .customTable .customTable-primaryColumn

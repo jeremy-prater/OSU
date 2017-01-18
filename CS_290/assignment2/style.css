@@ -45,6 +45,15 @@ body {
     display: inline;
 }
 
+.tableCaption
+{
+    font-size:20px;
+    text-align: center;
+    margin: 20px;
+    font-weight: bold;
+    color: #878787;
+}
+
 .customTable .customTable-primaryColumn
 {
     font-style: italic;

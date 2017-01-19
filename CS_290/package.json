@@ -1,7 +1,7 @@
 {
-  "name": "drone_webserver",
+  "name": "CS_290 Webserver",
   "version": "1.0.0",
-  "description": "Webserver for drone telemetry",
+  "description": "Webserver for OSU CS 290",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bonsai": "^0.4.2",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "paper": "^0.10.2"

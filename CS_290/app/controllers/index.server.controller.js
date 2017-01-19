@@ -1,5 +1,5 @@
 exports.render = function(req, res) {
     res.render('index', {
-        title: 'Howdy World'
+        title: 'CS_290: Assignment 2 - HTML/CSS'
     })
 };

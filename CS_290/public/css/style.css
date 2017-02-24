@@ -45,108 +45,28 @@ body {
     display: inline;
 }
 
-.tableCaption
-{
-    font-size:20px;
-    text-align: center;
-    margin: 20px;
-    font-weight: bold;
-    color: #878787;
-}
-
-.customTable .customTable-primaryColumn
-{
-    font-style: italic;
-}
-
-.customTable .customTable-assignment2
-{
-    vertical-align:middle;
-}
-
-.customTable
-{
-    font-family:Arial, sans-serif;
-    border-style:solid;
-    border-width:5px;
-    border-color: #878787;
-    overflow:hidden;
-    word-break:normal;
-    border-collapse:collapse;
-    border-spacing:0;
-    margin: 25px 25px;
-    background-color: #575757;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.customTable td
-{
-    border-style:solid;
-    border-color: #878787;
-    border-width:2px;
-    text-align: center;
-}
-
-.customTable tr
-{
-    background-color: #4E7300;
-}
-
-.customTable tr:nth-of-type(even)
-{
-    background:#385E86;
-}
-.customTable th
-{
-    font-size:20px;
-    border-style:solid;
-    border-color: #878787;
-    border-width:2px;
-    text-align: center;
-}
-
 .outer-content
 {
     width: 75%;
     padding: 20px;
-    background-color: pink;
+    background-color:#9D601E;
     text-align: center;
-    margin: 20px;
+    vertical-align: middle;
+    margin: 20px auto;
 }
+
 
 .inner-content
 {
     width: 75%;
     padding: 20px;
-    background-color: blue;
+    background-color: #615042;
     text-align: center;
+    vertical-align: middle;
     margin: 0 auto;
 }
 
-.customTable2
+.inner-content-text
 {
-    font-family:Arial, sans-serif;
-    border-style:none;
-    border-color: #878787;
-    overflow:hidden;
-    word-break:normal;
-    border-collapse:collapse;
-    border-spacing:0;
-    background-color: #575757;
-    width:75%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.customTable2_name
-{
-    border-style: none;
-    text-align: right;
-}
-
-.customTable2_input
-{
-    border-style: none;
-    text-align: left;
+    vertical-align: middle;
 }

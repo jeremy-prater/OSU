@@ -5,5 +5,6 @@ module.exports = function() {
     app.set('views', './app/views');
     app.set('view engine', 'pug');
     require('../app/routes/index.server.routes.js')(app);
+    require('../app/routes/error.server.routes.js')(app);
     return app;
 };

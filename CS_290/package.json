@@ -1,5 +1,5 @@
 {
-  "name": "CS_290 Webserver",
+  "name": "CS_290-Webserver",
   "version": "1.0.0",
   "description": "Webserver for OSU CS 290",
   "main": "server.js",

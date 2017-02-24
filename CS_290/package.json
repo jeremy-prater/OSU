@@ -9,9 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bonsai": "^0.4.2",
-    "ejs": "^2.5.5",
     "express": "^4.14.0",
-    "paper": "^0.10.2"
+    "pug": "^2.0.0-beta11"
   }
 }

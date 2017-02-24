@@ -1,5 +1,6 @@
 exports.render = function(req, res) {
     res.render('index', {
-        title: 'CS_290: Assignment 2 - HTML/CSS'
+        title: 'CS_290: Assignment 2 - HTML/CSS',
+        message: 'Pug is awesome!'
     })
 };

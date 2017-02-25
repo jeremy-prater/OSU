@@ -26,8 +26,15 @@ body
 
   div(class="outer-content")
     div(class="inner-content")
-      h1
-        = httpMethod
+        h1
+          = httpMethod
+        table
+          each item in stuff
+            tr
+              td
+                = item.name
+              td
+                = item.value
  
 
   div(class="outer-content")

@@ -55,9 +55,9 @@ function setExampleText(data) {
     document.getElementById('example2_code').innerHTML += 'first date: ' + dates[0] + '<br>';
     var asteroid = data.near_earth_objects[dates[0]][0];
     console.log(asteroid);
-    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].name = ' + asteroid.name + '<br>';
-    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].is_potentially_hazardous_asteroid = ' + asteroid.is_potentially_hazardous_asteroid + '<br>';
-    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].missed_earth_by = ' + asteroid.close_approach_data[0].miss_distance.kilometers + ' km<br>';
+    document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].name = ' + asteroid.name + '<br>';
+    document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].is_potentially_hazardous_asteroid = ' + asteroid.is_potentially_hazardous_asteroid + '<br>';
+    document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].missed_earth_by = ' + asteroid.close_approach_data[0].miss_distance.kilometers + ' km<br>';
 }
 
 showWelcome();

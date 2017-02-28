@@ -10,36 +10,51 @@ body
       li(class="nav_item")
         img(src="images/osu_logo_small.png")
       li(class="nav_item")
-        a(href ="#")
-          |Menu 1
+        a(href ="#" onclick="showNasa(); return false;")
+          |Nasa NeoWs Howto
       li(class="nav_item")
-        a(href ="#")
-          |Menu 2
+        a(href ="#" onclick="showRaphael(); return false;")
+          |RaphaelJS Howto
       li(class="nav_item")
-        a(href ="#")
-          |Menu 3
+        a(href ="#" onclick="showExample(); return false;")
+          |Integration Example
 
       <!--  Right navigation items (reverse order) -->
       li(class="nav_item_nav")
         a(href ="#")
           |Menu 4
 
-  div(class="outer-content")
+  div(class="outer-content" id="welcomeContent")
     div(class="inner-content")
-        h1
-          = httpMethod
-        table
-          each item in stuff
-            tr
-              td
-                = item.name
-              td
-                = item.value
- 
+      p(style="text-align: center;")
+        | NeoWS/RaphaelJS How-to Guide
+        br
+        br
+        br
+        | Use the navigation buttons on the top to select a topic.
 
-  div(class="outer-content")
+  div(class="outer-content" id="nasaContent")
     div(class="inner-content")
-      a(href="http://socket.io")
-        img(src="images/socketio.png")
-        h2
-          | Checkout Socket.io!
+      | The NeoWs API is a RESTful http service for querying near earth
+      | Asteriod Information.
+      br
+      | The basic query is as follows:
+      br
+      br
+      div(class="inner-content-code")
+        | GET https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY
+      br
+      br
+      | A javascript wrapper function was created to 
+      
+
+  div(class="outer-content" id="raphaelContent")
+    div(class="inner-content")
+      | RaphaelJS
+
+  div(class="outer-content" id="exampleContent")
+    div(class="inner-content")
+      | Example!
+
+script(src='http://requirejs.org/docs/release/2.2.0/minified/require.js')
+script(src="scripts/index.js")

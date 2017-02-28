@@ -39,8 +39,7 @@ function getNeoWSData(start, end, callback) {
     req.open('GET', targetUrl, true);
     req.onreadystatechange = function () {
         if (req.status >= 200 && req.status < 400) {
-            console.log(req.responseText);
-            callback(req.responseText);
+            callback(JSON.parse(req.responseText));
         } else {
             console.log("Error in network request: " + req.statusText);
         }
@@ -48,4 +47,18 @@ function getNeoWSData(start, end, callback) {
     req.send(null);
 }
 
+function setExampleText(data) {
+    var dataString = JSON.stringify(data);
+    document.getElementById('example1_code').innerHTML = dataString.substring(0, 250) + '...';
+    document.getElementById('example2_code').innerHTML += 'element_count: ' + data.element_count + '<br>';
+    var dates = Object.keys(data.near_earth_objects);
+    document.getElementById('example2_code').innerHTML += 'first date: ' + dates[0] + '<br>';
+    var asteroid = data.near_earth_objects[dates[0]][0];
+    console.log(asteroid);
+    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].name = ' + asteroid.name + '<br>';
+    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].is_potentially_hazardous_asteroid = ' + asteroid.is_potentially_hazardous_asteroid + '<br>';
+    document.getElementById('example2_code').innerHTML += 'asteroid[' + dates[0] + '][0].missed_earth_by = ' + asteroid.close_approach_data[0].miss_distance.kilometers + ' km<br>';
+}
+
 showWelcome();
+getNeoWSData('2017-02-22', '2017-02-27', setExampleText);

@@ -1,5 +1,8 @@
 body {
-    background-color: #373737
+    background-image: url('../images/wood.jpg');
+    background-color: #373737;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .nav_header {
@@ -50,6 +53,7 @@ body {
     text-align: center;
     vertical-align: middle;
     margin: 20px auto;
+    border-radius: 25px;
 }
 
 .inner-content {
@@ -61,6 +65,7 @@ body {
     margin: 0 auto;
     font-family: "Book Antiqua";
     font-size: 1.5em;
+    border-radius: 25px;
 }
 
 .inner-content-code {
@@ -72,4 +77,5 @@ body {
     margin: 0 auto;
     font-size: 0.7em;
     font-family: "Courier New";
+    word-wrap: break-word;
 }

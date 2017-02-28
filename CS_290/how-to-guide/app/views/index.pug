@@ -33,20 +33,51 @@ body
         br
         | Use the navigation buttons on the top to select a topic.
 
-  div(class="outer-content" id="nasaContent")
-    div(class="inner-content")
-      | The NeoWs API is a RESTful http service for querying near earth
-      | Asteriod Information.
-      br
-      | The basic query is as follows:
-      br
-      br
-      div(class="inner-content-code")
-        | GET https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY
-      br
-      br
-      | A javascript wrapper function was created to 
-      
+  div(id="nasaContent")
+    div(class="outer-content")
+      div(class="inner-content")
+        | The NeoWs API is a RESTful http service for querying near earth
+        | Asteriod Information.
+        br
+        | The basic query is as follows:
+        br
+        br
+        div(class="inner-content-code")
+          | GET https://api.nasa.gov/neo/rest/v1/feed?start_date=START_DATE&end_date=END_DATE&api_key=API_KEY
+        br
+        br
+        | A javascript wrapper function was created to assemble the request URL and get the data.
+        br
+        br
+        | A callback function is provided to process the returned JSON data.
+        br
+        br
+        | The div below has it's innerHTML property set by a call and callback to this function when the page is loaded.
+        br
+        br
+        div(class="inner-content-code" id="example1_code")
+
+    div(class="outer-content")
+      div(class="inner-content")
+        | The API is mostly self-describing with the key names in the data structure
+        br
+        br
+        | The response.links object contains 3 child objects called next, prev, and self.
+        | These objects are URLs that can be used to navigate forward and backwards in time from the current dataset.
+        br
+        br
+        | response.element_count is the number of objects in the dataset
+        br
+        br
+        | response.near_earth_objects is the primary object in the dataset.
+        | It has child objects which have keys of date strings.
+        br
+        br
+        | Each date string object is an array in which each element describes an asteriod which passed in a near earth orbit.
+        br
+        br
+        div(class="inner-content-code" id="example2_code")
+
 
   div(class="outer-content" id="raphaelContent")
     div(class="inner-content")

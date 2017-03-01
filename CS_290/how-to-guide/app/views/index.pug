@@ -78,10 +78,44 @@ body
         br
         div(class="inner-content-code" id="example2_code")
 
+    div(class="outer-content")
+      div(class="inner-content")
+        br
+        br
+        | Please see the Integration example at the top of the nav bar for a visual demonstration of this data.
+        br
+        br
+
 
   div(class="outer-content" id="raphaelContent")
     div(class="inner-content")
-      | RaphaelJS
+      | RaphaelJS is a javascript SVG rendering library which allows runtime binding of DOM elements properties.
+      br
+      br
+      | This provides dynamic binding of onclick and onhover for interactive visual interfaces.
+      br
+      br
+      | The API is well documented so this how-to will move on to advanced topics of manulipation of DOM elements.
+      br
+      br
+      | We'll start with a basic example of a element that you can click and cause an alert to be called.
+      br
+      br
+
+  div(class="outer-content" id="raphaelContent")
+    div(class="inner-content" style="width:80%")
+
+exports.Initialize = function () {
+  exports.viewportController = new viewportController();
+  exports.viewportController.viewportWidth = document.getElementById('dspviewport').offsetWidth;
+  exports.viewportController.viewportHeight = document.getElementById('dspviewport').offsetHeight;
+  exports.viewportController.screenWidth = exports.viewportController.viewportWidth;
+  exports.viewportController.screenHeight = exports.viewportController.viewportHeight;
+  exports.viewportController.graphics = new Raphael('dspviewport',
+    exports.viewportController.viewportWidth,
+
+
+
 
   div(class="outer-content" id="exampleContent")
     div(class="inner-content")

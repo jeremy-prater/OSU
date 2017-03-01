@@ -57,6 +57,7 @@ function setExampleText(data) {
     console.log(asteroid);
     document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].name = ' + asteroid.name + '<br>';
     document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].is_potentially_hazardous_asteroid = ' + asteroid.is_potentially_hazardous_asteroid + '<br>';
+    document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].estimated_diameter(avg) = ' + (asteroid.estimated_diameter.kilometers.estimated_diameter_min + asteroid.estimated_diameter.kilometers.estimated_diameter_max) / 2 + ' km<br>';
     document.getElementById('example2_code').innerHTML += 'near_earth_objects[' + dates[0] + '][0].missed_earth_by = ' + asteroid.close_approach_data[0].miss_distance.kilometers + ' km<br>';
 }
 

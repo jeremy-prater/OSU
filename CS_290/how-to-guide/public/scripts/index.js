@@ -1,5 +1,14 @@
 ////////////////////////////////////////////////////////////
 //
+// Bootstrap components once the page is loaded
+//
+
+window.onload = function () {
+    SetupRaphael();
+}
+
+////////////////////////////////////////////////////////////
+//
 // Show/Hide functions
 //
 
@@ -79,11 +88,50 @@ getNeoWSData('2017-02-22', '2017-02-27', setExampleText);
 // Raphael JS example
 //
 
-var viewportWidth = document.getElementById('raphaelExample1').offsetWidth;
-var viewportHeight = document.getElementById('raphaelExample1').offsetHeight;
-console.log(viewportHeight);
-console.log(viewportWidth);
-/*var graphics = Raphael('raphaelExample1', viewportWidth, viewportHeight);
-var circleObject = graphics.circle(viewportWidth / 4, viewportHeight / 4, viewportHeight / 4);
-circleObject.attr("fill", "#f00");
-circleObject.attr("stroke", "#fff");*/
+function SetupRaphael() {
+    document.getElementById('raphaelContent').style.display = 'block';
+    var viewportWidth = document.getElementById('raphaelExample1').offsetWidth - 40;
+    var viewportHeight = document.getElementById('raphaelExample1').offsetHeight - 40;
+    document.getElementById('raphaelContent').style.display = 'none';
+
+    var graphics = Raphael('raphaelExample1', viewportWidth, viewportHeight);
+    var circleObject = graphics.circle(viewportWidth / 2, viewportHeight / 2, viewportWidth / 10, viewportHeight / 10, viewportWidth / 15);
+    circleObject.attr("fill", "#0f0");
+    circleObject.attr("stroke", "#00f");
+    circleObject.click(function() {
+        alert('You clicked the circle!');
+    });
+
+    graphics = Raphael('raphaelExample2', viewportWidth, viewportHeight);
+    var boxObject = graphics.rect(viewportWidth / 2, viewportHeight / 2, 20, 20, 3);
+    boxObject.attr("fill", "#0f0");
+    boxObject.attr("stroke", "#00f");
+    var dragging = false;
+    var location = {};
+    var viewport = {
+        x:0,
+        y:0
+    };
+    document.getElementById('raphaelExample2').addEventListener("mousedown", function(event) {
+        dragging = true;
+        location.x = event.screenX;
+        location.y = event.screenY;
+    });
+    document.getElementById('raphaelExample2').addEventListener("mouseup", function(event) {
+        dragging = false;
+    });
+    document.getElementById('raphaelExample2').addEventListener("mousemove", function(event) {
+        if (dragging === true)
+        {
+            var delta = {};
+            delta.x = location.x - event.screenX;
+            delta.y = location.y - event.screenY;
+            location.x = event.screenX;
+            location.y = event.screenY;
+            viewport.x += delta.x;
+            viewport.y += delta.y;
+            graphics.setViewBox(viewport.x, viewport.y, viewportWidth, viewportHeight, false);
+        }
+    });
+
+}

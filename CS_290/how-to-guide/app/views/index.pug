@@ -102,10 +102,41 @@ body
         | We'll start with a basic example of a element that you can click and cause an alert to be called.
         br
         br
+        | The circle and SVG canvas are created when the page is loaded.
+        br
+        | The click handler is added to the circle once it is created.
+        br
+        | Click the green circle below!
+        br
 
     div(class="outer-content")
       div(class="inner-content" style="height:40vh;" id="raphaelExample1")
-        
+
+    div(class="outer-content")
+      div(class="inner-content")
+        br
+        | This example uses the viewport function to move the SVG drawings around the canvas.
+        br
+        br
+        | If you click and drag the box below, it will drag around the canvas, but we are not actually moving the box, we are moving the viewport coordinates of the SVG canvas.
+        br
+        br
+        | Three event listeners are added to the DOM element:
+        br
+        br
+        | mousedown - Records initial position of the mouse event and sets the dragging variable to true.
+        br
+        | mousemouse - Checks the dragging variable, if it is true, then we get the mouse position delta, and apply it to a function called setViewBox.
+        br
+        | mouseup - Sets the dragging variable to false.
+
+        br
+        br
+        | Drag the box below!
+        br
+
+    div(class="outer-content")
+      div(class="inner-content" style="height:40vh;" id="raphaelExample2")
 
 
 

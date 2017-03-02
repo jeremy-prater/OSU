@@ -1,4 +1,7 @@
-const APIKEY = '0XRgmcoq1HTEKEbDPx4ZXLtAPYpKVUfWHsdJ5ZNC';
+////////////////////////////////////////////////////////////
+//
+// Show/Hide functions
+//
 
 function showNasa() {
     console.log('showNasa');
@@ -32,6 +35,13 @@ function showWelcome() {
 
 }
 
+////////////////////////////////////////////////////////////
+//
+// NeoWs example
+//
+
+const APIKEY = '0XRgmcoq1HTEKEbDPx4ZXLtAPYpKVUfWHsdJ5ZNC';
+
 function getNeoWSData(start, end, callback) {
     var req = new XMLHttpRequest();
     var targetUrl = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=' + start + '&end_date=' + end + '&api_key=' + APIKEY;
@@ -63,3 +73,17 @@ function setExampleText(data) {
 
 showWelcome();
 getNeoWSData('2017-02-22', '2017-02-27', setExampleText);
+
+////////////////////////////////////////////////////////////
+//
+// Raphael JS example
+//
+
+var viewportWidth = document.getElementById('raphaelExample1').offsetWidth;
+var viewportHeight = document.getElementById('raphaelExample1').offsetHeight;
+console.log(viewportHeight);
+console.log(viewportWidth);
+/*var graphics = Raphael('raphaelExample1', viewportWidth, viewportHeight);
+var circleObject = graphics.circle(viewportWidth / 4, viewportHeight / 4, viewportHeight / 4);
+circleObject.attr("fill", "#f00");
+circleObject.attr("stroke", "#fff");*/

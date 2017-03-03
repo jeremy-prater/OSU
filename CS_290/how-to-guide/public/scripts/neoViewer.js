@@ -24,14 +24,14 @@ function neoViewer(parentDOMObject) {
 
         this.createUIGraphics();
         this.getNeoWSData(this);
-        document.getElementById('closeHelp').addEventListener('click', function() {
+        document.getElementById('closeHelp').addEventListener('click', function () {
             document.getElementById('helpBox').style.display = "none";
         });
     }
 
     this.parseNeoWSData = function (data, context) {
         context.dataSet = data;
-        context.updateGraphics(data, context);
+        context.updateGraphics(context);
     };
 
     this.getNeoWSData = function (context) {
@@ -50,12 +50,10 @@ function neoViewer(parentDOMObject) {
         this.graphicObjects.leftArrow.click(function () {
             this.currentDate -= (this.dayMSRange); // * this.dateRange);
             this.getNeoWSData(this);
-            this.updateGraphics();
         }.bind(this));
         this.graphicObjects.rightArrow.click(function () {
             this.currentDate += (this.dayMSRange); // * this.dateRange);
             this.getNeoWSData(this);
-            this.updateGraphics();
         }.bind(this));
 
         this.graphicObjects.dataSetCountText = this.graphics.text(10, 20, 'Objects in Dataset: ' + this.dataSet.element_count);
@@ -88,7 +86,7 @@ function neoViewer(parentDOMObject) {
 
     };
 
-    this.updateGraphics = function (data, context) {
+    this.updateGraphics = function (context) {
         console.log('[neoWS] Updating dataset graphics');
 
         // Extract keys from the list of asteroids
@@ -160,7 +158,8 @@ function neoViewer(parentDOMObject) {
                 newAsteroid.attr("title", titleText);
 
                 newAsteroid.click(context.GenerateJPLURL(localSet[localIndex]));
-
+                newAsteroid.mouseover(context.GenerateGlowEffect(newAsteroid, context));
+                newAsteroid.mouseout(context.ClearGlowEffect(context));
             }
         }
         context.asteroidGraphicSet = context.graphics.setFinish();
@@ -198,4 +197,20 @@ function neoViewer(parentDOMObject) {
             window.open(localSet.nasa_jpl_url, '_blank');
         }
     };
+    this.GenerateGlowEffect = function (newAsteroid, context) {
+        return function () {
+            context.glowSet = newAsteroid.glow({
+                size: 40,
+                color: "white"
+            });
+        }
+    };
+    this.ClearGlowEffect = function (context) {
+        return function () {
+            context.glowSet.forEach(function (element) {
+                element.remove();
+            });
+        }
+    };
+
 }

@@ -36,8 +36,11 @@ body
   div(id="nasaContent" style="display: none;")
     div(class="outer-content")
       div(class="inner-content")
-        | The NeoWs API is a RESTful http service for querying near earth
-        | Asteriod Information.
+        | The 
+        a(href="https://api.nasa.gov/api.html#NeoWS" target="_blank")
+          |NeoWs
+        |  API is a RESTful http service for querying near earth
+        |Asteriod Information.
         br
         | The basic query is as follows:
         br
@@ -50,6 +53,41 @@ body
         br
         br
         | A callback function is provided to process the returned JSON data.
+        br
+        br
+        div(class="inner-content-code")
+          |function getNeoWSData(start, end, callback, context) {
+          br
+          |    var req = new XMLHttpRequest();
+          br
+          |    var targetUrl = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=' + start + '&end_date=' + end + '&api_key=' + APIKEY;
+          br
+          |    console.log('Getting NeoWs:' + targetUrl);
+          br
+          |    req.open('GET', targetUrl, true);
+          br
+          |    req.onreadystatechange = function () {
+          br
+          |        if (req.status >= 200 && req.status < 400) {
+          br
+          |            try {
+          br
+          |                callback(JSON.parse(req.responseText), context);
+          br
+          |            } catch (exception) {}
+          br
+          |        } else {
+          br
+          |            console.log("Error in network request: " + req.statusText);
+          br
+          |        }
+          br
+          |    };
+          br
+          |    req.send(null);
+          br
+          |}
+          br
         br
         br
         | The div below has it's innerHTML property set by a call and callback to this function when the page is loaded.
@@ -90,7 +128,9 @@ body
   div(id="raphaelContent" style="display: none;")
     div(class="outer-content")
       div(class="inner-content")
-        | RaphaelJS is a javascript SVG rendering library which allows runtime binding of DOM elements properties.
+        a(href="http://dmitrybaranovskiy.github.io/raphael/" target="_blank")
+          |RaphaelJS
+        |  is a javascript SVG rendering library which allows runtime binding of DOM elements properties.
         br
         br
         | This provides dynamic binding of onclick and onhover for interactive visual interfaces.
@@ -104,7 +144,23 @@ body
         br
         | The circle and SVG canvas are created when the page is loaded.
         br
-        | The click handler is added to the circle once it is created.
+        | The click handler is added to the circle once it is created with the following code:
+        br
+        div(class="inner-content-code")
+          | var graphics = Raphael('raphaelExample1', viewportWidth, viewportHeight);
+          br
+          | var circleObject = graphics.circle(viewportWidth / 2, viewportHeight / 2, viewportWidth / 10, viewportHeight / 10, viewportWidth / 15);
+          br
+          | circleObject.attr("fill", "#0f0");
+          br
+          | circleObject.attr("stroke", "#00f");
+          br
+          | circleObject.click(function () {
+          br
+          | alert('You clicked the circle!');
+          br
+          | });
+          br
         br
         | Click the green circle below!
         br
@@ -129,7 +185,69 @@ body
         | mousemouse - Checks the dragging variable, if it is true, then we get the mouse position delta, and apply it to a function called setViewBox.
         br
         | mouseup - Sets the dragging variable to false.
-
+        br
+        br
+        div(class="inner-content-code")
+          |graphics = Raphael('raphaelExample2', viewportWidth, viewportHeight);
+          br
+          |var boxObject = graphics.rect(viewportWidth / 2, viewportHeight / 2, 20, 20, 3);
+          br
+          |boxObject.attr("fill", "#0f0");
+          br
+          |boxObject.attr("stroke", "#00f");
+          br
+          |var dragging = false;
+          br
+          |var location = {};
+          br
+          |var viewport = {
+          br
+          |    x: 0,
+          br
+          |    y: 0
+          br
+          |};
+          br
+          |document.getElementById('raphaelExample2').addEventListener("mousedown", function (event) {
+          br
+          |    dragging = true;
+          br
+          |    location.x = event.screenX;
+          br
+          |    location.y = event.screenY;
+          br
+          |});
+          br
+          |document.getElementById('raphaelExample2').addEventListener("mouseup", function (event) {
+          br
+          |    dragging = false;
+          br
+          |});
+          br
+          |document.getElementById('raphaelExample2').addEventListener("mousemove", function (event) {
+          br
+          |    if (dragging === true) {
+          br
+          |        var delta = {};
+          br
+          |        delta.x = location.x - event.screenX;
+          br
+          |        delta.y = location.y - event.screenY;
+          br
+          |        location.x = event.screenX;
+          br
+          |        location.y = event.screenY;
+          br
+          |        viewport.x += delta.x;
+          br
+          |        viewport.y += delta.y;
+          br
+          |        graphics.setViewBox(viewport.x, viewport.y, viewportWidth, viewportHeight, false);
+          br
+          |    }
+          br
+          |});
+          br
         br
         br
         | Drag the box below!
@@ -153,6 +271,10 @@ body
       br
       br
       |Click on an asteroid to open the JPL database page for it.
+      br
+      br
+      |DISCLAIMER: This is not to scale, otherwise the earth would have been about 1 pixel large.
+      |Howver, the scaling is proportional.
       br
       br
       |Happy browsing!

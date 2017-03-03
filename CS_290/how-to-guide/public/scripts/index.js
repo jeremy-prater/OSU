@@ -73,9 +73,9 @@ function getNeoWSData(start, end, callback, context) {
     req.open('GET', targetUrl, true);
     req.onreadystatechange = function () {
         if (req.status >= 200 && req.status < 400) {
-            //try {
+            try {
                 callback(JSON.parse(req.responseText), context);
-            //} catch (exception) {}
+            } catch (exception) {}
         } else {
             console.log("Error in network request: " + req.statusText);
         }

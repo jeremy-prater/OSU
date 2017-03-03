@@ -153,6 +153,7 @@ function neoViewer(parentDOMObject) {
                     newAsteroid.attr("fill", "#88f");
                 }
                 var titleText = 'Click to open information about: ' + localSet[localIndex].name + '\n';
+                titleText += 'Missed Earth by: ' + localSet[localIndex].close_approach_data[0].miss_distance.kilometers + ' km\n';
                 titleText += 'Size in KM: ' + asteroidDiameterKM + '\n';
                 if (localSet[localIndex].is_potentially_hazardous_asteroid === true) {
                     titleText += "POTENTIALLY HAZARDOUS!!";

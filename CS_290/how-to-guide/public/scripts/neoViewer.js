@@ -138,7 +138,6 @@ function neoViewer(parentDOMObject) {
         for (var keyIndex = 0; keyIndex < keys.length; keyIndex++) {
             var localSet = context.dataSet.near_earth_objects[keys[keyIndex]];
             for (var localIndex = 0; localIndex < localSet.length; localIndex++) {
-                console.log(localSet[localIndex]);
                 var asteroidY = context.calculateObjectDistance(localSet[localIndex].close_approach_data[0].miss_distance.kilometers, maxRange, context);
                 var asteroidX = context.calculateObjectPassing(keyIndex, keys.length, context);
                 var asteroidDiameterKM = (localSet[localIndex].estimated_diameter.kilometers.estimated_diameter_max + localSet[localIndex].estimated_diameter.kilometers.estimated_diameter_min) / 2;

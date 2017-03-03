@@ -24,7 +24,7 @@ body
         a(href ="#")
           |Menu 4
 
-  div(class="outer-content" id="welcomeContent")
+  div(class="outer-content" id="welcomeContent" style="display: block;")
     div(class="inner-content")
       p(style="text-align: center;")
         | NeoWS/RaphaelJS How-to Guide
@@ -33,7 +33,7 @@ body
         br
         | Use the navigation buttons on the top to select a topic.
 
-  div(id="nasaContent")
+  div(id="nasaContent" style="display: none;")
     div(class="outer-content")
       div(class="inner-content")
         | The NeoWs API is a RESTful http service for querying near earth
@@ -87,7 +87,7 @@ body
         br
 
 
-  div(id="raphaelContent")
+  div(id="raphaelContent" style="display: none;")
     div(class="outer-content")
       div(class="inner-content")
         | RaphaelJS is a javascript SVG rendering library which allows runtime binding of DOM elements properties.
@@ -136,17 +136,35 @@ body
         br
 
     div(class="outer-content")
-      div(class="inner-content" style="height:40vh;" id="raphaelExample2")
+      div(class="inner-content" id="raphaelExample2")
 
+  div(class="outer-content" id="exampleContent" style="display: none;")
+    div(class="inner-content" id="helpBox")
+      |Welcome to the neoWS asteroid viewer!
+      br
+      br
+      |Use the left and right arrows on the bottom of the panel to go forward and backwards in time by one day.
+      br
+      br
+      |Mouse over an asteroid to see details about it.
+      br
+      br
+      |Asteroids which are potentially dangerous are marked in red.
+      br
+      br
+      |Click on an asteroid to open the JPL database page for it.
+      br
+      br
+      |Happy browsing!
+      div(class="button" id="closeHelp")
+        | OK!
+      br
+      br
+    br
 
-
-
-
-
-  div(class="outer-content" id="exampleContent")
-    div(class="inner-content")
-      | Example!
+    div(class="inner-content-integration" id="neoIntegration")
 
 script(src='http://requirejs.org/docs/release/2.2.0/minified/require.js')
 script(src="scripts/raphael.min.js")
+script(src="scripts/neoViewer.js")
 script(src="scripts/index.js")

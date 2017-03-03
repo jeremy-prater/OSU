@@ -47,7 +47,7 @@ body {
 }
 
 .outer-content {
-    width: 75%;
+    width: 90%;
     padding: 20px;
     background-color: #9D601E;
     text-align: center;
@@ -68,6 +68,19 @@ body {
     border-radius: 25px;
 }
 
+.inner-content-integration {
+    width: 95%;
+    padding: 20px;
+    background-color: #000;
+    text-align: left;
+    vertical-align: middle;
+    margin: 0 auto;
+    font-family: "Book Antiqua";
+    font-size: 1.5em;
+    border-radius: 25px;
+    height:70vh !important;
+}
+
 .inner-content-code {
     width: 90%;
     padding: 10px;
@@ -78,4 +91,13 @@ body {
     font-size: 0.7em;
     font-family: "Courier New";
     word-wrap: break-word;
+}
+
+.button {
+    width: 120px;
+    background-color: #409060;
+    border-radius: 25px;
+    text-align: center;
+    float:right;
+    padding: 10px;
 }

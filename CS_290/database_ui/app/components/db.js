@@ -9,7 +9,7 @@ module.exports = function () {
     });
     console.log('[MYSQL] Created Database object.');
 
-    this.getWorkouts = function (context, callback) {
+    this.getWorkouts = function (req) {
         console.log('[MYSQL] /database.getWorkouts');
         var context = {};
         this.pool.query('SELECT * FROM workouts', function (err, rows, fields) {
@@ -18,28 +18,27 @@ module.exports = function () {
                 return;
             }
             context.results = JSON.stringify(rows);
-            res.json(context);
         });
-
+        return context;
     };
 
 
-    this.insertWorkout = function () {
+    this.insertWorkout = function (req) {
         console.log('[MYSQL] /database.insertWorkout');
-        console.log(req.query);
+        console.log(req.body);
         var context = {};
-        mysql.pool.query("INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?)", [req.query.name, req.query.reps, req.query.date, req.query.lbs],
+        /*mysql.pool.query("INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?)", [req.query.name, req.query.reps, req.query.date, req.query.lbs],
             function (err, result) {
                 if (err) {
                     next(err);
                     return;
                 }
                 context.results = "Inserted id " + result.workoutID;
-                res.render('home', context);
-            });
+            });*/
+        return context;
     };
 
-    this.deleteWorkout = function () {
+    this.deleteWorkout = function (req) {
         console.log('[MYSQL] /database.deleteWorkout');
     };
 
@@ -56,9 +55,9 @@ module.exports = function () {
                 "lbs BOOLEAN);";
             context.pool.query(createString, function (err) {
                 context.results = "Table reset";
-                res.json(context);
             })
         });
+        return context;
     };
 
     // Functions are defined. Do any initialization needed.

@@ -83,10 +83,9 @@ module.exports = function () {
         context.pool.query("DROP TABLE IF EXISTS workouts", function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-                context.error = err;
-                return context;
             } else {
-                var createString = "CREATE TABLE workouts(" +
+                var createString =
+                    "CREATE TABLE workouts(" +
                     "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
                     "name VARCHAR(255) NOT NULL," +
                     "reps int NOT NULL," +
@@ -96,10 +95,6 @@ module.exports = function () {
                 context.pool.query(createString, function (err) {
                     if (err) {
                         console.log('[MSQL] Error: ' + err);
-                        context.error = err;
-                        return context;
-                    } else {
-                        context.results = "Table reset";
                     }
                 })
             }

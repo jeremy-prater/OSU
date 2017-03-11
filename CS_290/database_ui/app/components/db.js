@@ -17,7 +17,7 @@ module.exports = function () {
         context.pool.query('SELECT * FROM workouts', function (err, rows, fields) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-                callback ({
+                callback({
                     "error": err
                 });
                 return;
@@ -80,26 +80,19 @@ module.exports = function () {
 
     this.createTable = function () {
         console.log('[MYSQL] Create Table');
-        context.pool.query("DROP TABLE IF EXISTS workouts", function (err) {
+        var createString =
+            "CREATE TABLE IF NOT EXISTS workouts(" +
+            "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
+            "name VARCHAR(255) NOT NULL," +
+            "reps int NOT NULL," +
+            "weight int NOT NULL," +
+            "date DATETIME NOT NULL," +
+            "lbs BOOLEAN NOT NULL) ENGINE=InnoDB;";
+        context.pool.query(createString, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-            } else {
-                var createString =
-                    "CREATE TABLE workouts(" +
-                    "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
-                    "name VARCHAR(255) NOT NULL," +
-                    "reps int NOT NULL," +
-                    "weight int NOT NULL," +
-                    "date DATETIME NOT NULL," +
-                    "lbs BOOLEAN NOT NULL) ENGINE=InnoDB;";
-                context.pool.query(createString, function (err) {
-                    if (err) {
-                        console.log('[MSQL] Error: ' + err);
-                    }
-                })
             }
         });
-        return context;
     };
 
     // Functions are defined. Do any initialization needed.

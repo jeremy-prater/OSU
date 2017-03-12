@@ -1,6 +1,9 @@
 const mysql = require('mysql');
 
 module.exports = function () {
+    var context = this;
+
+
     this.pool = mysql.createPool({
         host: 'mysql.cs.orst.edu',
         user: 'cs340_praterj',
@@ -9,53 +12,97 @@ module.exports = function () {
     });
     console.log('[MYSQL] Created Database object.');
 
-    this.getWorkouts = function (req) {
+    this.getWorkouts = function (req, res, callback) {
         console.log('[MYSQL] /database.getWorkouts');
-        var context = {};
-        this.pool.query('SELECT * FROM workouts', function (err, rows, fields) {
+        context.pool.query('SELECT * FROM workouts', function (err, rows, fields) {
             if (err) {
-                console.log(err);
+                console.log('[MSQL] Error: ' + err);
+                callback ({
+                    "error": err
+                });
                 return;
+            } else {
+                callback(rows);
             }
-            context.results = JSON.stringify(rows);
         });
-        return context;
     };
 
 
-    this.insertWorkout = function (req) {
+    this.insertWorkout = function (req, res, callback) {
         console.log('[MYSQL] /database.insertWorkout');
-        console.log(req.body);
-        var context = {};
-        /*mysql.pool.query("INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?)", [req.query.name, req.query.reps, req.query.date, req.query.lbs],
+        var payload = {};
+        var dataSet = [
+            req.body.name,
+            req.body.reps,
+            req.body.weight,
+            req.body.date,
+            req.body.lbs
+        ];
+        context.pool.query("INSERT INTO workouts (name, reps, weight, date, lbs) VALUES (?, ?, ?, ?, ?)", dataSet,
             function (err, result) {
                 if (err) {
-                    next(err);
-                    return;
+                    console.log('[MSQL] Error: ' + err);
+                    payload = {
+                        "created": true,
+                        "error": err
+                    };
+                    callback(payload);
+                } else {
+                    payload = {
+                        "created": true,
+                        "createdID": result.insertId
+                    };
+                    callback(payload);
                 }
-                context.results = "Inserted id " + result.workoutID;
-            });*/
-        return context;
+            });
     };
 
-    this.deleteWorkout = function (req) {
+    this.deleteWorkout = function (req, res, callback) {
         console.log('[MYSQL] /database.deleteWorkout');
+        var payload = {};
+        var dataSet = [
+            req.body.workoutID,
+        ];
+        context.pool.query("DELETE FROM workouts WHERE workoutID=?", dataSet,
+            function (err, result) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                    payload.error = err;
+                    callback(payload);
+                    return;
+                }
+                payload = {
+                    "deleted": req.body.workoutID
+                };
+                callback(payload);
+            });
     };
 
     this.createTable = function () {
         console.log('[MYSQL] Create Table');
-        var context = this;
-        this.pool.query("DROP TABLE IF EXISTS workouts", function (err) {
-            var createString = "CREATE TABLE workouts(" +
-                "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
-                "name VARCHAR(255) NOT NULL," +
-                "reps int NOT NULL," +
-                "weight int NOT NULL," +
-                "date DATETIME NOT NULL," +
-                "lbs BOOLEAN);";
-            context.pool.query(createString, function (err) {
-                context.results = "Table reset";
-            })
+        context.pool.query("DROP TABLE IF EXISTS workouts", function (err) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                context.error = err;
+                return context;
+            } else {
+                var createString = "CREATE TABLE workouts(" +
+                    "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
+                    "name VARCHAR(255) NOT NULL," +
+                    "reps int NOT NULL," +
+                    "weight int NOT NULL," +
+                    "date DATETIME NOT NULL," +
+                    "lbs BOOLEAN NOT NULL) ENGINE=InnoDB;";
+                context.pool.query(createString, function (err) {
+                    if (err) {
+                        console.log('[MSQL] Error: ' + err);
+                        context.error = err;
+                        return context;
+                    } else {
+                        context.results = "Table reset";
+                    }
+                })
+            }
         });
         return context;
     };

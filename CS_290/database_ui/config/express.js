@@ -7,7 +7,7 @@ module.exports = function() {
     app.set('views', './app/views');
     app.set('view engine', 'pug');
     
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 
     require('../app/routes/index.server.routes.js')(app);

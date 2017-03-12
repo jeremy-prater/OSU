@@ -59,11 +59,12 @@ body {
 .inner-content {
     width: 90%;
     padding: 20px;
-    background-color: lightgray;
+    background-color: #303030;
     text-align: left;
+    color: lightslategrey;
     vertical-align: middle;
     margin: 0 auto;
-    font-family: "Book Antiqua";
+    font-family: "Verdana";
     font-size: 1.5em;
     border-radius: 25px;
 }

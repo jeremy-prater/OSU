@@ -34,8 +34,6 @@ function sortReps() {
 }
 
 function clearAll() {
-    // Delete local client data...
-    console.log('[MSQL] Delete all...');
     deleteAllWorkouts();
 }
 
@@ -55,8 +53,7 @@ function updateSorttype() {
 
 function deleteAllWorkouts()
 {
-    deleteAllWorkout();
-    updateWorkouts();
+    deleteAllWorkout(updateWorkouts);
 }
 
 function updateWorkouts() {
@@ -105,7 +102,7 @@ function getWorkouts(callback) {
     req.send(null);
 }
 
-function addWorkout() {
+function addWorkout(callback) {
     console.log("[Workout] Adding workout.");
     var payload = {
         name: document.getElementById('name').value,
@@ -119,12 +116,17 @@ function addWorkout() {
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
-        if (req.status == 200 && req.readyState === 4) {}
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
     };
     req.send(JSON.stringify(payload));
 }
 
-function deleteWorkout(workoutID) {
+function deleteWorkout(workoutID, callback) {
     console.log("[Workout] Deleting workout :" + workoutID);
     var payload = {
         workoutID: workoutID
@@ -134,19 +136,29 @@ function deleteWorkout(workoutID) {
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
-        if (req.status == 200 && req.readyState === 4) {}
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
     };
     req.send(JSON.stringify(payload));
 }
 
-function deleteAllWorkout() {
-    console.log("[Workout] Adding workout.");
+function deleteAllWorkout(callback) {
+    console.log("[Workout] Deleting all workouts.");
     var req = new XMLHttpRequest();
     var targetUrl = '/deleteAllWorkouts';
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
-        if (req.status == 200 && req.readyState === 4) {}
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                localDataSet = [];
+                callback();
+            } catch (exception) {}
+        }
     };
     req.send(null);
 }

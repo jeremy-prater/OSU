@@ -3,4 +3,5 @@ module.exports = function(app) {
     app.get('/getWorkouts', database.getWorkouts);
     app.post('/insertWorkout', database.insertWorkout);
     app.post('/deleteWorkout', database.deleteWorkout);
+    app.post('/deleteAllWorkouts', database.deleteAllWorkouts);
 };

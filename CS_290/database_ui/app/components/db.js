@@ -78,6 +78,25 @@ module.exports = function () {
             });
     };
 
+    this.deleteAllWorkouts = function (req, res, callback) {
+        console.log('[MYSQL] /database.deleteWorkout');
+        var payload = {};
+        var dataSet = [];
+        context.pool.query("DELETE FROM workouts", dataSet,
+            function (err, result) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                    payload.error = err;
+                    callback(payload);
+                    return;
+                }
+                payload = {
+                    "deleted": "all"
+                };
+                callback(payload);
+            });
+    };
+
     this.createTable = function () {
         console.log('[MYSQL] Create Table');
         var createString =

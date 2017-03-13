@@ -18,3 +18,9 @@ exports.deleteWorkout = function (req, res) {
         res.json(payload);
     });
 };
+
+exports.deleteAllWorkouts = function (req, res) {
+    dbPool.deleteAllWorkouts(req, res, function (payload) {
+        res.json(payload);
+    });
+};

@@ -5,6 +5,7 @@
 
 var sortType = 0;
 var lastSortType = 0;
+var localDataSet = [];
 
 ////////////////////////////////////////////////////////////
 //
@@ -19,22 +20,23 @@ var lastSortType = 0;
 
 function sortDate() {
     sortType = 0;
-    updateWorkouts();
+    updateSorttype();
 }
 
 function sortWeight() {
     sortType = 1;
-    updateWorkouts();
+    updateSorttype();
 }
 
 function sortReps() {
     sortType = 2;
-    updateWorkouts();
+    updateSorttype();
 }
 
 function clearAll() {
     // Delete local client data...
-    updateWorkouts();
+    console.log('[MSQL] Delete all...');
+    deleteAllWorkouts();
 }
 
 ////////////////////////////////////////////////////////////
@@ -42,14 +44,24 @@ function clearAll() {
 // Client DOM update functions
 //
 
-function updateWorkouts() {
+function updateSorttype() {
     if (lastSortType == sortType) {
         return;
     } else {
         lastSortType = sortType;
+        updateWorkouts();
     }
+}
 
-    console.log("[UPDATE] Workout Sort : " + sortType);
+function deleteAllWorkouts()
+{
+    deleteAllWorkout();
+    updateWorkouts();
+}
+
+function updateWorkouts() {
+
+    console.log("[UPDATE] Rebuild Workouts - Sort method : " + sortType);
 
     switch (sortType) {
         case 0: //sort by date
@@ -68,12 +80,30 @@ function updateWorkouts() {
             }
             break;
     }
+
+    console.log (localDataSet);
 }
 
 ////////////////////////////////////////////////////////////
 //
 // Database access functions
 //
+
+function getWorkouts(callback) {
+    console.log("[Workout] Getting workouts.");
+    var req = new XMLHttpRequest();
+    var targetUrl = '/getWorkouts';
+    req.open('GET', targetUrl, true);
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
+    };
+    req.send(null);
+}
 
 function addWorkout() {
     console.log("[Workout] Adding workout.");
@@ -89,9 +119,36 @@ function addWorkout() {
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
-        if (req.status >= 200 && req.status < 400) {}
+        if (req.status == 200 && req.readyState === 4) {}
     };
     req.send(JSON.stringify(payload));
+}
+
+function deleteWorkout(workoutID) {
+    console.log("[Workout] Deleting workout :" + workoutID);
+    var payload = {
+        workoutID: workoutID
+    };
+    var req = new XMLHttpRequest();
+    var targetUrl = '/deleteWorkout';
+    req.open('POST', targetUrl, true);
+    req.setRequestHeader("Content-type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {}
+    };
+    req.send(JSON.stringify(payload));
+}
+
+function deleteAllWorkout() {
+    console.log("[Workout] Adding workout.");
+    var req = new XMLHttpRequest();
+    var targetUrl = '/deleteAllWorkouts';
+    req.open('POST', targetUrl, true);
+    req.setRequestHeader("Content-type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {}
+    };
+    req.send(null);
 }
 
 ////////////////////////////////////////////////////////////
@@ -102,4 +159,4 @@ function addWorkout() {
 // Set the Date input to the current DATETIEM (sql)
 document.getElementById('date').value = new Date(Date.now()).toISOString();
 
-updateWorkouts();
+getWorkouts(updateWorkouts);

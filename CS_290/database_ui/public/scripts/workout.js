@@ -79,8 +79,6 @@ function updateWorkouts() {
             break;
     }
 
-    console.log (localDataSet);
-
     var parentElement = document.getElementById('workoutData');
 
     // Remove all child nodes
@@ -93,6 +91,49 @@ function updateWorkouts() {
     for (var workoutIndex = 0; workoutIndex < localDataSet.length; workoutIndex++)
     {
         var currentWorkout = localDataSet[workoutIndex];
+        console.log (currentWorkout);
+
+        var newDiv = document.createElement("div");
+        newDiv.className = "workout-content";
+
+        var nameDiv = document.createElement("div");
+        nameDiv.id = currentWorkout.name + "-name";
+        nameDiv.className = "workout-context-text"
+        nameDiv.innerHTML = "<span>" + currentWorkout.name + "</span>";
+
+        var dateDiv = document.createElement("div");
+        dateDiv.id = currentWorkout.name + "-date";
+        dateDiv.className = "workout-context-text"
+        dateDiv.innerHTML = "<span>" + new Date(currentWorkout.date).toLocaleString() + "</span>";
+
+        var repsDiv = document.createElement("div");
+        repsDiv.id = currentWorkout.name + "-reps";
+        repsDiv.className = "workout-context-text"
+        repsDiv.innerHTML = "<span>" + currentWorkout.reps + "</span>";
+
+        var weightTypeDiv = document.createElement("div");
+        weightTypeDiv.id = currentWorkout.name + "-weightType";
+        weightTypeDiv.className = "workout-context-text"
+        var lbs = 0;
+        var kg = 0;
+        if (currentWorkout.lbs === 1)
+        {
+            lbs = currentWorkout.weight;
+            kg = currentWorkout.weight * 0.453592;
+        }
+        else
+        {
+            kg = currentWorkout.weight;
+            lbs = currentWorkout.weight * 2.20462;
+        }
+        weightTypeDiv.innerHTML =  "<span>" + lbs.toFixed(0) + "lbs | " + kg.toFixed(0) + " kg</span>";
+
+        newDiv.appendChild(dateDiv);
+        newDiv.appendChild(nameDiv);
+        newDiv.appendChild(weightTypeDiv);
+        newDiv.appendChild(repsDiv);
+
+        parentElement.appendChild(newDiv);
     }
 }
 
@@ -109,7 +150,7 @@ function getWorkouts(callback) {
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
             try {
-                localDataSet = req.responseText;
+                localDataSet = JSON.parse(req.responseText);
                 callback();
             } catch (exception) {}
         }
@@ -133,7 +174,7 @@ function addWorkout(callback) {
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
             try {
-                localDataSet = req.responseText;
+                //localDataSet = req.responseText;
                 callback();
             } catch (exception) {}
         }
@@ -153,7 +194,7 @@ function deleteWorkout(workoutID, callback) {
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
             try {
-                localDataSet = req.responseText;
+                //localDataSet = req.responseText;
                 callback();
             } catch (exception) {}
         }

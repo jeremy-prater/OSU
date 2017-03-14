@@ -102,3 +102,23 @@ body {
     float:right;
     padding: 10px;
 }
+
+.workout-content {
+    width: 90%;
+    padding: 10px;
+    background-color: #F5F2ED;
+    text-align: left;
+    color: lightslategrey;
+    vertical-align: middle;
+    margin: 0 auto;
+    font-family: "Courier New";
+    border-radius: 15px;
+}
+
+.workout-content-text {
+    text-align: center;
+    font-size: 0.75em;
+    background-color: #d5d2cD;
+    margin: 10px;
+    padding: 10px;
+}

@@ -60,6 +60,7 @@ function updateWorkouts() {
 
     console.log("[UPDATE] Rebuild Workouts - Sort method : " + sortType);
 
+    // Sort the data by requested type
     switch (sortType) {
         case 0: //sort by date
             {
@@ -79,6 +80,20 @@ function updateWorkouts() {
     }
 
     console.log (localDataSet);
+
+    var parentElement = document.getElementById('workoutData');
+
+    // Remove all child nodes
+    while (parentElement.hasChildNodes())
+    {
+        parentElement.removeChild(parentElement.lastChild);
+    }
+
+    // Add new data elements to the DOM
+    for (var workoutIndex = 0; workoutIndex < localDataSet.length; workoutIndex++)
+    {
+        var currentWorkout = localDataSet[workoutIndex];
+    }
 }
 
 ////////////////////////////////////////////////////////////

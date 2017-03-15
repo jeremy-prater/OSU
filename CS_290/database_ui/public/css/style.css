@@ -116,9 +116,27 @@ body {
 }
 
 .workout-content-text {
+    width: 20% !important;
+    height: 100px;
+    text-align: center;
+    vertical-align: center;
+    font-size: 1.25em;
+    background-color: #d5d2cD;
+    border-radius: 10px;
+    padding: 10px;
+    float: left;
+}
+
+.workout-content-delete {
+    width: 5% !important;
+    float:right;
     text-align: center;
     font-size: 0.75em;
-    background-color: #d5d2cD;
-    margin: 10px;
+    background-color: #e03242;
+    border-radius: 10px;
     padding: 10px;
+}
+
+.workout-content-reset {
+    clear: both;
 }

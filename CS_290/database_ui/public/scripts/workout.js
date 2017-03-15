@@ -98,22 +98,22 @@ function updateWorkouts() {
 
         var nameDiv = document.createElement("div");
         nameDiv.id = currentWorkout.name + "-name";
-        nameDiv.className = "workout-context-text"
-        nameDiv.innerHTML = "<span>" + currentWorkout.name + "</span>";
+        nameDiv.className = "workout-content-text"
+        nameDiv.innerHTML = currentWorkout.name;
 
         var dateDiv = document.createElement("div");
         dateDiv.id = currentWorkout.name + "-date";
-        dateDiv.className = "workout-context-text"
-        dateDiv.innerHTML = "<span>" + new Date(currentWorkout.date).toLocaleString() + "</span>";
+        dateDiv.className = "workout-content-text"
+        dateDiv.innerHTML = new Date(currentWorkout.date).toLocaleString();
 
         var repsDiv = document.createElement("div");
         repsDiv.id = currentWorkout.name + "-reps";
-        repsDiv.className = "workout-context-text"
-        repsDiv.innerHTML = "<span>" + currentWorkout.reps + "</span>";
+        repsDiv.className = "workout-content-text"
+        repsDiv.innerHTML = currentWorkout.reps;
 
         var weightTypeDiv = document.createElement("div");
         weightTypeDiv.id = currentWorkout.name + "-weightType";
-        weightTypeDiv.className = "workout-context-text"
+        weightTypeDiv.className = "workout-content-text"
         var lbs = 0;
         var kg = 0;
         if (currentWorkout.lbs === 1)
@@ -126,12 +126,22 @@ function updateWorkouts() {
             kg = currentWorkout.weight;
             lbs = currentWorkout.weight * 2.20462;
         }
-        weightTypeDiv.innerHTML =  "<span>" + lbs.toFixed(0) + "lbs | " + kg.toFixed(0) + " kg</span>";
+        weightTypeDiv.innerHTML =  lbs.toFixed(0) + "lbs | " + kg.toFixed(0) + " kg";
+
+        var clearStyleDiv = document.createElement("div");
+        clearStyleDiv.id = currentWorkout.name + "-reset";
+        clearStyleDiv.className = "workout-content-reset"
+
+        var deleteWorkout = document.createElement("div");
+        deleteWorkout.id = currentWorkout.name + "-delete";
+        deleteWorkout.className = "workout-content-delete";
 
         newDiv.appendChild(dateDiv);
         newDiv.appendChild(nameDiv);
         newDiv.appendChild(weightTypeDiv);
         newDiv.appendChild(repsDiv);
+        newDiv.appendChild(clearStyleDiv);
+        newDiv.appendChild(deleteWorkout);
 
         parentElement.appendChild(newDiv);
     }

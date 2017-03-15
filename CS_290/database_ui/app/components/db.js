@@ -13,8 +13,27 @@ module.exports = function () {
     console.log('[MYSQL] Created Database object.');
 
     this.getWorkouts = function (req, res, callback) {
-        console.log('[MYSQL] /database.getWorkouts');
-        context.pool.query('SELECT * FROM workouts', function (err, rows, fields) {
+        var workoutSort = parseInt(req.query.sortby);
+        console.log("[MYSQL] /database.getWorkouts(" + workoutSort  + ")")
+        var sqlString = 'SELECT workoutID, name, reps, weight, date, lbs FROM workouts ';
+        switch (workoutSort) {
+            case 0:
+                {
+                    sqlString += 'ORDER BY date DESC';
+                }
+                break;
+            case 1:
+                {
+                    sqlString += 'ORDER BY weight DESC;';
+                }
+                break;
+            case 2:
+                {
+                    sqlString += 'ORDER BY reps DESC;';
+                }
+                break;
+        }
+        context.pool.query(sqlString, function (err, rows, fields) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
                 callback({

@@ -30,7 +30,7 @@ function sortWeight() {
 
 function sortReps() {
     sortType = 2;
-    updateSorttype();
+    updateSorttype();    
 }
 
 function clearAll() {
@@ -47,7 +47,7 @@ function updateSorttype() {
         return;
     } else {
         lastSortType = sortType;
-        updateWorkouts();
+        getWorkouts(updateWorkouts);
     }
 }
 
@@ -57,27 +57,7 @@ function deleteAllWorkouts()
 }
 
 function updateWorkouts() {
-    console.log("[UPDATE] Rebuild Workouts - Sort method : " + sortType);
-
-    // Sort the data by requested type
-    switch (sortType) {
-        case 0: //sort by date
-            {
-
-            }
-            break;
-        case 1: //sort by weight
-            {
-
-            }
-            break;
-        case 2: //sort by reps
-            {
-
-            }
-            break;
-    }
-
+    console.log ("Updating Workouts...");
     var parentElement = document.getElementById('workoutData');
 
     // Remove all child nodes
@@ -189,14 +169,15 @@ function postAddWorkout()
 //
 
 function getWorkouts(callback) {
-    console.log("[Workout] Getting workouts.");
     var req = new XMLHttpRequest();
-    var targetUrl = '/getWorkouts';
+    var targetUrl = '/getWorkouts?sortby=' + sortType;
+    console.log("[Workout] Getting workouts [" + targetUrl +"]");
     req.open('GET', targetUrl, true);
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
             try {
                 localDataSet = JSON.parse(req.responseText);
+                console.log(req.responseText);
                 callback();
             } catch (exception) {}
         }

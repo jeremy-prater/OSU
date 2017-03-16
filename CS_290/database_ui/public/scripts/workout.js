@@ -57,7 +57,6 @@ function deleteAllWorkouts()
 }
 
 function updateWorkouts() {
-
     console.log("[UPDATE] Rebuild Workouts - Sort method : " + sortType);
 
     // Sort the data by requested type
@@ -91,7 +90,6 @@ function updateWorkouts() {
     for (var workoutIndex = 0; workoutIndex < localDataSet.length; workoutIndex++)
     {
         var currentWorkout = localDataSet[workoutIndex];
-        console.log (currentWorkout);
 
         var newDiv = document.createElement("div");
         newDiv.className = "workout-content";
@@ -99,17 +97,26 @@ function updateWorkouts() {
         var nameDiv = document.createElement("div");
         nameDiv.id = currentWorkout.name + "-name";
         nameDiv.className = "workout-content-text"
-        nameDiv.innerHTML = currentWorkout.name;
+        var nameSpan = document.createElement("span");
+        nameSpan.className = "workout-content-span";
+        nameSpan.innerText = currentWorkout.name;
+        nameDiv.appendChild(nameSpan);
 
         var dateDiv = document.createElement("div");
         dateDiv.id = currentWorkout.name + "-date";
         dateDiv.className = "workout-content-text"
-        dateDiv.innerHTML = new Date(currentWorkout.date).toLocaleString();
+        var dateSpan = document.createElement("span");
+        dateSpan.className = "workout-content-span";
+        dateSpan.innerText = new Date(currentWorkout.date).toLocaleString();
+        dateDiv.appendChild(dateSpan);
 
         var repsDiv = document.createElement("div");
         repsDiv.id = currentWorkout.name + "-reps";
         repsDiv.className = "workout-content-text"
-        repsDiv.innerHTML = currentWorkout.reps;
+        var repsSpan = document.createElement("span");
+        repsSpan.className = "workout-content-span";
+        repsSpan.innerText = currentWorkout.reps;
+        repsDiv.appendChild(repsSpan);
 
         var weightTypeDiv = document.createElement("div");
         weightTypeDiv.id = currentWorkout.name + "-weightType";
@@ -126,7 +133,10 @@ function updateWorkouts() {
             kg = currentWorkout.weight;
             lbs = currentWorkout.weight * 2.20462;
         }
-        weightTypeDiv.innerHTML =  lbs.toFixed(0) + "lbs | " + kg.toFixed(0) + " kg";
+        var weightSpan = document.createElement("span");
+        weightSpan.className = "workout-content-span";
+        weightSpan.innerHTML = lbs.toFixed(0) + " lbs<br>" + kg.toFixed(0) + " kg";
+        weightTypeDiv.appendChild(weightSpan);
 
         var clearStyleDiv = document.createElement("div");
         clearStyleDiv.id = currentWorkout.name + "-reset";
@@ -135,6 +145,11 @@ function updateWorkouts() {
         var deleteWorkout = document.createElement("div");
         deleteWorkout.id = currentWorkout.name + "-delete";
         deleteWorkout.className = "workout-content-delete";
+        var deleteSpan = document.createElement("span");
+        deleteSpan.className = "workout-content-span";
+        deleteSpan.innerText = "Delete Workout";
+        deleteWorkout.appendChild(deleteSpan);
+        deleteWorkout.onclick = GenerateDeleteFunction(currentWorkout.workoutID);
 
         newDiv.appendChild(dateDiv);
         newDiv.appendChild(nameDiv);
@@ -145,6 +160,27 @@ function updateWorkouts() {
 
         parentElement.appendChild(newDiv);
     }
+}
+
+////////////////////////////////////////////////////////////
+//
+// UI database generator functions
+//
+
+function GenerateDeleteFunction(workoutID)
+{
+    return function()
+    {
+        deleteWorkout(workoutID, function() {
+            getWorkouts(updateWorkouts);
+        })
+    }
+}
+
+function postAddWorkout()
+{
+    getWorkouts(updateWorkouts);
+    updateClientTime();
 }
 
 ////////////////////////////////////////////////////////////
@@ -229,12 +265,17 @@ function deleteAllWorkout(callback) {
     req.send(null);
 }
 
+function updateClientTime()
+{
+    document.getElementById('date').value = new Date(Date.now()).toISOString();
+}
+
 ////////////////////////////////////////////////////////////
 //
 // Client startup functions
 //
 
 // Set the Date input to the current DATETIEM (sql)
-document.getElementById('date').value = new Date(Date.now()).toISOString();
+updateClientTime();
 
 getWorkouts(updateWorkouts);

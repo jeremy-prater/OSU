@@ -51,9 +51,9 @@ body
           label(class="btn btn-primary")
             input(type="radio" name="options" id="weight_kg" autocomplete="off")
             |KG
-        
+
         div(class="btn-group" data-toggle="buttons")
-          button(type="button" id="myButton" data-loading-text="Add" class="btn btn-primary" style="margin-left: 15%;" autocomplete="off" onclick="addWorkout(); return false;")
+          button(type="button" id="myButton" data-loading-text="Add" class="btn btn-primary" style="margin-left: 15%;" autocomplete="off" onclick="addWorkout(postAddWorkout); return false;")
             | Add workout
 
   div(class="outer-content" id="welcomeContent" style="display: block;")

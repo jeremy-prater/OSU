@@ -109,7 +109,6 @@ body {
     background-color: #F5F2ED;
     text-align: left;
     color: lightslategrey;
-    vertical-align: middle;
     margin: 0 auto;
     font-family: "Courier New";
     border-radius: 15px;
@@ -118,20 +117,22 @@ body {
 .workout-content-text {
     width: 20% !important;
     height: 100px;
-    text-align: center;
-    vertical-align: center;
-    font-size: 1.25em;
+    font-size: 1em;
     background-color: #d5d2cD;
+    color: #202020;
     border-radius: 10px;
     padding: 10px;
     float: left;
 }
 
 .workout-content-delete {
-    width: 5% !important;
+    cursor: default;
+    width: 20% !important;
+    height: 100px;
+    margin-top: -100px;
     float:right;
-    text-align: center;
-    font-size: 0.75em;
+    font-size: 1em;
+    color: #202020;
     background-color: #e03242;
     border-radius: 10px;
     padding: 10px;
@@ -139,4 +140,11 @@ body {
 
 .workout-content-reset {
     clear: both;
+}
+
+.workout-content-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }

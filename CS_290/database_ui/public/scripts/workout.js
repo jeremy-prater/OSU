@@ -170,7 +170,7 @@ function updateWorkouts() {
         editDateInput.setAttribute("type", "text");
         editDateInput.className = "form-control";
         editDateInput.id = "edit-date-" + currentWorkout.name;
-        editDateInput.value = currentWorkout.date;
+        editDateInput.value = new Date(currentWorkout.date).toLocaleString();
 
         ////////////////////////////
         //
@@ -431,7 +431,7 @@ function deleteAllWorkout(callback) {
 }
 
 function updateClientTime() {
-    document.getElementById('date').value = new Date(Date.now()).toISOString();
+    document.getElementById('date').value = new Date(Date.now()).toLocaleString();
 }
 
 ////////////////////////////////////////////////////////////

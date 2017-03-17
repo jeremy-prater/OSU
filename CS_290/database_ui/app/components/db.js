@@ -54,7 +54,7 @@ module.exports = function () {
             req.body.name,
             req.body.reps,
             req.body.weight,
-            req.body.date,
+            new Date(req.body.date),
             req.body.lbs,
             req.body.workoutID
         ];
@@ -84,7 +84,7 @@ module.exports = function () {
             req.body.name,
             req.body.reps,
             req.body.weight,
-            req.body.date,
+            new Date(req.body.date),
             req.body.lbs
         ];
         context.pool.query("INSERT INTO workouts (name, reps, weight, date, lbs) VALUES (?, ?, ?, ?, ?)", dataSet,

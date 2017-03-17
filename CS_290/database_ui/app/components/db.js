@@ -47,6 +47,36 @@ module.exports = function () {
     };
 
 
+    this.updateWorkout = function (req, res, callback) {
+        console.log('[MYSQL] /database.insertWorkout');
+        var payload = {};
+        var dataSet = [
+            req.body.name,
+            req.body.reps,
+            req.body.weight,
+            req.body.date,
+            req.body.lbs,
+            req.body.workoutID
+        ];
+        context.pool.query("UPDATE workouts SET name=?, reps=?, weight=?, date=?, lbs=? WHERE workoutID=?", dataSet,
+            function (err, result) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                    payload = {
+                        "updated": false,
+                        "error": err
+                    };
+                    callback(payload);
+                } else {
+                    payload = {
+                        "updated": true,
+                        "createdID": req.body.workoutID
+                    };
+                    callback(payload);
+                }
+            });
+    };
+
     this.insertWorkout = function (req, res, callback) {
         console.log('[MYSQL] /database.insertWorkout');
         var payload = {};
@@ -62,7 +92,7 @@ module.exports = function () {
                 if (err) {
                     console.log('[MSQL] Error: ' + err);
                     payload = {
-                        "created": true,
+                        "created": false,
                         "error": err
                     };
                     callback(payload);

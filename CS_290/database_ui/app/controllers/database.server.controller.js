@@ -13,6 +13,12 @@ exports.insertWorkout = function (req, res) {
     });
 };
 
+exports.updateWorkout = function (req, res) {
+    dbPool.updateWorkout(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
 exports.deleteWorkout = function (req, res) {
     dbPool.deleteWorkout(req, res, function (payload) {
         res.json(payload);

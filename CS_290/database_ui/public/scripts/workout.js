@@ -30,7 +30,7 @@ function sortWeight() {
 
 function sortReps() {
     sortType = 2;
-    updateSorttype();    
+    updateSorttype();
 }
 
 function clearAll() {
@@ -51,24 +51,21 @@ function updateSorttype() {
     }
 }
 
-function deleteAllWorkouts()
-{
+function deleteAllWorkouts() {
     deleteAllWorkout(updateWorkouts);
 }
 
 function updateWorkouts() {
-    console.log ("Updating Workouts...");
+    console.log("Updating Workouts...");
     var parentElement = document.getElementById('workoutData');
 
     // Remove all child nodes
-    while (parentElement.hasChildNodes())
-    {
+    while (parentElement.hasChildNodes()) {
         parentElement.removeChild(parentElement.lastChild);
     }
 
     // Add new data elements to the DOM
-    for (var workoutIndex = 0; workoutIndex < localDataSet.length; workoutIndex++)
-    {
+    for (var workoutIndex = 0; workoutIndex < localDataSet.length; workoutIndex++) {
         var currentWorkout = localDataSet[workoutIndex];
 
         var newDiv = document.createElement("div");
@@ -103,13 +100,10 @@ function updateWorkouts() {
         weightTypeDiv.className = "workout-content-text"
         var lbs = 0;
         var kg = 0;
-        if (currentWorkout.lbs === 1)
-        {
+        if (currentWorkout.lbs === 1) {
             lbs = currentWorkout.weight;
             kg = currentWorkout.weight * 0.453592;
-        }
-        else
-        {
+        } else {
             kg = currentWorkout.weight;
             lbs = currentWorkout.weight * 2.20462;
         }
@@ -122,6 +116,14 @@ function updateWorkouts() {
         clearStyleDiv.id = currentWorkout.name + "-reset";
         clearStyleDiv.className = "workout-content-reset"
 
+        var editWorkout = document.createElement("div");
+        editWorkout.id = currentWorkout.name + "-edit";
+        editWorkout.className = "workout-content-edit"
+        var editSpan = document.createElement("span");
+        editSpan.className = "workout-content-span";
+        editSpan.innerText = "Edit Workout";
+        editWorkout.appendChild(editSpan);
+
         var deleteWorkout = document.createElement("div");
         deleteWorkout.id = currentWorkout.name + "-delete";
         deleteWorkout.className = "workout-content-delete";
@@ -133,12 +135,155 @@ function updateWorkouts() {
 
         newDiv.appendChild(dateDiv);
         newDiv.appendChild(nameDiv);
-        newDiv.appendChild(weightTypeDiv);
         newDiv.appendChild(repsDiv);
+        newDiv.appendChild(weightTypeDiv);
+
+        newDiv.appendChild(editWorkout);
         newDiv.appendChild(clearStyleDiv);
         newDiv.appendChild(deleteWorkout);
 
         parentElement.appendChild(newDiv);
+
+
+        ///////////////////////////////////////////////////////////////
+        //
+        // Create the edit form embedded in the results list, but hide it.
+        //
+
+        var editDiv = document.createElement("div");
+        editDiv.className = "workout-content";
+        editDiv.style.display = "none";
+
+        editWorkout.onclick = GenerateEditFunction(newDiv, editDiv);
+
+        var editForm = document.createElement("form");
+        editForm.className = "form-inline";
+
+        ////////////////////////////
+        //
+        // Date Edit
+
+        var editDateDiv = document.createElement("div");
+        editDateDiv.className = "form-group";
+        editDateDiv.style.width = "20%";
+        var editDateInput = document.createElement("input");
+        editDateInput.setAttribute("type", "text");
+        editDateInput.className = "form-control";
+        editDateInput.id = "edit-date-" + currentWorkout.name;
+        editDateInput.value = new Date(currentWorkout.date).toISOString();
+
+        ////////////////////////////
+        //
+        // Name Edit
+
+        var editNameDiv = document.createElement("div");
+        editNameDiv.className = "form-group";
+        editNameDiv.style.width = "20%";
+        var editNameInput = document.createElement("input");
+        editNameInput.setAttribute("type", "text");
+        editNameInput.className = "form-control";
+        editNameInput.id = "edit-Name-" + currentWorkout.name;
+        editNameInput.value = currentWorkout.name;
+
+        ////////////////////////////
+        //
+        // Reps Edit
+
+        var editRepsDiv = document.createElement("div");
+        editRepsDiv.className = "form-group";
+        editRepsDiv.style.width = "20%";
+        var editRepsInput = document.createElement("input");
+        editRepsInput.setAttribute("type", "text");
+        editRepsInput.className = "form-control";
+        editRepsInput.id = "edit-Reps-" + currentWorkout.name;
+        editRepsInput.value = currentWorkout.reps;
+
+        var editWeightDiv = document.createElement("div");
+        editWeightDiv.className = "form-group";
+        editWeightDiv.style.width = "20%";
+        var editWeightInput = document.createElement("input");
+        editWeightInput.setAttribute("type", "text");
+        editWeightInput.className = "form-control";
+        editWeightInput.id = "edit-Weight-" + currentWorkout.name;
+        editWeightInput.value = currentWorkout.weight;
+
+        ////////////////////////////
+        //
+        // Weight Type Edit
+
+        var editWeightTypeDiv = document.createElement("div");
+        editWeightTypeDiv.className = "form-group";
+        editWeightTypeDiv.setAttribute("data-toggle", "buttons");
+
+        var editWeightLBSLabel = document.createElement("label");
+        editWeightLBSLabel.innerText = "LBS";
+        if (currentWorkout.lbs) {
+            editWeightLBSLabel.className = "btn btn-primary active";
+        } else {
+            editWeightLBSLabel.className = "btn btn-primary";
+        }
+
+        var editWeightLBSInput = document.createElement("input");
+        editWeightLBSInput.setAttribute("type", "radio");
+        editWeightLBSInput.name = "options";
+        editWeightLBSInput.id = "edit-Weight-" + currentWorkout.name + "-lbs";
+        editWeightLBSInput.autocomplete = "off";
+        editWeightLBSInput.checked = currentWorkout.lbs;
+
+        var editWeightKGLabel = document.createElement("label");
+        editWeightKGLabel.innerText = "KG";
+        if (!currentWorkout.lbs) {
+            editWeightKGLabel.className = "btn btn-primary active";
+        } else {
+            editWeightKGLabel.className = "btn btn-primary";
+        }
+
+        var editWeightKGInput = document.createElement("input");
+        editWeightKGInput.setAttribute("type", "radio");
+        editWeightKGInput.name = "options";
+        editWeightKGInput.id = "edit-Weight-" + currentWorkout.name + "-kg";
+        editWeightKGInput.autocomplete = "off";
+        editWeightKGInput.checked = !currentWorkout.lbs;
+
+        ////////////////////////////
+        //
+        // Save changes
+
+        var submitEditDiv = document.createElement("div");
+        submitEditDiv.className = "form-group";
+        submitEditDiv.setAttribute("data-toggle", "buttons");
+        var submitEditButton = document.createElement("button");
+        submitEditButton.className = "btn btn-primary";
+        submitEditButton.type = "button";
+        submitEditButton.id = "submit-changes-" + currentWorkout.name;
+        submitEditButton.setAttribute("data-loading-text", "Submit");
+        submitEditButton.style.marginLeft = "15%";
+        submitEditButton.autocomplete = "off";
+        submitEditButton.innerText = "Save changes";
+
+        editDateDiv.appendChild(editDateInput);
+        editNameDiv.appendChild(editNameInput);
+        editRepsDiv.appendChild(editRepsInput);
+        editWeightDiv.appendChild(editWeightInput);
+
+        editWeightLBSLabel.appendChild(editWeightLBSInput);
+        editWeightKGLabel.appendChild(editWeightKGInput);
+        editWeightTypeDiv.appendChild(editWeightLBSLabel);
+        editWeightTypeDiv.appendChild(editWeightKGLabel);
+
+        submitEditDiv.appendChild(submitEditButton);
+
+        editForm.appendChild(editDateDiv);
+        editForm.appendChild(editNameDiv);
+        editForm.appendChild(editRepsDiv);
+        editForm.appendChild(editWeightDiv);
+        editForm.appendChild(editWeightTypeDiv);
+        editForm.appendChild(submitEditDiv);
+
+
+        editDiv.appendChild(editForm);
+        parentElement.appendChild(editDiv);
+        submitEditButton.onclick = GenerateSubmitFunction(newDiv, editDiv, currentWorkout.workoutID, editDateInput, editNameInput, editRepsInput, editWeightInput, editWeightLBSInput);
     }
 }
 
@@ -147,18 +292,40 @@ function updateWorkouts() {
 // UI database generator functions
 //
 
-function GenerateDeleteFunction(workoutID)
-{
-    return function()
-    {
-        deleteWorkout(workoutID, function() {
+function GenerateDeleteFunction(workoutID) {
+    return function () {
+        deleteWorkout(workoutID, function () {
             getWorkouts(updateWorkouts);
         })
     }
 }
 
-function postAddWorkout()
-{
+function GenerateEditFunction(workoutDiv, editDiv) {
+    return function () {
+        workoutDiv.style.display = "none";
+        editDiv.style.display = "block";
+    }
+}
+
+function GenerateSubmitFunction(workoutDiv, editDiv, workoutID, editDateInput, editNameInput, editRepsInput, editWeightInput, editWeightLBSInput) {
+    return function () {
+        workoutDiv.style.display = "block";
+        editDiv.style.display = "none";
+        var payload = {
+            name: editNameInput.value,
+            reps: editRepsInput.value,
+            weight: editWeightInput.value,
+            date: editDateInput.value,
+            lbs: editWeightLBSInput.checked,
+            workoutID: workoutID
+        };
+        updateWorkout(payload, function () {
+            getWorkouts(updateWorkouts);
+        });
+    }
+}
+
+function postAddWorkout() {
     getWorkouts(updateWorkouts);
     updateClientTime();
 }
@@ -171,7 +338,7 @@ function postAddWorkout()
 function getWorkouts(callback) {
     var req = new XMLHttpRequest();
     var targetUrl = '/getWorkouts?sortby=' + sortType;
-    console.log("[Workout] Getting workouts [" + targetUrl +"]");
+    console.log("[Workout] Getting workouts [" + targetUrl + "]");
     req.open('GET', targetUrl, true);
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
@@ -196,6 +363,23 @@ function addWorkout(callback) {
     };
     var req = new XMLHttpRequest();
     var targetUrl = '/insertWorkout';
+    req.open('POST', targetUrl, true);
+    req.setRequestHeader("Content-type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                //localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
+    };
+    req.send(JSON.stringify(payload));
+}
+
+function updateWorkout(payload, callback) {
+    console.log("[Workout] Adding workout.");
+    var req = new XMLHttpRequest();
+    var targetUrl = '/updateWorkout';
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
@@ -246,8 +430,7 @@ function deleteAllWorkout(callback) {
     req.send(null);
 }
 
-function updateClientTime()
-{
+function updateClientTime() {
     document.getElementById('date').value = new Date(Date.now()).toISOString();
 }
 

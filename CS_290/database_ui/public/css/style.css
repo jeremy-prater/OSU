@@ -127,7 +127,7 @@ body {
 
 .workout-content-delete {
     cursor: default;
-    width: 20% !important;
+    width: 10% !important;
     height: 100px;
     margin-top: -100px;
     float:right;
@@ -136,6 +136,18 @@ body {
     background-color: #e03242;
     border-radius: 10px;
     padding: 10px;
+}
+
+.workout-content-edit {
+    width: 10% !important;
+    height: 100px;
+    font-size: 1em;
+    background-color: #308242;
+    color: #202020;
+    cursor: default;
+    border-radius: 10px;
+    padding: 10px;
+    float: left;
 }
 
 .workout-content-reset {

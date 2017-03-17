@@ -170,7 +170,7 @@ function updateWorkouts() {
         editDateInput.setAttribute("type", "text");
         editDateInput.className = "form-control";
         editDateInput.id = "edit-date-" + currentWorkout.name;
-        editDateInput.value = new Date(currentWorkout.date).toISOString();
+        editDateInput.value = currentWorkout.date;
 
         ////////////////////////////
         //

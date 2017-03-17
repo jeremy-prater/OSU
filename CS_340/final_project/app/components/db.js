@@ -12,9 +12,24 @@ module.exports = function () {
     });
     console.log('[MYSQL] Created Database object.');
 
+    this.insertCodex = function(codexType) {
+        switch (codexType) {
+            case 'items':
+                {
+
+                }
+                break;
+            case 'locations':
+                {
+
+                }
+                break;
+        }
+    }
+
     this.getWorkouts = function (req, res, callback) {
         var workoutSort = parseInt(req.query.sortby);
-        console.log("[MYSQL] /database.getWorkouts(" + workoutSort  + ")")
+        console.log("[MYSQL] /database.getWorkouts(" + workoutSort + ")")
         var sqlString = 'SELECT workoutID, name, reps, weight, date, lbs FROM workouts ';
         switch (workoutSort) {
             case 0:
@@ -146,24 +161,42 @@ module.exports = function () {
             });
     };
 
-    this.createTable = function () {
+    this.createTables = function () {
         console.log('[MYSQL] Create Table');
         var createString =
-            "CREATE TABLE IF NOT EXISTS workouts(" +
-            "workoutID INT PRIMARY KEY AUTO_INCREMENT," +
-            "name VARCHAR(255) NOT NULL," +
-            "reps int NOT NULL," +
-            "weight int NOT NULL," +
-            "date DATETIME NOT NULL," +
-            "lbs BOOLEAN NOT NULL) ENGINE=InnoDB;";
+            "CREATE TABLE space_items (" +
+            "itemID int," +
+            "name VARCHAR(255) NOT NULL" +
+            ") ENGINE=InnoDB;";
         context.pool.query(createString, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
+            } else {
+                context.insertCodex({
+                    type: 'items'
+                });
+            }
+        });
+        createString =
+            "CREATE TABLE space_locations (" +
+            "itemID int," +
+            "name VARCHAR(255) NOT NULL," +
+            "xLocation int NOT NULL," +
+            "yLocation int NOT NULL," +
+            "locationType int NOT NULL" +
+            ") ENGINE=InnoDB;";
+        context.pool.query(createString, function (err) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+            } else {
+                context.insertCodex({
+                    type: 'locations'
+                });
             }
         });
     };
 
     // Functions are defined. Do any initialization needed.
 
-    this.createTable();
+    this.createTables();
 }

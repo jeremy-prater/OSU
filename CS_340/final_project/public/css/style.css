@@ -23,3 +23,26 @@ body {
     background-color: #101030;
     float: right;
 }
+
+.statusAlert {
+    width: 70%;
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #e0e0e0;
+    font-size: 3em;
+    padding-left: 4%;
+}
+.timerControl {
+    width: 30%;
+    height: 100%;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #e0e0e0;
+    font-size: 3em;
+    padding-right: 4%;
+}

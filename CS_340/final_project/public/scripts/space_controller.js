@@ -16,8 +16,34 @@ this.setupGraphics = function () {
 
 ////////////////////////////////////////////////////////////
 //
-// Click handler functions
+// Global timer
 //
+
+this.timerRunning = true;
+this.timerDelta = 1;
+
+function timerClick() {
+    if (context.timerRunning) {
+        context.timerRunning = false;
+        context.timerDelta = 0;
+    } else {
+        context.timerRunning = true;
+        context.timerDelta = 1;
+    }
+
+}
+this.startTimer = function () {
+    var resetValue = 1000;
+    var currentTime = resetValue;
+    setInterval(function () {
+        currentTime -= context.timerDelta;
+        if (currentTime === 0) {
+            currentTime = resetValue;
+        }
+        var curTimeString = currentTime;
+        document.getElementById("timerControl").innerText = curTimeString;
+    }, 25);
+}
 
 
 ////////////////////////////////////////////////////////////
@@ -130,3 +156,4 @@ this.Init = function () {
 }
 
 this.Init();
+this.startTimer();

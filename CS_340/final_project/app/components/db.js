@@ -68,16 +68,16 @@ module.exports = function () {
 
                     // Quarries for getting metals
                     this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '1, "Kappa Quarry",       0.1, 0.7, 1');
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '2, "Fisher Quarry",      0.2, 0.6, 1');
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '3, "Cedar Creek Quarry", 0.2, 0.2, 1');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '2, "Fisher Quarry",      0.05, 0.6, 1');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '3, "Cedar Creek Quarry", 0.03, 0.2, 1');
 
                     // Factories for making stuff
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '4, "Lundt Gas works",   0.4, 0.5, 2');
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '5, "SemiFab",           0.5, 0.4, 2');
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '6, "Boing",             0.3, 0.4, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '4, "Lundt Gas works",   0.3, 0.5, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '5, "SemiFab",           0.22, 0.4, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '6, "Boing",             0.14, 0.8, 2');
 
                     // Launch site
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '7, "Space taXi",        0.7, 0.5, 3');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '7, "Space taXi",        0.4, 0.5, 3');
 
                     // ISS
                     this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '8, "ISS",               0.9, 0.4, 4');

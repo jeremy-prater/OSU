@@ -1,13 +1,19 @@
 var mysqlDB = require('../components/db');
 var dbPool = new mysqlDB();
 
-exports.getWorkouts = function (req, res) {
-    dbPool.getWorkouts(req, res, function (payload) {
+exports.getItems = function (req, res) {
+    dbPool.getItems(req, res, function (payload) {
         res.json(payload);
     });
 };
 
-exports.insertWorkout = function (req, res) {
+exports.getLocations = function (req, res) {
+    dbPool.getLocations(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
+/*exports.insertWorkout = function (req, res) {
     dbPool.insertWorkout(req, res, function (payload) {
         res.json(payload);
     });
@@ -29,4 +35,4 @@ exports.deleteAllWorkouts = function (req, res) {
     dbPool.deleteAllWorkouts(req, res, function (payload) {
         res.json(payload);
     });
-};
+};*/

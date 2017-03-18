@@ -12,42 +12,97 @@ module.exports = function () {
     });
     console.log('[MYSQL] Created Database object.');
 
-    this.insertCodex = function(codexType) {
+    this.insertData = function (table, names, data, callback) {
+        var itemData =
+            "INSERT INTO " + table + " (" + names + ") VALUES (" + data + ");"
+        context.pool.query(itemData, function (err) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+            } else {
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    };
+
+    this.insertCodex = function (codexType) {
         switch (codexType) {
             case 'items':
                 {
+                    console.log("[MYSQL] Adding items...");
+                    // Raw materials
+                    // Semiconductor stuff
+                    this.insertData('space_items', 'itemID, name', '1, "Silicon"');
+                    this.insertData('space_items', 'itemID, name', '2, "Germanium"');
+                    this.insertData('space_items', 'itemID, name', '3, "Gold"');
 
+                    // Structural stuff
+                    this.insertData('space_items', 'itemID, name', '4, "Aluminum"');
+                    this.insertData('space_items', 'itemID, name', '5, "Titanium"');
+                    this.insertData('space_items', 'itemID, name', '6, "Iron"');
+
+                    // Life support stuff
+                    this.insertData('space_items', 'itemID, name', '7, "Oxygen"');
+                    this.insertData('space_items', 'itemID, name', '8, "Hydrogen"');
+                    this.insertData('space_items', 'itemID, name', '9, "Ammonia"');
+
+                    // Manufactured stuff
+                    this.insertData('space_items', 'itemID, name', '10, "Semiconductor components"');
+                    this.insertData('space_items', 'itemID, name', '11, "Computer equipment"');
+                    this.insertData('space_items', 'itemID, name', '12, "Experimental components"');
+
+                    this.insertData('space_items', 'itemID, name', '20, "External structure components"');
+                    this.insertData('space_items', 'itemID, name', '21, "Internal structure components"');
+                    this.insertData('space_items', 'itemID, name', '22, "Solar panel components"');
+
+                    this.insertData('space_items', 'itemID, name', '30, "Oxygen canister"');
+                    this.insertData('space_items', 'itemID, name', '31, "Hydrogen fuel"');
+                    this.insertData('space_items', 'itemID, name', '32, "Ammonia coolant"');
                 }
                 break;
             case 'locations':
                 {
+                    console.log("[MYSQL] Adding locations...");
+                    // Locations
 
+                    // Quarries for getting metals
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '1, "Kappa Quarry",       0.3, 0.7, 1');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '2, "Fisher Quarry",      0.5, 0.6, 1');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '3, "Cedar Creek Quarry", 0.5, 0.6, 1');
+
+                    // Factories for making stuff
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '4, "Lundt Gas works", 0.4, 0.5, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '5, "SemiFab",         0.5, 0.4, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '6, "Boing",           0.3, 0.4, 2');
+
+                    // Launch site
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '7, "Space taXi", 0.2, 0.2, 3');
+
+                    // ISS
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '8, "ISS", 0.5, 0.1, 4');
                 }
                 break;
         }
     }
 
-    this.getWorkouts = function (req, res, callback) {
-        var workoutSort = parseInt(req.query.sortby);
-        console.log("[MYSQL] /database.getWorkouts(" + workoutSort + ")")
-        var sqlString = 'SELECT workoutID, name, reps, weight, date, lbs FROM workouts ';
-        switch (workoutSort) {
-            case 0:
-                {
-                    sqlString += 'ORDER BY date DESC';
-                }
-                break;
-            case 1:
-                {
-                    sqlString += 'ORDER BY weight DESC;';
-                }
-                break;
-            case 2:
-                {
-                    sqlString += 'ORDER BY reps DESC;';
-                }
-                break;
-        }
+    this.getItems = function (req, res, callback) {
+        var sqlString = 'SELECT itemID, name FROM space_items;';
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
+
+    this.getLocations = function (req, res, callback) {
+        var sqlString = 'SELECT locationID, name, xLocation, yLocation, locationStyle FROM space_locations;';
         context.pool.query(sqlString, function (err, rows, fields) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
@@ -62,7 +117,7 @@ module.exports = function () {
     };
 
 
-    this.updateWorkout = function (req, res, callback) {
+    /*this.updateWorkout = function (req, res, callback) {
         console.log('[MYSQL] /database.insertWorkout');
         var payload = {};
         var dataSet = [
@@ -159,44 +214,39 @@ module.exports = function () {
                 };
                 callback(payload);
             });
-    };
+    };*/
 
     this.createTables = function () {
         console.log('[MYSQL] Create Table');
         var createString =
             "CREATE TABLE space_items (" +
             "itemID int," +
-            "name VARCHAR(255) NOT NULL" +
+            "name VARCHAR(255) NOT NULL," +
+            "PRIMARY KEY(itemID)" +
             ") ENGINE=InnoDB;";
         context.pool.query(createString, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-            } else {
-                context.insertCodex({
-                    type: 'items'
-                });
-            }
+            } else {}
+            context.insertCodex('items');
         });
         createString =
             "CREATE TABLE space_locations (" +
-            "itemID int," +
+            "locationID int," +
             "name VARCHAR(255) NOT NULL," +
-            "xLocation int NOT NULL," +
-            "yLocation int NOT NULL," +
-            "locationType int NOT NULL" +
+            "xLocation double NOT NULL," +
+            "yLocation double NOT NULL," +
+            "locationStyle int NOT NULL," +
+            "PRIMARY KEY(locationID)" +
             ") ENGINE=InnoDB;";
         context.pool.query(createString, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-            } else {
-                context.insertCodex({
-                    type: 'locations'
-                });
-            }
+            } else {}
+            context.insertCodex('locations');
         });
     };
 
     // Functions are defined. Do any initialization needed.
-
     this.createTables();
 }

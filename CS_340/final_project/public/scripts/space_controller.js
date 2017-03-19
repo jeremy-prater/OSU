@@ -8,6 +8,11 @@
 // Initalize any DOM objects data
 //
 
+var context = this;
+
+this.setupGraphics = function () {
+    this.spaceView = new SpaceView(document.getElementById("spaceView"));
+}
 
 ////////////////////////////////////////////////////////////
 //
@@ -32,14 +37,12 @@
 
 function getDBItem(targetUrl, callback) {
     var req = new XMLHttpRequest();
-    console.log("[SPACE] Getting Item List");
+    console.log("[SPACE] Getting DB object : " + targetUrl);
     req.open('GET', targetUrl, true);
     req.onreadystatechange = function () {
         if (req.status == 200 && req.readyState === 4) {
             try {
-                localDataSet = JSON.parse(req.responseText);
-                console.log(req.responseText);
-                callback();
+                callback(JSON.parse(req.responseText));
             } catch (exception) {}
         }
     };
@@ -112,13 +115,18 @@ function deleteWorkout(workoutID, callback) {
 // Client startup functions
 //
 
-// Set the Date input to the current DATETIEM (sql)
-getDBItem('/getItems', function (items){
-    this.spaceItems = items;
-});
-getDBItem('/getLocations',function (locations){
-    this.spaceLocations = locations;
-});
+this.Init = function () {
+    this.setupGraphics();
 
-console.log(this.spaceItems);
-console.log(this.spaceLocations);
+    // Get static SQL data
+    getDBItem('/getItems', function (items) {
+        context.spaceItems = items;
+
+        getDBItem('/getLocations', function (locations) {
+            context.spaceLocations = locations;
+            context.spaceView.CreateLocations(context.spaceLocations);
+        });
+    });
+}
+
+this.Init();

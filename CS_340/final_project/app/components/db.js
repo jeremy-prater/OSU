@@ -18,6 +18,7 @@ module.exports = function () {
         context.pool.query(itemData, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
+                console.log('[MYSQL] Query: ' + itemData);
             } else {
                 if (callback) {
                     callback();
@@ -43,9 +44,9 @@ module.exports = function () {
                     this.insertData('space_items', 'itemID, name', '6, "Iron"');
 
                     // Life support stuff
-                    this.insertData('space_items', 'itemID, name', '7, "Oxygen"');
-                    this.insertData('space_items', 'itemID, name', '8, "Hydrogen"');
-                    this.insertData('space_items', 'itemID, name', '9, "Ammonia"');
+                    //this.insertData('space_items', 'itemID, name', '7, "Oxygen"');
+                    //this.insertData('space_items', 'itemID, name', '8, "Hydrogen"');
+                    //this.insertData('space_items', 'itemID, name', '9, "Ammonia"');
 
                     // Manufactured stuff
                     this.insertData('space_items', 'itemID, name', '10, "Semiconductor components"');
@@ -83,6 +84,39 @@ module.exports = function () {
                     this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '8, "ISS",               0.9, 0.4, 4');
                 }
                 break;
+            case 'production':
+                {
+                    console.log("[MYSQL] Adding production...");
+
+                    // Quarries that produce material
+                    // Kappa Quarry produces Silicon, Aluminum, and Titanium
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '1, 1, 1, 0.2, 0.6');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '2, 1, 4, 0.3, 0.7');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '3, 1, 5, 0.0, 0.3');
+
+                    // Fisher Quarry produces Iron
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '4, 2, 6, 0.5, 0.8');
+
+                    // Cedar Creek Quarry produces Germanium and Gold
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '5, 3, 2, 0.5, 0.8');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '6, 3, 3, 0.5, 0.8');
+
+                    // Lundt Gas works makes O2, H2, and Ammonia
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '7, 4, 30, 0.4, 0.4');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '8, 4, 31, 0.3, 0.7');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '9, 4, 32, 0.2, 0.4');
+
+                    // SemiFab makes Semiconductor stuff
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '10, 5, 10, 0.4, 0.4');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '11, 5, 11, 0.3, 0.7');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '12, 5, 12, 0.2, 0.4');
+
+                    // Boing makes mechanical stuff
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '13, 6, 20, 0.4, 0.4');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '14, 6, 21, 0.3, 0.7');
+                    this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '15, 6, 22, 0.2, 0.4');
+                }
+                break;
         }
     }
 
@@ -114,6 +148,48 @@ module.exports = function () {
                 callback(rows);
             }
         });
+    };
+
+    this.getProductions = function (req, res, callback) {
+        var sqlString = 'SELECT productionID, f_locationID, f_itemID, min, max FROM space_locationProduction;';
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
+
+    this.createItem = function (req, res, callback) {
+        console.log('[MYSQL] /database.createItem');
+        var payload = {};
+        var dataSet = [
+            req.body.itemID,
+            req.body.locationID,
+            req.body.qty
+        ];
+        context.pool.query("INSERT INTO space_itemLocations (f_itemID, f_locationID, qty) VALUES (?, ?, ?)", dataSet,
+            function (err, result) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                    payload = {
+                        "created": false,
+                        "error": err
+                    };
+                    callback(payload);
+                } else {
+                    payload = {
+                        "created": true,
+                        "createdID": result.insertId
+                    };
+                    callback(payload);
+                }
+            });
     };
 
 
@@ -222,28 +298,106 @@ module.exports = function () {
             "CREATE TABLE space_items (" +
             "itemID int," +
             "name VARCHAR(255) NOT NULL," +
-            "PRIMARY KEY(itemID)" +
+            "required0_itemID int," +
+            "required0_qty int," +
+            "required1_itemID int," +
+            "required1_qty int," +
+            "required2_itemID int," +
+            "required2_qty int," +
+            "PRIMARY KEY (itemID)," +
+            "FOREIGN KEY (required0_itemID) REFERENCES space_items(itemID)," +
+            "FOREIGN KEY (required1_itemID) REFERENCES space_items(itemID)," +
+            "FOREIGN KEY (required2_itemID) REFERENCES space_items(itemID)" +
             ") ENGINE=InnoDB;";
         context.pool.query(createString, function (err) {
             if (err) {
                 console.log('[MSQL] Error: ' + err);
-            } else {}
-            context.insertCodex('items');
-        });
-        createString =
-            "CREATE TABLE space_locations (" +
-            "locationID int," +
-            "name VARCHAR(255) NOT NULL," +
-            "xLocation double NOT NULL," +
-            "yLocation double NOT NULL," +
-            "locationStyle int NOT NULL," +
-            "PRIMARY KEY(locationID)" +
-            ") ENGINE=InnoDB;";
-        context.pool.query(createString, function (err) {
-            if (err) {
-                console.log('[MSQL] Error: ' + err);
-            } else {}
-            context.insertCodex('locations');
+            } else {
+                context.insertCodex('items');
+            }
+            createString =
+                "CREATE TABLE space_locations (" +
+                "locationID int," +
+                "name VARCHAR(255) NOT NULL," +
+                "xLocation double NOT NULL," +
+                "yLocation double NOT NULL," +
+                "locationStyle int NOT NULL," +
+                "PRIMARY KEY(locationID)" +
+                ") ENGINE=InnoDB;";
+            context.pool.query(createString, function (err) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                } else {
+                    context.insertCodex('locations');
+                }
+                createString =
+                    "CREATE TABLE space_locationProduction (" +
+                    "productionID int," +
+                    "f_locationID int," +
+                    "f_itemID int," +
+                    "min double NOT NULL," +
+                    "max double NOT NULL," +
+                    "PRIMARY KEY(productionID)," +
+                    "FOREIGN KEY (f_locationID) REFERENCES space_locations(locationID)," +
+                    "FOREIGN KEY (f_itemID) REFERENCES space_items(itemID)" +
+                    ") ENGINE=InnoDB;";
+                context.pool.query(createString, function (err) {
+                    if (err) {
+                        console.log('[MSQL] Error: ' + err);
+                    } else {
+                        context.insertCodex('production');
+                    }
+                    createString =
+                        "CREATE TABLE space_itemLocations (" +
+                        "itemLocationID int AUTO_INCREMENT," +
+                        "f_locationID int," +
+                        "f_itemID int," +
+                        "qty double NOT NULL," +
+                        "PRIMARY KEY(itemLocationID)," +
+                        "FOREIGN KEY (f_locationID) REFERENCES space_locations(locationID)," +
+                        "FOREIGN KEY (f_itemID) REFERENCES space_items(itemID)" +
+                        ") ENGINE=InnoDB;";
+                    context.pool.query(createString, function (err) {
+                        if (err) {
+                            console.log('[MSQL] Error: ' + err);
+                        } else {}
+                        createString =
+                            "CREATE TABLE space_itemRequest (" +
+                            "requestID int AUTO_INCREMENT," +
+                            "f_locationID int," +
+                            "f_itemID int," +
+                            "timeLeft int NOT NULL," +
+                            "qty double NOT NULL," +
+                            "PRIMARY KEY(requestID)," +
+                            "FOREIGN KEY (f_locationID) REFERENCES space_locations(locationID)," +
+                            "FOREIGN KEY (f_itemID) REFERENCES space_items(itemID)" +
+                            ") ENGINE=InnoDB;";
+                        context.pool.query(createString, function (err) {
+                            if (err) {
+                                console.log('[MSQL] Error: ' + err);
+                            } else {}
+                            createString =
+                                "CREATE TABLE space_itemTransit (" +
+                                "transitID int AUTO_INCREMENT," +
+                                "f_itemID int," +
+                                "f_startLocation int," +
+                                "f_endLocation int," +
+                                "currentTime int NOT NULL," +
+                                "totalTime int NOT NULL," +
+                                "PRIMARY KEY(transitID)," +
+                                "FOREIGN KEY (f_startLocation) REFERENCES space_locations(locationID)," +
+                                "FOREIGN KEY (f_endLocation) REFERENCES space_locations(locationID)," +
+                                "FOREIGN KEY (f_itemID) REFERENCES space_items(itemID)" +
+                                ") ENGINE=InnoDB;";
+                            context.pool.query(createString, function (err) {
+                                if (err) {
+                                    console.log('[MSQL] Error: ' + err);
+                                } else {}
+                            });
+                        });
+                    });
+                });
+            });
         });
     };
 

@@ -13,13 +13,19 @@ exports.getLocations = function (req, res) {
     });
 };
 
-/*exports.insertWorkout = function (req, res) {
-    dbPool.insertWorkout(req, res, function (payload) {
+exports.getProductions = function (req, res) {
+    dbPool.getProductions(req, res, function (payload) {
         res.json(payload);
     });
 };
 
-exports.updateWorkout = function (req, res) {
+exports.createItem = function (req, res) {
+    dbPool.createItem(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
+/*exports.updateWorkout = function (req, res) {
     dbPool.updateWorkout(req, res, function (payload) {
         res.json(payload);
     });

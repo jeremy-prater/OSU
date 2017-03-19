@@ -30,17 +30,20 @@ function timerClick() {
         context.timerRunning = true;
         context.timerDelta = 1;
     }
-
+    context.timerRunning = true;
+    context.timerDelta = 1;
+    this.currentTime = 0;
 }
 this.startTimer = function () {
-    var resetValue = 1000;
-    var currentTime = resetValue;
+    var resetValue = 999;
+    this.currentTime = resetValue;
     setInterval(function () {
-        currentTime -= context.timerDelta;
-        if (currentTime === 0) {
-            currentTime = resetValue;
+        this.currentTime -= context.timerDelta;
+        if (this.currentTime < 1) {
+            this.currentTime = resetValue;
+            this.updateDatabaseContent();
         }
-        var curTimeString = currentTime;
+        var curTimeString = this.currentTime;
         document.getElementById("timerControl").innerText = curTimeString;
     }, 25);
 }
@@ -48,8 +51,19 @@ this.startTimer = function () {
 
 ////////////////////////////////////////////////////////////
 //
-// Client DOM update functions
+// Database logic functions
 //
+
+this.updateDatabaseContent = function () {
+    for (var productionIndex = 0; productionIndex < this.spaceProduction.length; productionIndex++) {
+        var currentProduction = this.spaceProduction[productionIndex];
+        addItemToLocation({
+            itemID: currentProduction.f_itemID,
+            locationID: currentProduction.f_locationID,
+            qty: (Math.random() * (currentProduction.max - currentProduction.min)) + currentProduction.min,
+        }, undefined);
+    }
+}
 
 ////////////////////////////////////////////////////////////
 //
@@ -75,17 +89,10 @@ function getDBItem(targetUrl, callback) {
     req.send(null);
 }
 
-/*function addWorkout(callback) {
-    console.log("[Workout] Adding workout.");
-    var payload = {
-        name: document.getElementById('name').value,
-        reps: document.getElementById('reps').value,
-        weight: document.getElementById('weight').value,
-        date: document.getElementById('date').value,
-        lbs: document.getElementById('weight_lbs').checked
-    };
+function addItemToLocation(payload, callback) {
+    console.log("[SPACE ITEM] Adding " + payload.itemID + " at location " + payload.locationID + " [Qty: " + payload.qty + "]");
     var req = new XMLHttpRequest();
-    var targetUrl = '/insertWorkout';
+    var targetUrl = '/createItem';
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
@@ -99,7 +106,7 @@ function getDBItem(targetUrl, callback) {
     req.send(JSON.stringify(payload));
 }
 
-function updateWorkout(payload, callback) {
+/*function updateWorkout(payload, callback) {
     console.log("[Workout] Adding workout.");
     var req = new XMLHttpRequest();
     var targetUrl = '/updateWorkout';
@@ -151,6 +158,10 @@ this.Init = function () {
         getDBItem('/getLocations', function (locations) {
             context.spaceLocations = locations;
             context.spaceView.CreateLocations(context.spaceLocations);
+
+            getDBItem('/getProduction', function (production) {
+                context.spaceProduction = production;
+            });
         });
     });
 }

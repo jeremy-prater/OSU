@@ -5,9 +5,13 @@ body {
 }
 
 .statusBar {
-    width:100%;
+    width: 100%;
     height: 10%;
     background-color: #454545;
+    background-image: url('../images/carbon.jpg');
+    background-color: #373737;
+    background-repeat: repeat;
+    background-attachment: fixed;
 }
 
 .propertyBar {
@@ -15,6 +19,10 @@ body {
     height: 90%;
     float: left;
     background-color: #603030;
+    background-image: url('../images/carbon.jpg');
+    background-color: #373737;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .spaceView {
@@ -35,6 +43,7 @@ body {
     font-size: 3em;
     padding-left: 4%;
 }
+
 .timerControl {
     width: 30%;
     height: 100%;
@@ -46,4 +55,35 @@ body {
     font-size: 3em;
     padding-right: 4%;
     padding-left: 4%;
+}
+
+.locationName {
+    font-size: 3em;
+    margin-left: 12.5%;
+    width: 75%;
+    text-align: center;
+    color: #d0d0d0;
+    background-color: #5060e0;
+    border-radius: 20px;
+}
+
+.locationItems {
+    font-size: 1.5em;
+    margin-left: 12.5%;
+    width: 75%;
+    text-align: left;
+    color: #d0d0d0;
+    background-color: #5060e0;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.locationTransport {
+    font-size: 1.5em;
+    margin-left: 12.5%;
+    width: 75%;
+    text-align: center;
+    color: #d0d0d0;
+    background-color: #5060e0;
+    border-radius: 20px;
 }

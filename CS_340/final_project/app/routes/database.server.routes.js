@@ -3,5 +3,6 @@ module.exports = function(app) {
     app.get('/getItems', database.getItems);
     app.get('/getLocations', database.getLocations);
     app.get('/getProduction', database.getProductions);
+    app.get('/getItemsAtLocation', database.getItemsByLocation);
     app.post('/createItem', database.createItem);
 };

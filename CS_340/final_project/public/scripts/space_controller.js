@@ -11,7 +11,7 @@
 var context = this;
 
 this.setupGraphics = function () {
-    this.spaceView = new SpaceView(document.getElementById("spaceView"));
+    this.spaceView = new SpaceView(document.getElementById("spaceView"), context);
 }
 
 ////////////////////////////////////////////////////////////
@@ -63,6 +63,8 @@ this.updateDatabaseContent = function () {
             qty: (Math.random() * (currentProduction.max - currentProduction.min)) + currentProduction.min,
         }, undefined);
     }
+
+    getItemsByLocation(this.spaceView.currentLocation, this.spaceView.updateSideBarItems);
 }
 
 ////////////////////////////////////////////////////////////
@@ -106,6 +108,20 @@ function addItemToLocation(payload, callback) {
     req.send(JSON.stringify(payload));
 }
 
+function getItemsByLocation(currentLocation, callback) {
+    var req = new XMLHttpRequest();
+    var targetUrl = '/getItemsAtLocation?locationID=' + currentLocation.locationID;
+    console.log("[SPACE ITEM] Getting items at [" + currentLocation.locationID + "]");
+    req.open('GET', targetUrl, true);
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                callback(currentLocation, JSON.parse(req.responseText));
+            } catch (exception) {}
+        }
+    };
+    req.send(null);
+}
 /*function updateWorkout(payload, callback) {
     console.log("[Workout] Adding workout.");
     var req = new XMLHttpRequest();

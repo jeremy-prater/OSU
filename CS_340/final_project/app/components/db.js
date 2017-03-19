@@ -165,6 +165,26 @@ module.exports = function () {
         });
     };
 
+    this.getItemsByLocation = function (req, res, callback) {
+        var sqlString =
+            'SELECT itemLocationID, space_items.name AS itemName, space_locations.name as locationName, qty FROM space_itemLocations ' +
+            'INNER JOIN space_items ON space_items.itemID=space_itemLocations.f_itemID ' +
+            'INNER JOIN space_locations ON space_locations.locationID=space_itemLocations.f_locationID ' +
+            'WHERE space_itemLocations.f_locationID=' + req.query.locationID + ';'
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
+    
+
     this.createItem = function (req, res, callback) {
         console.log('[MYSQL] /database.createItem');
         var payload = {};

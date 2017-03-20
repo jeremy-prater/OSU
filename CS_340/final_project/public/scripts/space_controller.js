@@ -20,7 +20,7 @@ this.setupGraphics = function () {
 //
 
 this.timerRunning = true;
-this.timerDelta = 1;
+this.timerDelta = 25;
 
 function timerClick() {
     if (context.timerRunning) {
@@ -28,10 +28,10 @@ function timerClick() {
         context.timerDelta = 0;
     } else {
         context.timerRunning = true;
-        context.timerDelta = 1;
+        context.timerDelta = 10;
     }
     context.timerRunning = true;
-    context.timerDelta = 1;
+    context.timerDelta = 10;
     this.currentTime = 0;
 }
 this.startTimer = function () {
@@ -43,9 +43,9 @@ this.startTimer = function () {
             this.currentTime = resetValue;
             this.updateDatabaseContent();
         }
-        var curTimeString = this.currentTime;
+        var curTimeString = Math.floor(this.currentTime / 100) + "." + ((this.currentTime / 100) % 1).toPrecision(3).substring(2);
         document.getElementById("timerControl").innerText = curTimeString;
-    }, 25);
+    }, 100);
 }
 
 

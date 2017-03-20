@@ -73,8 +73,8 @@ module.exports = function () {
                     this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '3, "Cedar Creek Quarry", 0.03, 0.2, 1');
 
                     // Factories for making stuff
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '4, "Lundt Gas works",   0.3, 0.5, 2');
-                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '5, "SemiFab",           0.22, 0.4, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '4, "Lundt Gas works",   0.3, 0.37, 2');
+                    this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '5, "SemiFab",           0.22, 0.22, 2');
                     this.insertData('space_locations', 'locationID, name, xLocation, yLocation, locationStyle', '6, "Boing",             0.14, 0.8, 2');
 
                     // Launch site

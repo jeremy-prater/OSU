@@ -328,7 +328,9 @@ function stepTransitItems(data) {
 
         console.log(currentData);
         if (currentData.currentTime === currentData.totalTime) {
-            deleteTransitItem(currentData.transitID);
+            deleteTransitItem({
+                transitID: currentData.transitID
+            });
             addItemToLocation({
                 itemID: currentData.f_itemID,
                 locationID: currentData.f_endLocation,
@@ -338,7 +340,7 @@ function stepTransitItems(data) {
             spaceView.AddTransit(currentData);
             updateTransitItems({
                 currentTime: currentData.currentTime + 1,
-                transitID : currentData.transitID
+                transitID: currentData.transitID
             })
         }
     }

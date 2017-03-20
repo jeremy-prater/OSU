@@ -31,6 +31,12 @@ exports.getLocationDestinations = function (req, res) {
     });
 };
 
+exports.getTransit = function (req, res) {
+    dbPool.getTransit(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
 exports.createItem = function (req, res) {
     dbPool.createItem(req, res, function (payload) {
         res.json(payload);

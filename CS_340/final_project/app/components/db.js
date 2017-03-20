@@ -223,6 +223,23 @@ module.exports = function () {
         });
     };
 
+    this.getTransit = function (req, res, callback) {
+        console.log ("[MYSQL] /database.getTransit");
+        var sqlString =
+            'SELECT f_startLocation, f_endLocation, totalTime FROM space_locationTransit;';
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
+
     this.createItem = function (req, res, callback) {
         console.log('[MYSQL] /database.createItem');
         var payload = {};

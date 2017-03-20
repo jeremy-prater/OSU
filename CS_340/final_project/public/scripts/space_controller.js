@@ -37,8 +37,42 @@ function timerClick() {
 }
 
 function sendItems() {
-
+    var itemToSend = document.getElementById('itemToSend').innerText;
+    var destination = document.getElementById('itemDestinationLocation').innerText;
+    var itemQty = document.getElementById('itemQtySend').value;
+    var sendPayload = {
+        itemID: context.FindItemByName(itemToSend).itemID,
+        startLocation: spaceView.currentLocation.locationID,
+        endLocation: context.FindLocationByName(destination).locationID,
+        qty: parseInt(itemQty),
+        currentTime: 0,
+        totalTime: context.FindTransitTime(spaceView.currentLocation.locationID, context.FindLocationByName(destination).locationID)
+    };
     console.log(sendPayload);
+}
+
+this.FindItemByName = function (item) {
+    for (var itemIndex = 0; itemIndex < context.spaceItems.length; itemIndex++) {
+        var currentItem = context.spaceItems[itemIndex];
+        if (currentItem.name === item) {
+            return currentItem;
+        }
+    }
+    return undefined;
+}
+
+this.FindLocationByName = function (location) {
+    for (var locationIndex = 0; locationIndex < context.spaceLocations.length; locationIndex++) {
+        var currentLocation = context.spaceLocations[locationIndex];
+        if (currentLocation.name === location) {
+            return currentLocation;
+        }
+    }
+    return undefined;
+}
+
+this.FindTransitTime = function (startLocation, endLocation) {
+    //context.
 }
 
 this.startTimer = function () {
@@ -50,7 +84,7 @@ this.startTimer = function () {
             this.currentTime = resetValue;
             this.updateDatabaseContent();
         }
-        var curTimeString = Math.floor(this.currentTime / 1000) + "." + ((this.currentTime / 1000) % 1).toPrecision(5).substring(2,5);
+        var curTimeString = Math.floor(this.currentTime / 1000) + "." + ((this.currentTime / 1000) % 1).toPrecision(5).substring(2, 5);
         document.getElementById("timerControl").innerText = curTimeString;
     }, timerStep);
 }
@@ -200,6 +234,10 @@ this.Init = function () {
 
             getDBItem('/getProduction', function (production) {
                 context.spaceProduction = production;
+                getDBItem('/getTransit', function (transit) {
+                    context.spaceTransit = transit;
+                    console.log(transit);
+                });
             });
         });
     });

@@ -42,7 +42,7 @@ function sendItems() {
 }
 
 this.startTimer = function () {
-    var resetValue = 9000;
+    var resetValue = 10000;
     this.currentTime = resetValue;
     setInterval(function () {
         this.currentTime -= context.timerDelta;

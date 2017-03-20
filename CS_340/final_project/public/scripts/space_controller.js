@@ -41,6 +41,9 @@ function sendItems() {
     var destination = document.getElementById('itemDestinationLocation').innerText;
     var itemQty = document.getElementById('itemQtySend').value;
     var sendPayload = {
+        itemName: itemToSend,
+        endLocationName: destination,
+        startLocationName: spaceView.currentLocation.name,
         itemID: context.FindItemByName(itemToSend).itemID,
         startLocation: spaceView.currentLocation.locationID,
         endLocation: context.FindLocationByName(destination).locationID,
@@ -48,7 +51,7 @@ function sendItems() {
         currentTime: 0,
         totalTime: context.FindTransitTime(spaceView.currentLocation.locationID, context.FindLocationByName(destination).locationID)
     };
-    console.log(sendPayload);
+    moveItemLocation(sendPayload);
 }
 
 this.FindItemByName = function (item) {
@@ -72,7 +75,14 @@ this.FindLocationByName = function (location) {
 }
 
 this.FindTransitTime = function (startLocation, endLocation) {
-    //context.
+    for (var outerLoop = 0; outerLoop < context.spaceTransit.length; outerLoop++) {
+        for (var innerLoop = 0; innerLoop < context.spaceTransit.length; innerLoop++) {
+            if (context.spaceTransit[innerLoop].f_startLocation === context.spaceTransit[outerLoop].f_endLocation) {
+                return context.spaceTransit[innerLoop].totalTime;
+            }
+        }
+    }
+    return undefined;
 }
 
 this.startTimer = function () {
@@ -106,12 +116,9 @@ this.updateDatabaseContent = function () {
     }
 
     getItemsByLocation(this.spaceView.currentLocation, this.spaceView.updateSideBarItems);
-}
 
-////////////////////////////////////////////////////////////
-//
-// UI database generator functions
-//
+    getTransitItems(stepTransitItems);
+}
 
 ////////////////////////////////////////////////////////////
 //
@@ -164,6 +171,21 @@ function getItemsByLocation(currentLocation, callback) {
     req.send(null);
 }
 
+function getTransitItems(callback) {
+    var req = new XMLHttpRequest();
+    var targetUrl = '/getTransitItems';
+    console.log("[SPACE ITEM] Getting Transit items");
+    req.open('GET', targetUrl, true);
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                callback(JSON.parse(req.responseText));
+            } catch (exception) {}
+        }
+    };
+    req.send(null);
+}
+
 function getLocationDestinations(currentLocation, callback) {
     var req = new XMLHttpRequest();
     var targetUrl = '/getLocationDestinations?locationID=' + currentLocation.locationID;
@@ -179,10 +201,66 @@ function getLocationDestinations(currentLocation, callback) {
     req.send(null);
 }
 
-/*function updateWorkout(payload, callback) {
-    console.log("[Workout] Adding workout.");
+function DeleteLocationItem(locationItemID) {
+    console.log("[SPACE ITEM] Deleting locationItem " + locationItemID);
     var req = new XMLHttpRequest();
-    var targetUrl = '/updateWorkout';
+    var targetUrl = '/deleteItem';
+    req.open('POST', targetUrl, true);
+    req.setRequestHeader("Content-type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                //localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
+    };
+    req.send(JSON.stringify({
+        locationItemID: locationItemID
+    }));
+}
+
+function moveItemLocation(payload) {
+    var comsumeIDs = [];
+    //context.spaceView.locationItems
+    var totalPayload = payload.qty;
+
+    ////////////////////////////////////////////////
+    //
+    // Find items to send
+    //
+
+    for (var locationItemIndex = 0; locationItemIndex < context.spaceView.locationItems.length; locationItemIndex++) {
+        var currentItem = context.spaceView.locationItems[locationItemIndex];
+        if ((currentItem.itemName === payload.itemName) && (totalPayload > 0)) {
+            comsumeIDs.push(currentItem.itemLocationID);
+            totalPayload -= currentItem.qty;
+        }
+    }
+
+    ////////////////////////////////////////////////
+    //
+    // Delete transit items from database
+    //
+
+    for (var consumeIndex = 0; consumeIndex < comsumeIDs.length; consumeIndex++) {
+        DeleteLocationItem(comsumeIDs[consumeIndex]);
+    }
+
+    var outgoingQty = -totalPayload + payload.qty;
+
+    ////////////////////////////////////////////////
+    //
+    // Create transit object
+    //
+    payload.qty = outgoingQty;
+    CreateTransitObject(payload);
+}
+
+function CreateTransitObject(payload) {
+    console.log("[SPACE ITEM] Creating Transit object");
+    var req = new XMLHttpRequest();
+    var targetUrl = '/createTransitItem';
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
@@ -196,13 +274,15 @@ function getLocationDestinations(currentLocation, callback) {
     req.send(JSON.stringify(payload));
 }
 
-function deleteWorkout(workoutID, callback) {
-    console.log("[Workout] Deleting workout :" + workoutID);
-    var payload = {
-        workoutID: workoutID
-    };
+////////////////////////////////////////////////////////////
+//
+// Transient Object functions
+//
+
+function updateTransitItems(payload, callback) {
+    console.log("[SPACE ITEM] updating transient Object");
     var req = new XMLHttpRequest();
-    var targetUrl = '/deleteWorkout';
+    var targetUrl = '/updateTransitItem';
     req.open('POST', targetUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.onreadystatechange = function () {
@@ -214,7 +294,72 @@ function deleteWorkout(workoutID, callback) {
         }
     };
     req.send(JSON.stringify(payload));
-}*/
+}
+
+function deleteTransitItem(payload, callback) {
+    console.log("[SPACE ITEM] Deleting transient Object");
+    var req = new XMLHttpRequest();
+    var targetUrl = '/deleteTransitItem';
+    req.open('POST', targetUrl, true);
+    req.setRequestHeader("Content-type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                //localDataSet = req.responseText;
+                callback();
+            } catch (exception) {}
+        }
+    };
+    req.send(JSON.stringify(payload));
+}
+
+function stepTransitItems(data) {
+
+    context.spaceView.ResetTransit();
+
+    for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
+
+        var currentData = data[dataIndex];
+
+        //////////////////////////////////////////////////
+        //
+        // Check if transit has arrived
+        //
+
+        console.log(currentData);
+        if (currentData.currentTime === currentData.totalTime) {
+            deleteTransitItem(currentData.transitID);
+            addItemToLocation({
+                itemID: currentData.f_itemID,
+                locationID: currentData.f_endLocation,
+                qty: currentData.qty
+            }, undefined);
+        } else {
+            spaceView.AddTransit(currentData);
+            updateTransitItems({
+                currentTime: currentData.currentTime + 1,
+                transitID : currentData.transitID
+            })
+        }
+    }
+
+    context.spaceView.EndTransit();
+}
+
+////////////////////////////////////////////////////////////
+//
+// Helper functions
+//
+
+this.FindSpaceLocationByID = function (testID) {
+    for (var locationID = 0; locationID < context.spaceLocations.length; locationID++) {
+        var currentLocation = context.spaceLocations[locationID];
+        if (currentLocation.locationID === testID) {
+            return currentLocation;
+        }
+    }
+    return undefined;
+}
 
 ////////////////////////////////////////////////////////////
 //
@@ -236,7 +381,8 @@ this.Init = function () {
                 context.spaceProduction = production;
                 getDBItem('/getTransit', function (transit) {
                     context.spaceTransit = transit;
-                    console.log(transit);
+                    this.startTimer();
+                    this.updateDatabaseContent();
                 });
             });
         });
@@ -244,4 +390,3 @@ this.Init = function () {
 }
 
 this.Init();
-this.startTimer();

@@ -240,6 +240,23 @@ module.exports = function () {
         });
     };
 
+    this.getTransitItems = function (req, res, callback) {
+        console.log ("[MYSQL] /database.getTransitItems");
+        var sqlString =
+            'SELECT transitID, f_itemID, f_startLocation, f_endLocation, qty, currentTime, totalTime FROM space_itemTransit;';
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
+
     this.createItem = function (req, res, callback) {
         console.log('[MYSQL] /database.createItem');
         var payload = {};
@@ -267,48 +284,18 @@ module.exports = function () {
             });
     };
 
-
-    /*this.updateWorkout = function (req, res, callback) {
-        console.log('[MYSQL] /database.insertWorkout');
+    this.createTransitItem = function (req, res, callback) {
+        console.log('[MYSQL] /database.createTransitItem');
         var payload = {};
         var dataSet = [
-            req.body.name,
-            req.body.reps,
-            req.body.weight,
-            new Date(req.body.date),
-            req.body.lbs,
-            req.body.workoutID
+            req.body.itemID,
+            req.body.startLocation,
+            req.body.endLocation,
+            req.body.qty,
+            0,
+            req.body.totalTime
         ];
-        context.pool.query("UPDATE workouts SET name=?, reps=?, weight=?, date=?, lbs=? WHERE workoutID=?", dataSet,
-            function (err, result) {
-                if (err) {
-                    console.log('[MSQL] Error: ' + err);
-                    payload = {
-                        "updated": false,
-                        "error": err
-                    };
-                    callback(payload);
-                } else {
-                    payload = {
-                        "updated": true,
-                        "createdID": req.body.workoutID
-                    };
-                    callback(payload);
-                }
-            });
-    };
-
-    this.insertWorkout = function (req, res, callback) {
-        console.log('[MYSQL] /database.insertWorkout');
-        var payload = {};
-        var dataSet = [
-            req.body.name,
-            req.body.reps,
-            req.body.weight,
-            new Date(req.body.date),
-            req.body.lbs
-        ];
-        context.pool.query("INSERT INTO workouts (name, reps, weight, date, lbs) VALUES (?, ?, ?, ?, ?)", dataSet,
+        context.pool.query("INSERT INTO space_itemTransit (f_itemID, f_startLocation, f_endLocation, qty, currentTime, totalTime) VALUES (?, ?, ?, ?, ?, ?)", dataSet,
             function (err, result) {
                 if (err) {
                     console.log('[MSQL] Error: ' + err);
@@ -327,45 +314,80 @@ module.exports = function () {
             });
     };
 
-    this.deleteWorkout = function (req, res, callback) {
-        console.log('[MYSQL] /database.deleteWorkout');
+    this.updateTransitItem = function (req, res, callback) {
+        console.log('[MYSQL] /database.createTransitItem');
         var payload = {};
         var dataSet = [
-            req.body.workoutID,
+            req.body.currentTime,
+            req.body.transitID
         ];
-        context.pool.query("DELETE FROM workouts WHERE workoutID=?", dataSet,
+        context.pool.query("UPDATE space_itemTransit SET currentTime=? WHERE transitID=?", dataSet,
             function (err, result) {
                 if (err) {
                     console.log('[MSQL] Error: ' + err);
-                    payload.error = err;
+                    payload = {
+                        "updated": false,
+                        "error": err
+                    };
                     callback(payload);
-                    return;
+                } else {
+                    payload = {
+                        "updated": true,
+                    };
+                    callback(payload);
                 }
-                payload = {
-                    "deleted": req.body.workoutID
-                };
-                callback(payload);
             });
     };
 
-    this.deleteAllWorkouts = function (req, res, callback) {
-        console.log('[MYSQL] /database.deleteWorkout');
+    this.deleteTransitItem = function (req, res, callback) {
+        console.log('[MYSQL] /database.createTransitItem');
         var payload = {};
-        var dataSet = [];
-        context.pool.query("DELETE FROM workouts", dataSet,
+        var dataSet = [
+            req.body.transitID
+        ];
+        context.pool.query("DELETE FROM space_itemTransit WHERE transitID=?", dataSet,
             function (err, result) {
                 if (err) {
                     console.log('[MSQL] Error: ' + err);
-                    payload.error = err;
+                    payload = {
+                        "created": false,
+                        "error": err
+                    };
                     callback(payload);
-                    return;
+                } else {
+                    payload = {
+                        "created": true,
+                        "createdID": result.insertId
+                    };
+                    callback(payload);
                 }
-                payload = {
-                    "deleted": "all"
-                };
-                callback(payload);
             });
-    };*/
+    };
+
+    this.deleteItem = function (req, res, callback) {
+        console.log('[MYSQL] /database.deleteItem');
+        var payload = {};
+        var dataSet = [
+            req.body.locationItemID
+        ];
+        context.pool.query("DELETE FROM space_itemLocations WHERE itemLocationID=?", dataSet,
+            function (err, result) {
+                if (err) {
+                    console.log('[MSQL] Error: ' + err);
+                    payload = {
+                        "created": false,
+                        "error": err
+                    };
+                    callback(payload);
+                } else {
+                    payload = {
+                        "created": true,
+                        "createdID": result.insertId
+                    };
+                    callback(payload);
+                }
+            });
+    };
 
     this.createTables = function () {
         console.log('[MYSQL] Create Table');
@@ -457,6 +479,7 @@ module.exports = function () {
                                 "f_itemID int," +
                                 "f_startLocation int," +
                                 "f_endLocation int," +
+                                "qty double NOT NULL," +
                                 "currentTime int NOT NULL," +
                                 "totalTime int NOT NULL," +
                                 "PRIMARY KEY(transitID)," +

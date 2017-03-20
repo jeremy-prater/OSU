@@ -37,26 +37,38 @@ exports.getTransit = function (req, res) {
     });
 };
 
+exports.getTransitItems = function (req, res) {
+    dbPool.getTransitItems(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
 exports.createItem = function (req, res) {
     dbPool.createItem(req, res, function (payload) {
         res.json(payload);
     });
 };
 
-/*exports.updateWorkout = function (req, res) {
-    dbPool.updateWorkout(req, res, function (payload) {
+exports.deleteItem = function (req, res) {
+    dbPool.deleteItem(req, res, function (payload) {
         res.json(payload);
     });
 };
 
-exports.deleteWorkout = function (req, res) {
-    dbPool.deleteWorkout(req, res, function (payload) {
+exports.createTransitItem = function (req, res) {
+    dbPool.createTransitItem(req, res, function (payload) {
         res.json(payload);
     });
 };
 
-exports.deleteAllWorkouts = function (req, res) {
-    dbPool.deleteAllWorkouts(req, res, function (payload) {
+exports.updateTransitItem = function (req, res) {
+    dbPool.updateTransitItem(req, res, function (payload) {
         res.json(payload);
     });
-};*/
+};
+
+exports.deleteTransitItem = function (req, res) {
+    dbPool.deleteTransitItem(req, res, function (payload) {
+        res.json(payload);
+    });
+};

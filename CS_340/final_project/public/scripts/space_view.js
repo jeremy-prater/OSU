@@ -31,7 +31,6 @@ var SpaceView = function (domElement, controller) {
             document.getElementById('itemToSend').innerHTML = 'Item to send<span class="caret"/>';
             document.getElementById('itemDestinationLocation').innerHTML = 'Location to send to<span class="caret"/>';
             controller.getItemsByLocation(currentLocation, context.updateSideBarItems);
-            console.log(graphicObject);
             context.ClearGlow();
             context.ClearNavLines();
             context.glowSet = graphicObject.glow({
@@ -44,6 +43,7 @@ var SpaceView = function (domElement, controller) {
     this.updateSideBarItems = function (currentLocation, dataSet) {
         console.log("[SPACE VIEW] Updating location ui : " + currentLocation.name);
         var summedData = {};
+        context.locationItems = dataSet;
         for (var dataIndex = 0; dataIndex < dataSet.length; dataIndex++) {
             var currentData = dataSet[dataIndex];
             if (summedData[currentData.itemName] === undefined) {
@@ -100,13 +100,63 @@ var SpaceView = function (domElement, controller) {
         controller.getLocationDestinations(currentLocation, context.UpdateLocationDestinations);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Transient items
+    //
+
+    this.ResetTransit = function () {
+        if (context.TransitSet) {
+            context.TransitSet.forEach(function (element) {
+                element.remove();
+            });
+        }
+        context.graphics.setStart();
+    }
+
+    this.AddTransit = function (payload) {
+        console.log('Creating transit line');
+        console.log(payload);
+        var startLocation = controller.FindSpaceLocationByID(payload.f_startLocation);
+        var endLocation = controller.FindSpaceLocationByID(payload.f_endLocation);
+        var startX = startLocation.xLocation * context.viewportWidth;
+        var startY = startLocation.yLocation * context.viewportHeight;
+        var endX = endLocation.xLocation * context.viewportWidth;
+        var endY = endLocation.yLocation * context.viewportHeight;
+        var renderString = "M" + Math.floor(startX) + "," + Math.floor(startY) + " L" + Math.floor(endX) + "," + Math.floor(endY);
+        console.log (renderString);
+        var newLine = context.graphics.path(renderString)
+        newLine.attr("stroke-width", "3");
+        newLine.attr("stroke", "C34500");
+
+        var travelDist = payload.currentTime / payload.totalTime;
+
+        var middleX = ((endX - startX) * travelDist) + startX;
+        var middleY = ((endY - startY) * travelDist) + startY;
+
+        var newRect = context.graphics.rect (middleX - 10, middleY - 10, 20, 20, 4);
+        newRect.attr("stroke-width", "3");
+        newRect.attr("stroke", "C34500");
+        newRect.attr("fill", "C34500");
+
+        newRect.toBack();
+        newLine.toBack();
+    }
+
+    this.EndTransit = function () {
+        context.TransitSet = context.graphics.setFinish();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Client Update functions
+    //
+
     this.UpdateLocationDestinations = function (currentLocation, dataSet) {
-        console.log(dataSet.length);
         var destLocation = document.getElementById('destinationLocations');
         context.ClearNavLines();
         context.graphics.setStart();
         for (var dataIndex = 0; dataIndex < dataSet.length; dataIndex++) {
-            console.log(dataSet[dataIndex]);
             var newItem = document.createElement('li');
             var newItemlink = document.createElement('a');
             newItemlink.innerText = dataSet[dataIndex].locationName;

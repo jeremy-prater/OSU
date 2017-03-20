@@ -14,6 +14,26 @@ div(class="propertyBar" id="propertyBar")
   div(class="locationName" id="locationName")
   div(class="locationItems" id="locationItems")
   div(class="locationTransport" id="locationTransport")
+    br
+    | Send items to another location.
+    br
+    br
+    div(class="dropdown")
+      button(class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" id="itemToSend")
+        | Item to send
+        span(class="caret")
+      ul(class="dropdown-menu" id="itemsToSend")
+
+    br
+
+    div(class="dropdown")
+      button(class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" id="itemDestinationLocation")
+        | Location to send to
+        span(class="caret")
+      ul(class="dropdown-menu" id="destinationLocations")
+    div(style="text-align: right; padding-right: 30px; padding-bottom: 30px;")
+      button(type="button" class="btn btn-success")
+        | Send!
 div(class="spaceView" id="spaceView")
 
 script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")

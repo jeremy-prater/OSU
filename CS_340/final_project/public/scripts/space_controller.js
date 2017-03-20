@@ -122,6 +122,22 @@ function getItemsByLocation(currentLocation, callback) {
     };
     req.send(null);
 }
+
+function getLocationDestinations(currentLocation, callback) {
+    var req = new XMLHttpRequest();
+    var targetUrl = '/getLocationDestinations?locationID=' + currentLocation.locationID;
+    console.log("[SPACE ITEM] Getting destinations for [" + currentLocation.locationID + "]");
+    req.open('GET', targetUrl, true);
+    req.onreadystatechange = function () {
+        if (req.status == 200 && req.readyState === 4) {
+            try {
+                callback(currentLocation, JSON.parse(req.responseText));
+            } catch (exception) {}
+        }
+    };
+    req.send(null);
+}
+
 /*function updateWorkout(payload, callback) {
     console.log("[Workout] Adding workout.");
     var req = new XMLHttpRequest();

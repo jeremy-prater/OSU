@@ -25,6 +25,12 @@ exports.getItemsByLocation = function (req, res) {
     });
 };
 
+exports.getLocationDestinations = function (req, res) {
+    dbPool.getLocationDestinations(req, res, function (payload) {
+        res.json(payload);
+    });
+};
+
 exports.createItem = function (req, res) {
     dbPool.createItem(req, res, function (payload) {
         res.json(payload);

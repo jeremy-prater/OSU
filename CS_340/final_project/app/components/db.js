@@ -117,6 +117,31 @@ module.exports = function () {
                     this.insertData('space_locationProduction', 'productionID, f_locationID, f_itemID, min, max', '15, 6, 22, 0.2, 0.4');
                 }
                 break;
+            case 'transit':
+                {
+                    console.log("[MYSQL] Adding transit...");
+
+                    // Allowable destinations
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '1, 1, 4, 10');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '2, 1, 5, 6');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '3, 1, 6, 8');
+
+
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '4, 2, 4, 10');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '5, 2, 5, 6');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '6, 2, 6, 8');
+
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '7, 3, 4, 10');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '8, 3, 5, 6');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '9, 3, 6, 8');
+
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '10, 4, 7, 15');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '11, 5, 7, 12');
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '12, 6, 7, 10');
+
+                    this.insertData('space_locationTransit', 'locationTransitID, f_startLocation, f_endLocation, totalTime', '13, 7, 8, 13');
+                }
+                break;
         }
     }
 
@@ -183,7 +208,25 @@ module.exports = function () {
             }
         });
     };
-    
+
+    this.getLocationDestinations = function (req, res, callback) {
+        console.log ("[MYSQL] /database.getLocationDestinations : " + req.query.locationID);
+        var sqlString =
+            'SELECT space_locations.name as locationName, f_endLocation FROM space_locationTransit ' +
+            'INNER JOIN space_locations ON space_locations.locationID=space_locationTransit.f_endlocation ' +
+            'WHERE space_locationTransit.f_startLocation=' + req.query.locationID + ';'
+        context.pool.query(sqlString, function (err, rows, fields) {
+            if (err) {
+                console.log('[MSQL] Error: ' + err);
+                callback({
+                    "error": err
+                });
+                return;
+            } else {
+                callback(rows);
+            }
+        });
+    };
 
     this.createItem = function (req, res, callback) {
         console.log('[MYSQL] /database.createItem');
@@ -413,6 +456,24 @@ module.exports = function () {
                                 if (err) {
                                     console.log('[MSQL] Error: ' + err);
                                 } else {}
+                                createString =
+                                    "CREATE TABLE space_locationTransit (" +
+                                    "locationTransitID int AUTO_INCREMENT," +
+                                    "f_startLocation int," +
+                                    "f_endLocation int," +
+                                    "totalTime int NOT NULL," +
+                                    "PRIMARY KEY(locationTransitID)," +
+                                    "FOREIGN KEY (f_startLocation) REFERENCES space_locations(locationID)," +
+                                    "FOREIGN KEY (f_endLocation) REFERENCES space_locations(locationID)" +
+                                    ") ENGINE=InnoDB;";
+                                context.pool.query(createString, function (err) {
+                                    if (err) {
+                                        console.log('[MSQL] Error: ' + err);
+                                    } else {
+                                        context.insertCodex('transit');
+                                    }
+                                });
+
                             });
                         });
                     });

@@ -43,11 +43,6 @@ module.exports = function () {
                     this.insertData('space_items', 'itemID, name', '5, "Titanium"');
                     this.insertData('space_items', 'itemID, name', '6, "Iron"');
 
-                    // Life support stuff
-                    //this.insertData('space_items', 'itemID, name', '7, "Oxygen"');
-                    //this.insertData('space_items', 'itemID, name', '8, "Hydrogen"');
-                    //this.insertData('space_items', 'itemID, name', '9, "Ammonia"');
-
                     // Manufactured stuff
                     this.insertData('space_items', 'itemID, name', '10, "Semiconductor components"');
                     this.insertData('space_items', 'itemID, name', '11, "Computer equipment"');

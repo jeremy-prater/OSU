@@ -8,8 +8,9 @@
 #include <omp.h>
 #include <stdio.h>
 #include <math.h>
-#include "curve_calc.h"
+#include "curveCalc.h"
 #include "project1.h"
+
 #include <pthread.h>
 
 static const char * dataLog = "./project1.csv";
@@ -24,7 +25,7 @@ int main( int argc, char *argv[ ] )
 #endif
 
     omp_set_num_threads(NUMT);
-    printf("Using %d threads\n", NUMT);
+    printf("Using %d threads * %d nodes\n", NUMT, NUMNODES);
 
 	// the area of a single full-sized tile:
 	float fullTileArea = (  ( (XMAX-XMIN)/(float)(NUMNODES-1) )  *  ( ( YMAX - YMIN )/(float)(NUMNODES-1) )  );

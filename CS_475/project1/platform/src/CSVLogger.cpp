@@ -11,8 +11,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "csv_logger.hpp"
 
+#include "CSVLogger.hpp"
 
 FILE * CSVLogger::logFilePtr;
 
@@ -31,12 +31,15 @@ bool CSVLogger::OpenLogFile(const char * logName)
     if (access (logName, R_OK) == 0)
     {
         // File exists, open as write-append
-        CSVLogger::logFilePtr = fdopen (logName, "a");
+        CSVLogger::logFilePtr = fopen (logName, "a");
+        return false;
     }
     else
     {
         // File does not, exist. Create and return new handle.
-        CSVLogger::logFilePtr = creat (logName, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR);
+         int newFD = creat (logName, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR);
+         CSVLogger::logFilePtr = fdopen (newFD, "w");
+        return true;
     }
 }
 

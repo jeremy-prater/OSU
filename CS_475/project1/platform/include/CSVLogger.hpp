@@ -8,9 +8,8 @@
 class CSVLogger
 {
 public:
-    void WriteLog(const char * format, ...);
-
     static FILE * logFilePtr;
     static bool OpenLogFile(const char * logName);
     static void CloseLogFile();
+    static void WriteLog(const char * format, ...);
 };

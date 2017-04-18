@@ -10,9 +10,14 @@
 #include <math.h>
 #include "curve_calc.h"
 #include "project1.h"
+#include <pthread.h>
+
+static const char * dataLog = "./project1.csv";
+static const char * dataSchema = "NUMT, NUMNODES, ";
 
 int main( int argc, char *argv[ ] )
 {
+    
 #ifndef _OPENMP
     printf("OpenMP is not supported here -- sorry.\n" );
     return 1;

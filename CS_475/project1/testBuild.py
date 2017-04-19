@@ -6,8 +6,9 @@ import sys
 projectName = "./cs475-project1"
 
 def EnterBuildFolder():
-    os.mkdir("build")
-    os.chdir("build")
+    directory = os.path.dirname("build")
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
 def CleanBuild():
     # Delete old build

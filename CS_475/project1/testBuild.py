@@ -45,10 +45,10 @@ if (len(sys.argv) != 5):
     print "Please specify " + sys.argv[0] + " <num_t:min> <num_t:max> <num_nodes:min> <num_nodes:max>"
     print " ... assuming " + sys.argv[0] + " 1 4 64 16384"
 else:
-    num_t_min = sys.argv[1]
-    num_t_max = sys.argv[2]
-    num_nodes_min = sys.argv[3]
-    num_nodes_max = sys.argv[4]
+    num_t_min = int(sys.argv[1])
+    num_t_max = int(sys.argv[2])
+    num_nodes_min = int(sys.argv[3])
+    num_nodes_max = int(sys.argv[4])
     
 print "Thread Status:"
 print " -- Min : " + str(num_t_min)

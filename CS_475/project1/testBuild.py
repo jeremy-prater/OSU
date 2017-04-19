@@ -6,6 +6,7 @@ import sys
 projectName = "./cs475-project1"
 
 def EnterBuildFolder():
+    os.mkdir("build")
     os.chdir("build")
 
 def CleanBuild():

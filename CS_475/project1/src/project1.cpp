@@ -11,7 +11,7 @@
 #include <math.h>
 #include "curveCalc.h"
 #include "project1.h"
-
+#include "CSVLogger.hpp"
 #include <pthread.h>
 
 static const char * dataLog = "./project1.csv";
@@ -23,6 +23,11 @@ int main( int argc, char *argv[ ] )
     {
         printf("Incorrect number of arguments...\n");
         exit(-1);
+    }
+
+    if (CSVLogger::OpenLogFile("./project1.csv"))
+    {
+        CSVLogger::WriteLog("numt, numnodes, tilesize, volume, mhs, time");
     }
 
     unsigned int NUMT = atoi (argv[1]);
@@ -37,23 +42,22 @@ int main( int argc, char *argv[ ] )
     printf("Using %d threads * %d nodes \t", NUMT, NUMNODES);
 
 	// the area of a single full-sized tile:
-	float fullTileArea = (  ( (XMAX-XMIN)/(float)(NUMNODES-1) )  *  ( ( YMAX - YMIN )/(float)(NUMNODES-1) )  );
+	double fullTileArea = (  ( (XMAX-XMIN)/(double)(NUMNODES-1) )  *  ( ( YMAX - YMIN )/(double)(NUMNODES-1) )  );
 
 	// sum up the weighted heights into the variable "volume"
-    float volume = 0;
+    double volume = 0;
     double time0 = omp_get_wtime( );
 	// using an OpenMP for loop and a reduction:
 
     #pragma omp parallel for default(none), shared(fullTileArea), shared(NUMNODES), reduction(+:volume)
     for( int i = 0; i < NUMNODES*NUMNODES; i++ )
     {
-        
         int iu = i % NUMNODES;
         int iv = i / NUMNODES;
 
-        float height = Height (iu, iv, NUMNODES);
+        double height = Height (iu, iv, NUMNODES);
         // Find the location (center, edge, corner) of the current node and weight the result.
-        float weighting = 1.;
+        double weighting = 1.;
         if ((iu == 0) || (iu == (NUMNODES - 1)))
         {
             weighting /= 2; // Could be an edge or corner
@@ -64,13 +68,16 @@ int main( int argc, char *argv[ ] )
         }
         volume += height * weighting * fullTileArea;
     }
-    
+
     double time1 = omp_get_wtime( );
     double megaHeights = (double)(NUMNODES*NUMNODES)/(time1-time0)/1000000.;
 
-    printf ("-> tile size: %f ", fullTileArea);
+    printf ("-> tile size: %g ", fullTileArea);
     printf ("-> total volume: %f ", volume);
-    printf ("-> megaHeights/sec: %f\n", megaHeights);
+    printf ("-> megaHeights/sec: %f", megaHeights);
+    printf ("-> time: %f\n", (time1-time0));
+    CSVLogger::WriteLog("%d, %d, %g, %f, %f, %f", NUMT, NUMNODES, fullTileArea, volume, megaHeights, (time1-time0));
+    CSVLogger::CloseLogFile();
 }
 
 

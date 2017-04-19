@@ -76,8 +76,9 @@ while (thread != 0):
     numnode  = num_nodes_max
     while (numnode != 0):
         RunBuild(thread, numnode)
-        numnode /= 2
-        if (numnode == 1):
+        lastnode = int(numnode)
+        numnode *= .95
+        if (int(numnode) == lastnode):
             numnode = 0
     
     thread /= 2

@@ -41,11 +41,13 @@ int main( int argc, char *argv[ ] )
 
 	// sum up the weighted heights into the variable "volume"
     float volume = 0;
+    double time0 = omp_get_wtime( );
 	// using an OpenMP for loop and a reduction:
 
     #pragma omp parallel for default(none), shared(fullTileArea), shared(NUMNODES), reduction(+:volume)
     for( int i = 0; i < NUMNODES*NUMNODES; i++ )
     {
+        
         int iu = i % NUMNODES;
         int iv = i / NUMNODES;
 
@@ -62,8 +64,13 @@ int main( int argc, char *argv[ ] )
         }
         volume += height * weighting * fullTileArea;
     }
+    
+    double time1 = omp_get_wtime( );
+    double megaHeights = (double)(NUMNODES*NUMNODES)/(time1-time0)/1000000.;
 
-    printf ("-> total volume: %f\n", volume);
+    printf ("-> tile size: %f ", fullTileArea);
+    printf ("-> total volume: %f ", volume);
+    printf ("-> megaHeights/sec: %f\n", megaHeights);
 }
 
 

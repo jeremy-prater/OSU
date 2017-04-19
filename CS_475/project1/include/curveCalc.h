@@ -10,7 +10,7 @@
 #ifndef PROJECT1_CURVE_CALC_H
 #define PROJECT1_CURVE_CALC_H
 
-float Height( int, int );
+float Height( int iu, int iv, int NUMNODES);	// iu,iv = 0 .. NUMNODES-1
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //

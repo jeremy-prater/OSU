@@ -28,7 +28,7 @@ set(CMAKE_CXX_FLAGS "-O3 -lm -fopenmp")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")
 
-add_definitions(-DNUMT=${NUMT})
-add_definitions(-DNUMNODES=${NUMNODES})
+#add_definitions(-DNUMT=${NUMT})
+#add_definitions(-DNUMNODES=${NUMNODES})
 
 add_executable(${PROJ_NAME} ${PLATFORM_SRCS} ${PROJECT_SRCS})

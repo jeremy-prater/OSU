@@ -13,7 +13,7 @@
 // Height sampling code 
 //
 
-float Height( int iu, int iv )	// iu,iv = 0 .. NUMNODES-1
+float Height( int iu, int iv, int NUMNODES)	// iu,iv = 0 .. NUMNODES-1
 {
 	float u = (float)iu / (float)(NUMNODES-1);
 	float v = (float)iv / (float)(NUMNODES-1);

@@ -7,6 +7,7 @@
 
 #include <omp.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "curveCalc.h"
 #include "project1.h"
@@ -18,14 +19,22 @@ static const char * dataSchema = "NUMT, NUMNODES, ";
 
 int main( int argc, char *argv[ ] )
 {
-    
+    if (argc != 3)
+    {
+        printf("Incorrect number of arguments...\n");
+        exit(-1);
+    }
+
+    unsigned int NUMT = atoi (argv[1]);
+    unsigned int NUMNODES = atoi (argv[2]);
+
 #ifndef _OPENMP
     printf("OpenMP is not supported here -- sorry.\n" );
     return 1;
 #endif
 
     omp_set_num_threads(NUMT);
-    printf("Using %d threads * %d nodes\n", NUMT, NUMNODES);
+    printf("Using %d threads * %d nodes \t", NUMT, NUMNODES);
 
 	// the area of a single full-sized tile:
 	float fullTileArea = (  ( (XMAX-XMIN)/(float)(NUMNODES-1) )  *  ( ( YMAX - YMIN )/(float)(NUMNODES-1) )  );
@@ -34,13 +43,13 @@ int main( int argc, char *argv[ ] )
     float volume = 0;
 	// using an OpenMP for loop and a reduction:
 
-    #pragma omp parallel for default(none), shared(fullTileArea), reduction(+:volume)
+    #pragma omp parallel for default(none), shared(fullTileArea), shared(NUMNODES), reduction(+:volume)
     for( int i = 0; i < NUMNODES*NUMNODES; i++ )
     {
         int iu = i % NUMNODES;
         int iv = i / NUMNODES;
 
-        float height = Height (iu, iv);
+        float height = Height (iu, iv, NUMNODES);
         // Find the location (center, edge, corner) of the current node and weight the result.
         float weighting = 1.;
         if ((iu == 0) || (iu == (NUMNODES - 1)))
@@ -54,7 +63,7 @@ int main( int argc, char *argv[ ] )
         volume += height * weighting * fullTileArea;
     }
 
-    printf ("total volume: %f\n", volume);
+    printf ("-> total volume: %f\n", volume);
 }
 
 

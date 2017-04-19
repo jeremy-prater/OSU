@@ -40,7 +40,7 @@ num_t_max = 16
 num_nodes_min = 64
 num_nodes_max = 8192
 
-if (len(sys.argv) != 4):
+if (len(sys.argv) != 5):
     print "Incorrect arguments"
     print "Please specify " + sys.argv[0] + " <num_t:min> <num_t:max> <num_nodes:min> <num_nodes:max>"
     print " ... assuming " + sys.argv[0] + " 1 4 64 16384"

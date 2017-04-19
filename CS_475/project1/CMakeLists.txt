@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.2.2)
+cmake_minimum_required (VERSION 2.8.11)
 
 SET(NUMT "1" CACHE STRING "Number of Threads")
 SET(NUMNODES "64" CACHE STRING "Number of Nodes")

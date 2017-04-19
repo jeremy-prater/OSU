@@ -5,22 +5,16 @@ from subprocess import call
 import sys
 projectName = "./cs475-project1"
 
-def EnterBuildFolder():
-    directory = os.path.dirname("build")
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
 def CleanBuild():
     # Delete old build
-    os.chdir("..")
     call(["rm", "-r", "-f", "build"])
     call(["mkdir", "build"])
-    EnterBuildFolder()
+    os.chdir("build")
 
 
 def StartBuild():
     call(["cmake", ".."])
-    call(["make"]) 
+    call(["make"])
     
 def RunBuild(l_num_t, l_num_nodes):
     #Run a build for testing
@@ -70,7 +64,6 @@ print "=========================================================================
 print " Starting Build"
 print "=================================================================================================================================="
 
-EnterBuildFolder()
 CleanBuild()
 StartBuild()
 

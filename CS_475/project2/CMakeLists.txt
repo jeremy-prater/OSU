@@ -1,9 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-SET(NUMT "1" CACHE STRING "Number of Threads")
-SET(NUMNODES "64" CACHE STRING "Number of Nodes")
-
-set (PROJ_NAME cs475-project1)
+set (PROJ_NAME cs475-project2)
 
 project (${PROJ_NAME})
 
@@ -17,12 +14,11 @@ set(PLATFORM_SRCS
 )
 
 set(PROJECT_SRCS
-  ${PROJECT_SOURCE_DIR}/src/project1.cpp
-  ${PROJECT_SOURCE_DIR}/src/curveCalc.cpp
+  ${PROJECT_SOURCE_DIR}/src/project2.cpp
 )
 
 # Compilier settings
-set(CMAKE_CXX_FLAGS "-O3 -lm -fopenmp")
+set(CMAKE_CXX_FLAGS "-lm -fopenmp")
 
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/local/include -L/usr/local/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

@@ -3,6 +3,8 @@
 import os
 from subprocess import call
 import sys
+import socket
+
 projectName = "./cs475-project2"
 
 def CleanBuild():
@@ -13,6 +15,15 @@ def CleanBuild():
 
 
 def StartBuild():
+    if ("oregonstate.edu" in socket.gethostname()):
+        print "=================================================================================================================================="
+        print ""
+        print " -- Setting up environment for GCC 5.3 on " + socket.gethostname() 
+        print ""
+        print "=================================================================================================================================="
+
+        os.environ["CC"]="/usr/local/common/gcc-5.2.0/gcc"
+        os.environ["CXX"]="/usr/local/common/gcc-5.2.0/gcc"
     call(["cmake", ".."])
     call(["make"])
     
@@ -39,6 +50,7 @@ num_t_min = 1
 num_t_max = 16
 modes = ["static", "dynamic"]
 chunksizes = [1, 4096]
+thread = num_t_max
 
 if (len(sys.argv) != 3):
     print "Incorrect arguments"
@@ -77,8 +89,10 @@ for mode in modes:
     for chunk in chunksizes:
         thread = num_t_max
         while (thread != 0):
-            RunBuild(thread, node, chunksize)
+            RunBuild(thread, mode, chunk)
             if (thread > 16):
                 thread /= 2
+            elif (thread > 2):
+                thread -= 2
             else:
-                thread =-1
+                thread -= 1

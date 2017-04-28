@@ -22,8 +22,8 @@ def StartBuild():
         print ""
         print "=================================================================================================================================="
 
-        os.environ["CC"]="/usr/local/common/gcc-5.2.0/gcc"
-        os.environ["CXX"]="/usr/local/common/gcc-5.2.0/gcc"
+        os.environ["CC"]="/usr/local/common/gcc-6.3.0/bin/gcc"
+        os.environ["CXX"]="/usr/local/common/gcc-6.3.0/bin/gcc"
     call(["cmake", ".."])
     call(["make"])
     

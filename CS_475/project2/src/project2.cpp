@@ -17,7 +17,7 @@ static const char * dataLog = "./project2.csv";
 static const char * dataSchema = "numt, mode, chunksize";
 
 static const unsigned int ARRAYSIZE = (32 * 1024);
-static long int numMuled = (long int)ARRAYSIZE * (long int)(ARRAYSIZE+1) / 2;
+static long int numMuled = (long int)ARRAYSIZE * (long int)(ARRAYSIZE-1) / 2;
 
 static float Array[ARRAYSIZE];
 

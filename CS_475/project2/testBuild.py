@@ -90,7 +90,7 @@ for mode in modes:
         thread = num_t_max
         while (thread != 0):
             RunBuild(thread, mode, chunk)
-            if (thread > 16):
+            if (thread > 32):
                 thread /= 2
             elif (thread > 2):
                 thread -= 2

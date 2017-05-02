@@ -84,11 +84,10 @@ int main( int argc, char *argv[ ] )
     omp_set_schedule(schedType, CHUNKSIZE);
     double time0 = omp_get_wtime();
     double prod = 1.0f;
-    #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
     for (unsigned int outerLoop = 0; outerLoop < ARRAYSIZE; outerLoop++)
     {
         prod = 1.0f;
-
+        #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
         for (unsigned int innerLoop = 0; innerLoop < outerLoop; innerLoop++)
         {
             prod *= Array[innerLoop];

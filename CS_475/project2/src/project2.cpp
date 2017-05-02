@@ -82,19 +82,40 @@ int main( int argc, char *argv[ ] )
         exit (-1);
     }
 
-    omp_set_schedule(schedType, CHUNKSIZE);
     double time0 = omp_get_wtime();
     double prod = 1.0f;
+  
+    omp_set_schedule(schedType, CHUNKSIZE);
+
+    // Keep outer loop static...
+    if (schedType == omp_sched_static)
+    {
+        omp_set_dynamic(0);
+    }
+
     #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
     for (unsigned int outerLoop = 0; outerLoop < ARRAYSIZE; outerLoop++)
     {
         prod = 1.0f;
+
+        // Set inner loop to dynamic if we are in dynamic mode
+        if (schedType == omp_sched_static)
+        {
+            omp_set_dynamic(1);
+        }
         
         #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
         for (unsigned int innerLoop = 0; innerLoop < outerLoop; innerLoop++)
         {
             prod *= Array[innerLoop];
         }
+
+        // Reset dynamic mode since we are done with it...
+        if (schedType == omp_sched_static)
+        {
+            omp_set_dynamic(0);
+        }
+
     }
     double megaMultsSec = ((double)numMuled / (omp_get_wtime() - time0)) /  1000000.;
 

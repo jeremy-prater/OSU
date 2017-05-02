@@ -58,7 +58,7 @@ int main( int argc, char *argv[ ] )
     // Might as well parallize this also to speed up!
     //
 
-    //#pragma omp parallel for default(none), shared(Array)
+    #pragma omp parallel for default(none), shared(Array)
     for(unsigned int index = 0; index < ARRAYSIZE; index++)
     {
         float num = fRand(-1., 1.);
@@ -90,6 +90,7 @@ int main( int argc, char *argv[ ] )
     {
         prod = 1.0f;
         
+        #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
         for (unsigned int innerLoop = 0; innerLoop < outerLoop; innerLoop++)
         {
             prod *= Array[innerLoop];

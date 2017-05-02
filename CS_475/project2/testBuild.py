@@ -91,7 +91,7 @@ for mode in modes:
         while (thread != 0):
             RunBuild(thread, mode, chunk)
             if (thread > 128):
-                thread /= 2
+                thread -= 4
             elif (thread > 2):
                 thread -= 2
             else:

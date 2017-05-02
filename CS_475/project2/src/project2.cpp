@@ -19,13 +19,12 @@ static const char * dataSchema = "numt, mode, chunksize";
 static const unsigned int ARRAYSIZE = (32 * 1024);
 static long int numMuled = (long int)ARRAYSIZE * (long int)(ARRAYSIZE-1) / 2;
 
-static float writableArray[ARRAYSIZE];
-static float const& Array = writableArray;
+static float Array[ARRAYSIZE];
 
 float fRand(float low, float high)
 {
-	float r = (float)rand();		// 0 - RAND_MAX
-	return(   low  +  r * ( high - low ) / (float)RAND_MAX   );
+	int r = (float)rand();		// 0 - RAND_MAX
+	return (((float)r/(float)RAND_MAX) * ( high-low)) + low;
 }
 
 int main( int argc, char *argv[ ] )
@@ -59,10 +58,11 @@ int main( int argc, char *argv[ ] )
     // Might as well parallize this also to speed up!
     //
 
-    #pragma omp parallel for default(none), shared(writeArray)
+    //#pragma omp parallel for default(none), shared(Array)
     for(unsigned int index = 0; index < ARRAYSIZE; index++)
     {
-        writeArray[index] = fRand (-1.0f, 1.0f);
+        float num = fRand(-1., 1.);
+        Array[index] = num;
     }
 
 
@@ -85,12 +85,11 @@ int main( int argc, char *argv[ ] )
     omp_set_schedule(schedType, CHUNKSIZE);
     double time0 = omp_get_wtime();
     double prod = 1.0f;
-    #pragma omp parallel for default(none) shared(Array)
+    #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
     for (unsigned int outerLoop = 0; outerLoop < ARRAYSIZE; outerLoop++)
     {
         prod = 1.0f;
         
-        #pragma omp parallel for default(none) shared(Array) shared(outerLoop) reduction (*:prod)
         for (unsigned int innerLoop = 0; innerLoop < outerLoop; innerLoop++)
         {
             prod *= Array[innerLoop];
@@ -98,8 +97,9 @@ int main( int argc, char *argv[ ] )
     }
     double megaMultsSec = ((double)numMuled / (omp_get_wtime() - time0)) /  1000000.;
 
-    printf ("-> MegaMults/sec: %f\n", megaMultsSec);
-    CSVLogger::WriteLog("%u, %u, %s, %f", NUMT, CHUNKSIZE, MODE, megaMultsSec);
+    printf ("-> MegaMults/sec: %f\t", megaMultsSec);
+    printf ("-> Product: %e\n", prod);
+    CSVLogger::WriteLog("%u, %u, %s, %f, %f", NUMT, CHUNKSIZE, MODE, megaMultsSec, prod);
     CSVLogger::CloseLogFile();
 }
 

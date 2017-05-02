@@ -87,7 +87,7 @@ int main( int argc, char *argv[ ] )
     for (unsigned int outerLoop = 0; outerLoop < ARRAYSIZE; outerLoop++)
     {
         prod = 1.0f;
-        #pragma omp parallel for default(none) shared(Array) reduction (*:prod)
+        #pragma omp parallel for default(none) shared(Array) shared(outerLoop) reduction (*:prod)
         for (unsigned int innerLoop = 0; innerLoop < outerLoop; innerLoop++)
         {
             prod *= Array[innerLoop];

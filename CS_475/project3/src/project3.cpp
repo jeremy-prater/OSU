@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 static const char * dataLog = "./project3.csv";
-static const char * dataSchema = "numt, padding, megaAddsSec";
+static const char * dataSchema = "numt, padding, useFix2, megaAddsSec";
 static const int numArrays = 4;
 
 typedef struct
@@ -91,7 +91,7 @@ int main( int argc, char *argv[ ] )
     printf ("-> NumAdded: %f\t", numAdded);
     printf ("-> megaAddsSec/sec: %f\t", megaAddsSec);
     printf ("-> Time: %f\n", time1-time0);
-    CSVLogger::WriteLog("%u, %u, %f", NUMT, NUMPADDING, megaAddsSec);
+    CSVLogger::WriteLog("%u, %u, %u, %f", NUMT, NUMPADDING, USEFIX2, megaAddsSec);
     CSVLogger::CloseLogFile();
 }
 

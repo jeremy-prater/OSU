@@ -27,9 +27,9 @@ def StartBuild():
     call(["cmake", ".."])
     call(["make"])
     
-def RunBuild(l_num_t, l_padding):
+def RunBuild(l_num_t, l_padding, l_fix2):
     #Run a build for testing
-    call([projectName, str(l_num_t), str(l_padding)])
+    call([projectName, str(l_num_t), str(l_padding), str(l_fix2)])
 
 print "", sys.argv[0]
 print "                    ___           ___                                  ___           ___                        ___       ___     "
@@ -88,7 +88,8 @@ print "=========================================================================
 while (padding >= 0):
     thread = num_t_max
     while (thread >= num_t_min):
-        RunBuild(thread, padding)
+        RunBuild(thread, padding, 1)
+        RunBuild(thread, padding, 0)
         if (thread > 128):
             thread -= 4
         elif (thread > 2):

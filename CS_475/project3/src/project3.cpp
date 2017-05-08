@@ -8,6 +8,7 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 #include <string.h>
 #include "project3.h"
@@ -15,17 +16,18 @@
 #include <stdlib.h>
 
 static const char * dataLog = "./project3.csv";
-static const char * dataSchema = "numt, mode, chunksize";
+static const char * dataSchema = "numt, padding, megaAddsSec";
+static const int numArrays = 4;
 
-struct s
+typedef struct
 {
 	float value;
-	int pad[NUMPAD];
-} Array[4];
+	int padding[];
+} DataArray;
 
 int main( int argc, char *argv[ ] )
 {
-    if (argc != 4)
+    if (argc != 3)
     {
         printf("Incorrect number of arguments...\n");
         exit(-1);
@@ -36,8 +38,10 @@ int main( int argc, char *argv[ ] )
         CSVLogger::WriteLog(dataSchema);
     }
 
-    unsigned int NUMT = atoi (argv[1]);
-    unsigned int NUMPADDING = atoi(argv[2]);
+    const unsigned int NUMT = atoi (argv[1]);
+    const unsigned int NUMPADDING = atoi(argv[2]);
+    const uint32_t sizeOfData = sizeof (DataArray) + (sizeof (int) * NUMPADDING);
+    uint8_t * Array = (uint8_t*) malloc (numArrays * sizeOfData);
 
 #ifndef _OPENMP
     printf("OpenMP is not supported here -- sorry.\n" );
@@ -46,25 +50,36 @@ int main( int argc, char *argv[ ] )
 
     omp_set_num_threads(NUMT);
     printf("Using %d threads.\t", NUMT);
+    printf("Using %d padding 32-bit ints.\t", NUMPADDING);
+    printf("DataSize: %d.\t", sizeOfData);
 
 	const int SomeBigNumber = 100000000;	// keep < 2B
-    double time0 = omp_get_wtime();
+    const double time0 = omp_get_wtime();
+    const int loopCounter = 4;
     
-	#pragma omp parallel for default(none)
-	for( int i = 0; i < 4; i++ )
+	#pragma omp parallel for default(none), shared(Array)
+	for(int i = 0; i < loopCounter; i++)
 	{
 		unsigned int seed = 0;		// automatically private
+        float tempValue = 0;
 		for( unsigned int j = 0; j < SomeBigNumber; j++ )
 		{
-			Array[i].value = Array[i].value + (float)rand_r( &seed );
+			 //tempValue += (float)rand_r(&seed);
+             (*(DataArray *)(&Array[i * sizeOfData])).value += (float)rand_r(&seed); 
 		}
+        // Fix #2, use private accumulator
+        // De-reference the value of Array based on padding
+        //Array[i].value = tempValue;
+        //(*(DataArray *)(&Array[i * sizeOfData])).value = tempValue;
 	}
     
-    double megaMultsSec = ((double)numMuled / (omp_get_wtime() - time0)) /  1000000.;
+    double time1 = omp_get_wtime();
+    double numAdded = SomeBigNumber * loopCounter;
 
-    printf ("-> MegaMults/sec: %f\t", megaMultsSec);
-    printf ("-> Product: %e\n", prod);
-    CSVLogger::WriteLog("%u, %u, %s, %f, %f", NUMT, CHUNKSIZE, MODE, megaMultsSec, prod);
+    double megaAddsSec = (numAdded / (time1 - time0)) /  1000000.;
+
+    printf ("-> megaAddsSec/sec: %f\n", megaAddsSec);
+    CSVLogger::WriteLog("%u, %u, %f", NUMT, NUMPADDING, megaAddsSec);
     CSVLogger::CloseLogFile();
 }
 

@@ -5,7 +5,7 @@ from subprocess import call
 import sys
 import socket
 
-projectName = "./cs475-project2"
+projectName = "./cs475-project3"
 
 def CleanBuild():
     # Delete old build
@@ -27,9 +27,9 @@ def StartBuild():
     call(["cmake", ".."])
     call(["make"])
     
-def RunBuild(l_num_t, l_mode, l_chunk):
+def RunBuild(l_num_t, l_padding):
     #Run a build for testing
-    call([projectName, str(l_num_t), l_mode, str(l_chunk)])
+    call([projectName, str(l_num_t), str(l_padding)])
 
 print "", sys.argv[0]
 print "                    ___           ___                                  ___           ___                        ___       ___     "
@@ -46,32 +46,32 @@ print "                   \__\/         \__\/                                   
 print ""
 print "=================================================================================================================================="
 
-num_t_min = 1
-num_t_max = 16
-modes = ["static", "dynamic"]
-chunksizes = [1, 4096]
-thread = num_t_max
+num_t_min = 4
+num_t_max = 4 #6
+num_padding_min = 0
+num_padding_max = 15
 
-if (len(sys.argv) != 3):
+if (len(sys.argv) != 5):
     print "Incorrect arguments"
-    print "Please specify " + sys.argv[0] + " <num_t:min> <num_t:max>"
-    print " ... assuming " + sys.argv[0] + " 1 64"
+    print "Please specify " + sys.argv[0] + " <num_t:min> <num_t:max> <padding:min> <padding:max>"
+    print " ... assuming " + sys.argv[0] + " 1 64 0 15"
 else:
     num_t_min = int(sys.argv[1])
     num_t_max = int(sys.argv[2])
+    num_padding_min = int(sys.argv[3])
+    num_padding_max = int(sys.argv[4])
     
+thread = num_t_max
+padding = num_padding_max
+
 print "Thread Status:"
 print " -- Min : " + str(num_t_min)
 print " -- Max : " + str(num_t_max)
 print ""
-print "Modes Status:"
-for mode in modes:
-    print " -- Mode : " + mode
-print ""
-print "ChunkSizes:"
-for chunk in chunksizes:
-    print " -- ChunkSize : " + str(chunk)
-print ""
+
+print "Padding Status:"
+print " -- Min : " + str(num_padding_min)
+print " -- Max : " + str(num_padding_max)
 print ""
 
 print "=================================================================================================================================="
@@ -85,14 +85,14 @@ print "=========================================================================
 print " Executing program sequences"
 print "=================================================================================================================================="
 
-for mode in modes:
-    for chunk in chunksizes:
-        thread = num_t_max
-        while (thread != 0):
-            RunBuild(thread, mode, chunk)
-            if (thread > 128):
-                thread -= 4
-            elif (thread > 2):
-                thread -= 2
-            else:
-                thread -= 1
+while (padding >= 0):
+    thread = num_t_max
+    while (thread >= num_t_min):
+        RunBuild(thread, padding)
+        if (thread > 128):
+            thread -= 4
+        elif (thread > 2):
+            thread -= 2
+        else:
+            thread -= 1
+    padding = padding - 1

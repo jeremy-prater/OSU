@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set (PROJ_NAME cs475-project3)
+set (PROJ_NAME cs475-project4)
 
 project (${PROJ_NAME})
 
@@ -14,7 +14,7 @@ set(PLATFORM_SRCS
 )
 
 set(PROJECT_SRCS
-  ${PROJECT_SOURCE_DIR}/src/project3.cpp
+  ${PROJECT_SOURCE_DIR}/src/project4.cpp
 )
 
 # Compilier settings

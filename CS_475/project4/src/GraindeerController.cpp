@@ -177,8 +177,8 @@ void GraindeerController::Watcher(SystemState * systemState)
             systemState->NowPrecip * 2.54,
             systemState->NowHeight,
             systemState->NowNumDeer,
-            systemState->NowFire * 50,
-            systemState->NowFlood * 50);
+            systemState->NowFire * 30,
+            systemState->NowFlood * 30);
 
 
         printf ("Date : [%02d-%04d]\tTemp : %.2f\tPrecip : %.2f\tHeight : %.2f\tGraindeer : %d\tFire : %d\tFlood : %d\n",
@@ -188,8 +188,8 @@ void GraindeerController::Watcher(SystemState * systemState)
             systemState->NowPrecip * 2.54,
             systemState->NowHeight,
             systemState->NowNumDeer,
-            systemState->NowFire * 50,
-            systemState->NowFlood * 50);
+            systemState->NowFire * 30,
+            systemState->NowFlood * 30);
 
         if (++systemState->NowMonth == 12)
         {

@@ -144,9 +144,8 @@ void GraindeerController::Watcher(SystemState * systemState)
     {
         #pragma omp barrier // DoneComputing barrier
         #pragma omp barrier // DoneAssigning barrier
-        CSVLogger::WriteLog("%d, %d, %f, %f, %f, %d",
-            systemState->NowMonth,
-            systemState->NowYear,
+        CSVLogger::WriteLog("%f, %f, %f, %f, %d",
+            (float)systemState->NowYear + ((float)systemState->NowMonth / 12.),
             systemState->NowTemp,
             systemState->NowPrecip,
             systemState->NowHeight,

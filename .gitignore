@@ -19,3 +19,5 @@ CS_162/lab_c/lab-c
 CS_162/lab_d/lab-d
 
 **/node_modules/*
+**/build
+**/build/*

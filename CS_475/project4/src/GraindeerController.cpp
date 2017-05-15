@@ -210,7 +210,7 @@ void GraindeerController::UnknownEvents(SystemState * systemState)
     unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     while(systemState->NowRunning)
     {
-        bool newFire = (Randomizer::Random(&seed,  0, 100) > 95);
+        bool newFire = systemState->NowHeight > 35.;
         bool newFlood = (Randomizer::Random(&seed,  0, 100) > 95);
         #pragma omp barrier // DoneComputing barrier
 

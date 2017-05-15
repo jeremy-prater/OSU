@@ -17,6 +17,7 @@
 #include <stdlib.h>
 
 static const char * dataLog = "./project4.csv";
+static const char * dataSchema = "month, year, temp, precip, grainHeight, grainDeer";
 
 int main( int argc, char *argv[ ] )
 {
@@ -24,6 +25,11 @@ int main( int argc, char *argv[ ] )
     printf("OpenMP is not supported here -- sorry.\n" );
     return 1;
 #endif
+
+    if (CSVLogger::OpenLogFile(dataLog))
+    {
+        CSVLogger::WriteLog(dataSchema);
+    }
 
     SystemState systemState;
     GraindeerController::SetInitialState(&systemState);
@@ -51,6 +57,7 @@ int main( int argc, char *argv[ ] )
             GraindeerController::HMI(&systemState);
         }
     }
+    CSVLogger::CloseLogFile();
 }
 
 

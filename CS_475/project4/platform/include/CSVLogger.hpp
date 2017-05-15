@@ -5,6 +5,8 @@
 // Jeremy Prater
 //
 
+#include <stdio.h>
+
 class CSVLogger
 {
 public:

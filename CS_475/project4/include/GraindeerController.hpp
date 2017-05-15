@@ -35,6 +35,8 @@ public:
     static void SetInitialState(SystemState * state);
     static void UpdateTempPrecip(SystemState * state, unsigned int * seed);
 
+    static float SQR(float value);
+
     static void GrainDeer(SystemState * state);
     static void GrainGrowth(SystemState * state);
     static void Watcher(SystemState * state);

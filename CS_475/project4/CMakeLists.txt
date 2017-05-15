@@ -15,6 +15,8 @@ set(PLATFORM_SRCS
 
 set(PROJECT_SRCS
   ${PROJECT_SOURCE_DIR}/src/project4.cpp
+  ${PROJECT_SOURCE_DIR}/src/Randomizer.cpp
+  ${PROJECT_SOURCE_DIR}/src/GraindeerController.cpp
 )
 
 # Compilier settings

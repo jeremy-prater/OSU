@@ -18,12 +18,27 @@ public:
     GraindeerController();
     ~GraindeerController();
 
-    void GetInitialState(SystemState * state);
+    static const float GRAIN_GROWS_PER_MONTH;
+    static const float ONE_DEER_EATS_PER_MONTH;
 
-    static void GrainDeer();
-    static void Grain();
-    static void Watcher();
-    static void HMI();
+    static const float AVG_PRECIP_PER_MONTH;	// average
+    static const float AMP_PRECIP_PER_MONTH;	// plus or minus
+    static const float RANDOM_PRECIP;	        // plus or minus noise
+
+    static const float AVG_TEMP;	            // average
+    static const float AMP_TEMP;	            // plus or minus
+    static const float RANDOM_TEMP;        	// plus or minus noise
+
+    static const float MIDTEMP;
+    static const float MIDPRECIP;
+
+    static void SetInitialState(SystemState * state);
+    static void UpdateDate(SystemState * state);
+
+    static void GrainDeer(SystemState * state);
+    static void Grain(SystemState * state);
+    static void Watcher(SystemState * state);
+    static void HMI(SystemState * state);
 };
 
 #endif // PROJECT4_GRAINDEER_CONTROLLER_H

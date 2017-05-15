@@ -4,9 +4,18 @@
 //
 // Jeremy Prater
 //
+// Processing Threads
 //
 
 #include "GraindeerController.hpp"
+#include "Randomizer.hpp"
+#include <math.h>
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Graindeer Controller Static Variables
+//
 
 const float GraindeerController::GRAIN_GROWS_PER_MONTH   = 8.0;
 const float GraindeerController::ONE_DEER_EATS_PER_MONTH = 0.5;
@@ -22,56 +31,111 @@ const float GraindeerController::RANDOM_TEMP             = 10.0;	// plus or minu
 const float GraindeerController::MIDTEMP                 = 40.0;
 const float GraindeerController::MIDPRECIP               = 10.0;
 
-void GraindeerController::GetInitialState(SystemState * state)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Graindeer Controller Constructor
+//
+
+GraindeerController::GraindeerController()
+{
+}
+
+GraindeerController::~GraindeerController()
+{
+}
+
+void GraindeerController::SetInitialState(SystemState * state)
 {
     // starting date and time:
-    state->NowDay     = 14;
-    state->NowMonth   = 5;
+    state->NowMonth   = 0;
     state->NowYear    = 2017;
 
     // starting state (feel free to change this if you want):
     state->NowNumDeer = 1;
     state->NowHeight  = 1.;
+
+    // Threads are running!
+    state->NowRunning = true;
 }
 
-void GraindeerController::UpdateDate(SystemState * state, int nowDay)
-    float ang = (30. * (float)NowMonth + nowDay) * ( M_PI / 180. );
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Graindeer Controller Update functions
+//
+
+void GraindeerController::UpdateDate(SystemState * state)
+{
+    float ang = (30. * (float)state->NowMonth + 15) * ( M_PI / 180. );
 
     float temp = AVG_TEMP - AMP_TEMP * cos( ang );
     unsigned int seed = 0;
-    NowTemp = temp + Ranf( &seed, -RANDOM_TEMP, RANDOM_TEMP );
+    state->NowTemp = temp + Randomizer::Random( &seed, -RANDOM_TEMP, RANDOM_TEMP );
 
     float precip = AVG_PRECIP_PER_MONTH + AMP_PRECIP_PER_MONTH * sin( ang );
-    NowPrecip = precip + Ranf( &seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
-    if( NowPrecip < 0. )
-        NowPrecip = 0.;
+    state->NowPrecip = precip + Randomizer::Random( &seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
+    if(state->NowPrecip < 0.)
+    {
+        state->NowPrecip = 0.;
+    }
 }
 
-GraindeerController::GraindeerController()
-{
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Graindeer Controller Thread Functions
+//
 
+void GraindeerController::GrainDeer(SystemState * systemState)
+{
+    unsigned int seed = 0;  // a thread-private variable
+    while(systemState->NowRunning)
+    {
+        #pragma omp barrier // DoneComputing barrier
+        #pragma omp barrier // DoneAssigning barrier
+        #pragma omp barrier // DonePrinting barrier
+    }
 }
 
-GraindeerController::~GraindeerController()
+void GraindeerController::Grain(SystemState * systemState)
 {
-
+    unsigned int seed = 0;  // a thread-private variable
+    while(systemState->NowRunning)
+    {
+        #pragma omp barrier // DoneComputing barrier
+        #pragma omp barrier // DoneAssigning barrier
+        #pragma omp barrier // DonePrinting barrier
+    }
 }
 
-void GraindeerController::GrainDeer()
+void GraindeerController::Watcher(SystemState * systemState)
 {
+    unsigned int seed = 0;  // a thread-private variable
+    while(systemState->NowRunning)
+    {
+        #pragma omp barrier // DoneComputing barrier
+        #pragma omp barrier // DoneAssigning barrier
+        printf ("Date : [%02d-%04d]\n",
+            systemState->NowMonth,
+            systemState->NowYear);
 
+        if (++systemState->NowMonth == 12)
+        {
+            systemState->NowMonth = 0;
+            if (++systemState->NowYear == 2023)
+            {
+                systemState->NowRunning = false;
+            }
+        }
+        #pragma omp barrier // DonePrinting barrier
+    }
 }
-void GraindeerController::Grain()
+
+void GraindeerController::HMI(SystemState * systemState)
 {
-
-}
-
-void GraindeerController::Watcher()
-{
-
-}
-
-void GraindeerController::HMI()
-{
-
+    unsigned int seed = 0;  // a thread-private variable
+    while(systemState->NowRunning)
+    {
+        #pragma omp barrier // DoneComputing barrier
+        #pragma omp barrier // DoneAssigning barrier
+        #pragma omp barrier // DonePrinting barrier
+    }
 }

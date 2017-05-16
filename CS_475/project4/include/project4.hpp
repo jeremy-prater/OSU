@@ -21,6 +21,8 @@ typedef struct
     int	    NowNumDeer;		// number of deer in the current population
 
     bool    NowRunning;     // Simulation is running
+    bool    NowFire;        // The grain is on fire!
+    bool    NowFlood;       // There is a flood!
 } SystemState;
 
 #endif // PROJECT4_MAIN_H

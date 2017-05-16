@@ -11,6 +11,7 @@
 #include "Randomizer.hpp"
 #include "CSVLogger.hpp"
 #include <math.h>
+#include <time.h>
 #include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,11 @@ void GraindeerController::SetInitialState(SystemState * state)
     state->NowNumDeer = 1;
     state->NowHeight  = 1.;
 
-    unsigned int seed = 0;
+    // Random Events
+    state->NowFlood   = false;
+    state->NowFire    = false;
+
+    unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     UpdateTempPrecip (state, &seed);
 
     // Threads are running!
@@ -94,22 +99,28 @@ float GraindeerController::SQR(float value)
 
 void GraindeerController::GrainDeer(SystemState * systemState)
 {
-    unsigned int seed = 0;  // a thread-private variable
+    unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     while(systemState->NowRunning)
     {
-        int tempHeight = (int)systemState->NowHeight;
+        int newDeer = systemState->NowNumDeer;
+        if (systemState->NowNumDeer < systemState->NowHeight)
+        {
+            newDeer++;
+        }
+
+        if (systemState->NowNumDeer > systemState->NowHeight)
+        {
+            newDeer--;
+        }
+
+        if (systemState->NowFlood)
+        {
+            newDeer = 0;
+        }
+
         #pragma omp barrier // DoneComputing barrier
 
-        if (systemState->NowNumDeer < (int)tempHeight)
-        {
-            systemState->NowNumDeer++;
-        }
-
-        if (systemState->NowNumDeer > (int)tempHeight)
-        {
-            systemState->NowNumDeer--;
-        }
-
+        systemState->NowNumDeer = newDeer;
         #pragma omp barrier // DoneAssigning barrier
         #pragma omp barrier // DonePrinting barrier
     }
@@ -117,21 +128,37 @@ void GraindeerController::GrainDeer(SystemState * systemState)
 
 void GraindeerController::GrainGrowth(SystemState * systemState)
 {
-    unsigned int seed = 0;  // a thread-private variable
+    unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     while(systemState->NowRunning)
     {
         float tempFactor = exp(-GraindeerController::SQR((systemState->NowTemp - MIDTEMP)/10.));
         float precipFactor = exp(-GraindeerController::SQR((systemState->NowPrecip - MIDPRECIP)/10.));
+        float newHeight = systemState->NowHeight;
+
+        if (systemState->NowFlood)
+        {
+            newHeight *= 2;
+        }
+
+        if (systemState->NowFire)
+        {
+            newHeight = 0;
+        }
+        else
+        {
+            newHeight += tempFactor * precipFactor * GRAIN_GROWS_PER_MONTH;
+            newHeight -= (float)systemState->NowNumDeer * ONE_DEER_EATS_PER_MONTH;
+        }
+
+        if (newHeight < 0)
+        {
+            newHeight = 0;
+        }
+
         #pragma omp barrier // DoneComputing barrier
 
 
-        systemState->NowHeight += tempFactor * precipFactor * GRAIN_GROWS_PER_MONTH;
-        systemState->NowHeight -= (float)systemState->NowNumDeer * ONE_DEER_EATS_PER_MONTH;
-        if (systemState->NowHeight < 0)
-        {
-            systemState->NowHeight = 0;
-        }
-
+        systemState->NowHeight = newHeight;
         #pragma omp barrier // DoneAssigning barrier
         #pragma omp barrier // DonePrinting barrier
     }
@@ -139,25 +166,30 @@ void GraindeerController::GrainGrowth(SystemState * systemState)
 
 void GraindeerController::Watcher(SystemState * systemState)
 {
-    unsigned int seed = 0;  // a thread-private variable
+    unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     while(systemState->NowRunning)
     {
         #pragma omp barrier // DoneComputing barrier
         #pragma omp barrier // DoneAssigning barrier
-        CSVLogger::WriteLog("%f, %f, %f, %f, %d",
+        CSVLogger::WriteLog("%f, %f, %f, %f, %d, %d, %d",
             (float)systemState->NowYear + ((float)systemState->NowMonth / 12.),
             systemState->NowTemp,
             systemState->NowPrecip,
             systemState->NowHeight,
-            systemState->NowNumDeer);
+            systemState->NowNumDeer,
+            systemState->NowFire * 50,
+            systemState->NowFlood * 50);
 
-        printf ("Date : [%02d-%04d]\tTemp : %.2f\tPrecip : %.2f\tHeight : %.2f\tGraindeer : %d\n",
+
+        printf ("Date : [%02d-%04d]\tTemp : %.2f\tPrecip : %.2f\tHeight : %.2f\tGraindeer : %d\tFire : %d\tFlood : %d\n",
             systemState->NowMonth,
             systemState->NowYear,
             systemState->NowTemp,
             systemState->NowPrecip,
             systemState->NowHeight,
-            systemState->NowNumDeer);
+            systemState->NowNumDeer,
+            systemState->NowFire * 50,
+            systemState->NowFlood * 50);
 
         if (++systemState->NowMonth == 12)
         {
@@ -175,10 +207,15 @@ void GraindeerController::Watcher(SystemState * systemState)
 
 void GraindeerController::UnknownEvents(SystemState * systemState)
 {
-    unsigned int seed = 0;  // a thread-private variable
+    unsigned int seed = (unsigned int)time(NULL);  // a thread-private variable
     while(systemState->NowRunning)
     {
+        bool newFire = (Randomizer::Random(&seed,  0, 100) > 95);
+        bool newFlood = (Randomizer::Random(&seed,  0, 100) > 95);
         #pragma omp barrier // DoneComputing barrier
+
+        systemState->NowFlood = newFlood;
+        systemState->NowFire = newFire;
         #pragma omp barrier // DoneAssigning barrier
         #pragma omp barrier // DonePrinting barrier
     }

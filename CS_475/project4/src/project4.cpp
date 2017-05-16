@@ -17,7 +17,7 @@
 #include <stdlib.h>
 
 static const char * dataLog = "./project4.csv";
-static const char * dataSchema = "date, temp, precip, grainHeight, grainDeer";
+static const char * dataSchema = "date, temp, precip, grainHeight, grainDeer, fire, flood";
 
 int main( int argc, char *argv[ ] )
 {

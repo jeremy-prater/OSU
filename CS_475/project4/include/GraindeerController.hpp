@@ -40,7 +40,7 @@ public:
     static void GrainDeer(SystemState * state);
     static void GrainGrowth(SystemState * state);
     static void Watcher(SystemState * state);
-    static void HMI(SystemState * state);
+    static void UnknownEvents(SystemState * state);
 };
 
 #endif // PROJECT4_GRAINDEER_CONTROLLER_H

@@ -173,7 +173,7 @@ void GraindeerController::Watcher(SystemState * systemState)
     }
 }
 
-void GraindeerController::HMI(SystemState * systemState)
+void GraindeerController::UnknownEvents(SystemState * systemState)
 {
     unsigned int seed = 0;  // a thread-private variable
     while(systemState->NowRunning)

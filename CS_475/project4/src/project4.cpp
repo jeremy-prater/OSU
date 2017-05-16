@@ -54,7 +54,7 @@ int main( int argc, char *argv[ ] )
 
         #pragma omp section
         {
-            GraindeerController::HMI(&systemState);
+            GraindeerController::UnknownEvents(&systemState);
         }
     }
     CSVLogger::CloseLogFile();

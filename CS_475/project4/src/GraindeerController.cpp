@@ -63,16 +63,15 @@ void GraindeerController::SetInitialState(SystemState * state)
 // Graindeer Controller Update functions
 //
 
-void GraindeerController::UpdateDate(SystemState * state)
+void GraindeerController::UpdateTempPrecip(SystemState * state, unsigned int * seed)
 {
     float ang = (30. * (float)state->NowMonth + 15) * ( M_PI / 180. );
 
     float temp = AVG_TEMP - AMP_TEMP * cos( ang );
-    unsigned int seed = 0;
-    state->NowTemp = temp + Randomizer::Random( &seed, -RANDOM_TEMP, RANDOM_TEMP );
+    state->NowTemp = temp + Randomizer::Random(seed, -RANDOM_TEMP, RANDOM_TEMP );
 
     float precip = AVG_PRECIP_PER_MONTH + AMP_PRECIP_PER_MONTH * sin( ang );
-    state->NowPrecip = precip + Randomizer::Random( &seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
+    state->NowPrecip = precip + Randomizer::Random(seed,  -RANDOM_PRECIP, RANDOM_PRECIP );
     if(state->NowPrecip < 0.)
     {
         state->NowPrecip = 0.;
@@ -95,7 +94,7 @@ void GraindeerController::GrainDeer(SystemState * systemState)
     }
 }
 
-void GraindeerController::Grain(SystemState * systemState)
+void GraindeerController::GrainGrowth(SystemState * systemState)
 {
     unsigned int seed = 0;  // a thread-private variable
     while(systemState->NowRunning)
@@ -113,9 +112,11 @@ void GraindeerController::Watcher(SystemState * systemState)
     {
         #pragma omp barrier // DoneComputing barrier
         #pragma omp barrier // DoneAssigning barrier
-        printf ("Date : [%02d-%04d]\n",
+        printf ("Date : [%02d-%04d]\tTemp : %.2f\tPrecip : %.2f\n",
             systemState->NowMonth,
-            systemState->NowYear);
+            systemState->NowYear,
+            systemState->NowTemp,
+            systemState->NowPrecip);
 
         if (++systemState->NowMonth == 12)
         {
@@ -125,6 +126,8 @@ void GraindeerController::Watcher(SystemState * systemState)
                 systemState->NowRunning = false;
             }
         }
+
+        UpdateTempPrecip(systemState, &seed);
         #pragma omp barrier // DonePrinting barrier
     }
 }

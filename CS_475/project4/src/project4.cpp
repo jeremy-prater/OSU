@@ -38,7 +38,7 @@ int main( int argc, char *argv[ ] )
 
         #pragma omp section
         {
-            GraindeerController::Grain(&systemState);
+            GraindeerController::GrainGrowth(&systemState);
         }
 
         #pragma omp section

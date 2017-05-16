@@ -33,10 +33,10 @@ public:
     static const float MIDPRECIP;
 
     static void SetInitialState(SystemState * state);
-    static void UpdateDate(SystemState * state);
+    static void UpdateTempPrecip(SystemState * state, unsigned int * seed);
 
     static void GrainDeer(SystemState * state);
-    static void Grain(SystemState * state);
+    static void GrainGrowth(SystemState * state);
     static void Watcher(SystemState * state);
     static void HMI(SystemState * state);
 };

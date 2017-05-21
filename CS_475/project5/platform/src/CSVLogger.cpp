@@ -28,13 +28,13 @@ void CSVLogger::WriteLog(const char * format, ...)
 
 bool CSVLogger::OpenLogFile(const char * logName)
 {
-    /*if (access (logName, R_OK) == 0)
+    if (access (logName, R_OK) == 0)
     {
         // File exists, open as write-append
         CSVLogger::logFilePtr = fopen (logName, "a");
         return false;
     }
-    else*/
+    else
     {
         // File does not, exist. Create and return new handle.
          int newFD = creat (logName, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR);

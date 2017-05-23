@@ -4,8 +4,7 @@
 void
 Mul( float *a, float *b,   float *c,   int len )
 {
-	int newLen = len
-	float sum = 0.;
+	int newLen = len;
 	while (newLen >= 16)
 	{
 		int i = len - newLen;
@@ -39,7 +38,7 @@ Mul( float *a, float *b,   float *c,   int len )
 float
 MulSum( float *a, float *b, int len )
 {
-	int newLen = len
+	int newLen = len;
 	float sum = 0.;
 	while (newLen >= 16)
 	{

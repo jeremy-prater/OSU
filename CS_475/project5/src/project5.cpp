@@ -105,9 +105,9 @@ int main( int argc, char *argv[ ] )
     printf ("-> Use SIMD: %d\t", useSIMD);
     printf ("-> Do Reduction: %d\t", doReduction);
     printf ("-> ArraySize: %08x\t", arraySize);
-    printf ("-> MegaOps/Sec(best): %f\n", megaOpsSecBest);
+    printf ("-> MegaOps/Sec(best): %f\t", megaOpsSecBest);
     printf ("-> MegaOps/Sec(avg): %f\n", megaOpsSecAvg);
-    CSVLogger::WriteLog("%d, %d, %d, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsBest);
+    CSVLogger::WriteLog("%d, %d, %d, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest);
 
     CSVLogger::CloseLogFile();
     free (ArrayA);

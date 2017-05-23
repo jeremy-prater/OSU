@@ -18,7 +18,7 @@
 #include "Randomizer.hpp"
 
 static const char * dataLog = "./project5.csv";
-static const char * dataSchema = "useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest";
+static const char * dataSchema = "useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest, timeAvg, timeBest";
 
 static const int iterations = 10;
 
@@ -107,7 +107,7 @@ int main( int argc, char *argv[ ] )
     printf ("-> ArraySize: %08x\t", arraySize);
     printf ("-> MegaOps/Sec(best): %f\t", megaOpsSecBest);
     printf ("-> MegaOps/Sec(avg): %f\n", megaOpsSecAvg);
-    CSVLogger::WriteLog("%d, %d, %d, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest);
+    CSVLogger::WriteLog("%d, %d, %d, %f, %f, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest, avgTime, bestTime);
 
     CSVLogger::CloseLogFile();
     free (ArrayA);

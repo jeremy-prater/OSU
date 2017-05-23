@@ -18,7 +18,9 @@
 #include "Randomizer.hpp"
 
 static const char * dataLog = "./project5.csv";
-static const char * dataSchema = "useSIMD, doReduction, arraySize, totalTime, megaOpsSec";
+static const char * dataSchema = "useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest";
+
+static const int iterations = 10;
 
 int main( int argc, char *argv[ ] )
 {
@@ -58,39 +60,54 @@ int main( int argc, char *argv[ ] )
         ArrayB[index] = Randomizer::Random(&seed, -1, 1);
     }
 
-    const double time0 = omp_get_wtime();
+    double avgTime = 0;
+    double bestTime = 0;
 
-    if (useSIMD)
+    for (int iteration = 0; iteration < iterations; iteration++)
     {
-        if (doReduction)
+        const double time0 = omp_get_wtime();
+
+        if (useSIMD)
         {
-            SimdMulSum(ArrayA, ArrayB, numFloats);
+            if (doReduction)
+            {
+                SimdMulSum(ArrayA, ArrayB, numFloats);
+            }
+            else
+            {
+                SimdMul(ArrayA, ArrayB, ArrayC, numFloats);
+            }
         }
         else
         {
-            SimdMul(ArrayA, ArrayB, ArrayC, numFloats);
+            if (doReduction)
+            {
+                MulSum(ArrayA, ArrayB, numFloats);
+            }
+            else
+            {
+                Mul(ArrayA, ArrayB, ArrayC, numFloats);
+            }
         }
-    }
-    else
-    {
-        if (doReduction)
+
+        double curTime = omp_get_wtime() - time0;
+        avgTime += curTime;
+        if ((iteration == 0) || (curTime < bestTime))
         {
-            MulSum(ArrayA, ArrayB, numFloats);
-        }
-        else
-        {
-            Mul(ArrayA, ArrayB, ArrayC, numFloats);
+            bestTime = curTime;
         }
     }
 
-    double totalTime = omp_get_wtime() - time0;
-    double megaOpsSec = (arraySize / totalTime) / 1000000;
+    avgTime /= iterations;
+
+    double megaOpsSecBest = (arraySize / bestTime) / 1000000;
+    double megaOpsSecAvg = (arraySize / avgTime) / 1000000;
     printf ("-> Use SIMD: %d\t", useSIMD);
     printf ("-> Do Reduction: %d\t", doReduction);
     printf ("-> ArraySize: %08x\t", arraySize);
-    printf ("-> Time: %f\t", totalTime);
-    printf ("-> MegaOps/Sec: %f\n", megaOpsSec);
-    CSVLogger::WriteLog("%d, %d, %d, %f, %f", useSIMD, doReduction, arraySize, totalTime, megaOpsSec);
+    printf ("-> MegaOps/Sec(best): %f\n", megaOpsSecBest);
+    printf ("-> MegaOps/Sec(avg): %f\n", megaOpsSecAvg);
+    CSVLogger::WriteLog("%d, %d, %d, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsBest);
 
     CSVLogger::CloseLogFile();
     free (ArrayA);

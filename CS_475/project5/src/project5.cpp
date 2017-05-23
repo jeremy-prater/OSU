@@ -106,10 +106,10 @@ int main( int argc, char *argv[ ] )
     printf ("-> Do Reduction: %d\t", doReduction);
     printf ("-> ArraySize: %08x\t", arraySize);
     printf ("-> MegaOps/Sec(best): %f\t", megaOpsSecBest);
-    printf ("-> MegaOps/Sec(avg): %f\t", megaOpsSecAvg);
-    printf ("-> time (best): %f\t", bestTime);
-    printf ("-> time (avg): %f\n", avgTime);
-    CSVLogger::WriteLog("%d, %d, %d, %f, %f, %f, %f", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest, avgTime, bestTime);
+    printf ("-> MegaOps/Sec(avg): %f ", megaOpsSecAvg);
+    printf ("-> time (best): %.10e ", bestTime);
+    printf ("-> time (avg): %.10e\n", avgTime);
+    CSVLogger::WriteLog("%d, %d, %d, %f, %f, %.10e, %.10e", useSIMD, doReduction, arraySize, megaOpsSecAvg, megaOpsSecBest, avgTime, bestTime);
 
     CSVLogger::CloseLogFile();
     free (ArrayA);

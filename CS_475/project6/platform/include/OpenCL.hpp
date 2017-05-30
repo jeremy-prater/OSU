@@ -19,6 +19,7 @@ public:
     ~OpenCLBuffer();
     static OpenCLBuffer * CreateBuffer (OpenCL * parent, cl_mem_flags accessMode, size_t size);
     bool CopyBufferFromHost (void * source);
+    bool CopyBufferToHost (void * dest);
     void ReleaseBuffer();
     cl_mem GetBuffer();
     cl_mem * GetBufferAddr();

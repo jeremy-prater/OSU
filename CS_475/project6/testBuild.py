@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/python2
 
 import os
 from subprocess import call
@@ -90,7 +90,7 @@ while (element <= elementsMax):
     localSize = localWorkMin
     while (localSize <= localWorkMax):
         RunBuild(element, localSize, 0) # Multiply
-        #RunBuild(element, localSize, 1) # Multiply-Add
+        RunBuild(element, localSize, 1) # Multiply-Add
         #RunBuild(element, localSize, 2) # Multiply-Add w/ Reduction
         localSize *= 2
     element *= 2

@@ -159,10 +159,22 @@ OpenCLBuffer::OpenCLBuffer (OpenCL * parent, cl_mem_flags accessMode, size_t siz
 
 bool OpenCLBuffer::CopyBufferFromHost (void * source)
 {
-	cl_int status = clEnqueueWriteBuffer (openCL_parent->GetCmdQueue (), buffer, CL_FALSE, 0, bufferSize, source, 0, NULL, NULL);
+	cl_int status = clEnqueueWriteBuffer (openCL_parent->GetCmdQueue(), buffer, CL_FALSE, 0, bufferSize, source, 0, NULL, NULL);
 	if (status != CL_SUCCESS)
 	{
 		fprintf (stderr, "clEnqueueWriteBuffer failed\n");
+		exit(-1);
+		return false;
+	}
+	return true;
+}
+
+bool OpenCLBuffer::CopyBufferToHost (void * dest)
+{
+	cl_int status = clEnqueueReadBuffer(openCL_parent->GetCmdQueue(), buffer, CL_FALSE, 0, bufferSize, dest, 0, NULL, NULL );
+	if( status != CL_SUCCESS )
+	{
+		fprintf (stderr, "clEnqueueReadBuffer failed\n");
 		exit(-1);
 		return false;
 	}

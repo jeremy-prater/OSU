@@ -54,6 +54,9 @@ public:
     static OpenCLKernel * CreateKernel(OpenCL * parent, OpenCLProgram * program, const char * name);
     void ReleaseKernel();
 
+    void SetArgument (cl_uint index, OpenCLBuffer * buffer);
+    void EnqueueWork ();
+
     void SetGlobalWorkSize (size_t size, int dimension);
     void SetLocalWorkSize (size_t size, int dimension);
 
@@ -69,6 +72,9 @@ private:
 class OpenCL
 {
 public:
+    OpenCL();
+    ~OpenCL();
+
     bool InitOpenCL();
     void ReleaseOpenCL();
     void WaitForQueue();

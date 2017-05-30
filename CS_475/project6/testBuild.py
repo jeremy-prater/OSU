@@ -5,7 +5,7 @@ from subprocess import call
 import sys
 import socket
 
-projectName = "./cs475-project5"
+projectName = "./cs475-project6"
 
 def CleanBuild():
     # Delete old build
@@ -26,10 +26,11 @@ def StartBuild():
         os.environ["CXX"]="/usr/local/common/gcc-6.3.0/bin/gcc"
     call(["cmake", ".."])
     call(["make"])
-    
-def RunBuild(useSimd, doReduction, arraySize):
+
+def RunBuild(numElements, localSize, OPMode):
     #Run a build for testing
-    call([projectName, str(useSimd), str(doReduction), str(arraySize)])
+    if (call([projectName, str(numElements), str(localSize), str(OPMode)]) != 0):
+        exit(-1);
 
 print "", sys.argv[0]
 print "                    ___           ___                                  ___           ___                        ___       ___     "
@@ -46,20 +47,31 @@ print "                   \__\/         \__\/                                   
 print ""
 print "=================================================================================================================================="
 
-arraySizeMin = 1
-arraySizeMax = 512 * 1024 * 1024
+elementsMin = 512
+elementsMax = 64 * 1024 * 1024
 
-if (len(sys.argv) != 3):
+localWorkMin = 32
+localWorkMax = 256
+
+
+if (len(sys.argv) != 5):
     print "Incorrect arguments"
-    print "Please specify " + sys.argv[0] + " <arraySize:Min> <arraySize:Max>"
-    print " ... assuming " + sys.argv[0] + " 1  65536"
+    print "Please specify " + sys.argv[0] + " <elements:Min> <elements:Max> <localWork:Min> <localWork:Max>"
+    print " ... assuming " + sys.argv[0] + " 512 64mb 32 256"
 else:
-    arraySizeMin = int(sys.argv[1])
-    arraySizeMax = int(sys.argv[2])
-    
-print "Array Status:"
-print " -- Min : " + str(arraySizeMin)
-print " -- Max : " + str(arraySizeMax)
+    elementsMin = int(sys.argv[1])
+    elementsMax = int(sys.argv[2])
+    localWorkMin = int(sys.argv[3])
+    localWorkMax = int(sys.argv[4])
+
+print "Element size Status:"
+print " -- Min : " + str(elementsMin)
+print " -- Max : " + str(elementsMax)
+print ""
+
+print "Local Work Status:"
+print " -- Min : " + str(localWorkMin)
+print " -- Max : " + str(localWorkMax)
 print ""
 
 print "=================================================================================================================================="
@@ -73,22 +85,12 @@ print "=========================================================================
 print " Executing program sequences"
 print "=================================================================================================================================="
 
-arraySize = arraySizeMax
-while (arraySize >= arraySizeMin):
-    RunBuild(0, 0, arraySize)
-    arraySize /= 2
-
-arraySize = arraySizeMax
-while (arraySize >= arraySizeMin):
-    RunBuild(0, 1, arraySize)
-    arraySize /= 2
-
-arraySize = arraySizeMax
-while (arraySize >= arraySizeMin):
-    RunBuild(1, 0, arraySize)
-    arraySize /= 2
-
-arraySize = arraySizeMax
-while (arraySize >= arraySizeMin):
-    RunBuild(1, 1, arraySize)
-    arraySize /= 2
+element = elementsMin
+while (element <= elementsMax):
+    localSize = localWorkMin
+    while (localSize <= localWorkMax):
+        RunBuild(element, localSize, 0) # Multiply
+        RunBuild(element, localSize, 1) # Multiply-Add
+        RunBuild(element, localSize, 2) # Multiply-Add w/ Reduction
+        localSize += 2
+    element += 2

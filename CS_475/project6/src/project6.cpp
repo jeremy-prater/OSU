@@ -13,6 +13,7 @@
 #include "CSVLogger.hpp"
 #include <stdlib.h>
 #include "OpenCL.hpp"
+#include <omp.h>
 
 static const char * dataLog = "./project6.csv";
 static const char * dataSchema = "";
@@ -45,6 +46,9 @@ int main( int argc, char *argv[ ] )
         CSVLogger::WriteLog(dataSchema);
     }
 
+    double avgTime = 0;
+    double bestTime = 0;
+
     // Setup data
     OpenCL openCL;
     openCL.InitOpenCL();
@@ -63,8 +67,8 @@ int main( int argc, char *argv[ ] )
 
     avgTime /= iterations;
 
-    double megaMultsSecBest = (arraySize / bestTime) / 1000000;
-    double megaMultsSecAvg = (arraySize / avgTime) / 1000000;
+    double megaMultsSecBest = (NUM_ELEMENTS / bestTime) / 1000000;
+    double megaMultsSecAvg = (NUM_ELEMENTS / avgTime) / 1000000;
     /*printf ("-> Use SIMD: %d\t", useSIMD);
     printf ("-> Do Reduction: %d\t", doReduction);
     printf ("-> ArraySize: %08x\t", arraySize);

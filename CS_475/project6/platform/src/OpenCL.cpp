@@ -152,7 +152,7 @@ OpenCLBuffer::OpenCLBuffer (OpenCL * parent, cl_mem_flags accessMode, size_t siz
 	buffer = clCreateBuffer (parent->GetContext (), accessMode, size, NULL, &status);
 	if (status != CL_SUCCESS)
 	{
-		fprintf (stderr, "clCreateBuffer failed (1)\n");
+		fprintf (stderr, "clCreateBuffer failed\n");
 		exit(-1);
 	}
 }
@@ -162,32 +162,42 @@ bool OpenCLBuffer::CopyBufferFromHost (void * source)
 	cl_int status = clEnqueueWriteBuffer (openCL_parent->GetCmdQueue (), buffer, CL_FALSE, 0, bufferSize, source, 0, NULL, NULL);
 	if (status != CL_SUCCESS)
 	{
-		fprintf (stderr, "clEnqueueWriteBuffer failed (1)\n");
+		fprintf (stderr, "clEnqueueWriteBuffer failed\n");
 		exit(-1);
 		return false;
 	}
 	return true;
 }
 
-void OpenCLBuffer::ReleaseBuffer ()
+void OpenCLBuffer::ReleaseBuffer()
 {
 	clReleaseMemObject (buffer);
 }
 
-OpenCLBuffer::~OpenCLBuffer ()
+OpenCLBuffer::~OpenCLBuffer()
 {
 	ReleaseBuffer ();
 }
 
-cl_mem OpenCLBuffer::GetBuffer ()
+cl_mem OpenCLBuffer::GetBuffer()
 {
 	return buffer;
+}
+
+cl_mem * OpenCLBuffer::GetBufferAddr()
+{
+	return &buffer;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Open CL Program/Compilier Functions
 //
+
+OpenCLProgram * OpenCLProgram::CreateProgram (OpenCL * parent, const char * filename, const char * options)
+{
+	return new OpenCLProgram (parent, filename, options);
+}
 
 OpenCLProgram::OpenCLProgram (OpenCL * parent, const char * filename, const char * options)
 {
@@ -260,6 +270,11 @@ cl_program OpenCLProgram::GetProgram ()
 // Open CL Kernel Functions
 //
 
+OpenCLKernel * OpenCLKernel::CreateKernel(OpenCL * parent, OpenCLProgram * program, const char * name)
+{
+	return new OpenCLKernel (parent, program, name);
+}
+
 OpenCLKernel::OpenCLKernel (OpenCL * parent, OpenCLProgram * program, const char * name)
 {
 	openCL_parent = parent;
@@ -267,7 +282,7 @@ OpenCLKernel::OpenCLKernel (OpenCL * parent, OpenCLProgram * program, const char
 	globalWorkSize[0] = globalWorkSize[1] = globalWorkSize[2] = 1;
 	localWorkSize[0] = localWorkSize[1] = localWorkSize[2] = 1;
 
-	kernel = clCreateKernel (program->GetProgram (), name, &status);
+	kernel = clCreateKernel (program->GetProgram(), name, &status);
 	if (status != CL_SUCCESS)
 	{
 		fprintf (stderr, "clCreateKernel failed\n");
@@ -283,15 +298,15 @@ OpenCLKernel::~OpenCLKernel ()
 void OpenCLKernel::SetArgument (cl_uint index, OpenCLBuffer * buffer)
 {
 	cl_int status;
-	status = clSetKernelArg (kernel, index, sizeof (cl_mem), buffer->GetBuffer ());
+	status = clSetKernelArg (kernel, index, sizeof (cl_mem), buffer->GetBufferAddr());
 	if (status != CL_SUCCESS)
 	{
-		fprintf (stderr, "clSetKernelArg failed (%d)\n", index);
+		fprintf (stderr, "clSetKernelArg failed (%d) [%d]\n", index, status);
 		exit(-1);
 	}
 }
 
-void OpenCLKernel::SetGlobalWorkSize (size_t size, int dimension)
+void OpenCLKernel::SetGlobalWorkSize (int dimension, size_t size)
 {
 	if ((dimension >= 0) && (dimension <= 2))
 	{
@@ -299,7 +314,7 @@ void OpenCLKernel::SetGlobalWorkSize (size_t size, int dimension)
 	}
 }
 
-void OpenCLKernel::SetLocalWorkSize (size_t size, int dimension)
+void OpenCLKernel::SetLocalWorkSize (int dimension, size_t size)
 {
 	if ((dimension >= 0) && (dimension <= 2))
 	{

@@ -16,13 +16,14 @@ private:
     OpenCLBuffer(OpenCL * parent, cl_mem_flags accessMode, size_t size);
 
 public:
+    ~OpenCLBuffer();
     static OpenCLBuffer * CreateBuffer (OpenCL * parent, cl_mem_flags accessMode, size_t size);
     bool CopyBufferFromHost (void * source);
     void ReleaseBuffer();
     cl_mem GetBuffer();
+    cl_mem * GetBufferAddr();
 
 private:
-    ~OpenCLBuffer();
     OpenCL * openCL_parent;
     size_t bufferSize;
     cl_mem buffer;
@@ -57,8 +58,8 @@ public:
     void SetArgument (cl_uint index, OpenCLBuffer * buffer);
     void EnqueueWork ();
 
-    void SetGlobalWorkSize (size_t size, int dimension);
-    void SetLocalWorkSize (size_t size, int dimension);
+    void SetGlobalWorkSize (int dimension, size_t size);
+    void SetLocalWorkSize (int dimension, size_t size);
 
 private:
     OpenCL * openCL_parent;

@@ -153,21 +153,37 @@ int main( int argc, char *argv[ ] )
         openCL.WaitForQueue();
 
         // Validate data from GPU
-        const float fpuTolerance = 0.00001;
+
+        // Reduced +/- 1 bit due to Nvidia GTX 980 having lower accuracy
+        //const float fpuTolerance = 0.00001;
+        /************************************************************************************************
+        * -> Elements: 512	-> Local work size: 32	-> Num work groups: 16	-> OPMode: 0	-> time (best): 2.159e-05	-> time (avg): 2.654e-05	-> MegaMults/Sec(best): 23.711388	-> MegaMults/Sec(avg): 19.289600
+        * 75:      8.660254 *      8.660254 wrongly produced    150.000015 instead of    150.000000 (   0.00001526)
+        * 75:    0x410a9067 *    0x410a9067 wrongly produced    0x43160001 instead of    0x43160000
+        * */
+
+        ///////////////////////////////////////////////////////
+        //
+        // fpu tolerance +/- 1 lsb
+        const int fpuTolerance = 1;
+
         for (int index = 0; index < NUM_ELEMENTS; index++)
         {
-    		float expected = ArrayA[index] * ArrayB[index];
+            float fexpected = ArrayA[index] * ArrayB[index];
 
             // Multiply + Add
             if (OP_MODE == 1)
             {
-                expected += ArrayC[index];
+                fexpected += ArrayC[index];
             }
 
-		    if (fabs (ArrayResult[index] - expected) > fpuTolerance)
+            int expected = LookAtTheBits(fexpected);
+
+
+		    if (abs (LookAtTheBits(ArrayResult[index]) - expected) > fpuTolerance)
             {
-			    printf("%4d: %13.6f * %13.6f wrongly produced %13.6f instead of %13.6f (%13.8f)\n"   , index, ArrayA[index], ArrayB[index], ArrayResult[index], expected, fabs(ArrayResult[index]-expected));
-			    printf("%4d:    0x%08x *    0x%08x wrongly produced    0x%08x instead of    0x%08x\n", index, LookAtTheBits(ArrayA[index]), LookAtTheBits(ArrayB[index]), LookAtTheBits(ArrayResult[index]), LookAtTheBits(expected));
+			    printf("%4d: %13.6f * %13.6f wrongly produced %13.6f instead of %13.6f (%13.8f)\n"   , index, ArrayA[index], ArrayB[index], ArrayResult[index], fexpected, fabs(ArrayResult[index]-fexpected));
+			    printf("%4d:    0x%08x *    0x%08x wrongly produced    0x%08x instead of    0x%08x\n", index, LookAtTheBits(ArrayA[index]), LookAtTheBits(ArrayB[index]), LookAtTheBits(ArrayResult[index]), LookAtTheBits(fexpected));
                 exit (-1);
             }
         }

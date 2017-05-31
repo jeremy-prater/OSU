@@ -18,7 +18,7 @@ def StartBuild():
     if ("oregonstate.edu" in socket.gethostname()):
         print "=================================================================================================================================="
         print ""
-        print " -- Setting up environment for GCC 5.3 on " + socket.gethostname() 
+        print " -- Setting up environment for GCC 5.3 on " + socket.gethostname()
         print ""
         print "=================================================================================================================================="
 
@@ -51,7 +51,7 @@ elementsMin = 512
 elementsMax = 64 * 1024 * 1024
 
 localWorkMin = 32
-localWorkMax = 256
+localWorkMax = 512
 
 
 if (len(sys.argv) != 5):

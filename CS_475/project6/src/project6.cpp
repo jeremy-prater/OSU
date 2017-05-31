@@ -112,7 +112,7 @@ int main( int argc, char *argv[ ] )
             program = OpenCLProgram::CreateProgram(&openCL, "../src/ArrayMultiAdd.cl", "");
             kernel = OpenCLKernel::CreateKernel(&openCL, program, "ArrayMultAdd");
 
-            for (int index=0; index < 3; index++)
+            for (int index=0; index < 4; index++)
             {
                 kernel->SetArgument(index, dataBuffers[index]);
             }

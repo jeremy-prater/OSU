@@ -123,7 +123,22 @@ int main( int argc, char *argv[ ] )
         break;
         case 2: // Multiply + Add + Reduction
         {
+            dataBuffers[0] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
+            dataBuffers[1] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
+            dataBuffers[3] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_WRITE_ONLY, dataSize);
+            dataBuffers[0]->CopyBufferFromHost(ArrayA);
+            dataBuffers[1]->CopyBufferFromHost(ArrayB);
+            dataBuffers[2]->CopyBufferFromHost(ArrayC);
+            program = OpenCLProgram::CreateProgram(&openCL, "../src/ArrayMultiAdd.cl", "");
+            kernel = OpenCLKernel::CreateKernel(&openCL, program, "ArrayMultAdd");
 
+            for (int index=0; index < 4; index++)
+            {
+                kernel->SetArgument(index, dataBuffers[index]);
+            }
+
+            kernel->SetGlobalWorkSize(0,NUM_ELEMENTS);
+            kernel->SetLocalWorkSize(0, LOCAL_SIZE);
         }
         break;
     }
@@ -145,7 +160,7 @@ int main( int argc, char *argv[ ] )
 
         // Get buffer from GPU
         int gpuBufferIndex = 2;
-        if (OP_MODE == 1) // Multiply + Add
+        if (OP_MODE != 0) // Multiply + Add OR Multiply + Add + Reduction
         {
             gpuBufferIndex = 3;
         }

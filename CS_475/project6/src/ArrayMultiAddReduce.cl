@@ -17,14 +17,16 @@ kernel void ArrayMultAddReduce(global const float *dA, global const float *dB, l
 	// all threads execute this code simultaneously:
 	for(int offset = 1; offset < numItems; offset *= 2)
 	{
-		int mask = 2 * offset - 1;
+		int mask = (2 * offset) - 1;
 		barrier(CLK_LOCAL_MEM_FENCE); // wait for completion
 		if((tnum & mask) == 0)
 		{
 			products[tnum] += products[tnum + offset];
 		}
 	}
+
 	barrier(CLK_LOCAL_MEM_FENCE);
+	
 	if(tnum == 0)
 	{
 		dC[wgNum] = products[0];

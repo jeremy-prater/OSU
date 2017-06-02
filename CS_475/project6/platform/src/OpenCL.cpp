@@ -122,7 +122,7 @@ void OpenCL::WaitForQueue ()
 	status = clWaitForEvents (1, &wait);
 	if (status != CL_SUCCESS)
 	{
-		fprintf (stderr, "Wait: clWaitForEvents failed\n");
+		fprintf (stderr, "Wait: clWaitForEvents failed (%d)\n", status);
 	}
 }
 
@@ -174,7 +174,7 @@ bool OpenCLBuffer::CopyBufferToHost (void * dest)
 	cl_int status = clEnqueueReadBuffer(openCL_parent->GetCmdQueue(), buffer, CL_FALSE, 0, bufferSize, dest, 0, NULL, NULL );
 	if( status != CL_SUCCESS )
 	{
-		fprintf (stderr, "clEnqueueReadBuffer failed\n");
+		fprintf (stderr, "clEnqueueReadBuffer failed (%d)\n", status);
 		exit(-1);
 		return false;
 	}

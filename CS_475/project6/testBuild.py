@@ -47,10 +47,10 @@ print "                   \__\/         \__\/                                   
 print ""
 print "=================================================================================================================================="
 
-elementsMin = 512
-elementsMax = 64 * 1024 * 1024
+elementsMin = 1024
+elementsMax = 8 * 1024 * 1024
 
-localWorkMin = 32
+localWorkMin = 8
 localWorkMax = 512
 
 

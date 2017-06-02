@@ -44,14 +44,24 @@ int main( int argc, char *argv[ ] )
     const unsigned int OP_MODE = atoi(argv[3]);
     const unsigned int NUM_WORK_GROUPS = NUM_ELEMENTS / LOCAL_SIZE;
     size_t dataSize = NUM_ELEMENTS * sizeof(float);
+    size_t workGroupSize = NUM_WORK_GROUPS * sizeof (float);
     float * ArrayA = (float*) aligned_alloc (64, dataSize);
     float * ArrayB = (float*) aligned_alloc (64, dataSize);
     float * ArrayC = NULL;
+
     if (OP_MODE == 1) // Array Multi + Add
     {
         ArrayC = (float*) aligned_alloc (64, dataSize);
     }
-    float * ArrayResult = (float*) aligned_alloc (64, dataSize);
+    float * ArrayResult = NULL;
+    if (OP_MODE == 2) // Array Multi + Add + Reduction
+    {
+    ArrayResult = (float*) aligned_alloc (64, workGroupSize);
+    }
+    else
+    {
+        ArrayResult = (float*) aligned_alloc (64, dataSize);
+    }
 
     if (CSVLogger::OpenLogFile(dataLog))
     {
@@ -130,7 +140,7 @@ int main( int argc, char *argv[ ] )
         {
             dataBuffers[0] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
             dataBuffers[1] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
-            dataBuffers[2] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_WRITE_ONLY, dataSize);
+            dataBuffers[2] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_WRITE_ONLY, workGroupSize);
             dataBuffers[0]->CopyBufferFromHost(ArrayA);
             dataBuffers[1]->CopyBufferFromHost(ArrayB);
             program = OpenCLProgram::CreateProgram(&openCL, "../src/ArrayMultiAddReduce.cl", "");
@@ -244,9 +254,22 @@ int main( int argc, char *argv[ ] )
     delete kernel;
     delete program;
     openCL.ReleaseOpenCL();
-    delete dataBuffers[0];
-    delete dataBuffers[1];
-    delete dataBuffers[2];
+    if (dataBuffers[0])
+    {
+        delete dataBuffers[0];
+    }
+    if (dataBuffers[1])
+    {
+        delete dataBuffers[1];
+    }
+    if (dataBuffers[2])
+    {
+        delete dataBuffers[2];
+    }
+    if (dataBuffers[3])
+    {
+        delete dataBuffers[3];
+    }
 
     free (ArrayA);
     free (ArrayB);

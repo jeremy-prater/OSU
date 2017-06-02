@@ -57,6 +57,7 @@ public:
     void ReleaseKernel();
 
     void SetArgument (cl_uint index, OpenCLBuffer * buffer);
+    void SetArgumentLocal (cl_uint index, size_t size);
     void EnqueueWork ();
 
     void SetGlobalWorkSize (int dimension, size_t size);

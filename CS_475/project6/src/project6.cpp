@@ -58,6 +58,11 @@ int main( int argc, char *argv[ ] )
         CSVLogger::WriteLog(dataSchema);
     }
 
+    printf ("-> Elements: %d\t", NUM_ELEMENTS);
+    printf ("-> Local work size: %d\t", LOCAL_SIZE);
+    printf ("-> Num work groups: %d\t", NUM_WORK_GROUPS);
+    printf ("-> OPMode: %0d\t", OP_MODE);
+
     double avgTime = 0;
     double bestTime = 0;
 
@@ -125,17 +130,16 @@ int main( int argc, char *argv[ ] )
         {
             dataBuffers[0] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
             dataBuffers[1] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_READ_ONLY, dataSize);
-            dataBuffers[3] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_WRITE_ONLY, dataSize);
+            dataBuffers[2] = OpenCLBuffer::CreateBuffer(&openCL, CL_MEM_WRITE_ONLY, dataSize);
             dataBuffers[0]->CopyBufferFromHost(ArrayA);
             dataBuffers[1]->CopyBufferFromHost(ArrayB);
-            dataBuffers[2]->CopyBufferFromHost(ArrayC);
-            program = OpenCLProgram::CreateProgram(&openCL, "../src/ArrayMultiAdd.cl", "");
-            kernel = OpenCLKernel::CreateKernel(&openCL, program, "ArrayMultAdd");
+            program = OpenCLProgram::CreateProgram(&openCL, "../src/ArrayMultiAddReduce.cl", "");
+            kernel = OpenCLKernel::CreateKernel(&openCL, program, "ArrayMultAddReduce");
 
-            for (int index=0; index < 4; index++)
-            {
-                kernel->SetArgument(index, dataBuffers[index]);
-            }
+            kernel->SetArgument(0, dataBuffers[0]);
+            kernel->SetArgument(1, dataBuffers[1]);
+            kernel->SetArgumentLocal(2, sizeof (float));
+            kernel->SetArgument(3, dataBuffers[2]);
 
             kernel->SetGlobalWorkSize(0,NUM_ELEMENTS);
             kernel->SetLocalWorkSize(0, LOCAL_SIZE);
@@ -160,7 +164,7 @@ int main( int argc, char *argv[ ] )
 
         // Get buffer from GPU
         int gpuBufferIndex = 2;
-        if (OP_MODE != 0) // Multiply + Add OR Multiply + Add + Reduction
+        if (OP_MODE == 1) // Multiply + Add
         {
             gpuBufferIndex = 3;
         }
@@ -182,24 +186,46 @@ int main( int argc, char *argv[ ] )
         // fpu tolerance +/- 1 lsb
         const int fpuTolerance = 1;
 
-        for (int index = 0; index < NUM_ELEMENTS; index++)
+        if (OP_MODE != 2) // Multiply OR Multiply + Add
         {
-            float fexpected = ArrayA[index] * ArrayB[index];
-
-            // Multiply + Add
-            if (OP_MODE == 1)
+            for (int index = 0; index < NUM_ELEMENTS; index++)
             {
-                fexpected += ArrayC[index];
+                float fexpected = ArrayA[index] * ArrayB[index];
+
+                // Multiply + Add
+                if (OP_MODE == 1)
+                {
+                    fexpected += ArrayC[index];
+                }
+
+                if (abs (LookAtTheBits(ArrayResult[index]) - LookAtTheBits(fexpected)) > fpuTolerance)
+                {
+                    printf("\n\n");
+                    printf("%4d: %13.6f * %13.6f wrongly produced %13.6f instead of %13.6f (%13.8f)\n"   , index, ArrayA[index], ArrayB[index], ArrayResult[index], fexpected, fabs(ArrayResult[index]-fexpected));
+                    printf("%4d:    0x%08x *    0x%08x wrongly produced    0x%08x instead of    0x%08x\n", index, LookAtTheBits(ArrayA[index]), LookAtTheBits(ArrayB[index]), LookAtTheBits(ArrayResult[index]), LookAtTheBits(fexpected));
+                    //exit (-1);
+                }
+            }
+        }
+        else // Multiply + Add + Reduction
+        {
+            float fexpected = 0.;
+            for (int index = 0; index < NUM_ELEMENTS; index++)
+            {
+                fexpected += (ArrayA[index] * ArrayB[index]);
             }
 
-            int expected = LookAtTheBits(fexpected);
-
-
-		    if (abs (LookAtTheBits(ArrayResult[index]) - expected) > fpuTolerance)
+            float sum = 0.;
+            for(int index = 0; index < NUM_WORK_GROUPS; index++)
             {
-			    printf("%4d: %13.6f * %13.6f wrongly produced %13.6f instead of %13.6f (%13.8f)\n"   , index, ArrayA[index], ArrayB[index], ArrayResult[index], fexpected, fabs(ArrayResult[index]-fexpected));
-			    printf("%4d:    0x%08x *    0x%08x wrongly produced    0x%08x instead of    0x%08x\n", index, LookAtTheBits(ArrayA[index]), LookAtTheBits(ArrayB[index]), LookAtTheBits(ArrayResult[index]), LookAtTheBits(fexpected));
-                exit (-1);
+                sum += ArrayResult[index];
+            }
+            if (abs (LookAtTheBits(sum) - LookAtTheBits(fexpected)) > fpuTolerance)
+            {
+                printf("\n\n");
+                printf("%13.6f != %13.6f Error: %13.6f\n", sum, fexpected, fabs(sum-fexpected));
+                printf("0x%08x != 0x%08x Error: 0x%08x\n", LookAtTheBits(sum), LookAtTheBits(fexpected), LookAtTheBits(fabs(sum - fexpected)));
+                //exit (-1);
             }
         }
     }
@@ -207,10 +233,6 @@ int main( int argc, char *argv[ ] )
     avgTime /= iterations;
     double megaMultsSecBest = (NUM_ELEMENTS / bestTime) / 1000000;
     double megaMultsSecAvg = (NUM_ELEMENTS / avgTime) / 1000000;
-    printf ("-> Elements: %d\t", NUM_ELEMENTS);
-    printf ("-> Local work size: %d\t", LOCAL_SIZE);
-    printf ("-> Num work groups: %d\t", NUM_WORK_GROUPS);
-    printf ("-> OPMode: %0d\t", OP_MODE);
     printf ("-> time (best): %.3e\t", bestTime);
     printf ("-> time (avg): %.3e\t", avgTime);
     printf ("-> MegaMults/Sec(best): %f\t", megaMultsSecBest);

@@ -318,6 +318,17 @@ void OpenCLKernel::SetArgument (cl_uint index, OpenCLBuffer * buffer)
 	}
 }
 
+void OpenCLKernel::SetArgumentLocal (cl_uint index, size_t size)
+{
+	cl_int status;
+	status = clSetKernelArg (kernel, index, size, NULL);
+	if (status != CL_SUCCESS)
+	{
+		fprintf (stderr, "clSetKernelArg failed (%d) [%d]\n", index, status);
+		exit(-1);
+	}
+}
+
 void OpenCLKernel::SetGlobalWorkSize (int dimension, size_t size)
 {
 	if ((dimension >= 0) && (dimension <= 2))
@@ -337,7 +348,7 @@ void OpenCLKernel::SetLocalWorkSize (int dimension, size_t size)
 void OpenCLKernel::EnqueueWork ()
 {
 	cl_int status = clEnqueueNDRangeKernel (openCL_parent->GetCmdQueue (), kernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
-	if (status != CL_SUCCESS)
+	if (!((status == CL_SUCCESS) || (status == CL_INVALID_WORK_ITEM_SIZE)))
 	{
 		fprintf (stderr, "clEnqueueNDRangeKernel failed: %d\n", status);
 		exit(-1);

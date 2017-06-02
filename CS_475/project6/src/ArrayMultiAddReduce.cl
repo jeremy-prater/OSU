@@ -14,6 +14,8 @@ kernel void ArrayMultAddReduce(global const float *dA, global const float *dB, l
 
 	products[tnum] = dA[gid] * dB[gid];	// multiply the two arrays together
 
+	barrier(CLK_LOCAL_MEM_FENCE); // wait for completion
+	
 	// all threads execute this code simultaneously:
 	for(int offset = 1; offset < numItems; offset *= 2)
 	{

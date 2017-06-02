@@ -42,7 +42,7 @@ int main( int argc, char *argv[ ] )
     const unsigned int NUM_ELEMENTS = atoi (argv[1]);
     const unsigned int LOCAL_SIZE = atoi(argv[2]);
     const unsigned int OP_MODE = atoi(argv[3]);
-    const unsigned int NUM_WORK_GROUPS = NUM_ELEMENTS / LOCAL_SIZE;
+    const unsigned int NUM_WORK_GROUPS = (NUM_ELEMENTS / LOCAL_SIZE);
     size_t dataSize = NUM_ELEMENTS * sizeof(float);
     size_t workGroupSize = NUM_WORK_GROUPS * sizeof (float);
     float * ArrayA = (float*) aligned_alloc (64, dataSize);
@@ -148,7 +148,7 @@ int main( int argc, char *argv[ ] )
 
             kernel->SetArgument(0, dataBuffers[0]);
             kernel->SetArgument(1, dataBuffers[1]);
-            kernel->SetArgumentLocal(2, sizeof (float));
+            kernel->SetArgumentLocal(2, workGroupSize);
             kernel->SetArgument(3, dataBuffers[2]);
 
             kernel->SetGlobalWorkSize(0,NUM_ELEMENTS);
@@ -213,7 +213,7 @@ int main( int argc, char *argv[ ] )
                     printf("\n\n");
                     printf("%4d: %13.6f * %13.6f wrongly produced %13.6f instead of %13.6f (%13.8f)\n"   , index, ArrayA[index], ArrayB[index], ArrayResult[index], fexpected, fabs(ArrayResult[index]-fexpected));
                     printf("%4d:    0x%08x *    0x%08x wrongly produced    0x%08x instead of    0x%08x\n", index, LookAtTheBits(ArrayA[index]), LookAtTheBits(ArrayB[index]), LookAtTheBits(ArrayResult[index]), LookAtTheBits(fexpected));
-                    //exit (-1);
+                    exit (-1);
                 }
             }
         }
@@ -235,7 +235,7 @@ int main( int argc, char *argv[ ] )
                 printf("\n\n");
                 printf("%13.6f != %13.6f Error: %13.6f\n", sum, fexpected, fabs(sum-fexpected));
                 printf("0x%08x != 0x%08x Error: 0x%08x\n", LookAtTheBits(sum), LookAtTheBits(fexpected), LookAtTheBits(fabs(sum - fexpected)));
-                //exit (-1);
+                exit (-1);
             }
         }
     }

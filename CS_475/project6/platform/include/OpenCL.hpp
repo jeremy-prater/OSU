@@ -90,7 +90,10 @@ public:
 
     OpenCLBuffer * CreateBuffer (cl_mem_flags accessMode, size_t size);
 
+    char * GetDeviceName();
+
 private:
+	char deviceName[256];
     bool isInitialized;
     cl_platform_id openCL_platform;
     cl_device_id openCL_device;

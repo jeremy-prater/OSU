@@ -49,11 +49,19 @@ bool OpenCL::InitOpenCL ()
 		exit(-1);
 		return false;
 	}
-
+	
 	status = clGetDeviceIDs (openCL_platform, CL_DEVICE_TYPE_GPU, 1, &openCL_device, NULL);
 	if (status != CL_SUCCESS)
 	{
 		fprintf (stderr, "clGetDeviceIDs failed (2)\n");
+		exit(-1);
+		return false;
+	}
+
+	status = clGetDeviceInfo (openCL_device, CL_DEVICE_NAME, 256, deviceName, NULL);
+	if (status != CL_SUCCESS)
+	{
+		fprintf (stderr, "clGetDeviceInfo failed\n");
 		exit(-1);
 		return false;
 	}
@@ -126,6 +134,10 @@ void OpenCL::WaitForQueue ()
 	}
 }
 
+char * OpenCL::GetDeviceName()
+{
+	return deviceName;
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Open CL Buffer Functions

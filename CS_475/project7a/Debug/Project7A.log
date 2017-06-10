@@ -1,0 +1,6 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (NewVS2015B.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  sample.cpp
+c:\users\jeremy\src\osu\cs_475\project7a\glui.h(758): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Project7A.vcxproj -> C:\Users\Jeremy\src\osu\CS_475\project7a\Debug\Project7A.exe
+  Project7A.vcxproj -> C:\Users\Jeremy\src\osu\CS_475\project7a\Debug\Project7A.pdb (Full PDB)

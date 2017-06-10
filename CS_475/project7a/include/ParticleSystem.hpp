@@ -1,5 +1,5 @@
-#ifndef PROJECT_7A
-#define PROJECT_7A
+#ifndef PARTICLE_SYSTEM
+#define PARTICLE_SYSTEM
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -22,13 +22,13 @@
 #include "cl_gl.h"
 
 #include "OpenCL.hpp"
-#include "dataTypes.h"
+#include "dataTypes.hpp"
 
 class PartitleSystem
 {
 public:
-    ParticleSystem();
-    ~ParticleSystem();
+	PartitleSystem();
+    ~PartitleSystem();
     //
     // function prototypes:
     //
@@ -106,4 +106,4 @@ private:
     cl_platform_id		PlatformID;
 };
 
-#endif // PROJECT_7A
+#endif // PARTICLE_SYSTEM

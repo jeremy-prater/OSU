@@ -17,39 +17,39 @@
 
 // random parameters:
 const char * Project7a::WINDOWTITLE = "OpenCL/OpenGL Particle System -- Joe Parallel";
-static const char * Project7a::GLUITITLE   = "User Interface Window";
+const char * Project7a::GLUITITLE   = "User Interface Window";
 
 // random parameters:
-static const float Project7a::XMIN = -100.0;
-static const float Project7a::XMAX = 100.0;
-static const float Project7a::YMIN = -100.0;
-static const float Project7a::YMAX = 100.0;
-static const float Project7a::ZMIN = -100.0;
-static const float Project7a::ZMAX = 100.0;
+const float Project7a::XMIN = -100.0;
+const float Project7a::XMAX = 100.0;
+const float Project7a::YMIN = -100.0;
+const float Project7a::YMAX = 100.0;
+const float Project7a::ZMIN = -100.0;
+const float Project7a::ZMAX = 100.0;
 
-static const float Project7a::VMIN = -100.;
-static const float Project7a::VMAX = 100.;
+const float Project7a::VMIN = -100.;
+const float Project7a::VMAX = 100.;
 
-static const int Project7a::NUM_PARTICLES = 1024*1024;
-static const int Project7a::LOCAL_SIZE    = 32;
-static const char * Project7a::CL_FILE_NAME   = "particles.cl";
-static const char * Project7a::CL_BINARY_NAME = "particles.nv";
+const int Project7a::NUM_PARTICLES = 1024*1024;
+const int Project7a::LOCAL_SIZE    = 32;
+const char * Project7a::CL_FILE_NAME   = "particles.cl";
+const char * Project7a::CL_BINARY_NAME = "particles.nv";
 
-static const int Project7a::INIT_WINDOW_SIZE = 700; // window size in pixels
+const int Project7a::INIT_WINDOW_SIZE = 700; // window size in pixels
 
-static const float Project7a::ANGFACT = 1.;
-static const float Project7a::SCLFACT = 0.005f;
-static const float Project7a::MINSCALE = 0.001f;
+const float Project7a::ANGFACT = 1.;
+const float Project7a::SCLFACT = 0.005f;
+const float Project7a::MINSCALE = 0.001f;
 
-static const int Project7a::LEFT   = 4;
-static const int Project7a::MIDDLE = 2;
-static const int Project7a::RIGHT  = 1;
+const int Project7a::LEFT   = 4;
+const int Project7a::MIDDLE = 2;
+const int Project7a::RIGHT  = 1;
 
 
-static const float Project7a::BACKCOLOR[] = {0., 0., 0., 0.};
+const float Project7a::BACKCOLOR[] = {0., 0., 0., 0.};
 
-static const GLfloat Project7a::AXES_COLOR[] = {1., .5, 0.};
-static const GLfloat Project7a::AXES_WIDTH   = 3.;
+const GLfloat Project7a::AXES_COLOR[] = {1., .5, 0.};
+const GLfloat Project7a::AXES_WIDTH   = 3.;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //

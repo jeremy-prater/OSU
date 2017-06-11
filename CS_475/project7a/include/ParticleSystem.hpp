@@ -13,6 +13,9 @@
 #include "glew.h"
 #endif
 
+
+#include <omp.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "glut.h"
@@ -24,12 +27,47 @@
 #include "OpenCL.hpp"
 #include "dataTypes.hpp"
 
-class PartitleSystem
+class ParticleSystem
 {
 public:
-	PartitleSystem();
-    ~PartitleSystem();
-    //
+	static ParticleSystem * particleSystemSingleton;
+	ParticleSystem();
+    ~ParticleSystem();
+
+private:
+	// title of these windows:
+	char *WINDOWTITLE;
+	char *GLUITITLE;
+
+	// random parameters:
+	float XMIN;
+	float XMAX;
+	float YMIN;
+	float YMAX;
+	float ZMIN;
+	float ZMAX;
+
+	float VMIN;
+	float VMAX;
+
+	int NUM_PARTICLES;
+	int LOCAL_SIZE;
+	char *CL_FILE_NAME;
+	char *CL_BINARY_NAME;
+
+	int INIT_WINDOW_SIZE;
+
+	float ANGFACT;
+	float SCLFACT;
+	float MINSCALE;
+
+	float4 BACKCOLOR;
+
+	float3 AXES_COLOR;
+	GLfloat AXES_WIDTH;
+
+public:
+	//
     // function prototypes:
     //
 
@@ -40,30 +78,47 @@ public:
         return x * x;
     }
 
-    void	Animate( );
-    void	Axes( float );
-    void	Buttons( int );
-    void	Display( );
-    void	DoRasterString( float, float, float, char * );
-    void	DoStrokeString( float, float, float, float, char * );
-    void	InitCL( );
-    void	InitGlui( );
-    void	InitGraphics( );
-    void	InitLists( );
-    bool	IsCLExtensionSupported( const char * );
-    void	Keyboard( unsigned char, int, int );
-    void	MouseButton( int, int, int, int );
-    void	MouseMotion( int, int );
-    void	PrintCLError( cl_int, char * = "", FILE * = stderr );
-    void	Quit( );
-    float	Ranf( float, float );
-    void	Reset( );
-    void	ResetParticles( );
-    void	Resize( int, int );
-    void	Traces( int );
-    void	Visibility( int );
-    void	WriteFrame( );
-    void    Wait(cl_command_queue);
+	//////////////////////////////////////////////////
+	//
+	// Static openGL callbacks
+	//
+    static void Buttons( ButtonVals );
+    static void Display( );
+    static void Resize( int, int );
+    static void Keyboard( unsigned char, int, int );
+    static void MouseButton( int, int, int, int );
+    static void MouseMotion( int, int );
+	static void Visibility(int);
+	static void Animate();
+
+	//////////////////////////////////////////////////
+	//
+	// Static functions
+	//
+	static float Ranf(float, float);
+
+
+	//////////////////////////////////////////////////
+	//
+	// Particle System Functions
+	//
+
+    void Axes( float );
+
+    void DoRasterString( float, float, float, char * );
+    void DoStrokeString( float, float, float, float, char * );
+    void InitCL( );
+    void InitGlui( );
+    void InitGraphics( );
+    void InitLists( );
+    bool IsCLExtensionSupported( const char * );
+    void PrintCLError( cl_int, char * = "", FILE * = stderr );
+    void Quit( );
+    void Reset( );
+    void ResetParticles( );
+    void Traces( int );
+    void WriteFrame( );
+    void Wait(cl_command_queue);
 
 private:
 
@@ -90,7 +145,7 @@ private:
     size_t GlobalWorkSize[3];
     size_t LocalWorkSize[3];
 
-    struct xyzw *	GLParticleVelocity;
+    float4 *	GLParticleVelocity;
     GLuint			GLParticlePosition;
     GLuint			GLParticleColor;
 

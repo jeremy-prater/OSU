@@ -9,11 +9,18 @@ typedef struct
     float w;
 } float4;
 
+typedef struct
+{
+	float x;
+	float y;
+	float z;
+} float3;
+
 typedef enum
 {
 	ORTHO,
 	PERSP
-} Projections;
+} Projection;
 
 typedef enum
 {

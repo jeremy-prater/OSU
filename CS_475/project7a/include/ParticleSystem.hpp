@@ -57,6 +57,7 @@ private:
 
 	int INIT_WINDOW_SIZE;
 
+	float drawDistance;
 	float ANGFACT;
 	float SCLFACT;
 	float MINSCALE;
@@ -96,6 +97,7 @@ public:
 	// Static functions
 	//
 	static float Ranf(float, float);
+	static float4 GetXYZfromPolar(float distanceFromOrigin, float theta, float phi);
 
 
 	//////////////////////////////////////////////////
@@ -136,7 +138,8 @@ private:
     GLuint	SphereList;
     Projection	WhichProjection;	// ORTHO or PERSP
     int	Xmouse, Ymouse;		// mouse values
-    float	Xrot, Yrot;		// rotation angles in degrees
+    float	mouseTheta, mousePhi;		// rotation angles in degrees
+	float   eyeDistance;
     float	TransXYZ[3];		// set by glui translation widgets
 
     double	ElapsedTime;

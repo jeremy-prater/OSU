@@ -6,10 +6,11 @@ void ParticleSystem::ResetParticles()
 	float4 * points = (float4 *) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 	for (int i = 0; i < NUM_PARTICLES; i++)
 	{
-		points[i].x = Ranf(XMIN, XMAX);
-		points[i].y = Ranf(YMIN, YMAX);
-		points[i].z = Ranf(ZMIN, ZMAX);
-		points[i].w = 1.;
+		// Particle points are generated 1000 units from origin.
+		float distanceFromOrigin = 300;
+		float theta = ParticleSystem::Ranf(0, M_PI);
+		float phi = ParticleSystem::Ranf(0, 2 * M_PI);
+		points[i] = ParticleSystem::GetXYZfromPolar(distanceFromOrigin, theta, phi);
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 

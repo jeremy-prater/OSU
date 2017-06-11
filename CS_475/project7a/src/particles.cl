@@ -8,7 +8,7 @@ vector
 Bounce(vector in, vector n)
 {
 	vector out = in - n*(vector)(2.*dot(in.xyz, n.xyz));
-	out.w = 0.;
+	out.w = out.w + 1;
 	return out;
 }
 
@@ -17,7 +17,6 @@ BounceSphere(point p, vector v, sphere s)
 {
 	vector n;
 	n.xyz = fast_normalize(p.xyz - s.xyz);
-	n.w = 0.;
 	return Bounce(v, n);
 }
 
@@ -34,7 +33,7 @@ Particle(global point *dPobj, global vector *dVel, global color *dCobj)
 {
 	const float4 G       = (float4) (0., -9.8, 0., 0.);
 	const float  DT      = 0.1;
-	const sphere Sphere1 = (sphere)(-100., -800., 0.,  600.);
+	const sphere Sphere1 = (sphere)(0, 0., 0., 10000.);
 	int gid = get_global_id(0);
 
 	point  p = dPobj[gid];
@@ -45,7 +44,7 @@ Particle(global point *dPobj, global vector *dVel, global color *dCobj)
 	pp.w = 1.;
 	vp.w = 0.;
 
-	if(IsInsideSphere(pp, Sphere1))
+	if(!IsInsideSphere(pp, Sphere1))
 	{
 		vp = BounceSphere(p, v, Sphere1);
 		pp = p + vp*DT + G*(point)(.5*DT*DT);

@@ -96,7 +96,7 @@ void ParticleSystem::InitCL()
 		{
 			foundOne = true;
 			fprintf(stderr, "Using Platform %d\n", i);
-			//break;
+			break;
 		}
 	}
 

@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ParticleMath.cpp" />
     <ClCompile Include="ParticlePhysics.cpp" />
     <ClCompile Include="src\OpenCL.cpp" />
     <ClCompile Include="src\OpenGLRender.cpp" />

@@ -214,8 +214,8 @@ void ParticleSystem::MouseMotion(int x, int y)
 
 	if(context->ActiveButton & LEFT)
 	{
-		context->Xrot += (context->ANGFACT*dy);
-		context->Yrot += (context->ANGFACT*dx);
+		context->mouseTheta += (context->ANGFACT*dx);
+		context->mousePhi += (context->ANGFACT*dy);
 	}
 
 

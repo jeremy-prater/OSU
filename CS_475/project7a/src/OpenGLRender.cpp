@@ -132,16 +132,19 @@ void ParticleSystem::Display()
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	if(context->WhichProjection == ORTHO)
-		glOrtho(-300., 300.,  -300., 300., 0.1, 2000.);
+		glOrtho(-300., 300.,  -300., 300., 0.1, context->drawDistance);
 	else
-		gluPerspective(50., 1.,	0.1, 2000.);
+		gluPerspective(50., 1.,	0.1, context->drawDistance);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0., -100., 800.,     0., -100., 0.,     0., 1., 0.);
+	float4 eyePosition = ParticleSystem::GetXYZfromPolar(context->eyeDistance, context->mouseTheta, context->mousePhi);
+	gluLookAt(eyePosition.x, eyePosition.y, eyePosition.z,
+				0.0f ,0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f);
 	glTranslatef((GLfloat)context->TransXYZ[0], (GLfloat)context->TransXYZ[1], -(GLfloat)context->TransXYZ[2]);
-	glRotatef((GLfloat)context->Yrot, 0., 1., 0.);
-	glRotatef((GLfloat)context->Xrot, 1., 0., 0.);
+	//glRotatef((GLfloat)context->mousePhi, 0., 1., 0.);
+	//glRotatef((GLfloat)context->mouseTheta, 1., 0., 0.);
 	glMultMatrixf((const GLfloat *)context->RotMatrix);
 	glScalef((GLfloat)context->Scale, (GLfloat)context->Scale, (GLfloat)context->Scale);
 	float scale2 = 1.f + context->Scale2;		// because glui translation starts at 0.
@@ -209,8 +212,8 @@ void ParticleSystem::InitLists()
 	glNewList(SphereList, GL_COMPILE);
 		glColor3f(.9f, .9f, 0.);
 		glPushMatrix();
-			glTranslatef(-100., -800., 0.);
-			glutWireSphere(600., 100, 100);
+			//glTranslatef(-100., -800., 0.);
+			glutWireSphere(10000., 20, 20);
 		glPopMatrix();
 	glEndList();
 
@@ -343,7 +346,8 @@ void ParticleSystem::Reset()
 	Scale2 = 0.0;		// because add 1. to it in Display()
 	ShowPerformance = false;
 	WhichProjection = PERSP;
-	Xrot = Yrot = 0.;
+	mouseTheta = mousePhi = 0.;
+	eyeDistance = 30000;
 	TransXYZ[0] = TransXYZ[1] = TransXYZ[2] = 0.;
 
 	                  RotMatrix[0][1] = RotMatrix[0][2] = RotMatrix[0][3] = 0.;

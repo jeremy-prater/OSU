@@ -4,9 +4,9 @@ float4 ParticleSystem::GetXYZfromPolar(float distanceFromOrigin, float theta, fl
 {
 	float4 point;
 
-	point.x = distanceFromOrigin * cosf(theta) * sinf(phi);
-	point.y = distanceFromOrigin * sinf(theta) * cosf(phi);
-	point.z = distanceFromOrigin * cosf(phi);
+	point.x = distanceFromOrigin * sinf(theta) * cosf(phi);
+	point.y = distanceFromOrigin * sinf(theta) * sinf(phi);
+	point.z = distanceFromOrigin * cosf(theta);
 	point.w = 1.;
 
 	return point;

@@ -68,7 +68,7 @@ void ParticleSystem::InitCL()
 	FILE *fp = fopen(CL_FILE_NAME, "rb");
 	if(fp == NULL)
 	{
-		fprintf(stderr, "Cannot open OpenCL source file '%s'\n", CL_FILE_NAME);
+		printf("Cannot open OpenCL source file '%s'\n", CL_FILE_NAME);
 		return;
 	}
 
@@ -81,7 +81,7 @@ void ParticleSystem::InitCL()
 
 	cl_uint numPlatforms;
 	status = clGetPlatformIDs(0, NULL, &numPlatforms);
-	fprintf(stderr, "Number of Platforms = %d\n", numPlatforms);
+	printf("Number of Platforms = %d\n", numPlatforms);
 	cl_platform_id *platforms = new cl_platform_id[numPlatforms];
 	status = clGetPlatformIDs(numPlatforms, platforms, NULL);
 	PrintCLError(status, "clGetPlatformIDs: ");
@@ -95,14 +95,14 @@ void ParticleSystem::InitCL()
 		if(status == CL_SUCCESS)
 		{
 			foundOne = true;
-			fprintf(stderr, "Using Platform %d\n", i);
-			break;
+			printf("Using Platform %d\n", i);
+			//break;
 		}
 	}
 
 	if(! foundOne)
 	{
-		fprintf(stderr, "Cannot find a device with a GPU!\n");
+		printf("Cannot find a device with a GPU!\n");
 	}
 
 
@@ -118,11 +118,11 @@ void ParticleSystem::InitCL()
 
 	if( IsCLExtensionSupported("cl_khr_gl_sharing") )
 	{
-		fprintf(stderr, "cl_khr_gl_sharing is supported.\n");
+		printf("cl_khr_gl_sharing is supported.\n");
 	}
 	else
 	{
-		fprintf(stderr, "cl_khr_gl_sharing is not supported -- sorry.\n");
+		printf("cl_khr_gl_sharing is not supported -- sorry.\n");
 		return;
 	}
 
@@ -145,7 +145,7 @@ void ParticleSystem::InitCL()
 
 	CmdQueue = clCreateCommandQueue(Context, Device, 0, &status);
 	if(status != CL_SUCCESS)
-		fprintf(stderr, "clCreateCommandQueue failed\n");
+		printf("clCreateCommandQueue failed\n");
 
 	// create the velocity array and the opengl vertex array buffer and color array buffer:
 	
@@ -200,7 +200,7 @@ void ParticleSystem::InitCL()
 	strings[0] = clProgramText;
 	Program = clCreateProgramWithSource(Context, 1, (const char **)strings, NULL, &status);
 	if(status != CL_SUCCESS)
-		fprintf(stderr, "clCreateProgramWithSource failed\n");
+		printf("clCreateProgramWithSource failed\n");
 	delete [] clProgramText;
 
 	// 8. compile and link the Kernel code:
@@ -209,11 +209,12 @@ void ParticleSystem::InitCL()
 	status = clBuildProgram(Program, 1, &Device, options, NULL, NULL);
 	if(status != CL_SUCCESS)
 	{
+		printf("clBuildProgram failed: %d\n", status);
 		size_t size;
 		clGetProgramBuildInfo(Program, Device, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
 		cl_char *log = new cl_char[size];
 		clGetProgramBuildInfo(Program, Device, CL_PROGRAM_BUILD_LOG, size, log, NULL);
-		fprintf(stderr, "clBuildProgram failed:\n%s\n", log);
+		printf("clBuildProgram failed:\n%s\n", log);
 		delete [] log;
 	}
 
@@ -222,24 +223,24 @@ void ParticleSystem::InitCL()
 	size_t binary_sizes;
 	status = clGetProgramInfo(Program, CL_PROGRAM_BINARY_SIZES, 0, NULL, &binary_sizes);
 	PrintCLError(status, "clGetProgramInfo (1):");
-	//fprintf(stderr, "binary_sizes = %d\n", binary_sizes);
+	//printf("binary_sizes = %d\n", binary_sizes);
 	size_t size;
 	status = clGetProgramInfo(Program, CL_PROGRAM_BINARY_SIZES, sizeof(size_t), &size, NULL);
 	PrintCLError(status, "clGetProgramInfo (2):");
-	//fprintf(stderr, "size = %d\n", size);
+	//printf("size = %d\n", size);
 	unsigned char *binary = new unsigned char [size];
 	status = clGetProgramInfo(Program, CL_PROGRAM_BINARIES, size, &binary, NULL);
 	PrintCLError(status, "clGetProgramInfo (3):");
 	FILE *fpbin = fopen(CL_BINARY_NAME, "wb");
 	if(fpbin == NULL)
 	{
-		fprintf(stderr, "Cannot create '%s'\n", CL_BINARY_NAME);
+		printf("Cannot create '%s'\n", CL_BINARY_NAME);
 	}
 	else
 	{
 		fwrite(binary, 1, size, fpbin);
 		fclose(fpbin);
-		fprintf(stderr, "Binary written to '%s'\n", CL_BINARY_NAME);
+		printf("Binary written to '%s'\n", CL_BINARY_NAME);
 	}
 	delete [] binary;
 #endif
@@ -337,11 +338,11 @@ void ParticleSystem::Wait(cl_command_queue  queue)
 
 	status = clEnqueueMarker(queue, &wait);
 	if (status != CL_SUCCESS)
-		fprintf(stderr, "Wait: clEnqueueMarker failed\n");
+		printf("Wait: clEnqueueMarker failed\n");
 
 	status = clWaitForEvents(1, &wait);       // blocks until everything is done!
 	if (status != CL_SUCCESS)
-		fprintf(stderr, "Wait: clWaitForEvents failed\n");
+		printf("Wait: clWaitForEvents failed\n");
 }
 
 bool ParticleSystem::IsCLExtensionSupported(const char *extension)

@@ -104,7 +104,7 @@ void ParticleSystem::InitGraphics()
 	GLenum err = glewInit();
 	if(err != GLEW_OK)
 	{
-		fprintf(stderr, "glewInit Error\n");
+		printf("glewInit Error\n");
 	}
 #endif
 }
@@ -213,7 +213,7 @@ void ParticleSystem::InitLists()
 		glColor3f(.9f, .9f, 0.);
 		glPushMatrix();
 			//glTranslatef(-100., -800., 0.);
-			glutWireSphere(10000., 20, 20);
+			glutWireSphere(50000., 20, 20);
 		glPopMatrix();
 	glEndList();
 
@@ -235,7 +235,7 @@ void ParticleSystem::WriteFrame()
         FILE *fp = fopen(filename, "w");
         if(fp == NULL)
         {
-                fprintf(stderr, "Cannot create file '%s'\n", filename);
+                printf("Cannot create file '%s'\n", filename);
                 return;
        }
 
@@ -347,7 +347,7 @@ void ParticleSystem::Reset()
 	ShowPerformance = false;
 	WhichProjection = PERSP;
 	mouseTheta = mousePhi = 0.;
-	eyeDistance = 30000;
+	eyeDistance = 100000;
 	TransXYZ[0] = TransXYZ[1] = TransXYZ[2] = 0.;
 
 	                  RotMatrix[0][1] = RotMatrix[0][2] = RotMatrix[0][3] = 0.;

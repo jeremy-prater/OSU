@@ -10,14 +10,6 @@ ParticleSystem::ParticleSystem()
 	WINDOWTITLE = "OpenCL/OpenGL Particle System -- Joe Parallel";
 	GLUITITLE = "User Interface Window";
 
-	// random parameters:
-	XMIN = -100.0;
-	XMAX = 100.0;
-	YMIN = -100.0;
-	YMAX = 100.0;
-	ZMIN = -100.0;
-	ZMAX = 100.0;
-
 	VMIN = -100.;
 	VMAX = 100.;
 
@@ -28,9 +20,9 @@ ParticleSystem::ParticleSystem()
 
 	INIT_WINDOW_SIZE = 700; // window size in pixels
 
-	drawDistance = 49172;
+	drawDistance = 400000.;
 	ANGFACT = (float)M_PI / 512.0f;
-	SCLFACT = 0.005f;
+	SCLFACT = 250.0f;
 	MINSCALE = 0.001f;
 	
 	memset(&BACKCOLOR, 0, sizeof(BACKCOLOR));

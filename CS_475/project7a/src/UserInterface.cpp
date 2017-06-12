@@ -106,7 +106,7 @@ void ParticleSystem::Buttons(ButtonVals id)
 			break;
 
 		default:
-			fprintf(stderr, "Don't know what to do with Button ID %d\n", id);
+			printf("Don't know what to do with Button ID %d\n", id);
 	}
 
 }
@@ -153,7 +153,7 @@ void ParticleSystem::Keyboard(unsigned char c, int x, int y)
 			break;			// happy compiler
 
 		default:
-			fprintf(stderr, "Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);
+			printf("Don't know what to do with keyboard hit: '%c' (0x%0x)\n", c, c);
 	}
 	context->Glui->sync_live();
 	glutSetWindow(context->MainWindow);
@@ -183,7 +183,7 @@ void ParticleSystem::MouseButton(int button, int state, int x, int y)
 
 		default:
 			b = 0;
-			fprintf(stderr, "Unknown mouse button: %d\n", button);
+			printf("Unknown mouse button: %d\n", button);
 	}
 
 
@@ -214,19 +214,18 @@ void ParticleSystem::MouseMotion(int x, int y)
 
 	if(context->ActiveButton & LEFT)
 	{
-		context->mouseTheta += (context->ANGFACT*dx);
+		context->mouseTheta += (-context->ANGFACT*dx);
 		context->mousePhi += (context->ANGFACT*dy);
 	}
 
 
-	if(context->ActiveButton & MIDDLE)
+	if(context->ActiveButton & RIGHT)
 	{
-		context->Scale += context->SCLFACT * (float) (dx - dy);
-
-		// keep object from turning inside-out or disappearing:
-
-		if(context->Scale < context->MINSCALE)
-			context->Scale = context->MINSCALE;
+		context->eyeDistance += context->SCLFACT * (float)(dy);
+		if (context->eyeDistance < 1)
+		{
+			context->eyeDistance = 1;
+		}
 	}
 
 	context->Xmouse = x;			// new current position

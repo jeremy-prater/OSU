@@ -30,14 +30,14 @@ color GenerateColorFromBounce(float angle)
 	color particleColor;
 	particleColor.x = clamp((float)cos(angle), 0.0f, 1.0f);
 	particleColor.y = clamp((float)cos(angle + ((2 * M_PI) / 3)), 0.0f, 1.0f);
-	particleColor.z = clamp((float)cos(angle + ((3 * M_PI) / 2)), 0.0f, 1.0f);
+	particleColor.z = clamp((float)cos(angle + ((4 * M_PI) / 3)), 0.0f, 1.0f);
 	return particleColor;
 }
 
 kernel void Particle(global point *dPobj, global vector *dVel, global color *dCobj)
 {
-	const float4 G       = (float4) (0., -2.5, 0., 1.);
-	const float  DT = .2;
+	const float4 G       = (float4) (0., -1.5, 0., 1.);
+	const float  DT = .5;
 	const sphere Sphere1 = (sphere)(0, 0., 0., 50000.);
 	int gid = get_global_id(0);
 
@@ -51,7 +51,7 @@ kernel void Particle(global point *dPobj, global vector *dVel, global color *dCo
 
 	if(!IsInsideSphere(pp, Sphere1))
 	{
-		colorAngle += (M_PI / 24);
+		colorAngle += (M_PI / 3);
 		vp = BounceSphere(p, v, Sphere1);
 		pp = p + vp*DT + G*(point)(.5*DT*DT);
 		dCobj[gid] = GenerateColorFromBounce(colorAngle);

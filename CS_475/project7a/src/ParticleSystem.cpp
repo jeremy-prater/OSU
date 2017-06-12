@@ -20,7 +20,7 @@ ParticleSystem::ParticleSystem()
 
 	INIT_WINDOW_SIZE = 700; // window size in pixels
 
-	drawDistance = 400000.;
+	drawDistance = 10000000.;
 	ANGFACT = (float)M_PI / 512.0f;
 	SCLFACT = 250.0f;
 	MINSCALE = 0.001f;

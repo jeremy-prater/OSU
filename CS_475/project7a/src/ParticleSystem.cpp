@@ -7,13 +7,13 @@ ParticleSystem::ParticleSystem()
 {
 	ParticleSystem::particleSystemSingleton = this;
 	// random parameters:
-	WINDOWTITLE = "OpenCL/OpenGL Particle System -- Joe Parallel";
+	WINDOWTITLE = "OpenCL/OpenGL Particle System -- Jeremy Prater";
 	GLUITITLE = "User Interface Window";
 
 	VMIN = -100.;
 	VMAX = 100.;
 
-	NUM_PARTICLES = 1024 * 1024;
+	NUM_PARTICLES = 8 * 1024 * 1024;
 	LOCAL_SIZE = 32;
 	CL_FILE_NAME = "src/particles.cl";
 	CL_BINARY_NAME = "src/particles.nv";

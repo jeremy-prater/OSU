@@ -186,7 +186,7 @@ void ParticleSystem::Display()
 	if(context->ShowPerformance)
 	{
 		char str[128];
-		sprintf(str, "Frame %8d -- %6.1f GigaParticles/Sec", context->Frame, (float)context->NUM_PARTICLES / context->ElapsedTime / 1000000000.);
+		sprintf(str, "Frame %8d -- %6.1f GigaParticles/Sec --  %d particles", context->Frame, (float)context->NUM_PARTICLES / context->ElapsedTime / 1000000000., context->NUM_PARTICLES);
 		glDisable(GL_DEPTH_TEST);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

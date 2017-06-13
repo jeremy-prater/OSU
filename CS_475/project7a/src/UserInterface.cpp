@@ -10,6 +10,7 @@
 
 void ParticleSystem::InitGlui()
 {
+	ShowPerformance = true;
 	glutInitWindowPosition(INIT_WINDOW_SIZE + 50, 0);
 	Glui = GLUI_Master.create_glui((char *) GLUITITLE);
 	Glui->add_statictext((char *) GLUITITLE);

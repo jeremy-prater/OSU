@@ -5,11 +5,14 @@ from subprocess import call
 import sys
 import socket
 
-projectName = "./cs475-project6"
+projectName = "./cs325-hw1"
 
 def CleanBuild():
     # Delete old build
     call(["rm", "-r", "-f", "build"])
+    call(["rm", "-r", "-f", "insert.out"])
+    call(["rm", "-r", "-f", "merge.out"])
+    call(["rm", "-r", "-f", "hw1.csv"])
     call(["mkdir", "build"])
     os.chdir("build")
 
@@ -54,7 +57,7 @@ print ""
 print "=================================================================================================================================="
 
 elementsMin = 64
-elementsMax = 1 * 1024 * 1024
+elementsMax = 1 * 256 * 1024
 
 print "Element size Status:"
 print " -- Min : " + str(elementsMin)
@@ -72,9 +75,9 @@ print "=========================================================================
 print " Executing program sequences"
 print "=================================================================================================================================="
 
-RunBuild(True, 0) # Use data.txt
+RunBuild(1, 0) # Use data.txt
 
 element = elementsMin
 while (element <= elementsMax):
-    RunBuild(False, element) # Generate data
+    RunBuild(0, element) # Generate data
     element *= 2

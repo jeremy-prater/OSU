@@ -13,7 +13,11 @@ set(PLATFORM_SRCS
 )
 
 set(PROJECT_SRCS
-  ${PROJECT_SOURCE_DIR}/src/project6.cpp
+  ${PROJECT_SOURCE_DIR}/src/hw1.cpp
+  ${PROJECT_SOURCE_DIR}/src/SortHelpers.cpp
+  ${PROJECT_SOURCE_DIR}/src/MergeSort.cpp
+  ${PROJECT_SOURCE_DIR}/src/InsertionSort.cpp
+  
 )
 
 # Compilier settings
@@ -27,4 +31,3 @@ set(CMAKE_CXX_FLAGS "-O0 -lm ${OpenMP_CXX_FLAGS} -DDEBUG -g")
 #add_definitions(-DNUMNODES=${NUMNODES})
 
 add_executable(${PROJ_NAME} ${PLATFORM_SRCS} ${PROJECT_SRCS})
-target_link_libraries(${PROJ_NAME} "${OpenCL_LIBRARIES}")

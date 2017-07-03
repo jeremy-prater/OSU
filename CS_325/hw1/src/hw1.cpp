@@ -58,7 +58,7 @@ int main( int argc, char *argv[ ] )
         std::ifstream fileStream ("./../data/data.txt", std::ifstream::binary);
 
         std::string line;
-        std::vector<std::vector<uint32_t>> fileData;
+        std::vector<std::vector<uint32_t> > fileData;
         while (getline(fileStream, line))
         {
             std::istringstream is(line);

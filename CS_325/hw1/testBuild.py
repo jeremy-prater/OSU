@@ -18,15 +18,15 @@ def CleanBuild():
 
 
 def StartBuild():
-    if ("oregonstate.edu" in socket.gethostname()):
-        print "=================================================================================================================================="
-        print ""
-        print " -- Setting up environment for GCC 6.3 on " + socket.gethostname()
-        print ""
-        print "=================================================================================================================================="
+    #if ("oregonstate.edu" in socket.gethostname()):
+    #    print "=================================================================================================================================="
+    #    print ""
+    #    print " -- Setting up environment for GCC 6.3 on " + socket.gethostname()
+    #    print ""
+    #    print "=================================================================================================================================="
 
-        os.environ["CC"]="/usr/local/common/gcc-6.3.0/bin/gcc"
-        os.environ["CXX"]="/usr/local/common/gcc-6.3.0/bin/gcc"
+    #    os.environ["CC"]="/usr/local/common/gcc-6.3.0/bin/gcc"
+    #    os.environ["CXX"]="/usr/local/common/gcc-6.3.0/bin/gcc"
     call(["cmake", ".."])
     call(["make"])
 

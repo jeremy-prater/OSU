@@ -44,9 +44,9 @@ int main( int argc, char *argv[ ] )
     const unsigned int NUM_COINS = atoi (argv[2]);
     const unsigned int AMOUNT = atoi (argv[3]);
 
-    printf ("-> USE_DATA: %d\t", USE_DATA);
-    printf ("-> COINS: %d\t", NUM_COINS);
-    printf ("-> AMOUNT: %d\t", AMOUNT);
+    //printf ("-> USE_DATA: %d\t", USE_DATA);
+    //printf ("-> COINS: %d\t", NUM_COINS);
+    //printf ("-> AMOUNT: %d\t", AMOUNT);
 
     if (USE_DATA)
     {
@@ -97,7 +97,7 @@ int main( int argc, char *argv[ ] )
         clock_gettime (CLOCK_MONOTONIC, &time1);
     }
 
-    printf ("-> RUNTIME(min-change): %f\t", elapsedTime (&time0, &time1));
+    printf ("-> RUNTIME(min-change): %f\n", elapsedTime (&time0, &time1));
 
     CSVLogger::WriteLog("%d, %f, %f",
         NUM_COINS,

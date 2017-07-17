@@ -80,9 +80,9 @@ int minCoins(coinSet_t * coinData, int * finalCoins)
  
     for (int index = 0; index < coinData->C.size(); index++)
     {
-        printf ("%d ", finalCoins[index]);
+//        printf ("%d ", finalCoins[index]);
     }
-    printf ("\n");
+  //  printf ("\n");
 
     return tempTable[coinData->A];
 }

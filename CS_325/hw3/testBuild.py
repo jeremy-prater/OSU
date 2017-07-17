@@ -28,9 +28,9 @@ def StartBuild():
     call(["cmake", ".."])
     call(["make"])
 
-def RunBuild(useData, numElements):
+def RunBuild(useData, numCoins, amount):
     #Run a build for testing
-    if (call([projectName, str(useData), str(numElements)]) != 0):
+    if (call([projectName, str(useData), str(numCoins), str(amount)]) != 0):
         exit(-1);
 
 #########################################################################
@@ -54,12 +54,19 @@ print "                   \__\/         \__\/                                   
 print ""
 print "=================================================================================================================================="
 
-elementsMin = 1
-elementsMax = 1
+coinsMin = 1
+coinsMax = 256 * 1024
 
-print "Element size Status:"
-print " -- Min : " + str(elementsMin)
-print " -- Max : " + str(elementsMax)
+amountMin = 1
+amountMax = 256 * 1024
+
+print "Coin Status:"
+print " -- Min : " + str(coinsMin)
+print " -- Max : " + str(coinsMax)
+print ""
+print "Amount Status:"
+print " -- Min : " + str(amountMin)
+print " -- Max : " + str(amountMax)
 print ""
 
 print "=================================================================================================================================="
@@ -73,9 +80,14 @@ print "=========================================================================
 print " Executing program sequences"
 print "=================================================================================================================================="
 
-RunBuild(1, 0) # Use amount.txt
+RunBuild(1, 0, 0) # Use amount.txt
 
-element = elementsMin
-while (element <= elementsMax):
-    #RunBuild(0, element) # Generate data
-    element *= 2
+coins = coinsMin
+amount = amountMin
+
+while (coins <= coinsMax):
+    amount = amountMin
+    while(amount <= amountMax):
+        RunBuild(0, coins, amount) # Generate data
+        amount *= 2
+    coins *= 2

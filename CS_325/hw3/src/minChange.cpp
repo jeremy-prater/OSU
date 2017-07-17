@@ -15,7 +15,7 @@ void WriteMinCoins(coinSet_t * coinData, const char * filename)
 {
     int finalCoins[coinData->C.size()];
     int numCoins = minCoins(coinData, finalCoins);
-    
+
     // Calculate the coin combination based on the min number of coins required
     coinData->C.size();
 

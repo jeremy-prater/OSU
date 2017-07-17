@@ -10,6 +10,7 @@ projectName = "./cs325-hw3"
 def CleanBuild():
     # Delete old build
     call(["rm", "-r", "-f", "build"])
+    call(["rm", "-r", "-f", "hw3.csv"])
     call(["rm", "-r", "-f", "change.txt"])
     call(["mkdir", "build"])
     os.chdir("build")
@@ -55,10 +56,10 @@ print ""
 print "=================================================================================================================================="
 
 coinsMin = 1
-coinsMax = 256 * 1024
+coinsMax = 64 * 1024
 
 amountMin = 1
-amountMax = 256 * 1024
+amountMax = 64 * 1024
 
 print "Coin Status:"
 print " -- Min : " + str(coinsMin)

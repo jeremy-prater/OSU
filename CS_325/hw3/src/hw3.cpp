@@ -99,7 +99,7 @@ int main( int argc, char *argv[ ] )
 
     printf ("-> RUNTIME(min-change): %f\n", elapsedTime (&time0, &time1));
 
-    CSVLogger::WriteLog("%d, %f, %f",
+    CSVLogger::WriteLog("%d, %d, %f",
         NUM_COINS,
         AMOUNT,
         elapsedTime (&time0, &time1));

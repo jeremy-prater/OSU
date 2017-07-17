@@ -11,5 +11,6 @@ typedef struct
 
 void WriteMinCoins(coinSet_t * coinData, const char * filename);
 int minCoins(coinSet_t * coinData, int * finalCoins);
+float elapsedTime(struct timespec *start, struct timespec *stop);
 
 #endif // MIN_CHANGE_H

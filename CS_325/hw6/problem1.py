@@ -28,7 +28,7 @@ def FindDistance (start, end):
     for item in distances:
         if item['start'] == start and item['end'] == end:
             return item['distance']
-    return 0
+    return -1
 
 def FindEnds (startingNodes):
     global totalNodeCount
@@ -109,8 +109,15 @@ def FindMinPath(start, end):
     # multiply-sum the elements of x with the distances to get the distance
     index = 0
     totalDistance = 0
+    sumDistance = 0
     for x in res.x:
-        totalDistance += FindDistance(nodes[index]['start'], nodes[index]['end']) * x
+        
+        if x > 0:
+            sumDistance += FindDistance(nodes[index]['start'], nodes[index]['end']) * x
+            sumDistance *= 1/x
+
+        totalDistance += sumDistance
+            
         index += 1
 
     #print (totalDistance)

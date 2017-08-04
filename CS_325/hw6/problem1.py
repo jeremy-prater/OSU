@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import scipy.optimize
+import numpy.linalg
 
 totalNodeCount = 0
 
@@ -28,14 +29,14 @@ def FindDistance (start, end):
     for item in distances:
         if item['start'] == start and item['end'] == end:
             return item['distance']
-    return -1
+    return 0
 
-def FindEnds (startingNodes):
+def FindEnds (startingNodes, startNode):
     global totalNodeCount
     ends = []
     for start in startingNodes:
         for item in distances:
-            if item['start'] == start:
+            if item['start'] == start and item['end'] != startNode:
                 ends.append({'start' : start, 'end' : item['end']})
                 totalNodeCount += 1
     return ends
@@ -48,7 +49,7 @@ def FindMinPath(start, end):
     startingNodes = [start]
     nodes = []
     while (searching):
-        newEnds = FindEnds (startingNodes)
+        newEnds = FindEnds (startingNodes, start)
 
         startingNodes = []
         for testEnd in newEnds:
@@ -64,6 +65,8 @@ def FindMinPath(start, end):
     #print ("total nodes: " + str(totalNodeCount))
     #print (nodes)
     
+    #print (nodes)
+
     c = []
     A = []
     B = []
@@ -74,7 +77,8 @@ def FindMinPath(start, end):
             arrayBuilder.append([])
         A.append(arrayBuilder)
 
-    index = 0
+
+    # Create c and B arrays
     for node in nodes:
         c.append(1)
         if node['end'] == end:
@@ -84,40 +88,37 @@ def FindMinPath(start, end):
         else:
             B.append(0)
 
+    # Create A array
+    for i in range (0, totalNodeCount) :
         #print (node)
-        for aIndex in range (0, totalNodeCount) :
+        innerSum = 0;
+        for j in range (0, totalNodeCount) :
             #print ("---")
             #print (aIndex)
             #print (len(nodes))
             #print (nodes[aIndex])
-            x = nodes[aIndex]['start']
-            y = node['end']
-            A[aIndex][index] = (- FindDistance(x, y) + FindDistance(y, x))
+            x = nodes[i]['end']
+            y = nodes[j]['start']
+            A[i][j] = -(FindDistance(y, x) - FindDistance(x, y))
             
-        index += 1
-
 
     # solve
-    #print ("c")
-    #print (c)
-    #print ("A")
-    #print (A)
-    #print ("B")
-    #print (B)
+    print ("c")
+    print (c)
+    print ("A")
+    print (A)
+    print ("B")
+    print (B)
     res = scipy.optimize.linprog(c,A,B)
-
+    print (res)
     # multiply-sum the elements of x with the distances to get the distance
+    
     index = 0
-    totalDistance = 0
-    sumDistance = 0
+    totalDistance = 0 
     for x in res.x:
-        
         if x > 0:
-            sumDistance += FindDistance(nodes[index]['start'], nodes[index]['end']) * x
-            sumDistance *= 1/x
-
-        totalDistance += sumDistance
-            
+            print (x/res.fun)
+            totalDistance += A[index][index] * -(x/res.fun)
         index += 1
 
     #print (totalDistance)
@@ -125,8 +126,9 @@ def FindMinPath(start, end):
     return str(totalDistance)
 
 # find a path from G to all other nodes with the minimum distance
-for destLoop in range(ord('a'), ord('h') + 1):
-    if destLoop == ord('g'):
-        continue
-    dest = chr (destLoop)
-    print ("g->" + dest + " = " + FindMinPath('g', dest))
+#for destLoop in range(ord('a'), ord('h') + 1):
+#    if destLoop == ord('g'):
+#        continue
+#    dest = chr (destLoop)
+dest='h'
+print ("g->" + dest + " = " + FindMinPath('g', dest))

@@ -1,5 +1,7 @@
 #!/bin/python3
 
+import scipy.optimize
+
 distances = [
     {'start':'g', 'end':'d', 'distance':2},
     {'start':'g', 'end':'h', 'distance':3},
@@ -25,12 +27,38 @@ def FindDistance (start, end):
         if item['start'] == start and item['end'] == end:
             return item['distance']
 
+def FindEnds (startingNodes):
+    ends = []
+    for start in startingNodes:
+        for item in distances:
+            if item['start'] == start:
+                ends.append({'start' : start, 'end' : item['end']})
+    return ends
+
 def FindMinPath(start, end):
     # find contraints
+    # Generate initial set
+    searching = True
+    startingNodes = [start]
+    nodes = []
+    while (searching):
+        newEnds = FindEnds (startingNodes)
+
+        startingNodes = []
+        for testEnd in newEnds:
+            #print (testEnd)
+            startingNodes.append(testEnd['end'])
+            if testEnd['end'] == end:
+                searching = False
+
+        nodes.append(newEnds)
 
     # compute matrix
-
+    print (nodes)
+    
     # solve
+
+    scipy.optimize.linprog()
     return str(111)
 
 # find a path from G to all other nodes with the minimum distance
@@ -38,4 +66,4 @@ for destLoop in range(ord('a'), ord('h') + 1):
     if destLoop == ord('g'):
         continue
     dest = chr (destLoop)
-    print ("g->" + dest + " = " + FindMinPath(dest, 'g'))
+    print ("g->" + dest + " = " + FindMinPath('g', dest))

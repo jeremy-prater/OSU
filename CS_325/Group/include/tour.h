@@ -2,6 +2,10 @@
 #define TSP_TOUR_MANAGER_H
 
 #include <vector>
+#include <algorithm>
+#include <random>
+#include <iterator>
+
 #include "city.h"
 #include "tourSet.h"
 
@@ -16,13 +20,12 @@ public:
     int getDistance();
     int tourLength();
     bool containsCity(City * city);
+	void ToString();
 
 private:
     std::vector<City *> tour;
     int distance;
     double fitness;
-
-    static auto randomShuffle;
 };
 
 #endif // TSP_TOUR_MANAGER_H

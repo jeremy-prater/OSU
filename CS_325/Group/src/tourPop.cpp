@@ -14,26 +14,27 @@ TourPopulation::TourPopulation(int populationSize, bool init)
     }
 }
 
-void TourPopulation::saveTour(int index, Tour * tour)
+void TourPopulation::saveTour(int index, Tour * newTour)
 {
-    tour[index] = tour;
+	tours[index] = newTour;
 }
 
 Tour * TourPopulation::getTour(int index)
 {
-    return tour[index];
+    return tours[index];
 }
 
 Tour * TourPopulation::getFittest()
 {
     Tour * fittest = tours[0];
-    for (int index = 1; index < tours.size(); index++)
+    for (size_t index = 1; index < tours.size(); index++)
     {
         if (fittest->getFitness() <= getTour(index)->getFitness())
         {
             fittest = getTour(index);
         }
     }
+	return fittest;
 }
 
 int TourPopulation::populationSize()

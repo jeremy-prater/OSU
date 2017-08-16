@@ -22,7 +22,5 @@ int City::distanceTo(City * destCity)
 {
     int dx = getX() - destCity->getX();
     int dy = getY() - destCity->getY();
-    return sqrt ((dx*dx) + (dy*dy));
+    return (int)sqrt ((dx*dx) + (dy*dy));
 }
-
-#endif // TSP_CITY_H

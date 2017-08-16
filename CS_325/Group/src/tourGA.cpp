@@ -1,12 +1,16 @@
 #include "tourGA.h"
 
-TourPop * TourGA::evolvePopulation(TourPop * pop)
+int TourGA::mutationRate = 5;
+int TourGA::tournamentSize = 5;
+bool TourGA::elitism = true;
+
+TourPopulation * TourGA::evolvePopulation(TourPopulation * pop)
 {
-    TourPop * newPop = new TourPop(pop->populationSize(), false);
+    TourPopulation * newPop = new TourPopulation(pop->populationSize(), false);
     int elitismOffset = 0;
     if (TourGA::elitism)
     {
-        newPop.saveTour(0, pop.getFittest);
+		newPop->saveTour(0, pop->getFittest());
         elitismOffset = 1;
     }
 
@@ -77,7 +81,7 @@ void TourGA::mutate(Tour * tour)
     }
 }
 
-Tour * TourGA::tournamentSelection(TourPop * pop)
+Tour * TourGA::tournamentSelection(TourPopulation * pop)
 {
     TourPopulation * tournament = new TourPopulation(TourGA::tournamentSize, false);
 

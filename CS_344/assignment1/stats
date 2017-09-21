@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -eE
+
+################ Input data goes here
+inputbuffer=inputdata$$
+
+################ It's a trap
+trap cleanup INT HUP QUIT TERM KILL ERR
+
+function cleanup {
+    echo 'Cleaning up temporary files'
+    rm -f $inputbuffer
+}
+
+function processRows {
+    echo "Processing Rows"
+}
+
+function processCols {
+    echo "Processing Rows"
+}
+
+function getInput {
+    if [ $1 ] ; then
+        cat $1 > $inputbuffer
+    else
+        stdinread
+    fi
+}
+
+function stdinread {
+    cat > $inputbuffer
+}
+
+function usage {
+    echo "stats - CS 344 (Jeremy Prater)"
+    echo "Usage:"
+    echo "stats {-rows|-cols} [input_file]"
+    cleanup
+    exit -1
+}
+
+echo "Debug mode -----------------------------------------"
+echo "$inputbuffer"
+echo "----------------------------------------------------"
+
+if [ $3 ] ; then
+    usage
+fi
+
+getInput $2
+
+if [[ $1 == -r* ]] ; then
+    processRows
+elif [[ $1 == -c* ]] ; then
+    processCols
+else
+    usage
+fi
+
+echo "Post Process ---------------------------------------"
+cat "$inputbuffer"
+echo "----------------------------------------------------"
+
+cleanup

@@ -21,17 +21,31 @@ function roundNumber {
     echo $(( ( $1 + ( $2 / 2 ) ) / $2 ))
 }
 
+function calcMedian {
+    read -a data <<< `echo $1 | tr " " "\n" | sort -n | tr "\n" " "`
+    if [ $(( $2 % 2 )) -eq 0 ] ; then
+        echo "its oddddd"
+    else
+        echo ${data[$(( $2 / 2 ))]}
+    fi
+}
+
 function processRows {
     echo -e "Average\tMedian"
     for ly in `seq 0 $y`
     do
         sum=0
+        median=""
         for lx in `seq 0 $x`
         do
             sum=$(( $sum + ${inputBuffer[$lx,$ly]} ))
+            median="$median ${inputBuffer[$lx,$ly]}"
         done
         lx=$(( lx + 1 ))
-        echo "$(roundNumber ${sum} ${lx})"
+        printf "$(roundNumber ${sum} ${lx})"
+        printf "\t"
+        printf "$(calcMedian "${median}" ${lx})"
+        printf "\n"
     done
 }
 

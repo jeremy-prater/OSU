@@ -4,6 +4,10 @@ set -eE
 
 ################ Input data goes here
 inputbuffer=inputdata$$
+declare -A inputBuffer
+x=0
+y=0
+
 
 ################ It's a trap
 trap cleanup INT HUP QUIT TERM KILL ERR
@@ -13,8 +17,22 @@ function cleanup {
     rm -f $inputbuffer
 }
 
+function roundNumber {
+    echo $(( ( $1 + ( $2 / 2 ) ) / $2 ))
+}
+
 function processRows {
-    echo "Processing Rows"
+    echo -e "Average\tMedian"
+    for ly in `seq 0 $y`
+    do
+        sum=0
+        for lx in `seq 0 $x`
+        do
+            sum=$(( $sum + ${inputBuffer[$lx,$ly]} ))
+        done
+        lx=$(( lx + 1 ))
+        echo "$(roundNumber ${sum} ${lx})"
+    done
 }
 
 function processCols {
@@ -33,6 +51,21 @@ function stdinread {
     cat > $inputbuffer
 }
 
+function readInput {
+    while read -r -a buffer
+    do
+        x=0
+        for element in "${buffer[@]}"
+        do
+            inputBuffer[$x,$y]=$element
+            x=$(( x + 1 ))
+        done
+    y=$(( y + 1 ))
+    done <<< `cat $inputbuffer`
+    x=$(( x - 1 ))
+    y=$(( y - 1 ))
+}
+
 function usage {
     echo "stats - CS 344 (Jeremy Prater)"
     echo "Usage:"
@@ -42,7 +75,7 @@ function usage {
 }
 
 echo "Debug mode -----------------------------------------"
-echo "$inputbuffer"
+echo "temp file: $inputbuffer"
 echo "----------------------------------------------------"
 
 if [ $3 ] ; then
@@ -51,6 +84,8 @@ fi
 
 getInput $2
 
+readInput "$inputbuffer"
+
 if [[ $1 == -r* ]] ; then
     processRows
 elif [[ $1 == -c* ]] ; then
@@ -58,9 +93,5 @@ elif [[ $1 == -c* ]] ; then
 else
     usage
 fi
-
-echo "Post Process ---------------------------------------"
-cat "$inputbuffer"
-echo "----------------------------------------------------"
 
 cleanup

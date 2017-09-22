@@ -13,7 +13,6 @@ y=0
 trap cleanup INT HUP QUIT TERM KILL ERR
 
 function cleanup {
-    echo 'Cleaning up temporary files'
     rm -f $inputbuffer
 }
 
@@ -24,7 +23,9 @@ function roundNumber {
 function calcMedian {
     read -a data <<< `echo $1 | tr " " "\n" | sort -n | tr "\n" " "`
     if [ $(( $2 % 2 )) -eq 0 ] ; then
-        echo "its oddddd"
+        a=${data[$(( (( $2 )) / 2 ))]}
+        b=${data[$(( (( $2  + 1)) / 2 ))]}
+        echo $(( ($a + $b) / 2))
     else
         echo ${data[$(( $2 / 2 ))]}
     fi
@@ -50,7 +51,32 @@ function processRows {
 }
 
 function processCols {
-    echo "Processing Rows"
+    echo "Averages:"
+    for lx in `seq 0 $x`
+    do
+        sum=0
+        for ly in `seq 0 $y`
+        do
+            sum=$(( $sum + ${inputBuffer[$lx,$ly]} ))
+        done
+        ly=$(( ly + 1 ))
+        printf "$(roundNumber ${sum} ${ly})\t"
+    done
+    printf "\n"
+
+
+    echo "Averages:"
+    for lx in `seq 0 $x`
+    do
+        median=""
+        for ly in `seq 0 $y`
+        do
+            median="$median ${inputBuffer[$lx,$ly]}"
+        done
+        ly=$(( ly + 1 ))
+        printf "$(calcMedian "${median}" ${ly})\t"
+    done
+    printf "\n"
 }
 
 function getInput {
@@ -87,10 +113,6 @@ function usage {
     cleanup
     exit -1
 }
-
-echo "Debug mode -----------------------------------------"
-echo "temp file: $inputbuffer"
-echo "----------------------------------------------------"
 
 if [ $3 ] ; then
     usage

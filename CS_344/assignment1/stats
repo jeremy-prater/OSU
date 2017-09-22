@@ -42,11 +42,14 @@ function processRows {
             sum=$(( $sum + ${inputBuffer[$lx,$ly]} ))
             median="$median ${inputBuffer[$lx,$ly]}"
         done
-        lx=$(( lx + 1 ))
-        printf "$(roundNumber ${sum} ${lx})"
-        printf "\t"
-        printf "$(calcMedian "${median}" ${lx})"
-        printf "\n"
+        if [ $lx ]
+        then
+            lx=$(( lx + 1 ))
+            printf "$(roundNumber ${sum} ${lx})"
+            printf "\t"
+            printf "$(calcMedian "${median}" ${lx})"
+            printf "\n"
+        fi
     done
 }
 
@@ -65,7 +68,7 @@ function processCols {
     printf "\n"
 
 
-    echo "Averages:"
+    echo "Medians:"
     for lx in `seq 0 $x`
     do
         median=""
@@ -107,15 +110,17 @@ function readInput {
 }
 
 function usage {
-    echo "stats - CS 344 (Jeremy Prater)"
-    echo "Usage:"
-    echo "stats {-rows|-cols} [input_file]"
+    echo "./stats {-rows|-cols} [file]"
     cleanup
     exit 1
 }
 
 if [ $3 ] ; then
-    usage
+    exit 1
+fi
+
+if [ ! $1 ] ; then
+    exit 1
 fi
 
 getInput $2

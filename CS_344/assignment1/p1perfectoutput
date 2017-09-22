@@ -2,13 +2,13 @@
 Creating file1 file2 file3 file4 file5
 
 
-total 24
--rw-r--r-- 1 jeremy jeremy  259 Sep 22 01:12 file1
--rw-r--r-- 1 jeremy jeremy   49 Sep 22 01:12 file2
--rw-r--r-- 1 jeremy jeremy    3 Sep 22 01:12 file3
--rw-r--r-- 1 jeremy jeremy    0 Sep 22 01:12 file4
--rw-r--r-- 1 jeremy jeremy 5831 Sep 22 01:12 file5
--rwxr-xr-x 1 jeremy jeremy 2429 Sep 22 01:12 stats
+total 0
+-rw-rw----. 1 brewsteb upg57541  259 Dec 22 11:30 file1
+-rw-rw----. 1 brewsteb upg57541   49 Dec 22 11:30 file2
+-rw-rw----. 1 brewsteb upg57541    3 Dec 22 11:30 file3
+-rw-rw----. 1 brewsteb upg57541    0 Dec 22 11:30 file4
+-rw-rw----. 1 brewsteb upg57541 5831 Dec 22 11:30 file5
+-rwxrwx---. 1 brewsteb upg57541 1718 Dec 22 11:30 stats
 
 
 ------------------------------------------------------------------------------------------------------
@@ -185,23 +185,25 @@ Error Message:
 ------------------------------------------------------------------------------------------------------
 Bad Syntax
 
-Too Few Arguments: 2 point for usage text, 2 points for exit value 1
+Too Few Arguments: 2 points for usage text, 2 points for exit value 1
 Exit Value: 1
 Error Message:
-
-Too Many Arguments: 2 point for usage text, 2 points for exit value 1
-Exit Value: 1
-Error Message:
-
-Wrong Format: 4 point for usage text, 2 points for exit value 1
 ./stats {-rows|-cols} [file]
-Exit Value: 1
-Error Message:
 
-Bad Option: 2 point for usage text, 2 points for exit value 1
-./stats {-rows|-cols} [file]
+Too Many Arguments: 2 points for usage text, 2 points for exit value 1
 Exit Value: 1
 Error Message:
+./stats {-rows|-cols} [file]
+
+Wrong Format: 4 points for usage text, 2 points for exit value 1
+Exit Value: 1
+Error Message:
+./stats {-rows|-cols} [file]
+
+Bad Option: 2 points for usage text, 2 points for exit value 1
+Exit Value: 1
+Error Message:
+./stats {-rows|-cols} [file]
 
 
 ------------------------------------------------------------------------------------------------------
@@ -210,7 +212,7 @@ File Not Readable: 2 points for error msg, 2 points for program halting
 
 Exit Value: 1
 Error Message:
-cat: file3: Permission denied
+./stats: cannot read file3
 
 
 
@@ -239,6 +241,9 @@ simrun1.out
 simrun2.out
 simrun3.out
 stats
+temp1489
+temp1493
+temp1496
 
 
 Run 1 Output: 5 points for succesful run 1
@@ -296,16 +301,16 @@ file2
 file3
 file4
 file5
-inputdata32678
 stats
+temp1549
 
   PID TTY          TIME CMD
- 1756 pts/6    00:00:00 ps
-30493 pts/6    00:00:00 bash
-30494 pts/6    00:00:00 p1gradingscript
-31831 pts/6    00:00:02 bash
-32678 pts/6    00:00:00 stats
+ 1549 pts/1    00:00:00 stats
+ 1767 pts/1    00:00:00 bash
+ 3990 pts/1    00:00:00 ps
+24996 pts/1    00:00:00 p1gradingscript
 
+./p1gradingscript: line 290:  1549 Terminated              $STATS -rows < file5 > /dev/null
 
 After Kill: 8 points if no temp files
 file1
@@ -316,9 +321,8 @@ file5
 stats
 
   PID TTY          TIME CMD
- 5308 pts/6    00:00:00 ps
-30493 pts/6    00:00:00 bash
-30494 pts/6    00:00:00 p1gradingscript
-31831 pts/6    00:00:02 bash
+ 1767 pts/1    00:00:00 bash
+ 4092 pts/1    00:00:00 ps
+24996 pts/1    00:00:00 p1gradingscript
 
 

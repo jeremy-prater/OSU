@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#######################################################
+##
+## CS 344 Program 1 (Jeremy Prater)
+##
+## stats
+##
+
+## Exit immediately if an error occurs!
 set -eE
 
 ################ Input data goes here
@@ -10,16 +18,20 @@ y=0
 
 
 ################ It's a trap
+## Execute cleanup function when the bash script exits
 trap cleanup INT HUP QUIT TERM KILL ERR
 
 function cleanup {
     rm -f $inputbuffer
 }
 
+## Provided rounding function
 function roundNumber {
     echo $(( ( $1 + ( $2 / 2 ) ) / $2 ))
 }
 
+## Calculate the median of an array and return the median
+## Handle the special case of an even number by returning the average
 function calcMedian {
     read -a data <<< `echo $1 | tr " " "\n" | sort -n | tr "\n" " "`
     if [ $(( $2 % 2 )) -eq 0 ] ; then
@@ -31,6 +43,7 @@ function calcMedian {
     fi
 }
 
+## Input function that computes rows
 function processRows {
     echo -e "Average\tMedian"
     for ly in `seq 0 $y`
@@ -53,6 +66,7 @@ function processRows {
     done
 }
 
+## Input function that computes columns
 function processCols {
     echo "Averages:"
     for lx in `seq 0 $x`
@@ -82,6 +96,7 @@ function processCols {
     printf "\n"
 }
 
+## Get the data from the temp file (file or stdin)
 function getInput {
     if [ $1 ] ; then
         cat $1 > $inputbuffer
@@ -90,10 +105,12 @@ function getInput {
     fi
 }
 
+## Read the input into a buffer
 function stdinread {
     cat > $inputbuffer
 }
 
+## Read input into a buffer
 function readInput {
     while read -r -a buffer
     do
@@ -109,23 +126,33 @@ function readInput {
     y=$(( y - 1 ))
 }
 
+## Print the usage and exit gracefully
 function usage {
     echo "./stats {-rows|-cols} [file]"
     cleanup
     exit 1
 }
 
+#########################################
+##
+## Main program start
+##
+
+## Check if we have extra variables
 if [ $3 ] ; then
     exit 1
 fi
 
+## ... or not enough variables
 if [ ! $1 ] ; then
     exit 1
 fi
 
+## Get the input from a stream or file
 getInput $2
-
 readInput "$inputbuffer"
+
+## Determine if we are calculating rows or columns
 
 if [[ $1 == -r* ]] ; then
     processRows
@@ -135,4 +162,5 @@ else
     usage
 fi
 
+## Cleanup
 cleanup

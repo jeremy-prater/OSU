@@ -3,12 +3,12 @@ Creating file1 file2 file3 file4 file5
 
 
 total 24
--rw-r--r-- 1 jeremy jeremy  259 Sep 22 01:12 file1
--rw-r--r-- 1 jeremy jeremy   49 Sep 22 01:12 file2
--rw-r--r-- 1 jeremy jeremy    3 Sep 22 01:12 file3
--rw-r--r-- 1 jeremy jeremy    0 Sep 22 01:12 file4
--rw-r--r-- 1 jeremy jeremy 5831 Sep 22 01:12 file5
--rwxr-xr-x 1 jeremy jeremy 2429 Sep 22 01:12 stats
+-rw-r--r-- 1 jeremy jeremy  259 Sep 28 01:15 file1
+-rw-r--r-- 1 jeremy jeremy   49 Sep 28 01:15 file2
+-rw-r--r-- 1 jeremy jeremy    3 Sep 28 01:15 file3
+-rw-r--r-- 1 jeremy jeremy    0 Sep 28 01:15 file4
+-rw-r--r-- 1 jeremy jeremy 5831 Sep 28 01:15 file5
+-rwxr-xr-x 1 jeremy jeremy 2429 Sep 28 01:15 stats
 
 
 ------------------------------------------------------------------------------------------------------
@@ -296,15 +296,15 @@ file2
 file3
 file4
 file5
-inputdata32678
+inputdata11712
 stats
 
   PID TTY          TIME CMD
- 1756 pts/6    00:00:00 ps
-30493 pts/6    00:00:00 bash
-30494 pts/6    00:00:00 p1gradingscript
-31831 pts/6    00:00:02 bash
-32678 pts/6    00:00:00 stats
+ 4200 pts/0    00:00:00 bash
+ 9693 pts/0    00:00:00 bash
+ 9694 pts/0    00:00:00 p1gradingscript
+11712 pts/0    00:00:00 stats
+12947 pts/0    00:00:00 ps
 
 
 After Kill: 8 points if no temp files
@@ -316,9 +316,9 @@ file5
 stats
 
   PID TTY          TIME CMD
- 5308 pts/6    00:00:00 ps
-30493 pts/6    00:00:00 bash
-30494 pts/6    00:00:00 p1gradingscript
-31831 pts/6    00:00:02 bash
+ 4200 pts/0    00:00:00 bash
+ 9693 pts/0    00:00:00 bash
+ 9694 pts/0    00:00:00 p1gradingscript
+16264 pts/0    00:00:00 ps
 
 

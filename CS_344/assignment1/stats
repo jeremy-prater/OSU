@@ -33,7 +33,7 @@ function roundNumber {
 ## Calculate the median of an array and return the median
 ## Handle the special case of an even number by returning the average
 function calcMedian {
-    read -a data <<< `echo $1 | tr " " "\n" | sort -n | tr "\n" " "`
+    read -a data <<< "`echo $1 | tr \" \" \"\n\" | sort -n | tr \"\n\" \" \"`"
     if [ $(( $2 % 2 )) -eq 0 ] ; then
         a=${data[$(( (( $2 )) / 2 ))]}
         b=${data[$(( (( $2  + 1)) / 2 ))]}
@@ -121,7 +121,7 @@ function readInput {
             x=$(( x + 1 ))
         done
     y=$(( y + 1 ))
-    done <<< `cat $inputbuffer`
+    done <<< "`cat $inputbuffer`"
     x=$(( x - 1 ))
     y=$(( y - 1 ))
 }

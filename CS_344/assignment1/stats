@@ -10,7 +10,7 @@
 ## Exit immediately if an error occurs!
 set -eE
 
-################ Input data goes here
+################ BASH variable declarations
 inputbuffer=inputdata$$
 declare -A inputBuffer
 x=0
@@ -25,7 +25,8 @@ function cleanup {
     rm -f $inputbuffer
 }
 
-## Provided rounding function
+## rounding functions.
+## Two parameters. Returns the rounded number via stdout
 function roundNumber {
     echo $(( ( $1 + ( $2 / 2 ) ) / $2 ))
 }
@@ -33,6 +34,8 @@ function roundNumber {
 ## Calculate the median of an array and return the median
 ## Handle the special case of an even number by returning the average
 function calcMedian {
+    ## Read input into the buffer data.
+    ## Echo data, insert new lines, sort data, and then remove new lines.
     read -a data <<< "`echo $1 | tr \" \" \"\n\" | sort -n | tr \"\n\" \" \"`"
     if [ $(( $2 % 2 )) -eq 0 ] ; then
         a=${data[$(( (( $2 )) / 2 ))]}
@@ -43,7 +46,7 @@ function calcMedian {
     fi
 }
 
-## Input function that computes rows
+## Input function that computes rows (--rows)
 function processRows {
     echo -e "Average\tMedian"
     for ly in `seq 0 $y`
@@ -66,7 +69,7 @@ function processRows {
     done
 }
 
-## Input function that computes columns
+## Input function that computes columns (--columns)
 function processCols {
     echo "Averages:"
     for lx in `seq 0 $x`
@@ -97,6 +100,8 @@ function processCols {
 }
 
 ## Get the data from the temp file (file or stdin)
+## This function takes the input (from file or stdin) and saves
+## it to a temporary file defined by $inputbuffer
 function getInput {
     if [ $1 ] ; then
         cat $1 > $inputbuffer
@@ -110,7 +115,8 @@ function stdinread {
     cat > $inputbuffer
 }
 
-## Read input into a buffer
+## Read the contents of $inputbuffer into
+## the array inputBuffer
 function readInput {
     while read -r -a buffer
     do
@@ -122,6 +128,8 @@ function readInput {
         done
     y=$(( y + 1 ))
     done <<< "`cat $inputbuffer`"
+
+    ## This is important. We subtract 1 from X and Y. Now X and Y are the max sizes for our data.
     x=$(( x - 1 ))
     y=$(( y - 1 ))
 }
@@ -153,7 +161,6 @@ getInput $2
 readInput "$inputbuffer"
 
 ## Determine if we are calculating rows or columns
-
 if [[ $1 == -r* ]] ; then
     processRows
 elif [[ $1 == -c* ]] ; then
@@ -163,4 +170,5 @@ else
 fi
 
 ## Cleanup
+## delete temporary files
 cleanup

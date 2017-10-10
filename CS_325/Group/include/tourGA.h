@@ -1,4 +1,4 @@
-#ifdef TSP_TOUR_GA_H
+#ifndef TSP_TOUR_GA_H
 #define TSP_TOUR_GA_H
 
 #include "tourPop.h"
@@ -6,16 +6,16 @@
 class TourGA
 {
 public:
-    static TourPop * evolvePopulation(TourPop * pop);
+    static TourPopulation * evolvePopulation(TourPopulation * pop);
     static Tour * crossover (Tour * parent1, Tour * parent2);
     static void mutate(Tour * tour);
-    static Tour * tournamentSelection(TourPop * pop);
+    static Tour * tournamentSelection(TourPopulation * pop);
 
 
 private:
-    static double mutationRate;
+    static int mutationRate;
     static int tournamentSize;
     static bool elitism;
-}
+};
 
 #endif // TSP_TOUR_GA_H

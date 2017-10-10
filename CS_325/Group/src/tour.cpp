@@ -1,19 +1,20 @@
-#include "Tour.h"
-#include <algorithm>
-#include <random>
-#include <iterator>
+#include "tour.h"
 
-auto Tour::randomShuffle = std::default_random_engine {};
+static auto randomShuffle = std::default_random_engine{};
 
-Tour::Tour (TourSet * parentSet)
+Tour::Tour ()
 {
-    tourSet = parentSet;
     fitness = 0;
     distance = 0;
+	for (int index = 0; index < TourSet::cityCount(); index++)
+	{
+		tour.push_back(NULL);
+	}
 }
 
 void Tour::generate()
 {
+	tour.clear();
     std::vector<City *> * cityList = TourSet::getCityList();
     std::copy(cityList->begin(), cityList->end(), back_inserter(tour));
     std::shuffle(tour.begin(), tour.end(), randomShuffle);
@@ -44,7 +45,7 @@ int Tour::getDistance()
     if (distance == 0)
     {
         int tourDistance = 0;
-        for (int cityIndex = 0; cityIndex < tour.size(), cityIndex++)
+        for (size_t cityIndex = 0; cityIndex < tour.size(); cityIndex++)
         {
             City * startCity = getCity(cityIndex);
             City * endCity;
@@ -56,7 +57,7 @@ int Tour::getDistance()
             {
                 endCity = getCity (0);
             }
-            tourDistance += startCity->getDistance(endCity);
+            tourDistance += startCity->distanceTo(endCity);
         }
         distance = tourDistance;
     }
@@ -77,4 +78,15 @@ bool Tour::containsCity(City * city)
     {
         return false;
     }
+}
+
+void Tour::ToString() {
+	printf("|");
+	for (int i = 0; i < tourLength(); i++)
+	{
+		City * curCity = getCity(i);
+		printf("%d %d", curCity->getX(), curCity->getY());
+		printf("|");
+	}
+	printf("\n");
 }

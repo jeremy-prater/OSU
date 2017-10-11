@@ -69,13 +69,64 @@ void CreateRooms(room_t * rooms)
     }
 }
 
+int FindEmptyRoomSlot(room_t * room)
+{
+    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    {
+        if (!room->roomConnections[connectionIndex])
+        {
+            return connectionIndex;
+        }
+    }
+    return -1;
+}
+
+int CreateLink(room_t * rooms, int A, int B)
+{
+    for (int testRoomIndex = 0; testRoomIndex < NUM_ROOMS; testRoomIndex++)
+    {
+        // Check if room B is already connected to room A
+        if (rooms[B].roomConnections[testRoomIndex] == (struct room_t*)&rooms[A])
+        {
+            // No good, the rooms are already connected...
+            //printf ("[%s] is already connected to [%s]\n", rooms[A].roomName, rooms[B].roomName);
+            return 0;
+        }
+    }
+    printf ("Connecting [%s] to [%s]\n", rooms[A].roomName, rooms[B].roomName);
+    // Find empty slot and connect rooms
+    int aIndex = FindEmptyRoomSlot(&rooms[A]);
+    int bIndex = FindEmptyRoomSlot(&rooms[B]);
+    rooms[A].roomConnections[aIndex] = (struct room_t*)&rooms[B];
+    rooms[B].roomConnections[bIndex] = (struct room_t*)&rooms[A];
+    return 1;
+}
+
 void LinkRooms(room_t * rooms)
 {
     // Starting room is at index 0
     // Ending room is at NUM_ROOMS
     // A tree is probably the best data structure to do this
     // The ending room will be a leaf at the outermost branch
-    
+    for (int roomConnectionCount = 0; roomConnectionCount < NUM_DEFAULT_CONNECTIONS; roomConnectionCount++)
+    {
+        for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+        {
+            // Generate a connecting room index
+            int A = roomIndex;
+            int B = -1;
+            int searching = 1;
+            while (searching)
+            {
+                B = rand() % NUM_ROOMS;
+                if (B != A)
+                {
+                    // No rooms connect to self
+                    searching = !CreateLink(rooms, A, B);
+                }
+            }
+        }
+    }
 }
 
 void SaveRooms(room_t * rooms)

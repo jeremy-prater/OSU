@@ -11,6 +11,7 @@
 #define NUM_ROOMS 7
 #define MAX_ROOMS 10
 #define NUM_CONNECTIONS 6
+#define NUM_DEFAULT_CONNECTIONS 3
 #define MAX_ROOM_PATH 256
 
 typedef struct

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
@@ -64,7 +65,7 @@ void CreateRooms(room_t * rooms)
         else
         {
             rooms[roomCreationCount].roomName = roomNames[newRoomIndex];
-            snprintf (rooms[roomCreationCount].roomFile, MAX_ROOM_PATH, "praterj.rooms.%d.%s", getpid(), rooms[roomCreationCount].roomName);
+            snprintf (rooms[roomCreationCount].roomFile, MAX_ROOM_PATH, "%s.room", rooms[roomCreationCount].roomName);
             printf ("Created room [%s] with file name [%s]\n", rooms[roomCreationCount].roomName, rooms[roomCreationCount].roomFile);
             rooms[roomCreationCount].roomCreated = 1;
             rooms[roomCreationCount].roomType = ROOM_MID;
@@ -227,10 +228,15 @@ void SaveRoom(room_t * room)
 
 void SaveRooms(room_t * rooms)
 {
+    char directory[64];
+    snprintf (directory, MAX_ROOM_PATH, "./praterj.rooms.%d", getpid());
+    mkdir(directory, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    chdir (directory);
     for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         SaveRoom (&rooms[roomIndex]);
     }
+    chdir ("..");
 }
 
 int main(int argc, char * argv[])

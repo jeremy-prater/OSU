@@ -235,7 +235,6 @@ void SaveRooms(room_t * rooms)
 
 int main(int argc, char * argv[])
 {
-    int winning = 1;
     CreateRooms(roomData);
     LinkRooms (roomData);
     while (!CheckConnectivity(startRoom, endRoom))

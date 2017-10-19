@@ -237,6 +237,7 @@ void SaveRooms(room_t * rooms)
         SaveRoom (&rooms[roomIndex]);
     }
     chdir ("..");
+    printf ("Game data saved in [%s]\n", directory);
 }
 
 int main(int argc, char * argv[])

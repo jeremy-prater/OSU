@@ -49,6 +49,25 @@ char * FindNewestGameDir()
     closedir (directoryScanner);
 }
 
+void LoadRoom(char * roomFile)
+{
+    printf ("Loading room [%s]\n", roomFile);
+}
+
+void LoadGameData()
+{
+    DIR * directoryScanner = opendir(gameDirectory);
+    struct dirent * currentDirectory;
+    while ((currentDirectory = readdir (directoryScanner)))
+    {
+        if (strstr(currentDirectory->d_name, ".room") != NULL)
+        {
+            LoadRoom (currentDirectory->d_name);
+        }
+    }
+    closedir (directoryScanner);
+}
+
 
 
 int main(int argc, char * argv[])
@@ -60,5 +79,6 @@ int main(int argc, char * argv[])
         printf("No valid game directories found! run praterj.buildsrooms first\n");
         return -1;
     }
+    LoadGameData();
     return 0;
 }

@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -49,9 +50,26 @@ char * FindNewestGameDir()
     closedir (directoryScanner);
 }
 
-void LoadRoom(char * roomFile)
+void LoadRoom(char * roomFileName)
 {
-    printf ("Loading room [%s]\n", roomFile);
+    char localFileName[128];
+    snprintf(localFileName, 128, "%s/%s", gameDirectory, roomFileName);
+    char localBuffer[128];
+    printf ("Loading room [%s]\n", localFileName);
+    FILE * roomFile = fopen(localFileName, "r");
+    if (roomFile == NULL)
+    {
+        printf ("Error Loading room [%s] [%s]\n", roomFileName, strerror(errno));
+        exit(-2);
+    }
+    fgets(localBuffer, 128, roomFile);
+    do
+    {
+        localBuffer[strlen(localBuffer) - 1] = 0x00;
+        printf ("Room Data [%s]\n", localBuffer);
+        fgets(localBuffer, 128, roomFile);
+    } while (!feof(roomFile));
+    fclose(roomFile);
 }
 
 void LoadGameData()

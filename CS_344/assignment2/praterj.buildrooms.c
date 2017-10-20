@@ -111,8 +111,10 @@ int CreateLink(room_t * rooms, int A, int B)
             if (
                 (rooms[A].roomConnections[testRoomIndexA]) &&
                 (rooms[B].roomConnections[testRoomIndexB]) &&
-                (rooms[A].roomConnections[testRoomIndexA] == rooms[B].roomConnections[testRoomIndexB])
-                )
+                (
+                    (rooms[A].roomConnections[testRoomIndexA] == (struct room_t *)&rooms[B]) ||
+                    (rooms[B].roomConnections[testRoomIndexB] == (struct room_t *)&rooms[A])
+                ))
             {
                 // No good, the rooms are already connected...
                 /*printf ("[%s] is already connected to [%s] [%p]==[%p]\n",

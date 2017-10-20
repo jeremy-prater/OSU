@@ -287,6 +287,17 @@ int main(int argc, char * argv[])
     }
     LoadGameData();
     LinkRooms();
+    printf ("\n");
+    printf ("------------------------------------------------------------------------\n");
+    printf ("|  CS 344 Adventure game                                               |\n");
+    printf ("|                                                                      |\n");
+    printf ("|  Jeremy Prater                                                       |\n");
+    printf ("|  praterj@oregonstate.edu                                             |\n");
+    printf ("|  https://github.com/jeremy-prater/OSU/tree/master/CS_344/assignment2 |\n");
+    printf ("|                                                                      |\n");
+    printf ("------------------------------------------------------------------------\n");
+    printf ("\n");
+    
     int turnCounter = 0;
     char ** history = (char**)malloc(sizeof (char*));
     while (currentRoom != endRoom)

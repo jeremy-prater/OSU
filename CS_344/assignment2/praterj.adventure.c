@@ -141,7 +141,8 @@ void LoadGameData()
 
 room_t * FindRoom(const char * name)
 {
-    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    int roomIndex = 0;
+    for (roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         if (strcmp (name, rooms[roomIndex].roomName) == 0)
         {
@@ -153,10 +154,12 @@ room_t * FindRoom(const char * name)
 
 void LinkRooms()
 {
-    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    int roomIndex = 0;
+    for (roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         room_t * currentRoom = &rooms[roomIndex];
-        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+        int connectionIndex = 0;
+        for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
         {
             if (rooms[roomIndex].roomConnectionIDs[connectionIndex])
             {
@@ -175,7 +178,8 @@ int runGame()
     char userInput[128];
     memset (roomConnections, 512, 0);
     char * roomConnectionStringPtr = roomConnections;
-    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    int connectionIndex = 0;
+    for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
     {
         if (currentRoom->roomConnections[connectionIndex])
         {
@@ -210,7 +214,8 @@ int runGame()
     }
     else
     {
-        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+        int connectionIndex = 0;
+        for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
         {
             if (currentRoom->roomConnections[connectionIndex])
             {
@@ -294,17 +299,20 @@ int main(int argc, char * argv[])
     }
     printf ("YOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
     printf ("YOU TOOK %d STEPS. YOUR PATH TO VICTORY WAS:\n", turnCounter);
-    for (int historyIndex = 0; historyIndex < turnCounter; historyIndex++)
+    int historyIndex = 0;
+    for (historyIndex = 0; historyIndex < turnCounter; historyIndex++)
     {
         printf("%s\n", history[historyIndex]);
         free (history[historyIndex]);
     }
 
     free (history);
-    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    int roomIndex = 0;
+    for (roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         free ((void*)rooms[roomIndex].roomName);
-        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+        int connectionIndex = 0;
+        for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
         {
             if (((room_t*)&rooms[roomIndex])->roomConnectionIDs[connectionIndex])
             {

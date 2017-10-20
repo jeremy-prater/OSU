@@ -44,7 +44,8 @@ void CreateRooms(room_t * rooms)
         {
             newRoomIndex = rand() % MAX_ROOMS;
             // Check if room is already used...
-            for (int checkIndex = 0; checkIndex < NUM_ROOMS; checkIndex++)
+            int checkIndex = 0;
+            for (checkIndex = 0; checkIndex < NUM_ROOMS; checkIndex++)
             {
                 if (rooms[checkIndex].roomCreated)
                 {
@@ -86,7 +87,8 @@ void CreateRooms(room_t * rooms)
 
 int FindEmptyRoomSlot(room_t * room)
 {
-    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    int connectionIndex = 0;
+    for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
     {
         if (!room->roomConnections[connectionIndex])
         {
@@ -102,10 +104,11 @@ int CreateLink(room_t * rooms, int A, int B)
     {
         return 0;
     }
-
-    for (int testRoomIndexA = 0; testRoomIndexA < NUM_CONNECTIONS; testRoomIndexA++)
+    int testRoomIndexA = 0;
+    for (testRoomIndexA = 0; testRoomIndexA < NUM_CONNECTIONS; testRoomIndexA++)
     {
-        for (int testRoomIndexB = 0; testRoomIndexB < NUM_CONNECTIONS; testRoomIndexB++)
+        int testRoomIndexB = 0;
+        for (testRoomIndexB = 0; testRoomIndexB < NUM_CONNECTIONS; testRoomIndexB++)
         {
             // Check if room B is already connected to room A
             if (
@@ -149,7 +152,8 @@ void LinkRooms(room_t * rooms)
     while (linking)
     {
         int minLinks = NUM_ROOMS;
-        for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+        int roomIndex = 0;
+        for (roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
         {
             // Generate a connecting room index
             int A = roomIndex;
@@ -183,7 +187,8 @@ int CheckConnectivity(room_t * start, room_t * end)
     }
 
     int foundIt = 0;
-    for (int roomIndex = 0; roomIndex < NUM_CONNECTIONS; roomIndex++)
+    int roomIndex = 0;
+    for (roomIndex = 0; roomIndex < NUM_CONNECTIONS; roomIndex++)
     {
         if (!(room_t*)start->roomConnections[roomIndex])
         {
@@ -204,7 +209,8 @@ void SaveRoom(room_t * room)
     FILE * outFile = fopen(room->roomFile, "w");
     fprintf (outFile, "ROOM NAME: %s\n", room->roomName);
     
-    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    int connectionIndex = 0;
+    for (connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
     {
         if (room->roomConnections[connectionIndex])
         {
@@ -234,7 +240,8 @@ void SaveRooms(room_t * rooms)
     snprintf (directory, MAX_ROOM_PATH, "./praterj.rooms.%d", getpid());
     mkdir(directory, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     chdir (directory);
-    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    int roomIndex = 0;
+    for (roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         SaveRoom (&rooms[roomIndex]);
     }

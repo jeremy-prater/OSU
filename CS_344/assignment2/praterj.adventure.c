@@ -167,11 +167,11 @@ void LinkRooms()
                 printf ("Linking [%s]->[%s]", rooms[roomIndex].roomName, ((room_t *)rooms[roomIndex].roomConnections[connectionIndex])->roomName);
                 if (rooms[roomIndex].roomType == ROOM_START)
                 {
-                    printf (" <--- [START]");
+                    printf (" ---> [START]");
                 }
                 if (rooms[roomIndex].roomType == ROOM_END)
                 {
-                    printf (" ---> [END]");
+                    printf (" <--- [END]");
                 }
                 printf ("\n");
             }

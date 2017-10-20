@@ -15,12 +15,17 @@
 #include <time.h>
 #include "praterj.adventure.h"
 #include <dirent.h>
+#include <pthread.h>
 
 char gameDirectory[64];
 room_t rooms[NUM_ROOMS];
 room_t * startRoom;
 room_t * endRoom;
 room_t * currentRoom;
+pthread_t timeThread;
+pthread_mutex_t timeMutex = PTHREAD_MUTEX_INITIALIZER;
+int timeThreadRunning = 1;
+volatile int timerRunning = 0;
 
 int CheckTimeDiff (const struct timespec lhs, const struct timespec rhs)
 {
@@ -195,17 +200,29 @@ int runGame()
     userInput[strlen(userInput) - 1] = 0x00;
 
     int foundRoom = 0;
-    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    if (strcmp (userInput, "time") == 0)
     {
-        if (currentRoom->roomConnections[connectionIndex])
+        pthread_mutex_unlock (&timeMutex);
+        timerRunning = 1;
+        while (timerRunning);
+        pthread_mutex_lock (&timeMutex);
+        return 0;
+    }
+    else
+    {
+        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
         {
-            if (strcmp (userInput, ((room_t *)currentRoom->roomConnections[connectionIndex])->roomName) == 0)
+            if (currentRoom->roomConnections[connectionIndex])
             {
-                currentRoom = (room_t *)currentRoom->roomConnections[connectionIndex];
-                foundRoom = 1;
+                if (strcmp (userInput, ((room_t *)currentRoom->roomConnections[connectionIndex])->roomName) == 0)
+                {
+                    currentRoom = (room_t *)currentRoom->roomConnections[connectionIndex];
+                    foundRoom = 1;
+                }
             }
         }
     }
+
     if (!foundRoom)
     {
         printf ("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
@@ -217,8 +234,42 @@ int runGame()
     return 1;
 }
 
+void * timeFunction(void * context)
+{
+    while (timeThreadRunning)
+    {
+        pthread_mutex_lock (&timeMutex);
+        if (timeThreadRunning && timerRunning)
+        {
+            timerRunning = 0;
+            time_t now;
+            time (&now);
+            const struct tm * timeNow = localtime (&now);
+            char timeString[128];
+            strftime(timeString, 128, "%l:%M%p, %A, %B %d, %Y", timeNow);
+            printf ( "\n %s\n\n", timeString);
+            FILE * timeFile = fopen ("currentTime.txt", "w");
+            if (!timeFile)
+            {
+                printf ("Failed to create currentTime.txt [%s]", strerror(errno));
+                exit (-4);
+            }
+            fwrite(timeString, strlen (timeString), 1, timeFile);
+            fclose (timeFile);
+          
+        }
+        pthread_mutex_unlock (&timeMutex);
+    }
+}
+
 int main(int argc, char * argv[])
 {
+    pthread_mutex_lock (&timeMutex);
+    if (pthread_create(&timeThread, NULL, timeFunction, NULL))
+    {
+        printf ("Failed to create time worker thread!\n");
+        exit (-3);
+    }
     memset (gameDirectory, 0, sizeof (gameDirectory));
     memset (rooms, 0, sizeof(room_t) * NUM_ROOMS);
     FindNewestGameDir();
@@ -261,5 +312,9 @@ int main(int argc, char * argv[])
             }
         }
     }
+    
+    timeThreadRunning = 0;
+    pthread_mutex_unlock (&timeMutex);
+    pthread_join(timeThread, NULL);
     return 0;
 }

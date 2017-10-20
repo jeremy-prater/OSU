@@ -251,6 +251,7 @@ void * timeFunction(void * context)
             time (&now);
             const struct tm * timeNow = localtime (&now);
             char timeString[128];
+            memset (timeString, 0, 128);
             strftime(timeString, 128, "%l:%M%p, %A, %B %d, %Y", timeNow);
             printf ( "\n %s\n\n", timeString);
             FILE * timeFile = fopen ("currentTime.txt", "w");

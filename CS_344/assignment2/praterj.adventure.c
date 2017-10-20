@@ -259,6 +259,7 @@ void * timeFunction(void * context)
                 printf ("Failed to create currentTime.txt [%s]", strerror(errno));
                 exit (-4);
             }
+            timeString[strlen(timeString)] = '\n';
             fwrite(timeString, strlen (timeString), 1, timeFile);
             fclose (timeFile);
           

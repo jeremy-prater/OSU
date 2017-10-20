@@ -18,9 +18,9 @@
 
 typedef enum
 {
-    ROOM_START,
-    ROOM_MID,
-    ROOM_END
+    ROOM_START = 1,
+    ROOM_MID = 2,
+    ROOM_END = 3
 } ROOM_TYPE;
 
 typedef struct
@@ -28,6 +28,7 @@ typedef struct
     const char * roomName;
     char roomFile[MAX_ROOM_PATH];
     struct room_t * roomConnections[NUM_CONNECTIONS];
+    const char * roomConnectionIDs[NUM_CONNECTIONS];
     int roomCreated;
     int roomChecked;
     int numConnections;

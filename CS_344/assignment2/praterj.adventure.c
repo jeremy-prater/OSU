@@ -17,6 +17,10 @@
 #include <dirent.h>
 
 char gameDirectory[64];
+room_t rooms[NUM_ROOMS];
+room_t * startRoom;
+room_t * endRoom;
+room_t * currentRoom;
 
 int CheckTimeDiff (const struct timespec lhs, const struct timespec rhs)
 {
@@ -50,7 +54,7 @@ char * FindNewestGameDir()
     closedir (directoryScanner);
 }
 
-void LoadRoom(char * roomFileName)
+void LoadRoom(int roomIndex, char * roomFileName)
 {
     char localFileName[128];
     snprintf(localFileName, 128, "%s/%s", gameDirectory, roomFileName);
@@ -66,7 +70,50 @@ void LoadRoom(char * roomFileName)
     do
     {
         localBuffer[strlen(localBuffer) - 1] = 0x00;
-        printf ("Room Data [%s]\n", localBuffer);
+        if (strstr(localBuffer, "ROOM NAME"))
+        {
+            char * token = strtok (localBuffer, ":");
+            token = strtok (NULL, ":");
+            token++;
+            rooms[roomIndex].roomName = strdup(token);
+            printf ("Room [%d] Name [%s]\n", roomIndex, rooms[roomIndex].roomName);
+        }
+
+        if (strstr(localBuffer, "CONNECTION"))
+        {
+            char * token = strtok (localBuffer, " ");
+            token = strtok (NULL, " ");
+            token[1] = 0x00;
+            int connectionIndex = atoi(token);
+            token+=3;
+            rooms[roomIndex].roomConnectionIDs[connectionIndex] = strdup(token);
+            printf ("Room [%d] Connection [%d][%s]\n", roomIndex, connectionIndex, rooms[roomIndex].roomConnectionIDs[connectionIndex]);
+        }
+
+
+        if (strstr(localBuffer, "ROOM TYPE"))
+        {
+            char * token = strtok (localBuffer, ":");
+            token = strtok (NULL, ":");
+            token++;
+            if (strstr(token, "START_ROOM"))
+            {
+                rooms[roomIndex].roomType = ROOM_START;
+                startRoom = &rooms[roomIndex];
+                currentRoom = startRoom;
+            }
+            if (strstr(token, "MID_ROOM"))
+            {
+                rooms[roomIndex].roomType = ROOM_MID;
+            }
+            if (strstr(token, "END_ROOM"))
+            {
+                rooms[roomIndex].roomType = ROOM_END;
+                endRoom = &rooms[roomIndex];
+            }
+            printf ("Room [%d] Type [%d]\n", roomIndex, rooms[roomIndex].roomType);
+        }
+
         fgets(localBuffer, 128, roomFile);
     } while (!feof(roomFile));
     fclose(roomFile);
@@ -76,21 +123,104 @@ void LoadGameData()
 {
     DIR * directoryScanner = opendir(gameDirectory);
     struct dirent * currentDirectory;
+    int roomIndex = 0;
     while ((currentDirectory = readdir (directoryScanner)))
     {
         if (strstr(currentDirectory->d_name, ".room") != NULL)
         {
-            LoadRoom (currentDirectory->d_name);
+            LoadRoom (roomIndex++, currentDirectory->d_name);
         }
     }
     closedir (directoryScanner);
 }
 
+room_t * FindRoom(const char * name)
+{
+    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    {
+        if (strcmp (name, rooms[roomIndex].roomName) == 0)
+        {
+            return &rooms[roomIndex];
+        }
+    }
+    return NULL;    
+}
 
+void LinkRooms()
+{
+    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    {
+        room_t * currentRoom = &rooms[roomIndex];
+        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+        {
+            if (rooms[roomIndex].roomConnectionIDs[connectionIndex])
+            {
+                rooms[roomIndex].roomConnections[connectionIndex] = (struct room_t *)FindRoom(rooms[roomIndex].roomConnectionIDs[connectionIndex]);
+                printf ("Linking [%s]->[%s]\n", rooms[roomIndex].roomName, ((room_t *)rooms[roomIndex].roomConnections[connectionIndex])->roomName);
+            }
+        }
+    }
+}
+
+int runGame()
+{
+    printf ("CURRENT LOCATION: %s\n", currentRoom->roomName);
+
+    char roomConnections[512];
+    char userInput[128];
+    memset (roomConnections, 512, 0);
+    char * roomConnectionStringPtr = roomConnections;
+    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    {
+        if (currentRoom->roomConnections[connectionIndex])
+        {
+            const char * connectorName = ((room_t *)currentRoom->roomConnections[connectionIndex])->roomName;
+            int stringLength = strlen(connectorName);
+            memcpy (roomConnectionStringPtr, connectorName, stringLength);
+            roomConnectionStringPtr += stringLength;
+            *roomConnectionStringPtr = ',';
+            roomConnectionStringPtr++;
+            *roomConnectionStringPtr = ' ';
+            roomConnectionStringPtr++;
+        }
+    }
+    roomConnectionStringPtr--;
+    roomConnectionStringPtr--;
+    *roomConnectionStringPtr = '.';
+    roomConnectionStringPtr++;
+    *roomConnectionStringPtr = 0x00;
+    printf ("POSSIBLE CONNECTIONS: %s\n", roomConnections);
+    printf ("WHERE TO? >");
+    fgets(userInput, 128, stdin);
+    userInput[strlen(userInput) - 1] = 0x00;
+
+    int foundRoom = 0;
+    for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+    {
+        if (currentRoom->roomConnections[connectionIndex])
+        {
+            if (strcmp (userInput, ((room_t *)currentRoom->roomConnections[connectionIndex])->roomName) == 0)
+            {
+                currentRoom = (room_t *)currentRoom->roomConnections[connectionIndex];
+                foundRoom = 1;
+            }
+        }
+    }
+    if (!foundRoom)
+    {
+        printf ("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
+        return 0;
+    }
+
+    printf ("\n");
+
+    return 1;
+}
 
 int main(int argc, char * argv[])
 {
     memset (gameDirectory, 0, sizeof (gameDirectory));
+    memset (rooms, 0, sizeof(room_t) * NUM_ROOMS);
     FindNewestGameDir();
     if (strlen(gameDirectory) == 0)
     {
@@ -98,5 +228,24 @@ int main(int argc, char * argv[])
         return -1;
     }
     LoadGameData();
+    LinkRooms();
+    int turnCounter = 0;
+    char ** history = NULL;
+    while (currentRoom != endRoom)
+    {
+        int turnStatus = runGame();
+        if (turnStatus)
+        {
+            history = (char**)realloc (history, sizeof (char*) * (turnCounter));
+            history[turnCounter] = strdup(currentRoom->roomName);
+        }
+        turnCounter += turnStatus;
+    }
+    printf ("YOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
+    printf ("YOU TOOK %d STEPS. YOUR PATH TO VICTORY WAS:\n", turnCounter);
+    for (int historyIndex = 0; historyIndex < turnCounter; historyIndex++)
+    {
+        printf("%s\n", history[historyIndex]);
+    }
     return 0;
 }

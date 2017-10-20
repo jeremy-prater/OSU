@@ -164,7 +164,16 @@ void LinkRooms()
             if (rooms[roomIndex].roomConnectionIDs[connectionIndex])
             {
                 rooms[roomIndex].roomConnections[connectionIndex] = (struct room_t *)FindRoom(rooms[roomIndex].roomConnectionIDs[connectionIndex]);
-                printf ("Linking [%s]->[%s]\n", rooms[roomIndex].roomName, ((room_t *)rooms[roomIndex].roomConnections[connectionIndex])->roomName);
+                printf ("Linking [%s]->[%s]", rooms[roomIndex].roomName, ((room_t *)rooms[roomIndex].roomConnections[connectionIndex])->roomName);
+                if (rooms[roomIndex].roomType == ROOM_START)
+                {
+                    printf (" <--- [START]");
+                }
+                if (rooms[roomIndex].roomType == ROOM_END)
+                {
+                    printf (" ---> [END]");
+                }
+                printf ("\n");
             }
         }
     }

@@ -230,13 +230,13 @@ int main(int argc, char * argv[])
     LoadGameData();
     LinkRooms();
     int turnCounter = 0;
-    char ** history = NULL;
+    char ** history = (char**)malloc(sizeof (char*));
     while (currentRoom != endRoom)
     {
         int turnStatus = runGame();
         if (turnStatus)
         {
-            history = (char**)realloc (history, sizeof (char*) * (turnCounter));
+            history = (char**)realloc (history, sizeof (char*) * (turnCounter + 1));
             history[turnCounter] = strdup(currentRoom->roomName);
         }
         turnCounter += turnStatus;
@@ -246,6 +246,22 @@ int main(int argc, char * argv[])
     for (int historyIndex = 0; historyIndex < turnCounter; historyIndex++)
     {
         printf("%s\n", history[historyIndex]);
+        free (history[historyIndex]);
+    }
+    if (history)
+    {
+        free (history);
+    }
+    for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
+    {
+        free ((void*)rooms[roomIndex].roomName);
+        for (int connectionIndex = 0; connectionIndex < NUM_CONNECTIONS; connectionIndex++)
+        {
+            if (((room_t*)&rooms[roomIndex])->roomConnectionIDs[connectionIndex])
+            {
+                free ((void*)((room_t*)&rooms[roomIndex])->roomConnectionIDs[connectionIndex]);
+            }
+        }
     }
     return 0;
 }

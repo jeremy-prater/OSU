@@ -248,10 +248,8 @@ int main(int argc, char * argv[])
         printf("%s\n", history[historyIndex]);
         free (history[historyIndex]);
     }
-    if (history)
-    {
-        free (history);
-    }
+
+    free (history);
     for (int roomIndex = 0; roomIndex < NUM_ROOMS; roomIndex++)
     {
         free ((void*)rooms[roomIndex].roomName);

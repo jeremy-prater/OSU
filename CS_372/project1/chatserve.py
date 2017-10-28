@@ -23,11 +23,17 @@ while 1:
     handle = connectionSocket.recv(1024);
     print "User : [" + handle + "] connected!"
     running = True
+    counter = 0;
     while running:
         serverData = connectionSocket.recv(1024);
+        if not serverData: break
         if '\\quit' in serverData:
             print "User : [" + handle + "] disconnected!"
             running = False
         else:
             print handle + "> " + serverData
-            connectionSocket.send('server> ' + serverData);
+            counter = counter + 1
+            if counter == 5:
+                connectionSocket.send('\\quit')
+            else:
+                connectionSocket.send('server> ' + serverData);

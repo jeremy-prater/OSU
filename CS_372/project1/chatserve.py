@@ -26,8 +26,7 @@ while 1:
     counter = 0;
     while running:
         serverData = connectionSocket.recv(1024);
-        if not serverData: break
-        if serverData == '\\quit':
+        if not serverData or serverData == '\\quit':
             print "User : [" + handle + "] disconnected!"
             running = False
         else:

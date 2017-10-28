@@ -15,17 +15,19 @@ def GetCommandArguments():
 serverPort = GetCommandArguments()
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.bind(('', serverPort))
-serverSocket.listen(1)
-print "Server listening on port {0}".format(serverPort)
 
 while 1:
+    serverSocket.listen(1)
+    print "Server listening on port {0}".format(serverPort)
     connectionSocket, addr = serverSocket.accept()
-
+    handle = connectionSocket.recv(1024);
+    print "User : [" + handle + "] connected!"
     running = True
     while running:
         serverData = connectionSocket.recv(1024);
-        print serverData
-        connectionSocket.send('server> ' + serverData);
-        if serverData == '\\quit':
+        if '\\quit' in serverData:
+            print "User : [" + handle + "] disconnected!"
             running = False
-            serverSocket.close()
+        else:
+            print handle + "> " + serverData
+            connectionSocket.send('server> ' + serverData);

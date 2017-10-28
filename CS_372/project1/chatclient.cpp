@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 
-void CriticalError(const char *errorMessage)  /* Error handling function */
+void CriticalError(const char *errorMessage)
 {
     printf ("Error! [%s]\n", errorMessage);
     exit (-1);
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     char *serverHost;
     std::string outgoing;
     std::string handle;
+    char incomingData[1024];
 
     if (argc != 3)
     {
@@ -42,16 +43,20 @@ int main(int argc, char *argv[])
     serverAddress.sin_addr.s_addr = inet_addr(serverHost);
     serverAddress.sin_port        = htons(serverPort);
 
+    printf ("Enter handle : ");
+
+    std::cin >> handle;
+    handle = handle.substr (0,10);
+
     printf ("Connecting to %s:%d\n", serverHost, serverPort);
     if (connect(sock, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0)
     {
         CriticalError("connect() failed");
     }
-
-    printf ("Enter handle : ");
-
-    std::cin >> handle;
-    handle = handle.substr (0,10);
+    if (send(sock, handle.c_str(), handle.length(), 0) != handle.length())
+    {
+        CriticalError("handle sent a different number of bytes than expected");
+    }
 
     char running = 1;
 
@@ -60,16 +65,21 @@ int main(int argc, char *argv[])
         std::cout << handle.c_str() << ">";
 
         std::cin >> outgoing;
-
-        if (outgoing.compare("/quit") == 0)
-        {
-            running = 0;
-            break;
-        }
-;
         if (send(sock, outgoing.c_str(), outgoing.length(), 0) != outgoing.length())
         {
             CriticalError("send() sent a different number of bytes than expected");
+        }
+        if (outgoing.compare("\\quit") == 0)
+        {
+            std::cout << "Thanks for chatting!" << std::endl;
+            running = 0;
+        }
+        else
+        {
+            if (read(sock, incomingData, 1024))
+            {
+                std::cout << incomingData << std::endl;
+            }
         }
     }
 

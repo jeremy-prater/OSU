@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     printf ("Enter handle : ");
 
-    std::cin >> handle;
+    std::getline(std::cin, handle);
     handle = handle.substr (0,10);
 
     printf ("Connecting to %s:%d\n", serverHost, serverPort);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     {
         std::cout << handle.c_str() << ">";
 
-        std::cin >> outgoing;
+        std::getline(std::cin, outgoing);
         if (send(sock, outgoing.c_str(), outgoing.length(), 0) != outgoing.length())
         {
             CriticalError("send() sent a different number of bytes than expected");

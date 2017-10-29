@@ -1,8 +1,21 @@
 #! /bin/python2
+#####################################################################################
+##
+## CS 372 Project 1
+##
+## Chat server
+##
+## Jeremy Prater
+##
 
 from socket import *
 import argparse
 import sys
+
+#####################################################################################
+##
+## Get the port number from the command line
+##
 
 def GetCommandArguments():
     parser = argparse.ArgumentParser(description='Start the chatserve server')
@@ -12,13 +25,13 @@ def GetCommandArguments():
     args = parser.parse_args()
     return args.port
 
-serverHandle = 'server>'
 
-serverPort = GetCommandArguments()
-serverSocket = socket(AF_INET, SOCK_STREAM)
-serverSocket.bind(('', serverPort))
+#####################################################################################
+##
+## Main server loop
+##
 
-while 1:
+def ServerChatLoop(serverSocket, serverHandle):
     serverSocket.listen(1)
     print "Server listening on port {0}".format(serverPort)
     connectionSocket, addr = serverSocket.accept()
@@ -37,3 +50,19 @@ while 1:
             sys.stdout.flush()
             inputData = sys.stdin.readline().rstrip()
             connectionSocket.send(serverHandle + ' ' + inputData);
+
+
+
+#####################################################################################
+##
+## Program entry point
+##
+
+serverHandle = 'server>'
+serverPort = GetCommandArguments()
+serverSocket = socket(AF_INET, SOCK_STREAM)
+serverSocket.bind(('', serverPort))
+
+
+while 1:
+    ServerChatLoop(serverSocket, serverHandle)

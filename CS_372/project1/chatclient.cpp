@@ -38,9 +38,17 @@ int main(int argc, char *argv[])
         CriticalError("socket() failed");
     }
 
+
+    struct hostent * hostEntry = gethostbyname(serverHost);
+
+    if (!hostEntry)
+    {
+        CriticalError(hstrerror(h_errno));
+    }
+
     memset(&serverAddress, 0, sizeof(serverAddress));
     serverAddress.sin_family      = AF_INET;
-    serverAddress.sin_addr.s_addr = *(uint32_t*)gethostbyname(serverHost)->h_addr_list[0];
+    serverAddress.sin_addr.s_addr = *(uint32_t*)hostEntry->h_addr_list[0];
     serverAddress.sin_port        = htons(serverPort);
 
     printf ("Enter handle : ");

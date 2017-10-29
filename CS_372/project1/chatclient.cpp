@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <netdb.h>
 #include <string>
 #include <iostream>
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
     memset(&serverAddress, 0, sizeof(serverAddress));
     serverAddress.sin_family      = AF_INET;
-    serverAddress.sin_addr.s_addr = inet_addr(serverHost);
+    serverAddress.sin_addr.s_addr = *(uint32_t*)gethostbyname(serverHost)->h_addr_list[0];
     serverAddress.sin_port        = htons(serverPort);
 
     printf ("Enter handle : ");

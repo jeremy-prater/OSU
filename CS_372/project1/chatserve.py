@@ -2,6 +2,7 @@
 
 from socket import *
 import argparse
+import sys
 
 def GetCommandArguments():
     parser = argparse.ArgumentParser(description='Start the chatserve server')
@@ -11,6 +12,7 @@ def GetCommandArguments():
     args = parser.parse_args()
     return args.port
 
+serverHandle = 'server>'
 
 serverPort = GetCommandArguments()
 serverSocket = socket(AF_INET, SOCK_STREAM)
@@ -23,7 +25,6 @@ while 1:
     handle = connectionSocket.recv(1024);
     print "User : [" + handle + "] connected!"
     running = True
-    counter = 0;
     while running:
         serverData = connectionSocket.recv(1024);
         if not serverData or serverData == '\\quit':
@@ -31,8 +32,8 @@ while 1:
             running = False
         else:
             print handle + "> " + serverData
-            counter = counter + 1
-            if counter == 5:
-                connectionSocket.send('\\quit')
-            else:
-                connectionSocket.send('server> ' + serverData);
+            # Get input data and send
+            sys.stdout.write(serverHandle + ' ')
+            sys.stdout.flush()
+            inputData = sys.stdin.readline().rstrip()
+            connectionSocket.send(serverHandle + ' ' + inputData);

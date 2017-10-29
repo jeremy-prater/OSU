@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
             memset (incomingData, 0, sizeof (incomingData));
             if (read(sock, incomingData, 1024))
             {
-                if (strcmp("\\quit", incomingData) == 0)
+                if (strcmp("\\quit", incomingData + 8) == 0)
                 {
                     std::cout << "Server terminated connection" << std::endl;
                     std::cout << "Thanks for chatting!" << std::endl;

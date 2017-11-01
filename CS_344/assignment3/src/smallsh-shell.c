@@ -24,7 +24,8 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
 
 void CleanupCommandLine (struct parsedCommandLine * commandLine)
 {
-    for (int index = 0; index < commandLine->argc; index++)
+    int index = 0;
+    for (index = 0; index < commandLine->argc; index++)
     {
         free (commandLine->argv[index]);
     }

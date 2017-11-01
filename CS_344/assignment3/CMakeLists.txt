@@ -14,6 +14,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 set(SMALL_SH_SRC
   ${PROJECT_SOURCE_DIR}/src/smallsh.c
   ${PROJECT_SOURCE_DIR}/src/smallsh-shell.c
+  ${PROJECT_SOURCE_DIR}/src/smallsh-process.c
 )
 
 # Define the output executable

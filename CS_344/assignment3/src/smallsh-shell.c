@@ -20,6 +20,9 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
             stringTest[strlen(stringTest) - 1] = 0x00;
         }
     }
+    commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * ++commandLine->argc);
+    commandLine->argv[commandLine->argc - 1] = malloc(1);
+    commandLine->argv[commandLine->argc - 1][0] = 0x00;
 }
 
 void CleanupCommandLine (struct parsedCommandLine * commandLine)

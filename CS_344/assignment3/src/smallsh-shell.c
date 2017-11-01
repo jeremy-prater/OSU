@@ -7,7 +7,7 @@ int ProcessCommand(const char * input)
     printf ("Processing: %s\n", input);
 }
 
-int GetInput(char * input)
+char * GetInput(char * input)
 {
     printf (": ");
     return fgets(input, MAX_SHELL_INPUT, stdin);

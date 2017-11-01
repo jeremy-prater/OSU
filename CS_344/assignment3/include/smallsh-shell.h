@@ -5,6 +5,6 @@
 #define MAX_SHELL_ARGS 512
 
 int ProcessCommand(const char * input);
-int GetInput(char * input);
+char * GetInput(char * input);
 
 #endif // SMALLSH_SHELL_H

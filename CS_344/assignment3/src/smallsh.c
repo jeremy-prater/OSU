@@ -70,6 +70,11 @@ int main(int argc, char * argv[])
                             printf ("child... args... [%d][%s]\n", *tmpdbg, *tmpdbg);
                             tmpdbg++;
                         }
+                        // Execute dup2 here!!
+                        // Data out...
+                        //
+                        // Data in -- pipe!!
+                        // pipe - (input, output)
                         if (execvp (currentCommand.argv[0], &currentCommand.argv[0]) == -1)
                         {
                             printf ("Command failed! [%s]\n", strerror(errno));

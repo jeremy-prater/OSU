@@ -6,23 +6,37 @@
 
 static void parseCommandLine(char * input, struct parsedCommandLine * commandLine)
 {
+    // Strip trailing eol off command line
+    int strLen = strlen (input);
+    input[strLen - 1] = 0x00;
+
+    // Get initial command
     input = strtok(input, " ");
     commandLine->argc = 0;
     commandLine->argv = 0;
+
+    if (input != 0)
+    {
+        commandLine->argc++;
+        commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * commandLine->argc);
+        commandLine->argv[commandLine->argc - 1] = strdup(input);
+        printf ("============= Command [%s]\n", commandLine->argv[commandLine->argc - 1]);
+    }
+
+    // Append command arguments
+    input = strtok(0, " ");
     while (input != 0)
     {
         commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * ++commandLine->argc);
         commandLine->argv[commandLine->argc - 1] = strdup(input);
+        printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
         input = strtok(0, " ");
-        char * stringTest = commandLine->argv[commandLine->argc - 1];
-        if ((!input) && (stringTest[strlen(stringTest) - 1] == '\n'))
-        {
-            stringTest[strlen(stringTest) - 1] = 0x00;
-        }
     }
-    commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * ++commandLine->argc);
-    commandLine->argv[commandLine->argc - 1] = malloc(1);
-    commandLine->argv[commandLine->argc - 1][0] = 0x00;
+
+    // Append trailing null on argv
+    commandLine->argc++;
+    commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * commandLine->argc);
+    commandLine->argv[commandLine->argc - 1] = 0x00;
 }
 
 void CleanupCommandLine (struct parsedCommandLine * commandLine)

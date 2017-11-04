@@ -64,13 +64,25 @@ int main(int argc, char * argv[])
                     case 0:
                     {
                         // This is the child. Execute the commands!
-                        execvp (currentCommand.argv[0], &currentCommand.argv[1]);
+                        char ** tmpdbg = &currentCommand.argv[0];
+                        while (*tmpdbg != 0)
+                        {
+                            printf ("child... args... [%d][%s]\n", *tmpdbg, *tmpdbg);
+                            tmpdbg++;
+                        }
+                        if (execvp (currentCommand.argv[0], &currentCommand.argv[0]) == -1)
+                        {
+                            printf ("Command failed! [%s]\n", strerror(errno));
+                            exit (errno);
+                        }
                     }
                     break;
                     default:
                     {
                         // I'm the parent... Monitor the child process
+                        printf ("parent... [%d]\n", spawnPID);
                         AddProcess(spawnPID);
+                        WaitProcess(spawnPID);
                     }
                     break;
                 }    

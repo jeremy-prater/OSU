@@ -1,4 +1,7 @@
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
 
 #include "smallsh-process.h"
 
@@ -25,5 +28,17 @@ void KillProcess (pid_t processID)
 
 void WaitProcess (pid_t processID)
 {
-
+    int exitedStatus;
+    waitpid(processID, &exitedStatus, 0);
+    if (WIFEXITED(exitedStatus) != 0)
+    {
+        int exitStatus = WEXITSTATUS(exitedStatus);
+        printf (" --- Processs [%d] exited [%d]\n", processID, exitStatus);
+    }
+    else if (WIFSIGNALED(exitedStatus) != 0)
+    {
+        int exitSignal = WTERMSIG(exitedStatus);
+        printf (" --- Processs [%d] exited by signal [%d]\n", processID, exitSignal);
+        
+    }
 }

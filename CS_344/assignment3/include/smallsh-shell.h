@@ -18,6 +18,9 @@ struct parsedCommandLine
     SHELL_CMD commandType;
     int argc;
     char ** argv;
+    char * outputFile;
+    char * inputFile;
+    unsigned char background;
 };
 
 char * GetInput(char * input);

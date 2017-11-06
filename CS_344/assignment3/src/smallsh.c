@@ -57,7 +57,7 @@ int main(int argc, char * argv[])
                 {
                     case -1:
                     {
-                        printf ("system failure...\n");
+                        printf ("system failure... [%s]\n", strerror(errno));
                         exit (-1);
                     }
                     break;
@@ -67,7 +67,7 @@ int main(int argc, char * argv[])
                         char ** tmpdbg = &currentCommand.argv[0];
                         while (*tmpdbg != 0)
                         {
-                            printf ("child... args... [%d][%s]\n", *tmpdbg, *tmpdbg);
+                            printf ("child... args... [%s]\n", *tmpdbg);
                             tmpdbg++;
                         }
                         // Execute dup2 here!!

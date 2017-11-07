@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 #include "smallsh-shell.h"
 #include "smallsh-process.h"
@@ -19,7 +20,7 @@ int main(int argc, char * argv[])
         GetInput(inputBuffer);
         struct parsedCommandLine currentCommand = ProcessCommand(inputBuffer);
 
-        printf ("Processing command type [%d]\n", currentCommand.commandType);
+        //printf ("Processing command type [%d]\n", currentCommand.commandType);
         switch (currentCommand.commandType)
         {
             case SHELL_CMD_EXIT:
@@ -31,16 +32,16 @@ int main(int argc, char * argv[])
             {
                 if (currentCommand.argc > 2)
                 {
-                    printf ("Changing directory to [%s]\n", currentCommand.argv[1]);
+                    //printf ("Changing directory to [%s]\n", currentCommand.argv[1]);
                     if (chdir(currentCommand.argv[1]))
                     {
-                        printf ("Failed to change directory to [%s] [%s]\n", currentCommand.argv[1], strerror(errno));
+                        //printf ("Failed to change directory to [%s] [%s]\n", currentCommand.argv[1], strerror(errno));
                     }
 
                 }
                 else
                 {
-                    printf ("cd: no directory specified\n");
+                    //printf ("cd: no directory specified\n");
                 }
                 fflush(stdout);
             }
@@ -57,7 +58,7 @@ int main(int argc, char * argv[])
                 {
                     case -1:
                     {
-                        printf ("system failure... [%s]\n", strerror(errno));
+                        //printf ("system failure... [%s]\n", strerror(errno));
                         exit (-1);
                     }
                     break;
@@ -67,17 +68,31 @@ int main(int argc, char * argv[])
                         char ** tmpdbg = &currentCommand.argv[0];
                         while (*tmpdbg != 0)
                         {
-                            printf ("child... args... [%s]\n", *tmpdbg);
+                            //printf ("child... args... [%s]\n", *tmpdbg);
                             tmpdbg++;
                         }
-                        // Execute dup2 here!!
-                        // Data out...
-                        //
-                        // Data in -- pipe!!
+                        if (currentCommand.inputFile)
+                        {
+                            int inputFileFD = open (currentCommand.inputFile, O_RDONLY);
+                            if (dup2(inputFileFD, 0) == -1)
+                            {
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                exit(errno);
+                            }
+                        }
+                        if (currentCommand.outputFile)
+                        {
+                            int outputFileFD = open (currentCommand.outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                            if (dup2(outputFileFD, 1) == -1)
+                            {
+                                //printf ("outputFD dup2 failed [%s]\n", strerror(errno));
+                                exit(errno);
+                            }
+                        }
                         // pipe - (input, output)
                         if (execvp (currentCommand.argv[0], &currentCommand.argv[0]) == -1)
                         {
-                            printf ("Command failed! [%s]\n", strerror(errno));
+                            //printf ("Command failed! [%s]\n", strerror(errno));
                             exit (errno);
                         }
                     }
@@ -85,9 +100,12 @@ int main(int argc, char * argv[])
                     default:
                     {
                         // I'm the parent... Monitor the child process
-                        printf ("parent... [%d]\n", spawnPID);
+                        //printf ("parent... [%d]\n", spawnPID);
                         AddProcess(spawnPID);
-                        WaitProcess(spawnPID);
+                        if (!currentCommand.background)
+                        {
+                            WaitProcess(spawnPID);
+                        }
                     }
                     break;
                 }    

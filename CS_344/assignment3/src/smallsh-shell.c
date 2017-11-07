@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 static void parseCommandLine(char * input, struct parsedCommandLine * commandLine)
 {
@@ -63,7 +65,30 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         else
         {
             commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * ++commandLine->argc);
-            commandLine->argv[commandLine->argc - 1] = strdup(input);
+            char * argument = strdup (input);
+            char * pidExpand = strstr (argument, "$$");
+            if (pidExpand)
+            {
+                char pidString[10];
+                memset (pidString, 0, 10);
+                pid_t pid = getpid();
+                snprintf(pidString, 10, "%d", pid);
+                int pidLength = strlen(pidString);
+                int argumentLength = strlen (argument);
+
+                int newArgSize = argumentLength + pidLength - 1;
+                argument = (char*) realloc(argument, newArgSize);
+                pidExpand = strstr (argument, "$$");
+                if (argument + argumentLength > pidExpand + 2)
+                {
+                    // Extra text!
+                    memmove (pidExpand + pidLength, pidExpand + 2 , strlen(pidExpand + 2));  
+                }
+                memcpy(pidExpand, pidString, pidLength);
+                argument[newArgSize - 1] = 0x00;
+            }
+            commandLine->argv[commandLine->argc - 1] = strdup(argument);
+            free(argument);
             //printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
         }
         input = strtok(0, " ");

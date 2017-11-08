@@ -29,13 +29,13 @@ void KillProcess (pid_t processID)
 
 void WaitProcess (pid_t processID)
 {
-    int exitedStatus;
+    int exitedStatus = 0;
     waitpid(processID, &exitedStatus, 0);
     if (WIFEXITED(exitedStatus) != 0)
     {
         int exitStatus = WEXITSTATUS(exitedStatus);
         SetStatus (0, processID, exitStatus);
-        printf (" --- Processs [%d] exited [%d]\n", processID, exitStatus);
+        printf (" --- Processs [%d] exited by status [%d]\n", processID, exitStatus);
     }
     else if (WIFSIGNALED(exitedStatus) != 0)
     {

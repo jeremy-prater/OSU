@@ -6,7 +6,7 @@
 
 void signalSIGINT(int signo)
 {
-    //printf ("\n\nSIGINT : Terminating child processes\n");
+    printf ("\n\nSIGINT : Terminating child foreground processes\n");
 }    
 
 void signalSIGSTP(int signo)

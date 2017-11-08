@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "smallsh-process.h"
+#include "smallsh.h"
 
 
 static pid_t * pidList;
@@ -33,12 +34,14 @@ void WaitProcess (pid_t processID)
     if (WIFEXITED(exitedStatus) != 0)
     {
         int exitStatus = WEXITSTATUS(exitedStatus);
+        SetStatus (0, processID, exitStatus);
         //printf (" --- Processs [%d] exited [%d]\n", processID, exitStatus);
     }
     else if (WIFSIGNALED(exitedStatus) != 0)
     {
         int exitSignal = WTERMSIG(exitedStatus);
         //printf (" --- Processs [%d] exited by signal [%d]\n", processID, exitSignal);
+        SetStatus (1, processID, exitSignal);
         
     }
 }

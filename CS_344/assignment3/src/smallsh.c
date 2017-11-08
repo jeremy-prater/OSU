@@ -12,6 +12,10 @@
 static char inputBuffer[MAX_SHELL_INPUT];
 static int foregroundOnly = 0;
 
+static int statusWasSignal = 0;
+static int statusProcessID = 0;
+static int statusExitValue = 0;
+
 void ToggleForegroundOnly()
 {
     foregroundOnly = !foregroundOnly;
@@ -20,6 +24,13 @@ void ToggleForegroundOnly()
 int GetToggleForegroundOnly()
 {
     return foregroundOnly;
+}
+
+void SetStatus (int wasSignal, int processID, int exitValue)
+{
+    statusWasSignal = wasSignal;
+    statusProcessID = processID;
+    statusExitValue = exitValue;
 }
 
 int main(int argc, char * argv[])
@@ -61,7 +72,15 @@ int main(int argc, char * argv[])
             break;
             case SHELL_CMD_STATUS:
             {
-
+                if (statusWasSignal)
+                {
+                    printf ("Process [%d] exited with signal [%d]\n", statusProcessID, statusExitValue);
+                }
+                else
+                {
+                    printf ("Process [%d] exited with status [%d]\n", statusProcessID, statusExitValue);
+                }
+            
             }
             break;
             case SHELL_CMD_EXTERNAL:

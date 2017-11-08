@@ -1,4 +1,5 @@
 #include "smallsh-signals.h"
+#include "smallsh.h"
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
@@ -10,7 +11,15 @@ void signalSIGINT(int signo)
 
 void signalSIGSTP(int signo)
 {
-    //printf ("\n\nSIGTSTP : party rock?\n");
+    ToggleForegroundOnly();
+    if (GetToggleForegroundOnly())
+    {
+        printf ("\n\nSIGTSTP : Background proccess are disabled\n");
+    }
+    else
+    {
+        printf ("\n\nSIGTSTP : Background proccess are enabled\n");
+    }
 }
 
 void RegisterSignalHandlers()

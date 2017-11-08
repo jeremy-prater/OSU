@@ -10,6 +10,17 @@
 #include "smallsh-signals.h"
 
 static char inputBuffer[MAX_SHELL_INPUT];
+static int foregroundOnly = 0;
+
+void ToggleForegroundOnly()
+{
+    foregroundOnly = !foregroundOnly;
+}
+
+int GetToggleForegroundOnly()
+{
+    return foregroundOnly;
+}
 
 int main(int argc, char * argv[])
 {
@@ -55,6 +66,7 @@ int main(int argc, char * argv[])
             break;
             case SHELL_CMD_EXTERNAL:
             {
+                currentCommand.background &= !GetToggleForegroundOnly();
                 pid_t spawnPID = fork();
                 switch (spawnPID)
                 {

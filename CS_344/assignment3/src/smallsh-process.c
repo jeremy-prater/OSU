@@ -35,12 +35,12 @@ void WaitProcess (pid_t processID)
     {
         int exitStatus = WEXITSTATUS(exitedStatus);
         SetStatus (0, processID, exitStatus);
-        //printf (" --- Processs [%d] exited [%d]\n", processID, exitStatus);
+        printf (" --- Processs [%d] exited [%d]\n", processID, exitStatus);
     }
     else if (WIFSIGNALED(exitedStatus) != 0)
     {
         int exitSignal = WTERMSIG(exitedStatus);
-        //printf (" --- Processs [%d] exited by signal [%d]\n", processID, exitSignal);
+        printf (" --- Processs [%d] exited by signal [%d]\n", processID, exitSignal);
         SetStatus (1, processID, exitSignal);
         
     }

@@ -73,7 +73,7 @@ int main(int argc, char * argv[])
                             //printf ("child... args... [%s]\n", *tmpdbg);
                             tmpdbg++;
                         }
-                        if ((currentCommand.inputFile) && (!currentCommand.background))
+                        if (currentCommand.inputFile)
                         {
                             int inputFileFD = open (currentCommand.inputFile, O_RDONLY);
                             if (dup2(inputFileFD, 0) == -1)
@@ -85,7 +85,7 @@ int main(int argc, char * argv[])
                         else if (currentCommand.background)
                         {
                             // Redirect background input to /dev/null
-                            printf ("backgrounding stdin\n");
+                            //printf ("backgrounding stdin\n");
                             int inputFileFD = open ("/dev/null", O_RDONLY);
                             if (dup2(inputFileFD, 0) == -1)
                             {
@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
                             }
                         }
 
-                        if ((currentCommand.outputFile) && (!currentCommand.background))
+                        if (currentCommand.outputFile)
                         {
                             int outputFileFD = open (currentCommand.outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                             if (dup2(outputFileFD, 1) == -1)
@@ -106,7 +106,7 @@ int main(int argc, char * argv[])
                         else if (currentCommand.background)
                         {
                             // Redirect background input to /dev/null
-                            printf ("backgrounding stdout\n");
+                            //printf ("backgrounding stdout\n");
                             int outputFileFD = open ("/dev/null", O_WRONLY);
                             if (dup2(outputFileFD, 1) == -1)
                             {

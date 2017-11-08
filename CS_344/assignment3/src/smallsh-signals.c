@@ -5,12 +5,12 @@
 
 void signalSIGINT(int signo)
 {
-    printf ("\n\nSIGINT : Terminating child processes\n");
+    //printf ("\n\nSIGINT : Terminating child processes\n");
 }    
 
 void signalSIGSTP(int signo)
 {
-    printf ("\n\nSIGTSTP : party rock?\n");
+    //printf ("\n\nSIGTSTP : party rock?\n");
 }
 
 void RegisterSignalHandlers()

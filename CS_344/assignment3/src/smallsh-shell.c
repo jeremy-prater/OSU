@@ -43,7 +43,7 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         }
         else if (nextArgumentIsInputFile == 1)
         {
-            nextArgumentIsInputFile == 0;
+            nextArgumentIsInputFile = 0;
             commandLine->inputFile = strdup(input);
             //printf ("============= Input File [%s]\n", commandLine->inputFile);
         }
@@ -53,7 +53,7 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         }
         else if (nextArgumentIsOutputFile == 1)
         {
-            nextArgumentIsOutputFile == 0;
+            nextArgumentIsOutputFile = 0;
             commandLine->outputFile = strdup(input);
             //printf ("============= Output File [%s]\n", commandLine->outputFile);
         }

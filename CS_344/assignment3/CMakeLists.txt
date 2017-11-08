@@ -15,6 +15,7 @@ set(SMALL_SH_SRC
   ${PROJECT_SOURCE_DIR}/src/smallsh.c
   ${PROJECT_SOURCE_DIR}/src/smallsh-shell.c
   ${PROJECT_SOURCE_DIR}/src/smallsh-process.c
+  ${PROJECT_SOURCE_DIR}/src/smallsh-signals.c
 )
 
 # Define the output executable

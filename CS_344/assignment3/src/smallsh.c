@@ -7,11 +7,13 @@
 
 #include "smallsh-shell.h"
 #include "smallsh-process.h"
+#include "smallsh-signals.h"
 
 static char inputBuffer[MAX_SHELL_INPUT];
 
 int main(int argc, char * argv[])
 {
+    RegisterSignalHandlers();
     InitProcessManager();
     int running = 1;
 
@@ -71,7 +73,7 @@ int main(int argc, char * argv[])
                             //printf ("child... args... [%s]\n", *tmpdbg);
                             tmpdbg++;
                         }
-                        if (currentCommand.inputFile)
+                        if ((currentCommand.inputFile) && (!currentCommand.background))
                         {
                             int inputFileFD = open (currentCommand.inputFile, O_RDONLY);
                             if (dup2(inputFileFD, 0) == -1)
@@ -80,7 +82,19 @@ int main(int argc, char * argv[])
                                 exit(errno);
                             }
                         }
-                        if (currentCommand.outputFile)
+                        else if (currentCommand.background)
+                        {
+                            // Redirect background input to /dev/null
+                            printf ("backgrounding stdin\n");
+                            int inputFileFD = open ("/dev/null", O_RDONLY);
+                            if (dup2(inputFileFD, 0) == -1)
+                            {
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                exit(errno);
+                            }
+                        }
+
+                        if ((currentCommand.outputFile) && (!currentCommand.background))
                         {
                             int outputFileFD = open (currentCommand.outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                             if (dup2(outputFileFD, 1) == -1)
@@ -89,6 +103,18 @@ int main(int argc, char * argv[])
                                 exit(errno);
                             }
                         }
+                        else if (currentCommand.background)
+                        {
+                            // Redirect background input to /dev/null
+                            printf ("backgrounding stdout\n");
+                            int outputFileFD = open ("/dev/null", O_WRONLY);
+                            if (dup2(outputFileFD, 1) == -1)
+                            {
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                exit(errno);
+                            }
+                        }
+
                         // pipe - (input, output)
                         if (execvp (currentCommand.argv[0], &currentCommand.argv[0]) == -1)
                         {
@@ -101,10 +127,13 @@ int main(int argc, char * argv[])
                     {
                         // I'm the parent... Monitor the child process
                         //printf ("parent... [%d]\n", spawnPID);
-                        AddProcess(spawnPID);
                         if (!currentCommand.background)
                         {
                             WaitProcess(spawnPID);
+                        }
+                        else
+                        {
+                            AddProcess(spawnPID);
                         }
                     }
                     break;

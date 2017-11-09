@@ -42,10 +42,13 @@ int main(int argc, char * argv[])
     while (running)
     {
         memset (inputBuffer, 0, sizeof (inputBuffer));
+        // Check all backgrounded processes for termination.
+        CheckBackgroundProcesses();
+
         GetInput(inputBuffer);
         struct parsedCommandLine currentCommand = ProcessCommand(inputBuffer);
 
-        printf ("Processing command type [%d]\n", currentCommand.commandType);
+        //printf ("Processing command type [%d]\n", currentCommand.commandType);
         switch (currentCommand.commandType)
         {
             case SHELL_CMD_EXIT:
@@ -57,16 +60,16 @@ int main(int argc, char * argv[])
             {
                 if (currentCommand.argc > 2)
                 {
-                    printf ("Changing directory to [%s]\n", currentCommand.argv[1]);
+                    //printf ("Changing directory to [%s]\n", currentCommand.argv[1]);
                     if (chdir(currentCommand.argv[1]))
                     {
-                        printf ("Failed to change directory to [%s] [%s]\n", currentCommand.argv[1], strerror(errno));
+                        //printf ("Failed to change directory to [%s] [%s]\n", currentCommand.argv[1], strerror(errno));
                     }
 
                 }
                 else
                 {
-                    printf ("cd: no directory specified\n");
+                    //printf ("cd: no directory specified\n");
                 }
                 fflush(stdout);
             }
@@ -75,11 +78,11 @@ int main(int argc, char * argv[])
             {
                 if (statusWasSignal)
                 {
-                    printf ("Process [%d] exited with signal [%d]\n", statusProcessID, statusExitValue);
+                    //printf ("Process [%d] exited with signal [%d]\n", statusProcessID, statusExitValue);
                 }
                 else
                 {
-                    printf ("Process [%d] exited with status [%d]\n", statusProcessID, statusExitValue);
+                    //printf ("Process [%d] exited with status [%d]\n", statusProcessID, statusExitValue);
                 }
             
             }
@@ -92,7 +95,7 @@ int main(int argc, char * argv[])
                 {
                     case -1:
                     {
-                        printf ("system failure... [%s]\n", strerror(errno));
+                        //printf ("system failure... [%s]\n", strerror(errno));
                         exit (-1);
                     }
                     break;
@@ -102,7 +105,7 @@ int main(int argc, char * argv[])
                         char ** tmpdbg = &currentCommand.argv[0];
                         while (*tmpdbg != 0)
                         {
-                            printf ("child... args... [%s]\n", *tmpdbg);
+                            //printf ("child... args... [%s]\n", *tmpdbg);
                             tmpdbg++;
                         }
                         if (currentCommand.inputFile)
@@ -110,18 +113,18 @@ int main(int argc, char * argv[])
                             int inputFileFD = open (currentCommand.inputFile, O_RDONLY);
                             if (dup2(inputFileFD, 0) == -1)
                             {
-                                printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
                                 exit(errno);
                             }
                         }
                         else if (currentCommand.background)
                         {
                             // Redirect background input to /dev/null
-                            printf ("backgrounding stdin\n");
+                            //printf ("backgrounding stdin\n");
                             int inputFileFD = open ("/dev/null", O_RDONLY);
                             if (dup2(inputFileFD, 0) == -1)
                             {
-                                printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
                                 exit(errno);
                             }
                         }
@@ -131,18 +134,18 @@ int main(int argc, char * argv[])
                             int outputFileFD = open (currentCommand.outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                             if (dup2(outputFileFD, 1) == -1)
                             {
-                                printf ("outputFD dup2 failed [%s]\n", strerror(errno));
+                                //printf ("outputFD dup2 failed [%s]\n", strerror(errno));
                                 exit(errno);
                             }
                         }
                         else if (currentCommand.background)
                         {
                             // Redirect background input to /dev/null
-                            printf ("backgrounding stdout\n");
+                            //printf ("backgrounding stdout\n");
                             int outputFileFD = open ("/dev/null", O_WRONLY);
                             if (dup2(outputFileFD, 1) == -1)
                             {
-                                printf ("inputFD dup2 failed [%s]\n", strerror(errno));
+                                //printf ("inputFD dup2 failed [%s]\n", strerror(errno));
                                 exit(errno);
                             }
                         }
@@ -150,7 +153,7 @@ int main(int argc, char * argv[])
                         // pipe - (input, output)
                         if (execvp (currentCommand.argv[0], &currentCommand.argv[0]) == -1)
                         {
-                            printf ("Command failed! [%s]\n", strerror(errno));
+                            //printf ("Command failed! [%s]\n", strerror(errno));
                             exit (errno);
                         }
                     }
@@ -158,7 +161,7 @@ int main(int argc, char * argv[])
                     default:
                     {
                         // I'm the parent... Monitor the child process
-                        printf ("parent... [%d]\n", spawnPID);
+                        //printf ("parent... [%d]\n", spawnPID);
                         if (!currentCommand.background)
                         {
                             WaitProcess(spawnPID);
@@ -166,6 +169,7 @@ int main(int argc, char * argv[])
                         else
                         {
                             AddProcess(spawnPID);
+                            fprintf (stdout, " --> [%s] is running as background pid [%d]\n", currentCommand.argv[0], spawnPID);
                         }
                     }
                     break;

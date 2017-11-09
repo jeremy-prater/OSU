@@ -29,14 +29,14 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         commandLine->argc++;
         commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * commandLine->argc);
         commandLine->argv[commandLine->argc - 1] = strdup(input);
-        printf ("============= Command [%s]\n", commandLine->argv[commandLine->argc - 1]);
+        //printf ("============= Command [%s]\n", commandLine->argv[commandLine->argc - 1]);
     }
 
     // Append command arguments
     input = strtok(0, " ");
     while (input != 0)
     {
-        printf ("============= Token [%s]\n", input);
+        //printf ("============= Token [%s]\n", input);
         if (strcmp(input, "<") == 0)
         {
             nextArgumentIsInputFile = 1;
@@ -45,7 +45,7 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         {
             nextArgumentIsInputFile = 0;
             commandLine->inputFile = strdup(input);
-            printf ("============= Input File [%s]\n", commandLine->inputFile);
+            //printf ("============= Input File [%s]\n", commandLine->inputFile);
         }
         else if (strcmp(input, ">") == 0)
         {
@@ -55,12 +55,12 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
         {
             nextArgumentIsOutputFile = 0;
             commandLine->outputFile = strdup(input);
-            printf ("============= Output File [%s]\n", commandLine->outputFile);
+            //printf ("============= Output File [%s]\n", commandLine->outputFile);
         }
         else if (strcmp(input, "&") == 0)
         {
             commandLine->background = 1;
-            printf ("============= backgrounding...\n");
+            //printf ("============= backgrounding...\n");
         }
         else
         {
@@ -89,7 +89,7 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
             }
             commandLine->argv[commandLine->argc - 1] = strdup(argument);
             free(argument);
-            printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
+            //printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
         }
         input = strtok(0, " ");
     }
@@ -115,7 +115,7 @@ struct parsedCommandLine ProcessCommand(char * input)
     struct parsedCommandLine commandLine;
     parseCommandLine(input, &commandLine);
 
-    printf ("Processing command [%s] with arguments [%d]\n", commandLine.argv[0], commandLine.argc);
+    //printf ("Processing command [%s] with arguments [%d]\n", commandLine.argv[0], commandLine.argc);
 
     if ((input[0] == '#') || (input[0] == '\n') || (!commandLine.argv[0]))
     {
@@ -146,7 +146,7 @@ struct parsedCommandLine ProcessCommand(char * input)
 
 char * GetInput(char * input)
 {
-    printf (": ");
-    fflush(stdin);
+    fprintf (stdout, ": ");
+    fflush(stdout);
     return fgets(input, MAX_SHELL_INPUT, stdin);
 }

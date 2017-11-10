@@ -37,6 +37,27 @@ static void ProcessExitStatus(pid_t processID, int exitedStatus, char printMessa
 static void RemoveProcess(pid_t pid)
 {
     // clean up the memory list...
+    processCount--;
+    if (processCount == 0)
+    {
+        free (pidList);
+        pidList = 0;
+    }
+    else
+    {
+        pid_t * newPidList = (pid_t*)malloc(sizeof (pid_t) * processCount);
+        int pidIndex = 0;
+        int newPidIndex = 0;
+        for (pidIndex = 0; pidIndex < processCount + 1; pidIndex++)
+        {
+            if (pidList[pidIndex] != pid)
+            {
+                newPidList[newPidIndex++] = pidList[pidIndex];
+            }
+        }
+        free (pidList);
+        pidList = newPidList;
+    }
 }
 
 void InitProcessManager()

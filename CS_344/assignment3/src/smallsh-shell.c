@@ -34,8 +34,10 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
 
     // Append command arguments
     input = strtok(0, " ");
+    char * lastToken = 0;
     while (input != 0)
     {
+        lastToken = input;
         //printf ("============= Token [%s]\n", input);
         if (strcmp(input, "<") == 0)
         {
@@ -56,11 +58,6 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
             nextArgumentIsOutputFile = 0;
             commandLine->outputFile = strdup(input);
             //printf ("============= Output File [%s]\n", commandLine->outputFile);
-        }
-        else if (strcmp(input, "&") == 0)
-        {
-            commandLine->background = 1;
-            //printf ("============= backgrounding...\n");
         }
         else
         {
@@ -92,6 +89,14 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
             //printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
         }
         input = strtok(0, " ");
+    }
+
+    if ((lastToken) && (strcmp(lastToken, "&") == 0))
+    {
+        commandLine->background = 1;
+        commandLine->argc--;
+        free (commandLine->argv[commandLine->argc]);
+        commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * commandLine->argc);
     }
 
     // Append trailing null on argv

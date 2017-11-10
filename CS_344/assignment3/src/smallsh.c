@@ -84,7 +84,7 @@ int main(int argc, char * argv[])
                     fprintf (stdout, "Process [%d] exited with status [%d]\n", statusProcessID, statusExitValue);
                 }
                 fflush (stdout);
-            
+
             }
             break;
             case SHELL_CMD_EXTERNAL:
@@ -112,6 +112,12 @@ int main(int argc, char * argv[])
                         if (currentCommand.inputFile)
                         {
                             int inputFileFD = open (currentCommand.inputFile, O_RDONLY);
+                            if (inputFileFD < 0)
+                            {
+                                fprintf (stdout, "Failed to open [%s] [%s]\n", currentCommand.inputFile, strerror(errno));
+                                fflush (stdout);
+                                exit(errno);
+                            }
                             if (dup2(inputFileFD, 0) == -1)
                             {
                                 fprintf (stdout, "inputFD dup2 failed [%s]\n", strerror(errno));
@@ -123,6 +129,12 @@ int main(int argc, char * argv[])
                         {
                             // Redirect background input to /dev/null
                             int inputFileFD = open ("/dev/null", O_RDONLY);
+                            if (inputFileFD < 0)
+                            {
+                                fprintf (stdout, "Failed to open [/dev/null] [%s]\n", strerror(errno));
+                                fflush (stdout);
+                                exit(errno);
+                            }
                             if (dup2(inputFileFD, 0) == -1)
                             {
                                 fprintf (stdout, "inputFD dup2 failed [%s]\n", strerror(errno));
@@ -134,6 +146,13 @@ int main(int argc, char * argv[])
                         if (currentCommand.outputFile)
                         {
                             int outputFileFD = open (currentCommand.outputFile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                            if (outputFileFD < 0)
+                            {
+                                fprintf (stdout, "Failed to open [%s] [%s]\n", currentCommand.outputFile, strerror(errno));
+                                fflush (stdout);
+                                exit(errno);
+                            }
+
                             if (dup2(outputFileFD, 1) == -1)
                             {
                                 fprintf (stdout, "outputFD dup2 failed [%s]\n", strerror(errno));
@@ -145,6 +164,13 @@ int main(int argc, char * argv[])
                         {
                             // Redirect background input to /dev/null
                             int outputFileFD = open ("/dev/null", O_WRONLY);
+                            if (outputFileFD < 0)
+                            {
+                                fprintf (stdout, "Failed to open [/dev/null] [%s]\n", strerror(errno));
+                                fflush (stdout);
+                                exit(errno);
+                            }
+
                             if (dup2(outputFileFD, 1) == -1)
                             {
                                 fprintf (stdout, "inputFD dup2 failed [%s]\n", strerror(errno));
@@ -177,7 +203,7 @@ int main(int argc, char * argv[])
                         }
                     }
                     break;
-                }    
+                }
             }
             break;
         }

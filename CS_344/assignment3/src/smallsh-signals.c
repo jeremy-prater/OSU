@@ -6,7 +6,8 @@
 
 void signalSIGINT(int signo)
 {
-    //printf ("\n\nSIGINT : Terminating child foreground processes\n");
+    fprintf (stdout, "\n\nSIGINT : Terminating child foreground processes\n");
+    fflush(stdout);
 }    
 
 void signalSIGSTP(int signo)
@@ -14,11 +15,13 @@ void signalSIGSTP(int signo)
     ToggleForegroundOnly();
     if (GetToggleForegroundOnly())
     {
-        //printf ("\n\nSIGTSTP : Background proccess are disabled\n");
+        fprintf (stdout, "\n\nSIGTSTP : Background proccess are disabled\n");
+        fflush(stdout);
     }
     else
     {
-        //printf ("\n\nSIGTSTP : Background proccess are enabled\n");
+        fprintf (stdout, "\n\nSIGTSTP : Background proccess are enabled\n");
+        fflush(stdout);
     }
 }
 

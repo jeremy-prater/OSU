@@ -1,5 +1,5 @@
 PRE-SCRIPT INFO
-  Grading Script PID: 37836
+  Grading Script PID: 31194
   Note: your smallsh will report a different PID when evaluating $$
 : BEGINNING TEST SCRIPT
 : 
@@ -9,8 +9,7 @@ PRE-SCRIPT INFO
 : 
 : --------------------
 : ls (10 points for returning dir contents)
-: build
-CMakeLists.txt
+: CMakeLists.txt
 include
 make_smallsh
 p3testscript
@@ -25,8 +24,7 @@ testrun
 : 
 : --------------------
 : cat junk (15 points for correctly returning contents of junk)
-: build
-CMakeLists.txt
+: CMakeLists.txt
 include
 junk
 make_smallsh
@@ -38,17 +36,17 @@ testrun
 : 
 : --------------------
 : wc in junk (15 points for returning correct numbers from wc)
-:  9  9 80
+:  8  8 74
 : 
 : 
 : --------------------
 : wc in junk out junk2; cat junk2 (10 points for returning correct numbers from wc)
-: :  9  9 80
+: :  8  8 74
 : 
 : 
 : --------------------
 : test -f badfile (10 points for returning error value of 1, note extraneous &)
-: : Process [39555] exited with status [1]
+: : Process [32921] exited with status [1]
 : 
 : 
 : --------------------
@@ -63,20 +61,20 @@ testrun
 : 
 : --------------------
 : sleep 100 background (10 points for returning process ID of sleeper)
-:  --> [sleep] is running as background pid [40167]
+:  --> [sleep] is running as background pid [33472]
 : 
 : 
 : --------------------
 : pkill -signal SIGTERM sleep (10 points for pid of killed process, 10 points for signal)
 : (Ignore message about Operation Not Permitted)
-:  <-- Processs [40167] exited by signal [15]
+:  <-- Processs [33472] exited by signal [15]
 : 
 : 
 : --------------------
 : sleep 1 background (10 pts for pid of bg ps when done, 10 for exit value)
-:  --> [sleep] is running as background pid [40821]
+:  --> [sleep] is running as background pid [34390]
 : : 
- <-- Processs [40821] exited by status [0]
+ <-- Processs [34390] exited by status [0]
 : 
 : --------------------
 : pwd
@@ -94,24 +92,24 @@ testrun
 : 
 : 
 : --------------------
-: mkdir testdir37884
+: mkdir testdir31391
 : : 
 : 
 : --------------------
-: cd testdir37884
-: Changing directory to [testdir37884]
+: cd testdir31391
+: Changing directory to [testdir31391]
 : 
 : 
 : --------------------
 : pwd (5 points for being in the newly created dir)
-: /nfs/stak/users/praterj/src/osu/CS_344/assignment3/testdir37884
+: /nfs/stak/users/praterj/src/osu/CS_344/assignment3/testdir31391
 : --------------------
 : Testing foreground-only mode (20 points for entry & exit text AND ~5 seconds between times)
 : 
 
 SIGTSTP : Background proccess are disabled
-: Fri Nov 10 00:58:52 PST 2017
-: : Fri Nov 10 00:58:57 PST 2017
+: Mon Nov 13 19:20:17 PST 2017
+: : Mon Nov 13 19:20:22 PST 2017
 : 
 
 SIGTSTP : Background proccess are enabled

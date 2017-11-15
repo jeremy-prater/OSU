@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 3
+//
+// Shell functions
+//
+// Jeremy Prater
+//
+
 #include "smallsh-shell.h"
 
 #include <stdio.h>
@@ -6,6 +15,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+////////////////////////////////////////////////////////////////
+//
+// Parse a command line input and output a structure into
+// struct parsedCommandLine * commandLine
+//
+// This is the command line tokenizer
+//
 static void parseCommandLine(char * input, struct parsedCommandLine * commandLine)
 {
     // Strip trailing eol off command line
@@ -14,58 +30,67 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
 
     // Get initial command
     input = strtok(input, " ");
+
+    // Initalize commandLine struct data
     commandLine->argc = 0;
     commandLine->argv = 0;
     commandLine->outputFile = 0;
     commandLine->inputFile = 0;
     commandLine->background = 0;
 
+    // Setup flags for < and >
     unsigned char nextArgumentIsInputFile = 0;
     unsigned char nextArgumentIsOutputFile = 0;
 
-
+    // NULL check the input and assign argv[0] as the first token (command name)
     if (input != 0)
     {
         commandLine->argc++;
         commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * commandLine->argc);
         commandLine->argv[commandLine->argc - 1] = strdup(input);
-        //printf ("============= Command [%s]\n", commandLine->argv[commandLine->argc - 1]);
     }
 
     // Append command arguments
     input = strtok(0, " ");
     char * lastToken = 0;
+
+    // Iterate through all tokens seperated by " " and
+    // append to the commandline struct
+    // The last token is a NULL and we should terminate.
     while (input != 0)
     {
         lastToken = input;
-        //printf ("============= Token [%s]\n", input);
         if (strcmp(input, "<") == 0)
         {
+            // The next argument is an input file
             nextArgumentIsInputFile = 1;
         }
         else if (nextArgumentIsInputFile == 1)
         {
+            // Set this argument as the input file (stdin)
             nextArgumentIsInputFile = 0;
             commandLine->inputFile = strdup(input);
-            //printf ("============= Input File [%s]\n", commandLine->inputFile);
         }
         else if (strcmp(input, ">") == 0)
         {
+            // The next argument is an output file
             nextArgumentIsOutputFile = 1;
         }
         else if (nextArgumentIsOutputFile == 1)
         {
+            // Set this argument as the output file (stdout)
             nextArgumentIsOutputFile = 0;
             commandLine->outputFile = strdup(input);
-            //printf ("============= Output File [%s]\n", commandLine->outputFile);
         }
         else
         {
+            // The command is a regular argument for the command in argv[0]
             commandLine->argv = (char **)realloc(commandLine->argv, sizeof (char *) * ++commandLine->argc);
             char * argument = strdup (input);
             char * pidExpand = strstr (argument, "$$");
             if (pidExpand)
             {
+                // We must expand $$ into the pid of the running process.
                 char pidString[10];
                 memset (pidString, 0, 10);
                 pid_t pid = getpid();
@@ -86,8 +111,9 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
             }
             commandLine->argv[commandLine->argc - 1] = strdup(argument);
             free(argument);
-            //printf ("============= Argument [%s]\n", commandLine->argv[commandLine->argc - 1]);
         }
+
+        // Get the next argument
         input = strtok(0, " ");
     }
 
@@ -105,6 +131,10 @@ static void parseCommandLine(char * input, struct parsedCommandLine * commandLin
     commandLine->argv[commandLine->argc - 1] = 0x00;
 }
 
+////////////////////////////////////////////////////////////////
+//
+// Cleanup any memory used by a command line struct
+//
 void CleanupCommandLine (struct parsedCommandLine * commandLine)
 {
     int index = 0;
@@ -115,6 +145,10 @@ void CleanupCommandLine (struct parsedCommandLine * commandLine)
     free (commandLine->argv);
 }
 
+////////////////////////////////////////////////////////////////
+//
+// Process an incoming string of text into a command line struct
+//
 struct parsedCommandLine ProcessCommand(char * input)
 {
     struct parsedCommandLine commandLine;
@@ -149,6 +183,10 @@ struct parsedCommandLine ProcessCommand(char * input)
     return commandLine;
 }
 
+////////////////////////////////////////////////////////////////
+//
+// Get input from stdin (or redirect)
+//
 char * GetInput(char * input)
 {
     fprintf (stdout, ": ");

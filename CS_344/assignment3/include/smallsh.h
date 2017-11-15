@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 3
+//
+// Shell main functions
+//
+// Jeremy Prater
+//
+
 #ifndef SMALLSH_H
 #define SMALLSH_H
 

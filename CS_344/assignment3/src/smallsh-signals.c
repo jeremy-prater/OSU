@@ -1,14 +1,33 @@
+////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 3
+//
+// Shell signal handlers
+//
+// Jeremy Prater
+//
+
 #include "smallsh-signals.h"
 #include "smallsh.h"
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
 
+////////////////////////////////////////////////////////////////
+//
+// Signal handler for SIGINT
+//
+
 void signalSIGINT(int signo)
 {
     fprintf (stdout, "\n\nSIGINT : Terminating child foreground processes\n");
     fflush(stdout);
 }    
+
+////////////////////////////////////////////////////////////////
+//
+// Signal handler for SIGSTP
+//
 
 void signalSIGSTP(int signo)
 {
@@ -24,6 +43,11 @@ void signalSIGSTP(int signo)
         fflush(stdout);
     }
 }
+
+////////////////////////////////////////////////////////////////
+//
+// Register signal handlers with OS
+//
 
 void RegisterSignalHandlers()
 {

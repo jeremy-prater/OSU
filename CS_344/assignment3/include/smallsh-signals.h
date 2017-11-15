@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 3
+//
+// Shell signal handlers
+//
+// Jeremy Prater
+//
+
 #ifndef SMALLSH_SIGNALS_H
 #define SMALLSH_SIGNALS_H
 

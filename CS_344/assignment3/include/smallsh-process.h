@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 3
+//
+// Shell Process functions
+//
+// Jeremy Prater
+//
+
 #ifndef SMALLSH_PROCESS_H
 #define SMALLSH_PROCESS_H
 

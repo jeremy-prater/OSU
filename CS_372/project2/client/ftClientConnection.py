@@ -10,14 +10,14 @@ class ftClientConnection:
         self.file = file
 
         # Setup listner socket
-        with ftClientListener(clientPort) as self.listener:
-            print("stuff")
+        self.listener = ftClientListener(clientPort)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         print("Closing connection to ftserver {}:{}".format(self.serverHost, self.serverPort))
+        self.listener.close()
         self.ftSock.close()
         
     def ftConnect(self):

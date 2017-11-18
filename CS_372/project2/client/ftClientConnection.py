@@ -11,13 +11,13 @@ class ftClientConnection:
 
         # Setup listner socket
         self.listener = ftClientListener(clientPort)
+        self.listener.start()
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         print("Closing connection to ftserver {}:{}".format(self.serverHost, self.serverPort))
-        self.listener.close()
         self.ftSock.close()
         
     def ftConnect(self):

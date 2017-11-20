@@ -31,10 +31,11 @@ int main(int argc, char * argv[])
         return -errno;
     }
 
-    struct sockaddr_in ftServerSock = {0};
+    struct sockaddr_in ftServerSock;
+    memset (&ftServerSock, 0, sizeof (ftServerSock));
     ftServerSock.sin_family = AF_INET;
-    ftServerSock.sin_addr.s_addr = INADDR_ANY;
-    ftServerSock.sin_port = htons (serverPort);
+    ftServerSock.sin_addr.s_addr = htonl(INADDR_ANY);
+    ftServerSock.sin_port = htons(serverPort);
 
     // Bind to port
     if (bind(serverSocket, (struct sockaddr*)&ftServerSock, sizeof (ftServerSock)) < 0)
@@ -43,14 +44,24 @@ int main(int argc, char * argv[])
         return -errno;
     }
 
-    if (listen(serverSocket, 1) < 0)
+    if (listen(serverSocket, 5) < 0)
     {
         printf("Failed to listen on TCP server socket [%s]\n\n", strerror(errno));
         return -errno;
     }
 
-    while ((serverConnection = accept (serverSocket, (struct sockaddr*)&ftServerSock, (socklen_t*)sizeof (ftServerSock))) < 0)
+    socklen_t ftServerSocketLen = sizeof (ftServerSock);
+    while ((serverConnection = accept (serverSocket, (struct sockaddr*)&ftServerSock, &ftServerSocketLen)) >= 0)
     {
-        printf ("New Connection! [%d]\n", serverConnection);
+        if (serverConnection < 0)
+        {
+            printf ("Connection Failed! [%s]\n", strerror(errno));
+        }
+        else
+        {
+            printf ("New Connection! [%d]\n", serverConnection);
+        }
     }
+
+    printf ("Exited!!\n");
 }

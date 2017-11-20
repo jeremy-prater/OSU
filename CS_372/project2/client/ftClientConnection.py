@@ -1,4 +1,5 @@
 import socket
+import time
 from ftClientListener import ftClientListener
 
 class ftClientConnection:
@@ -32,4 +33,10 @@ class ftClientConnection:
         return True
         
     def ftSendCommand(self):
-        self.ftSock.send((self.command, self.file))
+        payload = bytearray()
+        payload.extend([0x01])
+        payload.extend("Hello world!".encode('ascii'))
+        self.ftSock.send(payload)
+        while True:
+            print("waiting...")
+            time.sleep(1)

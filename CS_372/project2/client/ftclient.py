@@ -32,4 +32,5 @@ else:
     sys.exit(-3)
 
 with ftClientConnection(args.host, args.port, args.clientPort, command, file) as connection:
-    connection.ftConnect()
+    if (connection.ftConnect()):
+        connection.ftSendCommand()

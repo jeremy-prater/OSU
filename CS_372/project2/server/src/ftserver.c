@@ -1,3 +1,5 @@
+#include "ftserver.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -9,6 +11,8 @@
 static int serverPort = -1;
 static int serverSocket = -1;
 static int serverConnection = -1;
+
+static uint8_t controlData[4096];
 
 int main(int argc, char * argv[])
 {
@@ -60,6 +64,24 @@ int main(int argc, char * argv[])
         else
         {
             printf ("New Connection! [%d]\n", serverConnection);
+
+            // Receive command/header
+            printf ("Waiting for header...\n");
+            fflush(stdout);
+            ssize_t recvSize = recv(serverConnection, controlData, sizeof (controlData), 0);
+
+            ftserverCommandHeader * header = (ftserverCommandHeader *)controlData;
+            printf ("Header recv\nData port : %d\nCommand: %d\npayloadLength: %d\n", header->dataPort, header->command, header->payloadLength);
+
+            if (header->payloadLength > 0)
+            {
+                printf ("Payload: %s\n", header->payload);
+            }
+
+            int running = 1;
+            while (running)
+            {
+            }
         }
     }
 

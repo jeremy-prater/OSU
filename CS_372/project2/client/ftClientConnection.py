@@ -1,5 +1,7 @@
 import socket
 import time
+import struct
+
 from ftClientListener import ftClientListener
 
 class ftClientConnection:
@@ -34,8 +36,8 @@ class ftClientConnection:
         
     def ftSendCommand(self):
         payload = bytearray()
-        payload.extend([0x01])
-        payload.extend("Hello world!".encode('ascii'))
+        payload.extend(struct.pack("HBHs", self.clientPort, self.command, len(self.file), self.file.encode('ASCII')))
+        print (self.file.encode('ASCII'))
         self.ftSock.send(payload)
         while True:
             print("waiting...")

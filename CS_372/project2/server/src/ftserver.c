@@ -13,7 +13,7 @@ static int serverPort = -1;
 static int serverSocket = -1;
 static int serverConnection = -1;
 
-static uint8_t controlData[4096];
+static uint8_t controlData[64];
 
 int main(int argc, char * argv[])
 {

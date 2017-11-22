@@ -10,11 +10,14 @@
 #include <memory.h>
 #include <errno.h>
 #include <string.h>
+#include <limits.h>
 
 static int serverSocket;
+static char currentDirectory[PATH_MAX];
 
 uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t command, const char * file)
 {
+    getcwd(currentDirectory, sizeof (currentDirectory));
     printf ("Connect to ftclient [%s]:[%d]\n", host, clientPort);
     struct hostent *server;
     struct sockaddr_in serverAddress;
@@ -62,12 +65,13 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t comm
         
         case 0: // list directory
         {
+            printf ("Returning directory contents of [%s]\n", currentDirectory);
             externalProcess = popen("ls -l", "r");
         }
         break;
         case 1: // Get file
         {
-            externalProcess = fopen("file", "r");
+            externalProcess = fopen(file, "r");
         }
         break;
     }
@@ -83,7 +87,7 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t comm
         {
             size_t sendDataSize = fread(outBuffer, 1, 1024, externalProcess);
             send(serverSocket, outBuffer, sendDataSize, 0);
-            printf("data [%d] %s\n", sendDataSize, outBuffer);
+            //printf("data [%d] %s\n", sendDataSize, outBuffer);
         }
     }
 
@@ -91,5 +95,8 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t comm
 
 
     close(serverSocket);
+    printf("Disconnected to data port [%s]:[%d] arrivederci!\n", host, clientPort);
+    fflush(stdout);
+
     return NULL;
 }

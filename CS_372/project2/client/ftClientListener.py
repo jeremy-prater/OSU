@@ -2,6 +2,7 @@ import socket
 import threading
 import subprocess
 import struct
+import os
 
 class ftClientListener(threading.Thread):
     def __init__(self, clientPort, command, file):
@@ -12,7 +13,7 @@ class ftClientListener(threading.Thread):
 
     def SendData (self, payload):
         payloadLength = bytearray()
-        payloadLength.extend(struct.pack("!H", len(payload)))
+        payloadLength.extend(struct.pack("H", len(payload)))
         print("Sending bytes: {}".format(len(payload)))
         self.ftConnection.send (payloadLength);
         self.ftConnection.send (payload);
@@ -24,6 +25,7 @@ class ftClientListener(threading.Thread):
         self.ftSocket.settimeout(1)
         self.ftSocket.listen(1)
         self.listening = True
+        self.timeoutCounter = 0;
         print ('Waiting for accept on {}'.format(self.clientPort))
         while self.listening:
             try:
@@ -32,7 +34,6 @@ class ftClientListener(threading.Thread):
                 # Send response payload length...
                 if self.command == 0:
                     # list command
-                    # Send Payload!
                     result = subprocess.run(['ls', '-l'], stdout=subprocess.PIPE)
                     self.SendData (result.stdout)
                 elif self.command == 1:
@@ -44,6 +45,12 @@ class ftClientListener(threading.Thread):
 
             except socket.timeout as t:
                 print("waiting...")
-                pass
+                self.timeoutCounter += 1
+                if self.timeoutCounter < 5:
+                    pass
+                else:
+                    raise socket.timeout
+                    
 
+        self.ftSocket.close()
         print("ftclient closing port {}".format(self.clientPort))

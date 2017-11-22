@@ -69,6 +69,7 @@ int main(int argc, char * argv[])
             // Receive command/header
             printf ("Waiting for header...\n");
             fflush(stdout);
+            memset (controlData, 0, sizeof (controlData));
             ssize_t recvSize = recv(serverConnection, controlData, sizeof (controlData), 0);
 
             ftserverCommandHeader * header = (ftserverCommandHeader *)controlData;
@@ -76,7 +77,7 @@ int main(int argc, char * argv[])
             header->payloadLength = ntohs(header->payloadLength);
             header->hostnameLength = ntohs(header->hostnameLength);
             char * hostname = (char*)malloc (header->hostnameLength + 1);
-            memset (hostname, 0, header->hostnameLength);
+            memset (hostname, 0, header->hostnameLength + 1);
             memcpy (hostname, header->payload, header->hostnameLength);
             uint8_t * payload = header->payload + header->hostnameLength;
 
@@ -95,11 +96,7 @@ int main(int argc, char * argv[])
             uint8_t * serverResponse = GetServerResponse(hostname, header->dataPort);
 
             free (hostname);
-
-            int running = 1;
-            while (running)
-            {
-            }
+            shutdown(serverConnection, 2);
         }
     }
 

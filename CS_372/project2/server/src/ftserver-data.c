@@ -56,12 +56,14 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort)
 
     uint32_t payloadSize = 0;
 
-    recv(serverSocket, &payloadSize, sizeof (uint32_t), 0);
+    recv(serverSocket, &payloadSize, sizeof (uint16_t), 0);
     payloadSize = ntohs(payloadSize);
     printf ("Data recv! [%d]\n", payloadSize);
-    uint8_t * recvData = (uint8_t *)malloc (payloadSize);
+    uint8_t * recvData = (uint8_t *)malloc (payloadSize + 1);
+    memset (recvData, 0, payloadSize + 1);
     recv(serverSocket, recvData, payloadSize, 0);
     printf("Data: [%s]\n", recvData);
 
+    close(serverSocket);
     return NULL;
 }

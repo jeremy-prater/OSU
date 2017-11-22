@@ -44,6 +44,3 @@ class ftClientConnection:
             payload.extend(self.file.encode('ASCII'))
         print (self.file.encode('ASCII'))
         self.ftSock.send(payload)
-
-        while True:
-            time.sleep(1)

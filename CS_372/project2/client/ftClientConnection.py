@@ -13,7 +13,7 @@ class ftClientConnection:
         self.file = file
 
         # Setup listner socket
-        self.listener = ftClientListener(clientPort)
+        self.listener = ftClientListener(self.clientPort, self.command, self.file)
         self.listener.start()
 
     def __enter__(self):
@@ -36,9 +36,14 @@ class ftClientConnection:
         
     def ftSendCommand(self):
         payload = bytearray()
-        payload.extend(struct.pack("HBHs", self.clientPort, self.command, len(self.file), self.file.encode('ASCII')))
+        hostname = socket.gethostname()
+        payload.extend(struct.pack("!HHHB", self.clientPort, len(self.file), len(hostname), self.command))
+        payload.extend(hostname.encode('ASCII'))
+        print(payload)
+        if len(self.file) > 0:
+            payload.extend(self.file.encode('ASCII'))
         print (self.file.encode('ASCII'))
         self.ftSock.send(payload)
+
         while True:
-            print("waiting...")
             time.sleep(1)

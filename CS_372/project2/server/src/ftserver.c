@@ -7,6 +7,7 @@
 #include <netinet/ip.h>
 #include <errno.h>
 #include <string.h>
+#include "ftserver-data.h"
 
 static int serverPort = -1;
 static int serverSocket = -1;
@@ -71,12 +72,29 @@ int main(int argc, char * argv[])
             ssize_t recvSize = recv(serverConnection, controlData, sizeof (controlData), 0);
 
             ftserverCommandHeader * header = (ftserverCommandHeader *)controlData;
-            printf ("Header recv\nData port : %d\nCommand: %d\npayloadLength: %d\n", header->dataPort, header->command, header->payloadLength);
+            header->dataPort = ntohs(header->dataPort);
+            header->payloadLength = ntohs(header->payloadLength);
+            header->hostnameLength = ntohs(header->hostnameLength);
+            char * hostname = (char*)malloc (header->hostnameLength + 1);
+            memset (hostname, 0, header->hostnameLength);
+            memcpy (hostname, header->payload, header->hostnameLength);
+            uint8_t * payload = header->payload + header->hostnameLength;
+
+            printf ("Header recv\nData port : %d\nCommand: %d\npayloadLength: %d\nhost: %s\n",
+                header->dataPort,
+                header->command,
+                header->payloadLength,
+                hostname);
 
             if (header->payloadLength > 0)
             {
-                printf ("Payload: %s\n", header->payload);
+                printf ("Payload: %s\n", payload);
             }
+
+            // Create listener socket on dataPort
+            uint8_t * serverResponse = GetServerResponse(hostname, header->dataPort);
+
+            free (hostname);
 
             int running = 1;
             while (running)

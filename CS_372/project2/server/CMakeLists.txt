@@ -13,6 +13,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 # Source Files
 set(FTSERVER_SRC
   ${PROJECT_SOURCE_DIR}/src/ftserver.c
+  ${PROJECT_SOURCE_DIR}/src/ftserver-data.c
 )
 
 # Define the output executable

@@ -1,15 +1,26 @@
 import socket
 import threading
+import subprocess
+import struct
 
 class ftClientListener(threading.Thread):
-    def __init__(self, clientPort):
+    def __init__(self, clientPort, command, file):
         threading.Thread.__init__(self);
         self.clientPort = clientPort
-    
+        self.command = command
+        self.file = file
+
+    def SendData (self, payload):
+        payloadLength = bytearray()
+        payloadLength.extend(struct.pack("!H", len(payload)))
+        print("Sending bytes: {}".format(len(payload)))
+        self.ftConnection.send (payloadLength);
+        self.ftConnection.send (payload);
+
     def run(self):
         print("ftclient listener thread on port {}".format(self.clientPort))
         self.ftSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ftSocket.bind (('127.0.0.1', self.clientPort))
+        self.ftSocket.bind ((socket.gethostname(), self.clientPort))
         self.ftSocket.settimeout(1)
         self.ftSocket.listen(1)
         self.listening = True
@@ -17,13 +28,22 @@ class ftClientListener(threading.Thread):
         while self.listening:
             try:
                 self.ftConnection, self.ftAddress = self.ftSocket.accept()
-                print ('New connection from {}'.format(self.ftAddress))
-                while True:
-                    data = ftConnection.recv(1024)
-                    if not data: break
-                    print ('Data: {}'.format(data))
+                print ('New data connection from {}'.format(self.ftAddress))
+                # Send response payload length...
+                if self.command == 0:
+                    # list command
+                    # Send Payload!
+                    result = subprocess.run(['ls', '-l'], stdout=subprocess.PIPE)
+                    self.SendData (result.stdout)
+                elif self.command == 1:
+                    # get file command
+                    print("file...")
+                else:
+                    self.ftConnection.send(0);
+                self.listening = False
 
             except socket.timeout as t:
+                print("waiting...")
                 pass
 
         print("ftclient closing port {}".format(self.clientPort))

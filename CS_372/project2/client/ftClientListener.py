@@ -11,12 +11,13 @@ class ftClientListener(threading.Thread):
         self.command = command
         self.file = file
 
-    def SendData (self, payload):
-        payloadLength = bytearray()
-        payloadLength.extend(struct.pack("H", len(payload)))
-        print("Sending bytes: {}".format(len(payload)))
-        self.ftConnection.send (payloadLength);
-        self.ftConnection.send (payload);
+    def GetData (self):
+        payload = bytearray();
+        while True:
+            data = self.ftConnection.recv(1024);
+            if not data:
+                return payload
+            payload.extend(data)
 
     def run(self):
         print("ftclient listener thread on port {}".format(self.clientPort))
@@ -31,11 +32,11 @@ class ftClientListener(threading.Thread):
             try:
                 self.ftConnection, self.ftAddress = self.ftSocket.accept()
                 print ('New data connection from {}'.format(self.ftAddress))
+                data = self.GetData();
                 # Send response payload length...
                 if self.command == 0:
                     # list command
-                    result = subprocess.run(['ls', '-l'], stdout=subprocess.PIPE)
-                    self.SendData (result.stdout)
+                    print ("{}".format(data.decode('ASCII')))
                 elif self.command == 1:
                     # get file command
                     print("file...")

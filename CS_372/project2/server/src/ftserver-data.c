@@ -13,7 +13,7 @@
 
 static int serverSocket;
 
-uint8_t * GetServerResponse(const char * host, uint16_t clientPort)
+uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t command, const char * file)
 {
     printf ("Connect to ftclient [%s]:[%d]\n", host, clientPort);
     struct hostent *server;
@@ -56,13 +56,39 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort)
 
     uint32_t payloadSize = 0;
 
-    recv(serverSocket, &payloadSize, sizeof (uint16_t), 0);
-    payloadSize = ntohs(payloadSize);
-    printf ("Data recv! [%d]\n", payloadSize);
-    uint8_t * recvData = (uint8_t *)malloc (payloadSize + 1);
-    memset (recvData, 0, payloadSize + 1);
-    recv(serverSocket, recvData, payloadSize, 0);
-    printf("Data: [%s]\n", recvData);
+    FILE * externalProcess = NULL;
+    switch (command)
+    {
+        
+        case 0: // list directory
+        {
+            externalProcess = popen("ls -l", "r");
+        }
+        break;
+        case 1: // Get file
+        {
+            externalProcess = fopen("file", "r");
+        }
+        break;
+    }
+
+    if (externalProcess == NULL)
+    {
+        // Error Stuff
+    }
+    else
+    {
+        char outBuffer[1024];
+        while (!feof(externalProcess))
+        {
+            size_t sendDataSize = fread(outBuffer, 1, 1024, externalProcess);
+            send(serverSocket, outBuffer, sendDataSize, 0);
+            printf("data [%d] %s\n", sendDataSize, outBuffer);
+        }
+    }
+
+    fclose (externalProcess);
+
 
     close(serverSocket);
     return NULL;

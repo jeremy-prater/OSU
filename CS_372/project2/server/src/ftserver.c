@@ -93,7 +93,7 @@ int main(int argc, char * argv[])
             }
 
             // Create listener socket on dataPort
-            uint8_t * serverResponse = GetServerResponse(hostname, header->dataPort);
+            uint8_t * serverResponse = GetServerResponse(hostname, header->dataPort, header->command, payload);
 
             free (hostname);
             shutdown(serverConnection, 2);

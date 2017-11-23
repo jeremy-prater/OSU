@@ -40,6 +40,13 @@ class ftClientListener(threading.Thread):
                 elif self.command == 1:
                     # get file command
                     print("file...")
+                    if os.path.isfile(self.file):
+                        print ("File {} exists! Not overwriting.".format(self.file))
+                    else:
+                        outFile = open(self.file, 'wb')
+                        outFile.write(data)
+                        outFile.close()
+                        print ("Wrote {} bytes to file {}".format(len(data), self.file))
                 else:
                     self.ftConnection.send(0);
                 self.listening = False

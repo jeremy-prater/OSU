@@ -95,7 +95,7 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t comm
 
 
     close(serverSocket);
-    printf("Disconnected to data port [%s]:[%d] arrivederci!\n", host, clientPort);
+    printf("Disconnected from data port [%s]:[%d] arrivederci!\n", host, clientPort);
     fflush(stdout);
 
     return NULL;

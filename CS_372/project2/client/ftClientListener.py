@@ -41,12 +41,16 @@ class ftClientListener(threading.Thread):
                     # get file command
                     print("file...")
                     if os.path.isfile(self.file):
-                        print ("File {} exists! Not overwriting.".format(self.file))
+                        print ("File {} exists in local directory Not overwriting!".format(self.file))
                     else:
-                        outFile = open(self.file, 'wb')
-                        outFile.write(data)
-                        outFile.close()
-                        print ("Wrote {} bytes to file {}".format(len(data), self.file))
+                        if len(data) > 0:
+                            outFile = open(self.file, 'wb')
+                            outFile.write(data)
+                            outFile.close()
+                            print ("Wrote {} bytes to file {}".format(len(data), self.file))
+                        else:
+                            print ("File {} not found on server.".format(self.file))
+                            
                 else:
                     self.ftConnection.send(0);
                 self.listening = False

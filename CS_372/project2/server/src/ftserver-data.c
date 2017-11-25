@@ -90,8 +90,10 @@ uint8_t * GetServerResponse(const char * host, uint16_t clientPort, uint8_t comm
             //printf("data [%d] %s\n", sendDataSize, outBuffer);
         }
     }
-
-    fclose (externalProcess);
+    if (externalProcess > 0)
+    {
+        fclose (externalProcess);
+    }
 
 
     close(serverSocket);

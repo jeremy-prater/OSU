@@ -62,7 +62,9 @@ int main (int argc, char * argv[])
         else
         {
             // New connection!
-            
+            printf ("new connection!");
+            fflush(stdout);
+
         }
     }
 

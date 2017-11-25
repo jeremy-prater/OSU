@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -eE
+
+pushd src
+
+pushd keygen
+rm -rf build
+mkdir -p build
+cd build
+cmake ..
+make -j 8
+cp keygen ../../..
+popd
+
+pushd otp_enc_d
+rm -rf build
+mkdir -p build
+cd build
+cmake ..
+make -j 8
+cp otp_enc_d ../../..
+popd
+
+popd

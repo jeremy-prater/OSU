@@ -1,0 +1,7 @@
+#ifndef OTP_COMMON
+#define OTP_COMMON
+
+#define OTP_ENC_MAGIC 0xCAFEBABE
+#define OTP_DEC_MAGIC 0xDEADBEEF
+
+#endif // OTP_COMMON

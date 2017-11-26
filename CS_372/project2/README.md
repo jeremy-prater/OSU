@@ -8,6 +8,12 @@ cd server
 ./start_build
 ```
 
+If the file is not executable, please run.
+
+```bash
+chmod +x ./start_build
+```
+
 # Server execution (on flip1)
 
 ```bash
@@ -28,3 +34,10 @@ cd client
 ./ftclient flip1 12345 -l 4567
 ./ftclient flip1 12345 -g somefile.txt 4567
 ```
+
+If the file is not executable, please run.
+
+```bash
+chmod +x ./ftclient
+```
+

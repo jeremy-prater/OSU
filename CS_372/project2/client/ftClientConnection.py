@@ -51,8 +51,6 @@ class ftClientConnection:
         hostname = socket.gethostname()
         payload.extend(struct.pack("!HHHB", self.clientPort, len(self.file), len(hostname), self.command))
         payload.extend(hostname.encode('ASCII'))
-        print(payload)
         if len(self.file) > 0:
             payload.extend(self.file.encode('ASCII'))
-        print (self.file.encode('ASCII'))
         self.ftSock.send(payload)

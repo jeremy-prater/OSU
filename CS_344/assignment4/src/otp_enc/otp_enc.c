@@ -5,51 +5,73 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h> 
+#include <errno.h>
+#include <netdb.h>
+#include "common.h"
+
+static int clientPort = -1;
+static int clientSocket = -1;
+static int clientConnection = -1;
 
 int main(int argc, char *argv[])
 {
 	int socketFD, portNumber, charsWritten, charsRead;
 	struct sockaddr_in serverAddress;
 	struct hostent* serverHostInfo;
-	char buffer[256];
+	char plainTextFile[1024];
+    char keyFile[1024];
     
-	if (argc < 3) { fprintf(stderr,"USAGE: %s hostname port\n", argv[0]); exit(0); } // Check usage & args
+    if (argc != 4)
+    {
+        fprintf (stderr, "%s [plain text file] [key file] [server port]\n", argv[0]);
+        return -1;
+    }
 
-	// Set up the server address struct
-	memset((char*)&serverAddress, '\0', sizeof(serverAddress)); // Clear out the address struct
-	portNumber = atoi(argv[2]); // Get the port number, convert to an integer from a string
-	serverAddress.sin_family = AF_INET; // Create a network-capable socket
-	serverAddress.sin_port = htons(portNumber); // Store the port number
-	serverHostInfo = gethostbyname(argv[1]); // Convert the machine name into a special form of address
-	if (serverHostInfo == NULL) { fprintf(stderr, "CLIENT: ERROR, no such host\n"); exit(0); }
-	memcpy((char*)&serverAddress.sin_addr.s_addr, (char*)serverHostInfo->h_addr, serverHostInfo->h_length); // Copy in the address
+    if (sscanf (argv[1], "%s", plainTextFile) != 1)
+    {
+        fprintf (stderr, "Invalid text file [%s]", argv[1]);
+        return -1;       
+    }
+    if (sscanf (argv[2], "%s", keyFile) != 1)
+    {
+        fprintf (stderr, "Invalid key file [%s]", argv[1]);
+        return -2;
+    }
+    if ((sscanf (argv[3], "%d", &clientPort) != 1) || (clientPort < 0) || (clientPort > 0xFFFF))
+    {
+        fprintf (stderr, "Invalid port!! Must be 0-65535 [%d]\n\n", clientPort);
+        return -3;       
+    }
 
-	// Set up the socket
-	socketFD = socket(AF_INET, SOCK_STREAM, 0); // Create the socket
-	if (socketFD < 0) error("CLIENT: ERROR opening socket");
-	
+    // Create TCP socket on port
+    if ((clientSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
+        fprintf (stderr, "Failed to create TCP client socket [%s]\n\n", strerror(errno));
+        return -errno;
+    }
+
+    struct sockaddr_in ftClientSock;
+    memset (&ftClientSock, 0, sizeof (ftClientSock));
+    ftClientSock.sin_family = AF_INET;
+    ftClientSock.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    ftClientSock.sin_port = htons(clientPort);
+
 	// Connect to server
-	if (connect(socketFD, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) < 0) // Connect socket to address
-		error("CLIENT: ERROR connecting");
+	if (connect(clientSocket, (struct sockaddr*)&ftClientSock, sizeof(ftClientSock)) < 0)
+    {
+        fprintf (stderr, "Failed to connect to service [%s]\n", strerror(errno));
+        return -errno;
+    }
 
-	// Get input message from user
-	printf("CLIENT: Enter text to send to the server, and then hit enter: ");
-	memset(buffer, '\0', sizeof(buffer)); // Clear out the buffer array
-	fgets(buffer, sizeof(buffer) - 1, stdin); // Get input from the user, trunc to buffer - 1 chars, leaving \0
-	buffer[strcspn(buffer, "\n")] = '\0'; // Remove the trailing \n that fgets adds
 
-	// Send message to server
-	charsWritten = send(socketFD, buffer, strlen(buffer), 0); // Write to the server
-	if (charsWritten < 0) error("CLIENT: ERROR writing to socket");
-	if (charsWritten < strlen(buffer)) printf("CLIENT: WARNING: Not all data written to socket!\n");
+    // Fork off here with new connection...
+    uint32_t clientMagic = OTP_ENC_MAGIC;
+    send(clientSocket, &clientMagic, sizeof (clientMagic), 0);
+    uint32_t serverMagic = 0;
+    recv(clientSocket, &serverMagic, sizeof (serverMagic), 0);
+    fprintf(stderr, "Server authenticated [0x%08x]\n", serverMagic);
+    fflush(stderr);
 
-	// Get return message from server
-	memset(buffer, '\0', sizeof(buffer)); // Clear out the buffer again for reuse
-	charsRead = recv(socketFD, buffer, sizeof(buffer) - 1, 0); // Read data from the socket, leaving \0 at end
-	if (charsRead < 0) error("CLIENT: ERROR reading from socket");
-	printf("CLIENT: I received this from the server: \"%s\"\n", buffer);
-
-	close(socketFD); // Close the socket
+	close(clientSocket); // Close the socket
 	return 0;
 }

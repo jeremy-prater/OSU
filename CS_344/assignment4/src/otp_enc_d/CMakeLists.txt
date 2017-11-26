@@ -8,7 +8,7 @@ project (${PROJ_NAME})
 set(CMAKE_BUILD_TYPE Debug)
 
 # Add include folders
-include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}/../common")
 
 # Source Files
 set(OTP_ENC_D_SRC

@@ -5,15 +5,20 @@
 #include <netinet/ip.h>
 #include <errno.h>
 #include <string.h>
+#include <time.h>
+#include "common.h"
 
 static int serverPort = -1;
 static int serverSocket = -1;
 static int serverConnection = -1;
-#include <time.h>
+
 
 int main (int argc, char * argv[])
 {
+    uint32_t clientMagic = 0;
     uint16_t serverPort = 0;
+    uint32_t replyMagic = 0;
+
     if (argc != 2)
     {
         fprintf (stderr, "%s [key length]\n", argv[0]);
@@ -26,7 +31,7 @@ int main (int argc, char * argv[])
         return -1;       
     }
 
-        // Create TCP socket on port
+    // Create TCP socket on port
     if ((serverSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
         fprintf (stderr, "Failed to create TCP server socket [%s]\n\n", strerror(errno));
@@ -38,6 +43,13 @@ int main (int argc, char * argv[])
     ftServerSock.sin_family = AF_INET;
     ftServerSock.sin_addr.s_addr = htonl(INADDR_ANY);
     ftServerSock.sin_port = htons(serverPort);
+
+    if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int)) < 0)
+    {
+        fprintf (stderr, "Failed to set TCP socket options [%s]\n\n", strerror(errno));
+        return -errno;
+    }
+        
 
     // Bind to port
     if (bind(serverSocket, (struct sockaddr*)&ftServerSock, sizeof (ftServerSock)) < 0)
@@ -57,15 +69,32 @@ int main (int argc, char * argv[])
     {
         if (serverConnection < 0)
         {
-            //printf ("Connection Failed! [%s]\n", strerror(errno));
+            fprintf (stderr, "Connection Failed! [%s]\n", strerror(errno));
         }
         else
         {
             // New connection!
-            printf ("new connection!");
+            // This goes into a new process...
+            printf ("new connection!\n");
             fflush(stdout);
-
+            // Get magic from client
+            recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
+            printf ("recv magic [0x%08x]\n", clientMagic);
+            fflush(stdout);
+            if (clientMagic != OTP_ENC_MAGIC)
+            {
+                printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
+            }
+            else
+            {
+                fprintf (stderr, "Client connected [0x%08x]\n", clientMagic);
+                uint32_t serverMagic = OTP_ENC_MAGIC;
+                printf ("send reply magic [0x%08x]\n", serverMagic);
+                send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
+            }
+            
         }
+        fprintf (stderr, "Client disconnected!\n");
     }
 
     exit(0);

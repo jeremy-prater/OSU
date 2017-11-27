@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ftServer
+//
+// CS 372 - Project 2 - Jeremy Prater
+//
+
 #include "ftserver.h"
 
 #include <stdio.h>
@@ -9,14 +16,25 @@
 #include <string.h>
 #include "ftserver-data.h"
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// Static local variables
+//
+
 static int serverPort = -1;
 static int serverSocket = -1;
 static int serverConnection = -1;
 
 static uint8_t controlData[64];
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// Program entry point
+//
+
 int main(int argc, char * argv[])
 {
+    // Validate input
     if (argc != 2)
     {
         printf("Invald arguments!\n\n%s <server port>\n", argv[0]);
@@ -26,7 +44,7 @@ int main(int argc, char * argv[])
     if ((sscanf (argv[1], "%d", &serverPort) != 1) || (serverPort < 0) || (serverPort > 0xFFFF))
     {
         printf("Invalid port!! Must be 0-65535 [%d]\n\n", serverPort);
-        return -1;       
+        return -1;
     }
 
     // Create TCP socket on port
@@ -36,6 +54,7 @@ int main(int argc, char * argv[])
         return -errno;
     }
 
+    // Setup socket address information
     struct sockaddr_in ftServerSock;
     memset (&ftServerSock, 0, sizeof (ftServerSock));
     ftServerSock.sin_family = AF_INET;
@@ -49,6 +68,7 @@ int main(int argc, char * argv[])
         return -errno;
     }
 
+    // Listen on socket
     if (listen(serverSocket, 5) < 0)
     {
         printf("Failed to listen on TCP server socket [%s]\n\n", strerror(errno));
@@ -58,6 +78,7 @@ int main(int argc, char * argv[])
     socklen_t ftServerSocketLen = sizeof (ftServerSock);
     while ((serverConnection = accept (serverSocket, (struct sockaddr*)&ftServerSock, &ftServerSocketLen)) >= 0)
     {
+        // New connection!
         if (serverConnection < 0)
         {
             printf ("Connection Failed! [%s]\n", strerror(errno));
@@ -72,6 +93,7 @@ int main(int argc, char * argv[])
             memset (controlData, 0, sizeof (controlData));
             ssize_t recvSize = recv(serverConnection, controlData, sizeof (controlData), 0);
 
+            // Process incoming command header
             ftserverCommandHeader * header = (ftserverCommandHeader *)controlData;
             header->dataPort = ntohs(header->dataPort);
             header->payloadLength = ntohs(header->payloadLength);
@@ -92,9 +114,10 @@ int main(int argc, char * argv[])
                 printf ("Payload: %s\n", payload);
             }
 
-            // Create listener socket on dataPort
+            // Send the response payload to the server on the clients port
             uint8_t * serverResponse = GetServerResponse(hostname, header->dataPort, header->command, payload);
 
+            // Free resouces
             free (hostname);
             shutdown(serverConnection, 2);
         }

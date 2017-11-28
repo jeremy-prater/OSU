@@ -130,9 +130,17 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         exit(-errno);
     }
 
-    send(clientSocket, &clientMagic, sizeof (clientMagic), 0);
+    if (send(clientSocket, &clientMagic, sizeof (clientMagic), 0) != sizeof(clientMagic))
+    {
+        fprintf (stderr, "Failed to send client magic [%s]\n", strerror(errno));
+        exit(-errno);        
+    }
     uint32_t serverMagic = 0;
-    recv(clientSocket, &serverMagic, sizeof (serverMagic), 0);
+    if (recv(clientSocket, &serverMagic, sizeof (serverMagic), 0) != sizeof(serverMagic))
+    {
+        fprintf (stderr, "Failed to recv server magic [%s]\n", strerror(errno));
+        exit(-errno);        
+    }
 
     if (serverMagic != serverMagicTest)
     {

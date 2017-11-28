@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "common.h"
 
 static int serverPort = -1;
@@ -60,7 +61,7 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
 
         send (serverConnection, resultData, keyDataSize, 0);
     }
-
+    close(serverConnection);
 }
 
 void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clientMagic)

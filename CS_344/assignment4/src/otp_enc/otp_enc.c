@@ -4,9 +4,11 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
 #include <errno.h>
 #include <netdb.h>
+#include <fcntl.h>
 #include "common.h"
 
 static int clientPort = -1;
@@ -20,6 +22,11 @@ int main(int argc, char *argv[])
 	struct hostent* serverHostInfo;
 	char plainTextFile[1024];
     char keyFile[1024];
+    uint32_t keyFileSize = 0;
+    uint32_t plainTextFileSize = 0;
+
+	uint8_t * plainTextFileData = 0;
+    uint8_t * keyFileData = 0;
 
     if (argc != 4)
     {
@@ -42,6 +49,66 @@ int main(int argc, char *argv[])
         fprintf (stderr, "Invalid port!! Must be 0-65535 [%d]\n\n", clientPort);
         return -3;
     }
+
+    // Read key file
+    struct stat keyFileStat;
+    if (stat(keyFile, & keyFileStat) < 0)
+    {
+        fprintf (stderr, "Invalid key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        return -4;
+    }
+
+    keyFileSize = keyFileStat.st_size;
+    int keyFileFD = open(keyFile, O_RDONLY);
+    if (keyFileFD < 0)
+    {
+        fprintf (stderr, "Unable to open key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        return -5;
+    }
+
+    keyFileData = (uint8_t *)malloc (keyFileSize);
+    if (read(keyFileFD, keyFileData, keyFileSize) != keyFileSize)
+    {
+        fprintf (stderr, "Unable to read key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        return -6;
+    }
+
+    close (keyFileFD);
+
+    // Read plain text file
+    struct stat plainTextFileStat;
+    if (stat(plainTextFile, & plainTextFileStat) < 0)
+    {
+        fprintf (stderr, "Invalid plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        return -7;
+    }
+
+    plainTextFileSize = plainTextFileStat.st_size;
+
+    if (plainTextFileSize != keyFileSize)
+    {
+        fprintf (stderr, "key file and plainText file size mismatch! [%u]!=[%u]\n\n", keyFileSize, plainTextFileSize);
+        return -8;
+    }
+
+    int plainTextFileFD = open(plainTextFile, O_RDONLY);
+    if (plainTextFileFD < 0)
+    {
+        fprintf (stderr, "Unable to open plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        return -9;
+    }
+
+    plainTextFileData = (uint8_t *)malloc (plainTextFileSize);
+    if (read(plainTextFileFD, plainTextFileData, plainTextFileSize) != plainTextFileSize)
+    {
+        fprintf (stderr, "Unable to read plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        return -10;
+    }
+
+    close (plainTextFileFD);
+
+    // Data is loaded and sizes match.
+    // Create payload and send to server
 
     // Create TCP socket on port
     if ((clientSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)

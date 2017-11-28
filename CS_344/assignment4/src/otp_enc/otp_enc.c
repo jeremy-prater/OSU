@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	struct hostent* serverHostInfo;
 	char plainTextFile[1024];
     char keyFile[1024];
-    
+
     if (argc != 4)
     {
         fprintf (stderr, "%s [plain text file] [key file] [server port]\n", argv[0]);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     if (sscanf (argv[1], "%s", plainTextFile) != 1)
     {
         fprintf (stderr, "Invalid text file [%s]", argv[1]);
-        return -1;       
+        return -1;
     }
     if (sscanf (argv[2], "%s", keyFile) != 1)
     {
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     if ((sscanf (argv[3], "%d", &clientPort) != 1) || (clientPort < 0) || (clientPort > 0xFFFF))
     {
         fprintf (stderr, "Invalid port!! Must be 0-65535 [%d]\n\n", clientPort);
-        return -3;       
+        return -3;
     }
 
     // Create TCP socket on port
@@ -63,8 +63,6 @@ int main(int argc, char *argv[])
         return -errno;
     }
 
-
-    // Fork off here with new connection...
     uint32_t clientMagic = OTP_ENC_MAGIC;
     send(clientSocket, &clientMagic, sizeof (clientMagic), 0);
     uint32_t serverMagic = 0;

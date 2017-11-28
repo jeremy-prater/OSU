@@ -28,7 +28,7 @@ int main (int argc, char * argv[])
     if ((sscanf (argv[1], "%d", &serverPort) != 1) || (serverPort < 0) || (serverPort > 0xFFFF))
     {
         fprintf (stderr, "Invalid port!! Must be 0-65535 [%d]\n\n", serverPort);
-        return -1;       
+        return -1;
     }
 
     // Create TCP socket on port
@@ -49,7 +49,6 @@ int main (int argc, char * argv[])
         fprintf (stderr, "Failed to set TCP socket options [%s]\n\n", strerror(errno));
         return -errno;
     }
-        
 
     // Bind to port
     if (bind(serverSocket, (struct sockaddr*)&ftServerSock, sizeof (ftServerSock)) < 0)
@@ -73,7 +72,7 @@ int main (int argc, char * argv[])
         }
         else
         {
-            // New connection!
+            // Fork off here with new connection!
             // This goes into a new process...
             printf ("new connection!\n");
             fflush(stdout);
@@ -92,7 +91,6 @@ int main (int argc, char * argv[])
                 printf ("send reply magic [0x%08x]\n", serverMagic);
                 send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
             }
-            
         }
         fprintf (stderr, "Client disconnected!\n");
     }

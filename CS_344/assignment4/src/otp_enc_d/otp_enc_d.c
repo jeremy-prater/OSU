@@ -10,18 +10,35 @@
 
 static int serverPort = -1;
 static int serverSocket = -1;
-static int serverConnection = -1;
 
+void HandleConnection(int serverConnection)
+{
+    // Get magic from client
+    uint32_t clientMagic = 0;
+    recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
+    printf ("Client Connected, recv magic [0x%08x]\n", clientMagic);
+    fflush(stdout);
+    if (clientMagic != OTP_ENC_MAGIC)
+    {
+        printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
+    }
+    else
+    {
+        fprintf (stderr, "Client connected, sending reply magic [0x%08x]\n", clientMagic);
+        uint32_t serverMagic = OTP_ENC_MAGIC;
+        send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
+    }
+
+}
 
 int main (int argc, char * argv[])
 {
-    uint32_t clientMagic = 0;
     uint16_t serverPort = 0;
     uint32_t replyMagic = 0;
 
     if (argc != 2)
     {
-        fprintf (stderr, "%s [key length]\n", argv[0]);
+        fprintf (stderr, "%s [Server port]\n", argv[0]);
         return -1;
     }
 
@@ -64,6 +81,7 @@ int main (int argc, char * argv[])
     }
 
     socklen_t ftServerSocketLen = sizeof (ftServerSock);
+    int serverConnection = -1;
     while ((serverConnection = accept (serverSocket, (struct sockaddr*)&ftServerSock, &ftServerSocketLen)) >= 0)
     {
         if (serverConnection < 0)
@@ -73,24 +91,9 @@ int main (int argc, char * argv[])
         else
         {
             // Fork off here with new connection!
+
             // This goes into a new process...
-            printf ("new connection!\n");
-            fflush(stdout);
-            // Get magic from client
-            recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
-            printf ("recv magic [0x%08x]\n", clientMagic);
-            fflush(stdout);
-            if (clientMagic != OTP_ENC_MAGIC)
-            {
-                printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
-            }
-            else
-            {
-                fprintf (stderr, "Client connected [0x%08x]\n", clientMagic);
-                uint32_t serverMagic = OTP_ENC_MAGIC;
-                printf ("send reply magic [0x%08x]\n", serverMagic);
-                send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
-            }
+            HandleConnection(serverConnection);
         }
         fprintf (stderr, "Client disconnected!\n");
     }

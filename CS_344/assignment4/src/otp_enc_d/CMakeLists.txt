@@ -13,6 +13,8 @@ include_directories("${PROJECT_SOURCE_DIR}/../common")
 # Source Files
 set(OTP_ENC_D_SRC
   ${PROJECT_SOURCE_DIR}/otp_enc_d.c
+  ${PROJECT_SOURCE_DIR}/../common/common.c
+  ${PROJECT_SOURCE_DIR}/../common/common_server.c
 )
 
 # Define the output executable

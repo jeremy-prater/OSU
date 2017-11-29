@@ -153,7 +153,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     for (int index = 0; index < keyFileSize; index++)
     {
-        printf ("[%d] [%c] [%c]\n", index, keyFileData[index], plainTextFileData[index]);
+        fprintf (stderr, "[%d] [%c] [%c]\n", index, keyFileData[index], plainTextFileData[index]);
     }
 
     TransformInput (keyFileData, keyFileSize);

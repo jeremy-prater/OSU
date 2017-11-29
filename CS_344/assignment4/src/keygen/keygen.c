@@ -8,13 +8,13 @@ int main (int argc, char * argv[])
     uint32_t keyLength = 0;
     if (argc != 2)
     {
-        printf ("%s [key length]\n", argv[0]);
+        fprintf (stderr, "%s [key length]\n", argv[0]);
         return -1;
     }
 
     if (sscanf (argv[1], "%d", &keyLength) != 1)
     {
-        printf("Invalid Key Length [%s]\n\n", argv[1]);
+        fprintf(stderr, "Invalid Key Length [%s]\n\n", argv[1]);
         return -2;
     }
 
@@ -37,5 +37,6 @@ int main (int argc, char * argv[])
         printf ("%c", keySegment);
         keyLength--;
     }
+    printf ("\n");
     exit(0);
 }

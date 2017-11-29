@@ -154,8 +154,9 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     fprintf(stderr, "Sending key/data size [%u]\n", plainTextFileSize);
     send(clientSocket, &plainTextFileSize, sizeof (plainTextFileSize), 0);
-    send(clientSocket, keyFileData, plainTextFileSize, 0);
-    send(clientSocket, plainTextFileData, plainTextFileSize, 0);
+
+    SendDataLoop (clientSocket, keyFileData, plainTextFileSize);
+    SendDataLoop (clientSocket, plainTextFileData, plainTextFileSize);
 
     uint8_t * resultPayload = (uint8_t *)malloc (plainTextFileSize);
 

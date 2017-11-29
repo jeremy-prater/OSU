@@ -40,21 +40,11 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
 
         uint8_t * resultData = PreformOTP(keyData, fileData, keyDataSize);
 
-        uint32_t offset = 0;
-        while (keyDataSize > 0)
-        {
-            uint32_t recvSize = keyDataSize;
-            if (keyDataSize > 1000)
-            {
-                recvSize = 1000;
-            }
-            offset += send (serverConnection, &resultData[offset], recvSize, 0);
-            keyDataSize -= offset;
-
-        }
+        SendDataLoop(serverConnection, resultData, keyDataSize);
     }
+    //flush(serverConnection);
     close(serverConnection);
-    exit(0); // Should've used select in the parent... The easy way out...
+    //exit(0); // Should've used select in the parent... The easy way out...
 }
 
 void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clientMagic)
@@ -100,7 +90,7 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
         exit(-errno);
     }
 
-    if (listen(serverSocket, 6) < 0)
+    if (listen(serverSocket, 50) < 0)
     {
         fprintf (stderr, "Failed to listen on TCP server socket [%s]\n\n", strerror(errno));
         exit(-errno);
@@ -138,7 +128,6 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
                 {
                     // This is the parent...
                     fprintf(stderr, "Child server launched [%u]\n", spawnPID);
-                    close(serverConnection);
                     
                 }
             }

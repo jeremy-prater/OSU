@@ -37,5 +37,6 @@ int main (int argc, char * argv[])
         printf ("%c", keySegment);
         keyLength--;
     }
+    printf("\n");
     exit(0);
 }

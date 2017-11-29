@@ -16,4 +16,6 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
 
 void GetServerResponse(int argc, char *argv[], uint32_t serverMagic, uint32_t clientMagic);
 
+uint8_t * GetDataRecvLoop(int socket, uint32_t size);
+
 #endif // OTP_COMMON

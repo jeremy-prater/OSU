@@ -20,7 +20,7 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
     fprintf (stderr, "Client Connected, recv magic [0x%08x]\n", clientMagic);
     if (clientMagic != clientMagicTest)
     {
-        fprintf (stderr, "Client connect with incorrect magic [0x%08x]\n", clientMagic);
+        printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
     }
     else
     {
@@ -31,37 +31,30 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
         uint32_t keyDataSize = 0;
         recv (serverConnection, &keyDataSize, sizeof(keyDataSize), 0);
         fprintf (stderr, "Client sent key/data size of [%u]\n", keyDataSize);
-        uint8_t * keyData = (uint8_t *)malloc (keyDataSize);
-        uint8_t * fileData = (uint8_t *)malloc (keyDataSize);
 
-        // Break this into a recv loop...
-        if (recv (serverConnection, keyData, keyDataSize, 0) == keyDataSize)
-        {
-            fprintf (stderr, "Client sent key\n");
-        }
-        else
-        {
-            fprintf (stderr, "Client send key failed\n");
-        }
-
-        // Break this into a recv loop...
-        if (recv (serverConnection, fileData, keyDataSize, 0) == keyDataSize)
-        {
-            fprintf (stderr, "Client sent data\n");
-        }
-        else
-        {
-            fprintf (stderr, "Client send data failed\n");
-        }
+        uint8_t * keyData = GetDataRecvLoop(serverConnection, keyDataSize);
+        uint8_t * fileData = GetDataRecvLoop(serverConnection, keyDataSize);
 
         // Do something with the key/data...
         fprintf (stderr, "Preforming encryption protocols...\n");
 
         uint8_t * resultData = PreformOTP(keyData, fileData, keyDataSize);
 
-        send (serverConnection, resultData, keyDataSize, 0);
+        uint32_t offset = 0;
+        while (keyDataSize > 0)
+        {
+            uint32_t recvSize = keyDataSize;
+            if (keyDataSize > 1000)
+            {
+                recvSize = 1000;
+            }
+            offset += send (serverConnection, &resultData[offset], recvSize, 0);
+            keyDataSize -= offset;
+
+        }
     }
     close(serverConnection);
+    exit(0); // Should've used select in the parent... The easy way out...
 }
 
 void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clientMagic)
@@ -107,7 +100,7 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
         exit(-errno);
     }
 
-    if (listen(serverSocket, 5) < 0)
+    if (listen(serverSocket, 6) < 0)
     {
         fprintf (stderr, "Failed to listen on TCP server socket [%s]\n\n", strerror(errno));
         exit(-errno);
@@ -115,6 +108,7 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
 
     socklen_t ftServerSocketLen = sizeof (ftServerSock);
     int serverConnection = -1;
+
     while ((serverConnection = accept (serverSocket, (struct sockaddr*)&ftServerSock, &ftServerSocketLen)) >= 0)
     {
         if (serverConnection < 0)
@@ -124,9 +118,30 @@ void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clien
         else
         {
             // Fork off here with new connection!
-
-            // This goes into a new process...
-            HandleServerConnection(serverConnection, serverMagic, clientMagic);
+            pid_t spawnPID = fork();
+            switch (spawnPID)
+            {
+                case -1:
+                {
+                    fprintf(stderr, "Server fork failed. Nooooo!!!!");
+                    exit (-100);
+                }
+                break;
+                case 0:
+                {
+                    // This is the child
+                    // This goes into a new process...
+                    HandleServerConnection(serverConnection, serverMagic, clientMagic);
+                }
+                break;
+                default:
+                {
+                    // This is the parent...
+                    fprintf(stderr, "Child server launched [%u]\n", spawnPID);
+                    close(serverConnection);
+                    
+                }
+            }
         }
         fprintf (stderr, "Client disconnected!\n");
     }

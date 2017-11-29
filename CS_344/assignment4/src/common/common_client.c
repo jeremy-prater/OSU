@@ -30,23 +30,23 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     if (argc != 4)
     {
-        fprintf (stderr, "%s [plain text file] [key file] [server port]\n", argv[0]);
+        printf ("%s [plain text file] [key file] [server port]\n", argv[0]);
         exit(-1);
     }
 
     if (sscanf (argv[1], "%s", plainTextFile) != 1)
     {
-        fprintf (stderr, "Invalid text file [%s]", argv[1]);
+        printf ("Invalid text file [%s]", argv[1]);
         exit(-1);
     }
     if (sscanf (argv[2], "%s", keyFile) != 1)
     {
-        fprintf (stderr, "Invalid key file [%s]", argv[1]);
+        printf ("Invalid key file [%s]", argv[1]);
         exit(-2);
     }
     if ((sscanf (argv[3], "%d", &clientPort) != 1) || (clientPort < 0) || (clientPort > 0xFFFF))
     {
-        fprintf (stderr, "Invalid port!! Must be 0-65535 [%d]\n\n", clientPort);
+        printf ("Invalid port!! Must be 0-65535 [%d]\n\n", clientPort);
         exit(-3);
     }
 
@@ -54,7 +54,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     struct stat keyFileStat;
     if (stat(keyFile, & keyFileStat) < 0)
     {
-        fprintf (stderr, "Invalid key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        printf ("Invalid key file [%s] [%s]\n\n", keyFile, strerror(errno));
         exit(-4);
     }
 
@@ -62,14 +62,14 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     int keyFileFD = open(keyFile, O_RDONLY);
     if (keyFileFD < 0)
     {
-        fprintf (stderr, "Unable to open key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        printf ("Unable to open key file [%s] [%s]\n\n", keyFile, strerror(errno));
         exit(-5);
     }
 
     keyFileData = (uint8_t *)malloc (keyFileSize);
     if (read(keyFileFD, keyFileData, keyFileSize) != keyFileSize)
     {
-        fprintf (stderr, "Unable to read key file [%s] [%s]\n\n", keyFile, strerror(errno));
+        printf ("Unable to read key file [%s] [%s]\n\n", keyFile, strerror(errno));
         exit(-6);
     }
 
@@ -79,29 +79,29 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     struct stat plainTextFileStat;
     if (stat(plainTextFile, & plainTextFileStat) < 0)
     {
-        fprintf (stderr, "Invalid plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        printf ("Invalid plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
         exit(-7);
     }
 
     plainTextFileSize = plainTextFileStat.st_size - 1;
 
-    if (plainTextFileSize != keyFileSize)
+    if (plainTextFileSize > keyFileSize)
     {
-        fprintf (stderr, "key file and plainText file size mismatch! [%u]!=[%u]\n\n", keyFileSize, plainTextFileSize);
-        exit(-8);
+        printf ("key file and plainText file size mismatch! [%u] < [%u]\n\n", keyFileSize, plainTextFileSize);
+        exit(1);
     }
 
     int plainTextFileFD = open(plainTextFile, O_RDONLY);
     if (plainTextFileFD < 0)
     {
-        fprintf (stderr, "Unable to open plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        printf ("Unable to open plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
         exit(-9);
     }
 
     plainTextFileData = (uint8_t *)malloc (plainTextFileSize);
     if (read(plainTextFileFD, plainTextFileData, plainTextFileSize) != plainTextFileSize)
     {
-        fprintf (stderr, "Unable to read plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
+        printf ("Unable to read plainText file [%s] [%s]\n\n", plainTextFile, strerror(errno));
         exit(-10);
     }
 
@@ -138,36 +138,41 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     uint32_t serverMagic = 0;
     if (recv(clientSocket, &serverMagic, sizeof (serverMagic), 0) != sizeof(serverMagic))
     {
-        fprintf (stderr, "Failed to recv server magic [%s]\n", strerror(errno));
+        printf ("Failed to recv server magic\n");
+        if (serverMagic != serverMagicTest)
+        {
+            printf("Server authenticated failed[0x%08x]!=[0x%08x]!!\n", serverMagic, serverMagicTest);
+            exit(2);
+        }
         exit(-errno);        
     }
 
-    if (serverMagic != serverMagicTest)
-    {
-        fprintf(stderr, "Server authenticated failed[0x%08x]!=[0x%08x]!!\n", serverMagic, serverMagicTest);
-        fflush(stderr);
-    }
-
     fprintf(stderr, "Server authenticated [0x%08x]\n", serverMagic);
-    fflush(stderr);
 
-    for (int index = 0; index < keyFileSize; index++)
-    {
-        fprintf (stderr, "[%d] [%c] [%c]\n", index, keyFileData[index], plainTextFileData[index]);
-    }
+    TransformInput (keyFileData, plainTextFileSize);
+    TransformInput (plainTextFileData, plainTextFileSize);
 
-    TransformInput (keyFileData, keyFileSize);
-    TransformInput (plainTextFileData, keyFileSize);
-
-    send(clientSocket, &keyFileSize, sizeof (keyFileSize), 0);
-    send(clientSocket, keyFileData, keyFileSize, 0);
+    fprintf(stderr, "Sending key/data size [%u]\n", plainTextFileSize);
+    send(clientSocket, &plainTextFileSize, sizeof (plainTextFileSize), 0);
+    send(clientSocket, keyFileData, plainTextFileSize, 0);
     send(clientSocket, plainTextFileData, plainTextFileSize, 0);
 
     uint8_t * resultPayload = (uint8_t *)malloc (plainTextFileSize);
 
-    recv(clientSocket, resultPayload, plainTextFileSize, 0);
+    uint32_t originalFileSize = plainTextFileSize;
+    uint32_t offset = 0;
+    while (plainTextFileSize > 0)
+    {
+        uint32_t recvSize = plainTextFileSize;
+        if (plainTextFileSize > 1000)
+        {
+            recvSize = 1000;
+        }
+        offset += recv(clientSocket, &resultPayload[offset], plainTextFileSize, 0);
+        plainTextFileSize -= offset;
+    }
 
-    TransformOutput (resultPayload, plainTextFileSize);
+    TransformOutput (resultPayload, originalFileSize);
 
     printf ("%s\n", resultPayload);
 

@@ -11,10 +11,14 @@ int main (int argc, char * argv[])
 
 uint8_t * PreformOTP(uint8_t * keyData, uint8_t * fileData, uint32_t keyDataSize)
 {
-    uint8_t * resultData = (uint8_t *)malloc(keyDataSize);
+    int8_t * resultData = (uint8_t *)malloc(keyDataSize);
     for (uint32_t index = 0; index < keyDataSize; index++)
     {
-        resultData[index] = (fileData[index] + keyData[index]) % 27;
+        resultData[index] = fileData[index] + keyData[index];
+        while (resultData[index] > 27)
+        {
+            resultData[index] -= 27;
+        }
     }
-    return resultData;
+    return (uint8_t*)resultData;
 }

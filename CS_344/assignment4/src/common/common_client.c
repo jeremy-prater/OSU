@@ -174,8 +174,17 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         {
             recvSize = 1000;
         }
-        offset += recv(clientSocket, &resultPayload[offset], plainTextFileSize, 0);
-        plainTextFileSize -= offset;
+        ssize_t recvRes = recv(clientSocket, &resultPayload[offset], plainTextFileSize, 0);
+        if (recvRes < 0)
+        {
+            fprintf (stderr, "Failed recv data from daemon [%s]\n", strerror(errno));
+            exit (-errno);
+        }
+        else
+        {
+            offset += recvRes;
+            plainTextFileSize -= recvRes;
+        }
     }
 
     TransformOutput (resultPayload, originalFileSize);

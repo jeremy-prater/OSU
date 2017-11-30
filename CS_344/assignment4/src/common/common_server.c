@@ -17,21 +17,21 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
     // Get magic from client
     uint32_t clientMagic = 0;
     recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
-    fprintf (stderr, "Client Connected, recv magic [0x%08x]\n", clientMagic);
+    fprintf (stderr, "[%d] Client Connected, recv magic [0x%08x]\n", getpid() ,clientMagic);
     if (clientMagic != clientMagicTest)
     {
-        printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
+        printf ("[%d] Client connect with incorrect magic [0x%08x]\n", getpid(), clientMagic);
         shutdown (serverConnection, SHUT_RDWR);
     }
     else
     {
-        fprintf (stderr, "Client connected, sending reply magic [0x%08x]\n", clientMagic);
+        fprintf (stderr, "[%d] Client connected, sending reply magic [0x%08x]\n", getpid(), clientMagic);
         send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
 
         // Split here for enc/dec
         uint32_t keyDataSize = 0;
         recv (serverConnection, &keyDataSize, sizeof(keyDataSize), 0);
-        fprintf (stderr, "Client sent key/data size of [%u]\n", keyDataSize);
+        fprintf (stderr, "[%d] Client sent key/data size of [%u]\n", getpid(), keyDataSize);
 
         uint8_t * keyData = GetDataRecvLoop(serverConnection, keyDataSize);
         uint8_t * fileData = GetDataRecvLoop(serverConnection, keyDataSize);

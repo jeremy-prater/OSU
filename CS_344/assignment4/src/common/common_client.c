@@ -129,22 +129,27 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         fprintf (stderr, "Failed to connect to service [%s]\n", strerror(errno));
         exit(-errno);
     }
-
-    if (send(clientSocket, &clientMagic, sizeof (clientMagic), 0) != sizeof(clientMagic))
+    ssize_t socketRes = 0;
+    socketRes = send(clientSocket, &clientMagic, sizeof (clientMagic), 0);
+    if ((socketRes < 0) || (socketRes != sizeof(clientMagic)))
     {
         fprintf (stderr, "Failed to send client magic [%s]\n", strerror(errno));
         exit(-errno);        
     }
     uint32_t serverMagic = 0;
-    if (recv(clientSocket, &serverMagic, sizeof (serverMagic), 0) != sizeof(serverMagic))
+    socketRes = recv(clientSocket, &serverMagic, sizeof (serverMagic), 0);
+    if ((socketRes < 0) || (socketRes != sizeof(serverMagic)))
     {
-        printf ("Failed to recv server magic\n");
-        if (serverMagic != serverMagicTest)
-        {
-            printf("Server authenticated failed[0x%08x]!=[0x%08x]!!\n", serverMagic, serverMagicTest);
-            exit(2);
-        }
-        exit(-errno);        
+        printf ("Failed to recv server magic. Do not mix otp_enc/otp_dec!\n");
+        exit(2);
+    }
+
+    if (serverMagic != serverMagicTest)
+    {
+        // This probably can never happen because the server disconnects as soon as the magic is incorrect.
+        printf("Server authenticated failed[0x%08x]!=[0x%08x]!!\n", serverMagic, serverMagicTest);
+        printf ("Failed to recv server magic. Do not mix otp_enc/otp_dec!\n");
+        exit(2);
     }
 
     fprintf(stderr, "Server authenticated [0x%08x]\n", serverMagic);

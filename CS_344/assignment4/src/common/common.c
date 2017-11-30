@@ -72,11 +72,15 @@ uint8_t * SendDataLoop(int socket, uint8_t * data, uint32_t size)
             recvSize = 1000;
         }
         fprintf (stderr, " -- Server Send progress [%d]\n", offset);
-        offset += send(socket, &data[offset], recvSize, 0);
-        if (offset < 0)
+        ssize_t sendRes = send(socket, &data[offset], recvSize, 0);
+        if (sendRes < 0)
         {
             fprintf (stderr, "Client send data failed [%s]\n" ,strerror(errno));
             exit (-errno);
+        }
+        else
+        {
+            offset += sendRes;
         }
 
         size -= offset;

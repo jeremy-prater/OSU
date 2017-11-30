@@ -21,6 +21,7 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
     if (clientMagic != clientMagicTest)
     {
         printf ("Client connect with incorrect magic [0x%08x]\n", clientMagic);
+        shutdown (serverConnection, SHUT_RDWR);
     }
     else
     {

@@ -15,7 +15,7 @@ uint8_t * PreformOTP(uint8_t * keyData, uint8_t * fileData, uint32_t keyDataSize
     for (uint32_t index = 0; index < keyDataSize; index++)
     {
         resultData[index] = fileData[index] + keyData[index];
-        while (resultData[index] > 27)
+        while (resultData[index] >= 27)
         {
             resultData[index] -= 27;
         }

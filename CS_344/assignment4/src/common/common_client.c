@@ -107,7 +107,17 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     close (plainTextFileFD);
 
+    for (int index = 0; index < plainTextFileSize; index++)
+    {
+        if (!(((plainTextFileData[index] >= 'A') && (plainTextFileData[index] <= 'Z')) || (plainTextFileData[index] == ' ')))
+        {
+            fprintf (stderr, "Input file [%s] contains invalid characters [%c]\n\n", plainTextFile ,plainTextFileData[index]);
+            exit (-11);
+        }
+    }
+
     // Data is loaded and sizes match.
+    // All characters are valid
     // Create payload and send to server
 
     // Create TCP socket on port
@@ -134,7 +144,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     if ((socketRes < 0) || (socketRes != sizeof(clientMagic)))
     {
         fprintf (stderr, "Failed to send client magic [%s]\n", strerror(errno));
-        exit(-errno);        
+        exit(-errno);
     }
     uint32_t serverMagic = 0;
     socketRes = recv(clientSocket, &serverMagic, sizeof (serverMagic), 0);
@@ -163,7 +173,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     SendDataLoop (clientSocket, keyFileData, plainTextFileSize);
     SendDataLoop (clientSocket, plainTextFileData, plainTextFileSize);
 
-    uint8_t * resultPayload = (uint8_t *)malloc (plainTextFileSize);
+    uint8_t * resultPayload = (uint8_t *)malloc (plainTextFileSize + 1);
+    resultPayload[plainTextFileSize] = 0x00;
 
     uint32_t originalFileSize = plainTextFileSize;
     uint32_t offset = 0;
@@ -190,6 +201,10 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     TransformOutput (resultPayload, originalFileSize);
 
     printf ("%s\n", resultPayload);
+
+    free(keyFileData);
+    free(plainTextFileData);
+    free(resultPayload);
 
 	close(clientSocket); // Close the socket
 }

@@ -39,7 +39,7 @@ uint8_t * GetDataRecvLoop(int socket, uint32_t size)
 {
     uint8_t * payload = (uint8_t *)malloc(size);
     uint32_t offset = 0;
-    fprintf (stderr, "[%d] -- Server Recv Start [%d]\n", getpid(), size);
+    //fprintf (stderr, "[%d] -- Server Recv Start [%d]\n", getpid(), size);
     while (size > 0)
     {
         uint32_t recvSize = size;
@@ -47,7 +47,7 @@ uint8_t * GetDataRecvLoop(int socket, uint32_t size)
         {
             recvSize = 1000;
         }
-        fprintf (stderr, "[%d] -- Server Recv progress [%d]\n", getpid(), offset);
+        //fprintf (stderr, "[%d] -- Server Recv progress [%d]\n", getpid(), offset);
         ssize_t recvRes = recv(socket, &payload[offset], recvSize, 0);
         if (recvRes < 0)
         {
@@ -60,13 +60,13 @@ uint8_t * GetDataRecvLoop(int socket, uint32_t size)
             size -= recvRes;
         }
     }
-    fprintf (stderr, "[%d] -- Server Recv progress [%d]\n", getpid(), offset);
+    //fprintf (stderr, "[%d] -- Server Recv progress [%d]\n", getpid(), offset);
     return payload;
 }
 
 uint8_t * SendDataLoop(int socket, uint8_t * data, uint32_t size)
 {
-    fprintf (stderr, "[%d] -- Server Send Start [%d]\n", getpid(), size);
+    //fprintf (stderr, "[%d] -- Server Send Start [%d]\n", getpid(), size);
     uint32_t offset = 0;
     while (size > 0)
     {
@@ -75,7 +75,7 @@ uint8_t * SendDataLoop(int socket, uint8_t * data, uint32_t size)
         {
             recvSize = 1000;
         }
-        fprintf (stderr, "[%d] -- Server Send progress [%d]\n", getpid(), offset);
+        //fprintf (stderr, "[%d] -- Server Send progress [%d]\n", getpid(), offset);
         ssize_t sendRes = send(socket, &data[offset], recvSize, 0);
         if (sendRes < 0)
         {
@@ -88,5 +88,5 @@ uint8_t * SendDataLoop(int socket, uint8_t * data, uint32_t size)
             size -= sendRes;
         }
     }
-    fprintf (stderr, "[%d] -- Server Send progress [%d]\n", getpid(), offset);
+    //fprintf (stderr, "[%d] -- Server Send progress [%d]\n", getpid(), offset);
 }

@@ -42,6 +42,10 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
         uint8_t * resultData = PreformOTP(keyData, fileData, keyDataSize);
 
         SendDataLoop(serverConnection, resultData, keyDataSize);
+
+        free(resultData);
+        free(keyData);
+        free(fileData);
     }
     //flush(serverConnection);
     close(serverConnection);

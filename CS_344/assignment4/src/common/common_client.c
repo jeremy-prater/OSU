@@ -112,7 +112,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     {
         if (!(((keyFileData[index] >= 'A') && (keyFileData[index] <= 'Z')) || (keyFileData[index] == ' ')))
         {
-            printf ("Key file [%s] contains invalid characters [%c]\n\n", keyFile ,keyFileData[index]);
+            fprintf (stderr, "Key file [%s] contains invalid characters [%c]\n\n", keyFile ,keyFileData[index]);
             exit (1);
         }
     }
@@ -120,7 +120,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     {
         if (!(((plainTextFileData[index] >= 'A') && (plainTextFileData[index] <= 'Z')) || (plainTextFileData[index] == ' ')))
         {
-            printf ("Input file [%s] contains invalid characters [%c]\n\n", plainTextFile ,plainTextFileData[index]);
+            fprintf (stderr, "Input file [%s] contains invalid characters [%c]\n\n", plainTextFile ,plainTextFileData[index]);
             exit (1);
         }
     }

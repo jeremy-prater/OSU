@@ -108,12 +108,20 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
     close (plainTextFileFD);
 
     int index = 0;
+    for (index = 0; index < keyFileSize; index++)
+    {
+        if (!(((keyFileData[index] >= 'A') && (keyFileData[index] <= 'Z')) || (keyFileData[index] == ' ')))
+        {
+            fprintf (stderr, "Key file [%s] contains invalid characters [%c]\n\n", keyFile ,keyFileData[index]);
+            exit (-11);
+        }
+    }
     for (index = 0; index < plainTextFileSize; index++)
     {
         if (!(((plainTextFileData[index] >= 'A') && (plainTextFileData[index] <= 'Z')) || (plainTextFileData[index] == ' ')))
         {
             fprintf (stderr, "Input file [%s] contains invalid characters [%c]\n\n", plainTextFile ,plainTextFileData[index]);
-            exit (-11);
+            exit (-12);
         }
     }
 

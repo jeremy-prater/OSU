@@ -11,7 +11,7 @@ int main (int argc, char * argv[])
 
 uint8_t * PreformOTP(uint8_t * keyData, uint8_t * fileData, uint32_t keyDataSize)
 {
-    int8_t * resultData = (uint8_t *)malloc(keyDataSize);
+    int8_t * resultData = (int8_t *)malloc(keyDataSize);
     uint32_t index = 0;
     for ( index = 0; index < keyDataSize; index++)
     {

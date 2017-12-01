@@ -107,7 +107,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     close (plainTextFileFD);
 
-    for (int index = 0; index < plainTextFileSize; index++)
+    int index = 0;
+    for (index = 0; index < plainTextFileSize; index++)
     {
         if (!(((plainTextFileData[index] >= 'A') && (plainTextFileData[index] <= 'Z')) || (plainTextFileData[index] == ' ')))
         {

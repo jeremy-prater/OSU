@@ -35,9 +35,6 @@
 
 void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t clientMagicTest)
 {
-    int serverPort = -1;
-    int serverSocket = -1;
-
     // Get magic from client
     uint32_t clientMagic = 0;
     recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
@@ -83,6 +80,7 @@ void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t
 
 void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clientMagic)
 {
+    int serverSocket = -1;
     uint16_t serverPort = 0;
     uint32_t replyMagic = 0;
 

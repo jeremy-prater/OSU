@@ -1,7 +1,21 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 4 - OTP
+// Jeremy Prater
+//
+// Encryption key generator
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
+
+
+/////////////////////////////////////////////////////////////
+//
+// Generate a key of length n, with characters [' ', ['A', 'Z']]
+//
 
 int main (int argc, char * argv[])
 {

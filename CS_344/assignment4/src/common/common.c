@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 4 - OTP
+// Jeremy Prater
+//
+// Common functions (otp_enc/otp_dec)
+//
+
 #include "common.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,6 +17,11 @@
 #include <stdlib.h>
 #include <errno.h>
 
+
+/////////////////////////////////////////////////////////////
+//
+// Transform input from [' ', ['A', 'Z']] into ['A', '[']
+//
 
 void TransformInput (uint8_t * data, uint32_t size)
 {
@@ -23,6 +36,11 @@ void TransformInput (uint8_t * data, uint32_t size)
     }
 }
 
+/////////////////////////////////////////////////////////////
+//
+// Transform result from ['A', 'Z'] into [' ', ['A', 'Z']]
+//
+
 void TransformOutput (uint8_t * data, uint32_t size)
 {
     uint32_t index = 0;
@@ -35,6 +53,14 @@ void TransformOutput (uint8_t * data, uint32_t size)
         }
     }
 }
+
+/////////////////////////////////////////////////////////////
+//
+// TCP send/recv data loops.
+//
+// Break large chunks into smaller send/recv request
+//
+
 uint8_t * GetDataRecvLoop(int socket, uint32_t size)
 {
     uint8_t * payload = (uint8_t *)malloc(size);

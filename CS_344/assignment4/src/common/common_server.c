@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 4 - OTP
+// Jeremy Prater
+//
+// Common server (otp_enc_d/otp_dec_d)
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -9,47 +17,68 @@
 #include <unistd.h>
 #include "common.h"
 
-static int serverPort = -1;
-static int serverSocket = -1;
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// HandleServerConnection
+//
+// This function preforms the following functions:
+//
+// 1. Client is already connected on FD serverConnection
+// 2. Recv client magic -- For verifying otp_enc/otp_dec
+// 3. Send server magic -- For verifying otp_enc/otp_dec
+// 4. Send payload length
+// 5. Send key
+// 6. Send plain text or cypher text
+// 7. Recv result
+// 8. Free memory and close socket
+//
 
 void HandleServerConnection(int serverConnection, uint32_t serverMagic, uint32_t clientMagicTest)
 {
+    int serverPort = -1;
+    int serverSocket = -1;
+
     // Get magic from client
     uint32_t clientMagic = 0;
     recv(serverConnection, &clientMagic, sizeof (clientMagic), 0);
     fprintf (stderr, "[%d] Client Connected, recv magic [0x%08x]\n", getpid() ,clientMagic);
     if (clientMagic != clientMagicTest)
     {
+        // The client is using the wrong magic (otp_enc != otp_dec)
         printf ("[%d] Client connect with incorrect magic [0x%08x]\n", getpid(), clientMagic);
+        // Kill the socket
         shutdown (serverConnection, SHUT_RDWR);
     }
     else
     {
+        // Client is authorized, send back the response magic
         fprintf (stderr, "[%d] Client connected, sending reply magic [0x%08x]\n", getpid(), clientMagic);
         send(serverConnection, &serverMagic, sizeof (serverMagic), 0);
 
-        // Split here for enc/dec
+        // Recv the size of the key
         uint32_t keyDataSize = 0;
         recv (serverConnection, &keyDataSize, sizeof(keyDataSize), 0);
         fprintf (stderr, "[%d] Client sent key/data size of [%u]\n", getpid(), keyDataSize);
 
+        // Recv the key and data in a TCP loop
         uint8_t * keyData = GetDataRecvLoop(serverConnection, keyDataSize);
         uint8_t * fileData = GetDataRecvLoop(serverConnection, keyDataSize);
 
-        // Do something with the key/data...
+        // Preform the encryption/decryption
         fprintf (stderr, "Preforming encryption protocols...\n");
-
         uint8_t * resultData = PreformOTP(keyData, fileData, keyDataSize);
 
+        // Send the response to the client
         SendDataLoop(serverConnection, resultData, keyDataSize);
 
+        // Free memory
         free(resultData);
         free(keyData);
         free(fileData);
     }
-    //flush(serverConnection);
+
+    // Close the socket
     close(serverConnection);
-    //exit(0); // Should've used select in the parent... The easy way out...
 }
 
 void CreateServer (int argc, char * argv[], uint32_t serverMagic, uint32_t clientMagic)

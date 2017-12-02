@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 4 - OTP
+// Jeremy Prater
+//
+// otp_enc_d
+//
+
 #include <stdint.h>
 #include <memory.h>
 #include <stdlib.h>
@@ -5,9 +13,15 @@
 
 int main (int argc, char * argv[])
 {
+    // Create a server using OTP_ENC_MAGIC
     CreateServer(argc, argv, OTP_ENC_MAGIC, OTP_ENC_MAGIC);
     exit(0);
 }
+
+///////////////////////////////////////////////////////////////
+//
+// OTP Encryption
+//
 
 uint8_t * PreformOTP(uint8_t * keyData, uint8_t * fileData, uint32_t keyDataSize)
 {

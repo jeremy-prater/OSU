@@ -1,3 +1,11 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// CS 344 - Assignment 4 - OTP
+// Jeremy Prater
+//
+// Common client (otp_enc/otp_dec)
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,12 +19,27 @@
 #include <fcntl.h>
 #include "common.h"
 
-static int clientPort = -1;
-static int clientSocket = -1;
-static int clientConnection = -1;
+//////////////////////////////////////////////////////////////////////////////////////
+//
+// GetServerResponse
+//
+// This function preforms the following functions:
+//
+// 1. Connect to server port specified by argv
+// 2. Send client magic -- For verifying otp_enc/otp_dec
+// 3. Recv server magic -- For verifying otp_enc/otp_dec
+// 4. Send payload length
+// 5. Send key
+// 6. Send plain text or cypher text
+// 7. Recv result
+// 8. Free memory and close socket
+//
 
 void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_t clientMagic)
 {
+    int clientPort = -1;
+    int clientSocket = -1;
+    int clientConnection = -1;
 	int socketFD, portNumber, charsWritten, charsRead;
 	struct sockaddr_in serverAddress;
 	struct hostent* serverHostInfo;
@@ -27,6 +50,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
 	uint8_t * plainTextFileData = 0;
     uint8_t * keyFileData = 0;
+
+    // Verify input arguments
 
     if (argc != 4)
     {
@@ -107,6 +132,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     close (plainTextFileFD);
 
+    // Check for invalid characters in key and data
+
     int index = 0;
     for (index = 0; index < keyFileSize; index++)
     {
@@ -148,6 +175,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         fprintf (stderr, "Failed to connect to service [%s]\n", strerror(errno));
         exit(-errno);
     }
+
+    // Send client magic
     ssize_t socketRes = 0;
     socketRes = send(clientSocket, &clientMagic, sizeof (clientMagic), 0);
     if ((socketRes < 0) || (socketRes != sizeof(clientMagic)))
@@ -155,6 +184,8 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         fprintf (stderr, "Failed to send client magic [%s]\n", strerror(errno));
         exit(-errno);
     }
+
+    // Recv Server magic
     uint32_t serverMagic = 0;
     socketRes = recv(clientSocket, &serverMagic, sizeof (serverMagic), 0);
     if ((socketRes < 0) || (socketRes != sizeof(serverMagic)))
@@ -163,6 +194,7 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         exit(2);
     }
 
+    // Verify we are authorized to talk to this server
     if (serverMagic != serverMagicTest)
     {
         // This probably can never happen because the server disconnects as soon as the magic is incorrect.
@@ -173,18 +205,24 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
 
     fprintf(stderr, "Server authenticated [0x%08x]\n", serverMagic);
 
+    // Transform input from [' ', ['A', 'Z']] into ['A', '[']
     TransformInput (keyFileData, plainTextFileSize);
     TransformInput (plainTextFileData, plainTextFileSize);
 
+    // Send transformed input to server
     fprintf(stderr, "Sending key/data size [%u]\n", plainTextFileSize);
     send(clientSocket, &plainTextFileSize, sizeof (plainTextFileSize), 0);
 
+    // Use packetized send loop to break up TCP packets
     SendDataLoop (clientSocket, keyFileData, plainTextFileSize);
     SendDataLoop (clientSocket, plainTextFileData, plainTextFileSize);
 
+    // Allocate memory for result
     uint8_t * resultPayload = (uint8_t *)malloc (plainTextFileSize + 1);
+    // Set last character as null for printf
     resultPayload[plainTextFileSize] = 0x00;
 
+    // Use a packetized recv loop to get server data
     uint32_t originalFileSize = plainTextFileSize;
     uint32_t offset = 0;
     while (plainTextFileSize > 0)
@@ -207,14 +245,18 @@ void GetServerResponse(int argc, char *argv[], uint32_t serverMagicTest, uint32_
         }
     }
 
+    // Transform result from ['A', 'Z'] into [' ', ['A', 'Z']]
     TransformOutput (resultPayload, originalFileSize);
 
+    // Print result to stdout (for redirection)
     printf ("%s\n", resultPayload);
 
+    // Free resources
     free(keyFileData);
     free(plainTextFileData);
     free(resultPayload);
 
-	close(clientSocket); // Close the socket
+    // Close server socket
+	close(clientSocket);
 }
 

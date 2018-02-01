@@ -1,10 +1,10 @@
 {
-  "name": "Polaris-Telemetry-Server",
+  "name": "BoatsandSlips",
   "version": "1.0.0",
-  "description": "Polaris-Telemetry Server",
+  "description": "Boats and Slips Server",
   "main": "server.js",
   "scripts": {
-    "start": "npm ./server.js"
+    "start": "node ./server.js"
   },
   "author": "",
   "license": "ISC",

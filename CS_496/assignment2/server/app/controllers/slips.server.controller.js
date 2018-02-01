@@ -18,30 +18,30 @@ exports.render = function(req, res) {
 
     if (req.method === 'GET')
     {
-        //this.httpMethod = "Boat GET Request Received";
-        if ("boatid" in req.params) {
-            var boat = dataStore.GetBoatByID(req.params.boatid);
-            if (boat !== undefined) {
-                res.send(boat);
+        //this.httpMethod = "Slip GET Request Received";
+        if ("slipid" in req.params) {
+            var slip = dataStore.GetSlipByID(req.params.slipid);
+            if (slip !== undefined) {
+                res.send(slip);
             } else {
                 res.sendStatus(404);
             }
         } else {
-            res.send(dataStore.GetAllBoats());
+            res.send(dataStore.GetAllSlips());
         }
     }
     else if (req.method === 'POST')
     {
-        //this.httpMethod = "Boat POST Request Received";
+        //this.httpMethod = "Slip POST Request Received";
 
         //console.log('[Parser] Post Data: ' + JSON.stringify(req.body))
 
-        var newBoat = dataStore.CreateBoat(req.body);
-        if (newBoat == undefined) {
+        var newSlip = dataStore.CreateSlip(req.body);
+        if (newSlip == undefined) {
             res.sendStatus(409);
         } else {
-            console.log(`Created Boat ${JSON.stringify(newBoat)}`);
-            res.send(newBoat);
+            console.log(`Created Slip ${JSON.stringify(newSlip)}`);
+            res.send(newSlip);
         }
     }
 };

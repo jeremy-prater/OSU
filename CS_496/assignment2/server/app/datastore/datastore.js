@@ -1,10 +1,22 @@
-var Guid = require('Guid');
+var Guid = require('guid');
+
+let instance = null;
 
 module.exports = class {
     constructor() {
-        console.log('[DataStore] Created Boats/Slips Datastore');
-        this.boats = {};
+        if (!instance) {
+            instance = this;
+            console.log('[DataStore] Created Boats/Slips Datastore');
+            this.boats = {};
+            this.slips = {};
+        }
+        return instance;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Boat Logic
+    //
 
     CreateBoat(data) {
         // Check data
@@ -41,4 +53,44 @@ module.exports = class {
         }
         return boat;
     }
- }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Slip Logic
+    //
+
+
+    CreateSlip(data) {
+        // Check data
+        var guid = Guid.create();
+        if (("number" in data) &&
+            (!(guid in this.slips))) {
+                this.slips[guid] = {
+                    "id": guid,
+                    "number": data["number"],
+                    "current_boat": "",
+                    "arrival_date": "",
+                    "departure_history": []
+                };
+            return this.slips[guid];
+        } else {
+            return undefined;
+        }
+    }
+
+    GetAllSlips() {
+        var slips = [];
+        Object.keys(this.slips).forEach(function(key) {
+            slips.push(this.slips[key]);
+        }.bind(this));
+        return slips;
+    }
+
+    GetSlipByID(id) {
+        var slip = undefined;
+        if (id in this.slips) {
+            slip = this.slips[id];
+        }
+        return slip;
+    }
+}

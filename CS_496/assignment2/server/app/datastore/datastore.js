@@ -141,4 +141,63 @@ module.exports = class {
         return false;
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Slip Logic
+    //
+
+    DockBoat(boatid, slipid) {
+        if (!(boatid in this.boats)) {
+            console.log (`[DockBoat] Unknown boat [${boatid}]`);
+            return false;
+        }
+        if (!(slipid in this.slips)) {
+            console.log (`[DockBoat] Unknown slip [${slipid}]`);
+            return false;
+        }
+
+        // Ok, boatid and slip exists in the data set...
+
+        // Check if slip is empty
+        if (this.slips[slipid].current_boat != null)
+        {
+            console.log (`[DockBoat] Slip [${slipid}] not empty [${this.slips[slipid].current_boat}]`);
+            return false;
+        }
+        
+        // Check boats at sea.
+        if (this.boats[boatid].at_sea == false)
+        {
+            console.log (`[DockBoat] Boat [${boatid}] is not at sea`);
+            return false;
+        }
+
+        this.slips[slipid].current_boat = this.boats[boatid].id;
+        return true;
+    }
+
+    UndockBoat(slipid) {
+        var boatid = this.slips[slipid].current_boat;
+
+        if (!(boatid in this.boats)) {
+            console.log (`[DockBoat] Unknown boat [${boatid}]`);
+            return false;
+        }
+        if (!(slipid in this.slips)) {
+            console.log (`[DockBoat] Unknown slip [${slipid}]`);
+            return false;
+        }
+
+        // Ok, boatid and slip exists in the data set...
+        // Check boats at sea.
+        if (this.boats[boatid].at_sea == true)
+        {
+            console.log (`[DockBoat] Boat [${boatid}] is not at sea`);
+            return false;
+        }
+
+        this.slips[slipid].current_boat = this.boats[boatid].id;
+        return true;
+    }
 }

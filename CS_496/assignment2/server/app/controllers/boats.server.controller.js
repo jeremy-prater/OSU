@@ -56,3 +56,42 @@ exports.boat = function(req, res) {
         }
     }
 };
+
+exports.boatdock = function(req, res) {
+    if (req.method === 'PUT')
+    {
+        if (("boatid" in req.params) && ("slipid" in req.params)) {
+            var boatid = req.params.boatid;
+            var slipid = req.params.slipid;
+
+            // Is the slip empty?
+            if (dataStore.DockBoat(boatid, slipid)) {
+                console.log (`Setting boat ${boatid} to slip ${slipid}`);
+                res.sendStatus(204);
+            } else {
+                console.log (`Setting boat ${boatid} to slip ${slipid} Failed!`);
+                res.sendStatus(502);
+            }
+        } else {
+            res.sendStatus(404);
+        }
+    }
+    else if (req.method === 'DELETE')
+    {
+        if (("boatid" in req.params) && ("slipid" in req.params)) {
+            var boatid = req.params.boatid;
+            var slipid = req.params.slipid;
+
+            // Is the slip empty?
+            if (dataStore.UndockBoat(boatid, slipid)) {
+                console.log (`Setting boat ${boatid} to sea from slip ${slipid}`);
+                res.sendStatus(204);
+            } else {
+                console.log (`Setting boat ${boatid} to sea from slip ${slipid} Failed!`);
+                res.sendStatus(502);
+            }
+        } else {
+            res.sendStatus(404);
+        }
+    }
+}

@@ -26,4 +26,14 @@ exports.boat = function(req, res) {
             res.send(newBoat);
         }
     }
+    else if (req.method === 'DELETE')
+    {
+        if ("boatid" in req.params) {
+            if (dataStore.DeleteBoatByID(req.params.boatid))
+            {
+                res.sendStatus(204);
+            }
+        }
+        res.sendStatus(404);
+    }
 };

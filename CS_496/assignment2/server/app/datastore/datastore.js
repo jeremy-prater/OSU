@@ -54,6 +54,16 @@ module.exports = class {
         return boat;
     }
 
+    DeleteBoatByID(id) {
+        if (id in this.boats) {
+            delete this.boats[id];
+
+            // Check all slips for deleted boat.
+            return true;
+        }
+        return false;
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////
     //
     // Slip Logic
@@ -93,4 +103,15 @@ module.exports = class {
         }
         return slip;
     }
+
+    DeleteSlipByID(id) {
+        if (id in this.slips) {
+            delete this.slips[id];
+
+            // Check all slips for deleted boat.
+            return true;
+        }
+        return false;
+    }
+
 }

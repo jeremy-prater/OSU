@@ -38,4 +38,15 @@ exports.slips = function (req, res) {
             res.send(newSlip);
         }
     }
+    else if (req.method === 'DELETE')
+    {
+        if ("slipid" in req.params) {
+            if (dataStore.DeleteSlipByID(req.params.slipid))
+            {
+                res.sendStatus(204);
+            }
+        }
+        res.sendStatus(404);
+    }
+
 };

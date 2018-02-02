@@ -173,31 +173,33 @@ module.exports = class {
             return false;
         }
 
+        console.log (`Setting boat ${boatid} to slip ${slipid}`);
         this.slips[slipid].current_boat = this.boats[boatid].id;
         return true;
     }
 
     UndockBoat(slipid) {
-        var boatid = this.slips[slipid].current_boat;
-
-        if (!(boatid in this.boats)) {
-            console.log (`[DockBoat] Unknown boat [${boatid}]`);
-            return false;
-        }
         if (!(slipid in this.slips)) {
-            console.log (`[DockBoat] Unknown slip [${slipid}]`);
+            console.log (`[UnDockBoat] Unknown slip [${slipid}]`);
             return false;
         }
 
-        // Ok, boatid and slip exists in the data set...
-        // Check boats at sea.
-        if (this.boats[boatid].at_sea == true)
+        // Ok, slipid in the data set...
+        // Check boats at port.
+        if (this.slips[slipid].current_boat != null)
         {
-            console.log (`[DockBoat] Boat [${boatid}] is not at sea`);
-            return false;
+            console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
+            // TODO: boat logic
+            currentBoat = this.boats[this.slips[slipid].current_boat]
+            // Tuger-knots
+            currentBoat['at_sea'] = true;
+
+            this.slips[slipid].current_boat = null;
+            return true;
         }
 
-        this.slips[slipid].current_boat = this.boats[boatid].id;
+        console.log (`Setting boat ${slipid} to sea (null) from slip ${slipid}`);
+        this.slips[slipid].current_boat = null;
         return true;
     }
 }

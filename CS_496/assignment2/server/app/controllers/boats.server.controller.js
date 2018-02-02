@@ -66,10 +66,8 @@ exports.boatdock = function(req, res) {
 
             // Is the slip empty?
             if (dataStore.DockBoat(boatid, slipid)) {
-                console.log (`Setting boat ${boatid} to slip ${slipid}`);
                 res.sendStatus(204);
             } else {
-                console.log (`Setting boat ${boatid} to slip ${slipid} Failed!`);
                 res.sendStatus(502);
             }
         } else {
@@ -84,10 +82,8 @@ exports.boatdock = function(req, res) {
 
             // Is the slip empty?
             if (dataStore.UndockBoat(boatid, slipid)) {
-                console.log (`Setting boat ${boatid} to sea from slip ${slipid}`);
                 res.sendStatus(204);
             } else {
-                console.log (`Setting boat ${boatid} to sea from slip ${slipid} Failed!`);
                 res.sendStatus(502);
             }
         } else {

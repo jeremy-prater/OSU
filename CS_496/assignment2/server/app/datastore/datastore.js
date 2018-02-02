@@ -162,7 +162,7 @@ module.exports = class {
         // Check if slip is empty
         if (this.slips[slipid].current_boat != null)
         {
-            console.log (`[DockBoat] Slip [${slipid}] not empty [${this.slips[slipid].current_boat}]`);
+            console.log (`[DockBoat] Slip [${slipid}] not empty! Contains Boat [${this.slips[slipid].current_boat}]`);
             return false;
         }
         
@@ -173,12 +173,16 @@ module.exports = class {
             return false;
         }
 
-        console.log (`Setting boat ${boatid} to slip ${slipid}`);
+        console.log (`[DockBoat] Setting boat ${boatid} to slip ${slipid}`);
         this.slips[slipid].current_boat = this.boats[boatid].id;
         return true;
     }
 
-    UndockBoat(slipid) {
+    UndockBoat(boatid, slipid) {
+        if (!(boatid in this.boats)) {
+            console.log (`[UnDockBoat] Unknown boat [${boatid}]`);
+            return false;
+        }
         if (!(slipid in this.slips)) {
             console.log (`[UnDockBoat] Unknown slip [${slipid}]`);
             return false;
@@ -186,19 +190,21 @@ module.exports = class {
 
         // Ok, slipid in the data set...
         // Check boats at port.
-        if (this.slips[slipid].current_boat != null)
+        if (this.slips[slipid].current_boat == null)
         {
-            console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
-            // TODO: boat logic
-            currentBoat = this.boats[this.slips[slipid].current_boat]
-            // Tuger-knots
-            currentBoat['at_sea'] = true;
-
-            this.slips[slipid].current_boat = null;
-            return true;
+            console.log (`[UnDockBoat] Slip [${slipid}] has no current boat`);
+            return false;
         }
 
-        console.log (`Setting boat ${slipid} to sea (null) from slip ${slipid}`);
+        if (this.slips[slipid].current_boat != boatid)
+        {
+            console.log (`[UnDockBoat] Boat [${boatid}] does not match slip boat [${this.slips[slipid].current_boat}]`);
+            return false;
+        }
+            
+        console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
+
+        this.boats[this.slips[slipid].current_boat]['at_sea'] = true;
         this.slips[slipid].current_boat = null;
         return true;
     }

@@ -26,14 +26,33 @@ exports.boat = function(req, res) {
             res.send(newBoat);
         }
     }
+    else if (req.method === 'PATCH')
+    {
+        if ("boatid" in req.params) {
+            if (dataStore.UpdateBoatByID(req.params.boatid, req.body))
+            {
+                var update = dataStore.GetBoatByID(req.params.boatid);
+                res.send(update);
+                console.log(`Updated Boat ${JSON.stringify(update)}`);
+            }
+        }
+        else
+        {
+            res.sendStatus(404);
+        }
+    }
     else if (req.method === 'DELETE')
     {
         if ("boatid" in req.params) {
             if (dataStore.DeleteBoatByID(req.params.boatid))
             {
+                console.log(`Deleted Boat ${req.params.boatid}`);
                 res.sendStatus(204);
             }
         }
-        res.sendStatus(404);
+        else
+        {
+            res.sendStatus(404);
+        }
     }
 };

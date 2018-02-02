@@ -38,6 +38,23 @@ module.exports = class {
         }
     }
 
+    UpdateBoatByID(id, data) {
+        var boat = undefined;
+        if (id in this.boats) {
+            if ('name' in data) {
+                this.boats[id].name = data.name;
+            }
+            if ('type' in data) {
+                this.boats[id].type = data.type;
+            }
+            if ('length' in data) {
+                this.boats[id].length = data.length;
+            }
+            return true;
+        }
+        return false;
+    }
+
     GetAllBoats() {
         var boats = [];
         Object.keys(this.boats).forEach(function(key) {
@@ -78,7 +95,7 @@ module.exports = class {
                 this.slips[guid] = {
                     "id": guid,
                     "number": data["number"],
-                    "current_boat": "",
+                    "current_boat": null,
                     "arrival_date": "",
                     "departure_history": []
                 };
@@ -88,6 +105,16 @@ module.exports = class {
         }
     }
 
+    UpdateSlipByID(id, data) {
+        var boat = undefined;
+        if (id in this.slips) {
+            if ('number' in data) {
+                this.slips[id].number = data.number;
+            }
+            return true;
+        }
+        return false;
+    }
     GetAllSlips() {
         var slips = [];
         Object.keys(this.slips).forEach(function(key) {

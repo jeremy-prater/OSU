@@ -38,15 +38,35 @@ exports.slips = function (req, res) {
             res.send(newSlip);
         }
     }
+    else if (req.method === 'PATCH')
+    {
+        if ("slipid" in req.params) {
+            if (dataStore.UpdateSlipByID(req.params.slipid, req.body))
+            {
+                var update = dataStore.GetSlipByID(req.params.slipid);
+                res.send(update);
+                console.log(`Updated Slip ${JSON.stringify(update)}`);
+            }
+        }
+        else
+        {
+            res.sendStatus(404);
+        }
+    }
+
     else if (req.method === 'DELETE')
     {
         if ("slipid" in req.params) {
             if (dataStore.DeleteSlipByID(req.params.slipid))
             {
+                console.log(`Deleted Slip ${req.params.slipid}`);
                 res.sendStatus(204);
             }
         }
-        res.sendStatus(404);
+        else
+        {
+            res.sendStatus(404);
+        }
     }
 
 };

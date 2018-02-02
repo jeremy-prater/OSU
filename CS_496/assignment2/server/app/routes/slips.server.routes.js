@@ -3,5 +3,6 @@ module.exports = function(app) {
     app.get('/slips', index.slips);
     app.get('/slips/:slipid', index.slips);
     app.post('/slips', index.slips);
+    app.patch('/slips/:slipid', index.slips);
     app.delete('/slips/:slipid', index.slips);
 };

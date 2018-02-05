@@ -7,6 +7,9 @@ module.exports = function(app) {
     // Get a specific slip
     app.get('/slips/:slipid', index.slips);
 
+    // Get a specific slip
+    app.get('/slips/:slipid/current_boat', index.boatinslip);
+
     // Create a new slip
     app.post('/slips', index.slips);
 

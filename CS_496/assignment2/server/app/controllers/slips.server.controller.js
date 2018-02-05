@@ -5,14 +5,12 @@ var dataStore = new DataStore();
 exports.boatinslip = function (req, res) {
     if (req.method === 'GET') {
         if ("slipid" in req.params) {
-            var slip = dataStore.GetSlipByID(req.params.slipid);
-            if (slip !== undefined) {
-                res.send(slip);
+            var boat = dataStore.GetBoatInSlipByID(req.params.slipid);
+            if (boat !== undefined) {
+                res.send(boat);
             } else {
                 res.sendStatus(404);
             }
-        } else {
-            res.send(dataStore.GetAllSlips());
         }
     }
 }

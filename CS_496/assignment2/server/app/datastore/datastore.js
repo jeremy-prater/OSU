@@ -73,9 +73,15 @@ module.exports = class {
 
     DeleteBoatByID(id) {
         if (id in this.boats) {
-            delete this.boats[id];
-
             // Check all slips for deleted boat.
+            var slipKeys = Object.keys(this.slips);
+            slipKeys.forEach(function(key) {
+                if (this.slips[key].current_boat == id) {
+                    this.slips[key].current_boat = null;
+                }
+            }.bind(this));
+
+            delete this.boats[id];
             return true;
         }
         return false;
@@ -131,11 +137,29 @@ module.exports = class {
         return slip;
     }
 
+    GetBoatInSlipByID(id) {
+        var slip = undefined;
+        var boat =undefined;
+        if (id in this.slips) {
+            slip = this.slips[id];
+            if (slip.current_boat != null) {
+                boat = this.boats[slip.current_boat];
+            }
+        }
+        return boat;
+    }
+
     DeleteSlipByID(id) {
         if (id in this.slips) {
-            delete this.slips[id];
-
             // Check all slips for deleted boat.
+            var slipKeys = Object.keys(this.slips);
+            slipKeys.forEach(function(key) {
+                if (this.slips[key].current_boat != null) {
+                    this.boats[this.slips[key].current_boat].at_sea = true;
+                }
+            }.bind(this));
+
+            delete this.slips[id];
             return true;
         }
         return false;
@@ -165,7 +189,7 @@ module.exports = class {
             console.log (`[DockBoat] Slip [${slipid}] not empty! Contains Boat [${this.slips[slipid].current_boat}]`);
             return false;
         }
-        
+
         // Check boats at sea.
         if (this.boats[boatid].at_sea == false)
         {
@@ -201,7 +225,7 @@ module.exports = class {
             console.log (`[UnDockBoat] Boat [${boatid}] does not match slip boat [${this.slips[slipid].current_boat}]`);
             return false;
         }
-            
+
         console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
 
         this.boats[this.slips[slipid].current_boat]['at_sea'] = true;

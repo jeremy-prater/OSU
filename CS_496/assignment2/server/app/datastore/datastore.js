@@ -199,6 +199,7 @@ module.exports = class {
 
         console.log (`[DockBoat] Setting boat ${boatid} to slip ${slipid}`);
         this.slips[slipid].current_boat = this.boats[boatid].id;
+        this.slips[slipid].arrival_date = new Date().toString();
         return true;
     }
 
@@ -229,6 +230,10 @@ module.exports = class {
         console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
 
         this.boats[this.slips[slipid].current_boat]['at_sea'] = true;
+        this.slips[slipid].departure_history.append({
+            "departure_date": new Date().toString(),
+            "departure_boat": this.slips[slipid].current_boat
+        });
         this.slips[slipid].current_boat = null;
         return true;
     }

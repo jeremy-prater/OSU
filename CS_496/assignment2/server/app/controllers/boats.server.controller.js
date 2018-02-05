@@ -68,7 +68,7 @@ exports.boatdock = function(req, res) {
             if (dataStore.DockBoat(boatid, slipid)) {
                 res.sendStatus(204);
             } else {
-                res.sendStatus(502);
+                res.sendStatus(403);
             }
         } else {
             res.sendStatus(404);
@@ -84,7 +84,7 @@ exports.boatdock = function(req, res) {
             if (dataStore.UndockBoat(boatid, slipid)) {
                 res.sendStatus(204);
             } else {
-                res.sendStatus(502);
+                res.sendStatus(403);
             }
         } else {
             res.sendStatus(404);

@@ -1,4 +1,4 @@
-var port = 1337;
+var port = 8080;
 var express = require('./config/express');
 var app = express();
 

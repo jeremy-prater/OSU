@@ -230,7 +230,7 @@ module.exports = class {
         console.log (`[UnDockBoat] Boat [${slipid}] is now at sea`);
 
         this.boats[this.slips[slipid].current_boat]['at_sea'] = true;
-        this.slips[slipid].departure_history.append({
+        this.slips[slipid].departure_history.push({
             "departure_date": new Date().toString(),
             "departure_boat": this.slips[slipid].current_boat
         });

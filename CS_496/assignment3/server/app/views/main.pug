@@ -1,16 +1,21 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
-    script(type='text/javascript').
-      if (foo) bar(1 + 5)
+    title="CS 496 OAuth 2.0 Demo"
+    style
+      include ../../bootstrap/bootstrap.min.css
+      include ../../css/main.css
+    script(src='../../bootstrap/jquery-3.2.1.slim.min.js')
+    script(src='../../bootstrap/popper.min.js')
+    script(src='../../bootstrap/bootstrap.min.js')
   body
-    h1 Pug - node template engine
-    #container.col
-      if youAreUsingPug
-        h2 You are amazing
-      else
-        p Get on it!
-      p.
-        Pug is a terse and simple templating language with a
-        strong focus on performance and powerful features.
+    nav(class="navbar navbar-dark bg-dark viewNavbar")
+      a(class="navbar-brand" href="#")
+        | Magic OAuth 2.0 doughnut (from that particular bakery)
+      div(class="form-inline")
+        button(class="btn btn-outline-success")
+          | Sign in
+
+    div(class="viewContainer container-fluid")
+      img(src="../../assets/knucks.png" class="imgfitparent")
+      

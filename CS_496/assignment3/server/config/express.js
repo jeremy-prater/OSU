@@ -6,6 +6,10 @@ module.exports = function() {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+    
+    app.use('/css',       express.static('css'));
+    app.use('/bootstrap', express.static('bootstrap'));
+    app.use('/assets',    express.static('assets'));
 
     require('../app/routes/main.server.routes.js')(app);
     return app;

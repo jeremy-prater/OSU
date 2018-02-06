@@ -6,4 +6,4 @@ var app = express();
 app.listen(port);
 module.exports = app;
 
-console.log(`OAuth 2.0 Demo running at http://${hostname}${port}:`);
+console.log(`OAuth 2.0 Demo running at http://${hostname}:${port}`);

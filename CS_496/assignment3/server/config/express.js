@@ -10,6 +10,7 @@ module.exports = function() {
     app.use('/css',       express.static('css'));
     app.use('/bootstrap', express.static('bootstrap'));
     app.use('/assets',    express.static('assets'));
+    app.use('/client',    express.static('client'));
 
     require('../app/routes/main.server.routes.js')(app);
     return app;

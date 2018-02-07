@@ -10,8 +10,9 @@ module.exports = function() {
     app.use('/css',       express.static('css'));
     app.use('/bootstrap', express.static('bootstrap'));
     app.use('/assets',    express.static('assets'));
-    app.use('/oauth2',    express.static('oauth2'));
+    app.use('/client',    express.static('client'));
 
     require('../app/routes/main.server.routes.js')(app);
+    require('../app/routes/oauth2.server.routes.js')(app);
     return app;
 };

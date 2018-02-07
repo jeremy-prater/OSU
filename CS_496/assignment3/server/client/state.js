@@ -12,9 +12,9 @@ module.exports = function() {
     // cryptographically-secure library to generate a 256-bit value and converting it to a
     // hexadecimal representation.
     // https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
-    this.superSecret = "olafsdoughnutwasnasty";
+    this.superSecret = "olafsdoughnutwasnasty"; // TODO : Convert to SHA256 client side
 
-    // Well all the clients are the same... That is bad!!
+    // Well all the clients are the same... The only client is the server...
     this.clientID = "75813711380-gq1nf7ig8s13rsvat8r25tf0h35iea5b.apps.googleusercontent.com";
 
     this.hostname = "http://olafs-doughnut.appspot.com";

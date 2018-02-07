@@ -1,5 +1,6 @@
 var pug = require('pug');
 var oauth2 = require('../../client/state');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var OAuth2 = new oauth2();
 

@@ -8,8 +8,6 @@ exports.oauth2 = function(req, res) {
     var options = {};
     var locals = {};
 
-    console.log("Did something");
-    console.log(OAuth2);
     if (req.method === 'GET') {
         if (req.query.state != OAuth2.superSecret)
         {
@@ -20,7 +18,7 @@ exports.oauth2 = function(req, res) {
         }
         var code = req.query.code;
         console.log (`OAuth 2 Code [${code}]`);
-        var requestString = `/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.superSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
+        var requestString = `/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.clientSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
         console.log (`OAuth request path [${requestString}]`);
         var request = https.request({
             host: 'www.googleapis.com',

@@ -17,6 +17,8 @@ function State() {
     // Well all the clients are the same... The only client is the server...
     this.clientID = "75813711380-gq1nf7ig8s13rsvat8r25tf0h35iea5b.apps.googleusercontent.com";
 
+    this.clientSecret = "xdPVDbEtwO8KX7_YB8H_67QO";
+
     this.hostname = "http://olafs-doughnut.appspot.com";
 
     console.log ("Init client side");

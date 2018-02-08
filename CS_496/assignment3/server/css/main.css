@@ -20,3 +20,10 @@ body {
     width: auto;
     height: auto;
 }
+
+.imgfitparent {
+    min-width: 30%;
+    min-height: 30%;
+    width: 30%;
+    height: 30%;
+}

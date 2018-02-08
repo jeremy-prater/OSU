@@ -1,25 +1,44 @@
+var https = require("https");
 
 
-function UserInfo() {
+module.exports = function () {
+    this.userInfoURL = "www.googleapis.com";
+    this.userInfoPath = "/plus/v1/people/me";
 
-    this.userInfoURL = "www.googleapis.com/plus/v1/people/me"
+    this.userData = {};
 
-    this.Connect = function(tokenObject) {
-        var req = new XMLHttpRequest();
-        req.open('GET', userInfoURL, true);
-        req.setRequestHeader("Authorization", `${tokenObject.token_type} ${tokenObject.access_token}`);
-        req.onreadystatechange = function () {
-            if (req.status == 200 && req.readyState === 4) {
-                console.log(http.responseText);
-                // Update DOM elements!
-            } else {
-                console.log(`Google API request failed [${http.status}] [${http.responseText}]`);
-            }
-        };
-        req.send(null);
+    this.Connect = function(tokenObject, callback) {
+        var request = https.request({
+            host: this.userInfoURL,
+            method: 'GET',
+            headers: {
+                "Authorization": `${tokenObject.token_type} ${tokenObject.access_token}`
+            },
+            path: this.userInfoPath
+        }, function (response) {
+            console.log(`STATUS: ${response.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
+            response.setEncoding('utf8');
+            var data = "";
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+            response.on('end', () => {
+                console.log(response.responseText);
+                this.userData = JSON.parse(response.responseText);
+                callback();
+            });
+        });
+          
+        request.on('error', (e) => {
+            console.error(`problem with request: ${e.message}`);
+        });
+        request.end();
+    }
+
+    this.GetUserData = function() {
+        return this.userData;
     }
 
     return this;
 };
-
-var currentUser = UserInfo();

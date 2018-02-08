@@ -1,5 +1,6 @@
 var pug = require('pug');
 var oauth2 = require('../../client/state');
+var userInfo = require('../../client/getUserInfo');
 var https = require("https");
 
 var OAuth2 = new oauth2();
@@ -36,9 +37,12 @@ exports.oauth2 = function(req, res) {
               data += chunk;
             });
             response.on('end', () => {
-              var tokenObject = JSON.parse(data);
-              var html = pug.renderFile('./app/views/oauth2.pug', {"token": tokenObject});
-              res.send(html);
+                var tokenObject = JSON.parse(data);
+                var currentUserInfo = new userInfo();
+                currentUserInfo.Connect(tokenObject, function() {
+                    var html = pug.renderFile('./app/views/oauth2.pug', {"userData": currentUserInfo.GetUserData()});
+                    res.send(html);
+                });
             });
         });
           

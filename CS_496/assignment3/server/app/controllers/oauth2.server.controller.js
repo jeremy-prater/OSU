@@ -19,11 +19,12 @@ exports.oauth2 = function(req, res) {
             console.log(`State matches! [${req.query.state}]`);
         }
         var code = req.query.code;
+        console.log (`OAuth 2 Code [${code}]`);
         var requestString = `https://www.googleapis.com/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.superSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
         var newRequest = new XMLHttpRequest();
-        newRequest.open("POST", requestString, false );
+        newRequest.open("POST", requestString, true);
         newRequest.onreadystatechange = function () {
-            if (newRequest.status >= 200 && newRequest.status < 400) {
+            if (newRequest.status == 200 && newRequest.readyState === 4) {
                 try {
                     console.log(newRequest.responseText);
                 } catch (exception) {}

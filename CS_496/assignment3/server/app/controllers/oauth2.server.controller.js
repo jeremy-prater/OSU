@@ -37,7 +37,7 @@ exports.oauth2 = function(req, res) {
             });
             response.on('end', () => {
               var tokenObject = JSON.parse(data);
-              var html = pug.renderFile('./app/views/main.pug', {"token": tokenObject});
+              var html = pug.renderFile('./app/views/oauth2.pug', {"token": tokenObject});
               res.send(html);
             });
         });

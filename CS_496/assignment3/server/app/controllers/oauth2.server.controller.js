@@ -1,6 +1,6 @@
 var pug = require('pug');
 var oauth2 = require('../../client/state');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var https = require("https");
 
 var OAuth2 = new oauth2();
 
@@ -20,18 +20,33 @@ exports.oauth2 = function(req, res) {
         }
         var code = req.query.code;
         console.log (`OAuth 2 Code [${code}]`);
-        var requestString = `https://www.googleapis.com/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.superSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
-        var newRequest = new XMLHttpRequest();
-        newRequest.open("POST", requestString, true);
-        newRequest.onreadystatechange = function () {
-            if (newRequest.status == 200 && newRequest.readyState === 4) {
-                try {
-                    console.log(newRequest.responseText);
-                } catch (exception) {}
-            } else {
-                console.log("Error in network request: " + newRequest.statusText);
-            }
-        };
-        newRequest.send(null);
+        var requestString = `/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.superSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
+        console.log (`OAuth request path [${requestString}]`);
+        var request = https.request({
+            host: 'www.googleapis.com',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            path: requestString
+        }, function (response) {
+            console.log(`STATUS: ${response.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
+            response.setEncoding('utf8');
+            var data = "";
+            response.on('data', (chunk) => {
+              data += chunk;
+            });
+            response.on('end', () => {
+              var tokenObject = JSON.parse(data);
+              console.log(tokenObject);
+              res.send(tokenObject);
+            });
+        });
+          
+        request.on('error', (e) => {
+            console.error(`problem with request: ${e.message}`);
+        });
+        request.end();
     }
 }

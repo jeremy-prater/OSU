@@ -14,7 +14,7 @@ html(lang="en")
       a(class="navbar-brand" href="#")
         | Magic OAuth 2.0 doughnut (from that particular bakery)
       div(class="form-inline")
-        button(class="btn btn-outline-success" onclick="StartOAuth(superSecret);")
+        button(class="btn btn-outline-success" onclick="console.log(currentState); currentState.StartOAuth(currentState.superSecret);")
           | Sign in
 
     div(class="viewContainer container-fluid" id="body")

@@ -1,6 +1,6 @@
 var superSecret = "olafsdoughnutwasnasty";
 
-module.exports = function() {
+function State() {
     ///////////////////////////////////
     //
     // This runs in the browser...
@@ -24,5 +24,16 @@ module.exports = function() {
     this.StartOAuth = function(state) {
         console.log("Requesting OAuth");
         window.location = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${this.clientID}&redirect_uri=${this.hostname}/oauth2&scope=email&state=${state}`;
-    }
+    };
+
+    return this;
 };
+
+var currentState = undefined;
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = State;
+} else {
+    console.log("Client side detected!");
+    currentState = State();
+}

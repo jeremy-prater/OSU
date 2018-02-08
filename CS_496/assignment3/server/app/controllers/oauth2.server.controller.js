@@ -22,8 +22,15 @@ exports.oauth2 = function(req, res) {
         var requestString = `https://www.googleapis.com/oauth2/v4/token?code=${code}&client_id=${OAuth2.clientID}&client_secret=${OAuth2.superSecret}&redirect_uri=${OAuth2.hostname}/oauth2&grant_type=authorization_code`;
         var newRequest = new XMLHttpRequest();
         newRequest.open("POST", requestString, false );
+        newRequest.onreadystatechange = function () {
+            if (newRequest.status >= 200 && newRequest.status < 400) {
+                try {
+                    console.log(newRequest.responseText);
+                } catch (exception) {}
+            } else {
+                console.log("Error in network request: " + newRequest.statusText);
+            }
+        };
         newRequest.send(null);
-    } else if (req.method === 'POST') {
-        console.log(req);
     }
 }

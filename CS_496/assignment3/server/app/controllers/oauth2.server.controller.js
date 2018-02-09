@@ -1,6 +1,6 @@
 var pug = require('pug');
 var oauth2 = require('../../client/state');
-var userInfo = require('../../client/getUserInfo');
+var userInfo = require('../common/getUserInfo');
 var https = require("https");
 
 var OAuth2 = new oauth2();

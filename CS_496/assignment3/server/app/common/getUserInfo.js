@@ -8,6 +8,7 @@ module.exports = function () {
     this.userData = {};
 
     this.Connect = function(tokenObject, callback) {
+        console.log("Checkpoint 1");
         var request = https.request({
             host: this.userInfoURL,
             method: 'GET',
@@ -21,12 +22,11 @@ module.exports = function () {
             response.setEncoding('utf8');
             var data = "";
             response.on('data', (chunk) => {
-              data += chunk;
+                data += chunk;
             });
             response.on('end', () => {
-                console.log(response.responseText);
-                this.userData = JSON.parse(response.responseText);
-                callback();
+                this.userData = JSON.parse(data);
+                callback(this.userData);
             });
         });
           
@@ -37,6 +37,7 @@ module.exports = function () {
     }
 
     this.GetUserData = function() {
+        console.log(this.userData);
         return this.userData;
     }
 

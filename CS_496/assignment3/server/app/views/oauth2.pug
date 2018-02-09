@@ -10,6 +10,13 @@ html(lang="en")
     script(src='../../bootstrap/bootstrap.min.js')
     script(src='../../client/state.js')
   body
+    script
+      | var userData=
+      !=JSON.stringify(userData)
+      |;
+      | $('#myModal').modal('show');
+      | console.log(userData);
+
     nav(class="navbar navbar-dark bg-dark viewNavbar")
       a(class="navbar-brand" href="#")
         | Magic OAuth 2.0 doughnut (from that particular bakery)
@@ -19,13 +26,18 @@ html(lang="en")
 
     div(class="viewContainer container-fluid" id="body")
       img(src="../../assets/mlp.png" class="imgfitparent")
-
-    div(class="alert alert-success" role="alert")
-      h4(class="alert-heading")
-        | Well done!
-      p
-        | Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.
-      p(class="mb-0")
-        | Whenever you need to, be sure to use margin utilities to keep things nice and tidy.
-    
-    {{userData}}
+      
+    div(id="myModal" class="modal fade" role="dialog")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            h4(class="modal-title")
+              | Sign in successful!
+            button(type="button" class="close" data-dismiss="modal")
+              | &times;
+          div(class="modal-body")
+            p
+              | {{userData}}
+          div(class="modal-footer")
+            button(type="button" class="btn btn-default" data-dismiss="modal")
+              | Close

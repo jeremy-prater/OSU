@@ -38,10 +38,11 @@ exports.oauth2 = function(req, res) {
             });
             response.on('end', () => {
                 var tokenObject = JSON.parse(data);
+                console.log (`Token Object [${JSON.stringify(tokenObject)}]`);
                 var currentUserInfo = new userInfo();
                 currentUserInfo.Connect(tokenObject, function(userData) {
                     console.log ("Rendering signin...");
-                    console.log (userData);
+                    console.log (`Token Object [${JSON.stringify(userData)}]`);
                     var html = pug.renderFile('./app/views/oauth2.pug', {"userData": userData});
                     res.send(html);
                 });

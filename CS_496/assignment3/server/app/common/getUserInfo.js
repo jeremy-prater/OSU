@@ -22,9 +22,12 @@ module.exports = function () {
             response.setEncoding('utf8');
             var data = "";
             response.on('data', (chunk) => {
+                console.log (`Adding chunk [${chunk}]`);
                 data += chunk;
+                console.log (`Data [${data}]`);
             });
             response.on('end', () => {
+                console.log (`Data [${data}]`);
                 this.userData = JSON.parse(data);
                 callback(this.userData);
             });

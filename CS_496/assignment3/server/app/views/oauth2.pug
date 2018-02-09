@@ -10,17 +10,11 @@ html(lang="en")
     script(src='../../bootstrap/bootstrap.min.js')
     script(src='../../client/state.js')
   body
-    script
-      | var userData=
-      !=userData
-      |);
-      | console.log(userData);
-
     nav(class="navbar navbar-dark bg-dark viewNavbar")
       a(class="navbar-brand" href="#")
         | Magic OAuth 2.0 doughnut (from that particular bakery)
       div(class="form-inline")
-        button(class="btn btn-outline-success" href="http://olafs-doughnut.appspot.com")
+        button(class="btn btn-outline-success" onclick="location.href = 'http://olafs-doughnut.appspot.com'")
           | Sign Out
 
     div(class="viewContainer container-fluid" id="body")

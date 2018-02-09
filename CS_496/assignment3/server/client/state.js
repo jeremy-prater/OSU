@@ -25,7 +25,7 @@ function State() {
 
     this.StartOAuth = function(state) {
         console.log("Requesting OAuth");
-        window.location = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${this.clientID}&redirect_uri=${this.hostname}/oauth2&scope=email&state=${state}`;
+        window.location = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${this.clientID}&redirect_uri=${this.hostname}/oauth2&scope=https://www.googleapis.com/auth/userinfo.email&state=${state}`;
     };
 
     return this;

@@ -3,7 +3,7 @@ var https = require("https");
 
 module.exports = function () {
     this.userInfoURL = "www.googleapis.com";
-    this.userInfoPath = "/oauth2/v2/userinfo";
+    this.userInfoPath = "/plus/v1/people/me";
 
     this.userData = {};
 

@@ -33,16 +33,12 @@ html(lang="en")
             p
               =userData.displayName
             p
-              =userData.name.givenName
-              | 
-              =userData.name.familyName
-            p
               =userData.emails[0].value
             p
               a(href=userData.url)
                 | Visit Google+ page
             p
-              | Client Secret
+              | Client Secret : 
               =state
           div(class="modal-footer")
             button(type="button" class="btn btn-default" data-dismiss="modal")

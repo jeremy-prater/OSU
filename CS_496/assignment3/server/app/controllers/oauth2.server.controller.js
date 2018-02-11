@@ -47,7 +47,7 @@ exports.oauth2 = function(req, res) {
                     }
                     console.log (`Token Object [${JSON.stringify(userData)}]`);
 
-                    var html = pug.renderFile('./app/views/oauth2.pug', userData);
+                    var html = pug.renderFile('./app/views/oauth2.pug', {"userData": userData});
                     res.send(html);
                 });
             });

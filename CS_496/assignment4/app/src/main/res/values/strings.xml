@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CS 496 Android UI</string>
+    <string name="activity1">Launch Screen 1</string>
+    <string name="activity2">Launch Screen 2</string>
+    <string name="activity3">Launch Screen 3</string>
+    <string name="activity4">Launch Screen 4</string>
+    <string name="activity5">Launch Screen 5</string>
+</resources>

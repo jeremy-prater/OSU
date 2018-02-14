@@ -20,7 +20,6 @@
         <activity android:name=".ScreenActivity2" />
         <activity android:name=".ScreenActivity3" />
         <activity android:name=".ScreenActivity4" />
-        <activity android:name=".ScreenActivity5" />
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.SimpleAdapter;
 import android.widget.ListView;
+import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +35,10 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 //
@@ -56,18 +59,26 @@ public class CoolPixActivity extends AppCompatActivity {
         SharedPreferences authPreferences = getSharedPreferences("auth", MODE_PRIVATE);
         setContentView(R.layout.activity_cool_pix);
         localAuthorizationService = new AuthorizationService(this);
-        findViewById(R.id.updateButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.postButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
                     @Override
                     public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                         if (error == null) {
                             OkHttpClient httpClient = new OkHttpClient();
-                            HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plusDomains/v1/people/me/activities/user");
+                            HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plusDomains/v1/people/me/activities");
+                            Log.i(debugTag, "Access Token : " + accessToken);
+                            String payload = "{'access': {'domainRestricted': true,'items': [{'displayName': 'domain','id': 'domain','type': 'domain'}]},'verb': 'post','object': {'originalContent': '" + ((EditText)findViewById(R.id.postText)).getText().toString() + "'}}";
+                            MediaType JSON = MediaType.parse("application/json");
+
+                            RequestBody body = RequestBody.create(JSON, payload);
+                            Log.i(debugTag, "payload " + payload);
+
                             Request request = new Request.Builder()
                                     .url(reqUrl)
                                     .addHeader("Authorization", "Bearer " + accessToken)
+                                    .post(body)
                                     .build();
                             httpClient.newCall(request).enqueue(new Callback() {
                                 @Override
@@ -77,44 +88,19 @@ public class CoolPixActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onResponse(Call call, Response response) throws IOException {
-                                    String resp = response.body().string();
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(resp);
-                                        JSONArray itemArray = jsonObject.getJSONArray("items");
-                                        List<Map<String, String>> posts = new ArrayList <Map<String, String>>();
-
-                                        for (int i = 0; i < itemArray.length(); i++)
-                                        {
-                                            HashMap<String, String> hashMap = new HashMap<String, String>();
-                                            hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
-                                            hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
-                                            posts.add(hashMap);
-                                        }
-
-                                        final SimpleAdapter postAdapter = new SimpleAdapter(
-                                                CoolPixActivity.this,
-                                                posts,
-                                                R.layout.posts_layout,
-                                                new String[]{"published", "title"},
-                                                new int[]{R.id.post_publised, R.id.post_title});
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                ((ListView)findViewById(R.id.messageList)).setAdapter(postAdapter);
-                                            }
-                                        });
-
-                                    } catch (JSONException error) {
-                                        error.printStackTrace();
-                                    }
+                                    Log.i(debugTag, response.body().string());
+                                    updateMyPosts();
                                 }
                             });
-
-                        } else {
-                          Log.e(debugTag, "Auth error " + error.toString());
                         }
                     }
                 });
+            }
+        });
+        findViewById(R.id.updateButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateMyPosts();
             }
         });
 
@@ -126,6 +112,65 @@ public class CoolPixActivity extends AppCompatActivity {
         super.onStart();
     }
 
+
+    void updateMyPosts() {
+        localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
+            @Override
+            public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
+                if (error == null) {
+                    OkHttpClient httpClient = new OkHttpClient();
+                    HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plusDomains/v1/people/me/activities/user");
+                    Log.i(debugTag, "Access Token : " + accessToken);
+                    Request request = new Request.Builder()
+                            .url(reqUrl)
+                            .addHeader("Authorization", "Bearer " + accessToken)
+                            .build();
+                    httpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String resp = response.body().string();
+                            try {
+                                JSONObject jsonObject = new JSONObject(resp);
+                                JSONArray itemArray = jsonObject.getJSONArray("items");
+                                List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+
+                                for (int i = 0; i < itemArray.length(); i++) {
+                                    HashMap<String, String> hashMap = new HashMap<String, String>();
+                                    hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
+                                    hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
+                                    posts.add(hashMap);
+                                }
+
+                                final SimpleAdapter postAdapter = new SimpleAdapter(
+                                        CoolPixActivity.this,
+                                        posts,
+                                        R.layout.posts_layout,
+                                        new String[]{"published", "title"},
+                                        new int[]{R.id.post_publised, R.id.post_title});
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                                    }
+                                });
+
+                            } catch (JSONException error) {
+                                error.printStackTrace();
+                            }
+                        }
+                    });
+
+                } else {
+                    Log.e(debugTag, "Auth error " + error.toString());
+                }
+            }
+        });
+    }
     AuthState getOrCreateAuthState() {
         Log.i(debugTag, "Entering getOrCreateAuthState");
         AuthState state = null;

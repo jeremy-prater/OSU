@@ -129,7 +129,7 @@ public class CoolPixActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             e.printStackTrace();
-                        }
+                        }`
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
@@ -139,7 +139,7 @@ public class CoolPixActivity extends AppCompatActivity {
                                 JSONArray itemArray = jsonObject.getJSONArray("items");
                                 List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
 
-                                for (int i = 0; i < itemArray.length(); i++) {
+                                for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
                                     HashMap<String, String> hashMap = new HashMap<String, String>();
                                     hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
                                     hashMap.put("title", itemArray.getJSONObject(i).getString("title"));

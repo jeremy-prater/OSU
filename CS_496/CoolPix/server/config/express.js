@@ -7,7 +7,7 @@ module.exports = function() {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    require('../app/routes/boats.server.routes.js')(app);
-    require('../app/routes/slips.server.routes.js')(app);
+    require('../app/routes/users.js')(app);
+    require('../app/routes/content.js')(app);
     return app;
 };

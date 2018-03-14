@@ -28,16 +28,18 @@ module.exports = class {
     //
 
     CreateAccount (email, name) {
+        if (email in this.users) {
+            console.log (`[DataStore] User already exists [${email}]`);
+            return this.users[email];
+        }
+
         var newUser = {
             'Email': email,
             'Name': name,
             'CreationTime': Date.now(),
             'Posts': {}
         };
-        if (email in this.users) {
-            console.log (`[DataStore] User already exists [${email}]`);
-            return undefined;
-        }
+
         console.log (`[DataStore] Creating user [${email}]`);
         this.users[email] = newUser;
         return newUser;

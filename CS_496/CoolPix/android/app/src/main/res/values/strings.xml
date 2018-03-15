@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CoolPix</string>
+    <string name="post_button">Post Message</string>
+    <string name="get_button">Get Messages</string>
+    <string name="refresh">Refresh</string>
+    <string name="newpost">Add Image</string>
+    <string name="signout">Sign out</string>
+</resources>

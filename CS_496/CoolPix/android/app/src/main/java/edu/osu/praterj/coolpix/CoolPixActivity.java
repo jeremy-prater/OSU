@@ -84,7 +84,7 @@ public class CoolPixActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             e.printStackTrace();
-                        }`
+                        }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
@@ -110,7 +110,7 @@ public class CoolPixActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                                        //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
                                     }
                                 });
 

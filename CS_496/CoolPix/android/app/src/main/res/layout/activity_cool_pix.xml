@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ListView
+            android:background="@color/colorMainBack"
             android:id="@+id/picList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,21 +35,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fixme" />
+                android:text="@string/refresh" />
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/newpost" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/signout" />
         </LinearLayout>
 
     </RelativeLayout>

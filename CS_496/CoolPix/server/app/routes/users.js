@@ -3,4 +3,5 @@ module.exports = function(app) {
      
     // Create a user
     app.post('/users', index.users);
+    app.get('/users/:userID', index.users);
 };

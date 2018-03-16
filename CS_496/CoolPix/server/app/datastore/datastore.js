@@ -27,22 +27,34 @@ module.exports = class {
     // Account Creation
     //
 
-    CreateAccount (email, name) {
+    CreateAccount(id, email, name) {
         if (email in this.users) {
-            console.log (`[DataStore] User already exists [${email}]`);
+            console.log(`[DataStore] User already exists [${email}]`);
             return this.users[email];
         }
 
         var newUser = {
+            'ID': id,
             'Email': email,
             'Name': name,
             'CreationTime': Date.now(),
             'Posts': {}
         };
 
-        console.log (`[DataStore] Creating user [${email}]`);
-        this.users[email] = newUser;
+        console.log(`[DataStore] Creating user [${id}][${email}]`);
+        this.users[id] = newUser;
         return newUser;
+    }
+
+    GetAccount(id) {
+        console.log(`[DataStore] Getting user [${id}]`);
+
+        if (id in this.users) {
+            return this.users[id];
+        }
+        console.log(`[DataStore] Getting user [${id}] not found`);
+
+        return undefined;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -50,10 +62,10 @@ module.exports = class {
     // Post Creation
     //
 
-    AddImage (email, imageData, title, body) {
+    AddImage(email, imageData, title, body) {
         var imageID = Guid.create();
         var currentTime = Date.now();
-        console.log (`[DataStore] User [${email}] adding image [${imageID}] [${title}] [${body}] @ [${currentTime}]`);
+        console.log(`[DataStore] User [${email}] adding image [${imageID}] [${title}] [${body}] @ [${currentTime}]`);
         this.users[email].Posts[imageID] = {
             imageID: imageID,
             user: email,
@@ -70,8 +82,8 @@ module.exports = class {
     // Post Edit
     //
 
-    EditImage (email, imageID, imageAttribute, value) {
-        console.log (`[DataStore] User [${email}] edited image [${imageID}] [${imageAttribute}]->[${value}]`);
+    EditImage(email, imageID, imageAttribute, value) {
+        console.log(`[DataStore] User [${email}] edited image [${imageID}] [${imageAttribute}]->[${value}]`);
         this.users[email].Posts[imageID][imageAttribute] = value;
     }
 
@@ -80,13 +92,13 @@ module.exports = class {
     // Post Getting
     //
 
-    GetImage (email, imageID) {
-        console.log (`[DataStore] User [${email}] getting image [${imageID}]`);
+    GetImage(email, imageID) {
+        console.log(`[DataStore] User [${email}] getting image [${imageID}]`);
         return this.users[email].Posts[imageID];
     }
 
-    GetAllImages (email) {
-        console.log (`[DataStore] User [${email}] get all images`);
+    GetAllImages(email) {
+        console.log(`[DataStore] User [${email}] get all images`);
         return this.users[email].Posts;
     }
 
@@ -96,7 +108,7 @@ module.exports = class {
     //
 
     DeleteImage(email, imageID) {
-        console.log (`[DataStore] User [${email}] delete image [${imageID}]`);
+        console.log(`[DataStore] User [${email}] delete image [${imageID}]`);
         delete this.users[email].Posts[imageID];
     }
 

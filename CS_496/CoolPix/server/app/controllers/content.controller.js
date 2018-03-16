@@ -14,7 +14,7 @@ exports.content = function (req, res) {
         } else {
             console.log(`[HTTP] User Added content ${JSON.stringify(newImage)}`);
             res.send(newImage);
-        }  
+        }
     }
     /*if ("user" in req.params) {
         var boat = dataStore.GetBoatInSlipByID(req.params.slipid);

@@ -64,6 +64,10 @@ public class CoolPixActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         localAuthState = getOrCreateAuthState();
+        if (localAuthState != null)
+        {
+            updateMyPosts();
+        }
         super.onStart();
     }
 
@@ -74,7 +78,7 @@ public class CoolPixActivity extends AppCompatActivity {
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plusDomains/v1/people/me/activities/user");
+                    HttpUrl reqUrl = HttpUrl.parse(" https://www.googleapis.com/plus/v1/people/me");
                     Log.i(debugTag, "Access Token : " + accessToken);
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -91,10 +95,50 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
-                                JSONArray itemArray = jsonObject.getJSONArray("items");
-                                List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+                                long userID = jsonObject.getLong("id");
+                                Log.i(debugTag, "User ID : " + Long.toString(userID));
 
-                                for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
+                                GetUserInfo(userID);
+                            } catch (JSONException error) {
+                                error.printStackTrace();
+                            }
+                        }
+                    });
+
+                } else {
+                    Log.e(debugTag, "Auth error " + error.toString());
+                }
+            }
+        });
+    }
+    void GetUserInfo(final long userID) {
+        localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
+            @Override
+            public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
+                if (error == null) {
+                    OkHttpClient httpClient = new OkHttpClient();
+                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/" + Long.toString(userID));
+                    Log.i(debugTag, "User info for user : " + Long.toString(userID));
+                    Request request = new Request.Builder()
+                            .url(reqUrl)
+                            .build();
+                    httpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String resp = response.body().string();
+                            try {
+                                Log.i(debugTag, "User ID : " + resp);
+                                JSONObject jsonObject = new JSONObject(resp);
+
+                                //JSONArray itemArray = jsonObject.getJSONArray("items");
+                                //List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+
+                                /*for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
                                     HashMap<String, String> hashMap = new HashMap<String, String>();
                                     hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
                                     hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
@@ -112,7 +156,7 @@ public class CoolPixActivity extends AppCompatActivity {
                                     public void run() {
                                         //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
                                     }
-                                });
+                                });*/
 
                             } catch (JSONException error) {
                                 error.printStackTrace();
@@ -126,6 +170,7 @@ public class CoolPixActivity extends AppCompatActivity {
             }
         });
     }
+
     AuthState getOrCreateAuthState() {
         Log.i(debugTag, "Entering getOrCreateAuthState");
         AuthState state = null;
@@ -164,7 +209,7 @@ public class CoolPixActivity extends AppCompatActivity {
                 "397564378096-17aeefr098viu7u701prsql3ra7r8d54.apps.googleusercontent.com",
                 ResponseTypeValues.CODE,
                 redirect)
-                .setScopes("https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/plus.stream.write", "https://www.googleapis.com/auth/plus.stream.read")
+                .setScopes("https://www.googleapis.com/auth/plus.me")
                 .build();
 
         Intent authComplete = new Intent(this, AuthCompleteActivity.class);

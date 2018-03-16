@@ -98,9 +98,7 @@ public class CoolPixActivity extends AppCompatActivity {
                                 long userID = jsonObject.getLong("id");
                                 Log.i(debugTag, "User ID : " + Long.toString(userID));
 
-                                if (GetUserInfo(userID) == false) {
-                                    // Create User
-                                }
+                                GetUserInfo(userID);
                             } catch (JSONException error) {
                                 error.printStackTrace();
                             }
@@ -119,7 +117,6 @@ public class CoolPixActivity extends AppCompatActivity {
             @Override
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
-                    final String localAccessToken = accessToken;
                     OkHttpClient httpClient = new OkHttpClient();
                     HttpUrl reqUrl = HttpUrl.parse(" https://www.googleapis.com/plus/v1/people/me");
                     Log.i(debugTag, "Access Token : " + accessToken);
@@ -138,6 +135,7 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
+                                Log.i(debugTag, resp);
                                 long userID = jsonObject.getLong("id");
                                 String payload = "{" +
                                         "\"ID\": 1234567890," +
@@ -147,12 +145,12 @@ public class CoolPixActivity extends AppCompatActivity {
                                         "\"Posts\": {}" +
                                         "}";
 
-                                RequestBody body()
+                                //RequestBody body()
                                 OkHttpClient httpClient = new OkHttpClient();
-                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net/users");
+                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
-                                        .post(payload)
+                                        //.post(payload)
                                         .build();
                                 httpClient.newCall(request).enqueue(new Callback() {
                                     @Override
@@ -162,18 +160,6 @@ public class CoolPixActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
-                                        String resp = response.body().string();
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(resp);
-                                            long userID = jsonObject.getLong("id");
-                                            Log.i(debugTag, "User ID : " + Long.toString(userID));
-
-                                            if (GetUserInfo(userID) == false) {
-                                                // Create User
-                                            }
-                                        } catch (JSONException error) {
-                                            error.printStackTrace();
-                                        }
                                     }
                                 });
 

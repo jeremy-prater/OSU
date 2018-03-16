@@ -98,7 +98,9 @@ public class CoolPixActivity extends AppCompatActivity {
                                 long userID = jsonObject.getLong("id");
                                 Log.i(debugTag, "User ID : " + Long.toString(userID));
 
-                                GetUserInfo(userID);
+                                if (GetUserInfo(userID) == false) {
+                                    // Create User
+                                }
                             } catch (JSONException error) {
                                 error.printStackTrace();
                             }
@@ -111,13 +113,89 @@ public class CoolPixActivity extends AppCompatActivity {
             }
         });
     }
+
+    void CreateUser() {
+        localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
+            @Override
+            public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
+                if (error == null) {
+                    final String localAccessToken = accessToken;
+                    OkHttpClient httpClient = new OkHttpClient();
+                    HttpUrl reqUrl = HttpUrl.parse(" https://www.googleapis.com/plus/v1/people/me");
+                    Log.i(debugTag, "Access Token : " + accessToken);
+                    Request request = new Request.Builder()
+                            .url(reqUrl)
+                            .addHeader("Authorization", "Bearer " + accessToken)
+                            .build();
+                    httpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String resp = response.body().string();
+                            try {
+                                JSONObject jsonObject = new JSONObject(resp);
+                                long userID = jsonObject.getLong("id");
+                                String payload = "{" +
+                                        "\"ID\": 1234567890," +
+                                        "\"Email\": \"test@email.com\"," +
+                                        "\"Name\": \"Testy McTesterson\"," +
+                                        "\"CreationTime\": 1521159901645," +
+                                        "\"Posts\": {}" +
+                                        "}";
+
+                                RequestBody body()
+                                OkHttpClient httpClient = new OkHttpClient();
+                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net/users");
+                                Request request = new Request.Builder()
+                                        .url(reqUrl)
+                                        .post(payload)
+                                        .build();
+                                httpClient.newCall(request).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        String resp = response.body().string();
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(resp);
+                                            long userID = jsonObject.getLong("id");
+                                            Log.i(debugTag, "User ID : " + Long.toString(userID));
+
+                                            if (GetUserInfo(userID) == false) {
+                                                // Create User
+                                            }
+                                        } catch (JSONException error) {
+                                            error.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                            } catch (JSONException error) {
+                                error.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    Log.e(debugTag, "Auth error " + error.toString());
+                }
+            }
+        });
+    }
+
     void GetUserInfo(final long userID) {
         localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
             @Override
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/" + Long.toString(userID));
+                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + Long.toString(userID));
                     Log.i(debugTag, "User info for user : " + Long.toString(userID));
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -133,6 +211,11 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 Log.i(debugTag, "User ID : " + resp);
+                                if (resp.length() == 0) {
+                                    // User does not exists.
+                                    CreateUser();
+                                    return;
+                                }
                                 JSONObject jsonObject = new JSONObject(resp);
 
                                 //JSONArray itemArray = jsonObject.getJSONArray("items");

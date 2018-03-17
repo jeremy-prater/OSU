@@ -16,11 +16,13 @@ exports.content = function (req, res) {
             console.log(`[HTTP] User Added content ${JSON.stringify(newImage)}`);
             res.send(newImage);
         }
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'GET') {
         /////////////////////////////////////////
         //
         // Get Image from DB
         //
+        console.log(req.params);
+        console.log(`[HTTP] Getting Image [${req.params.imagefile}]`);
         fs.readFile(`./content/${req.params.imagefile}`, (err, data) => {
             if (err) {
                 console.log(`[HTTP] Error feteching file [${req.parms.imagefile}] [${err}]`);

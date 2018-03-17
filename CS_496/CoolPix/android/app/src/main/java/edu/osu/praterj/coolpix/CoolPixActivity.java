@@ -264,7 +264,7 @@ public class CoolPixActivity extends AppCompatActivity {
                 posts.add(hashMap);
             }
 
-            final SimpleAdapter postAdapter = new SimpleAdapter(
+            final PostAdapter postAdapter = new PostAdapter(
                     CoolPixActivity.this,
                     posts,
                     R.layout.posts_layout,

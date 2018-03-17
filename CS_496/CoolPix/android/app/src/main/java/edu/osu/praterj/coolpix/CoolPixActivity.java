@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.SharedPreferences;
 import android.view.View;
@@ -137,20 +138,23 @@ public class CoolPixActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(resp);
                                 Log.i(debugTag, resp);
                                 long userID = jsonObject.getLong("id");
+                                String displayName = jsonObject.getString("displayName");
                                 String payload = "{" +
-                                        "\"ID\": 1234567890," +
-                                        "\"Email\": \"test@email.com\"," +
-                                        "\"Name\": \"Testy McTesterson\"," +
-                                        "\"CreationTime\": 1521159901645," +
+                                        "\"ID\": " + Long.toString(userID) + "," +
+                                        "\"Name\": \"" + displayName + "\"," +
+                                        "\"CreationTime\": " + new Date().getTime() + "," +
                                         "\"Posts\": {}" +
                                         "}";
 
-                                //RequestBody body()
+                                Log.i(debugTag, payload);
+                                MediaType JSON = MediaType.parse("application/json");
+                                RequestBody body = RequestBody.create(JSON, payload);
+
                                 OkHttpClient httpClient = new OkHttpClient();
                                 HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
-                                        //.post(payload)
+                                        .post(body)
                                         .build();
                                 httpClient.newCall(request).enqueue(new Callback() {
                                     @Override
@@ -196,37 +200,38 @@ public class CoolPixActivity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             String resp = response.body().string();
                             try {
-                                Log.i(debugTag, "User ID : " + resp);
                                 if (resp.length() == 0) {
+                                    Log.i(debugTag, "User does not exist : " + Long.toString(userID));
                                     // User does not exists.
                                     CreateUser();
                                     return;
-                                }
-                                JSONObject jsonObject = new JSONObject(resp);
+                                } else {
+                                    Log.i(debugTag, "User Info : " + resp);
+                                    JSONObject jsonObject = new JSONObject(resp);
 
-                                //JSONArray itemArray = jsonObject.getJSONArray("items");
-                                //List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+                                    //JSONArray itemArray = jsonObject.getJSONArray("items");
+                                    //List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
 
-                                /*for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
-                                    HashMap<String, String> hashMap = new HashMap<String, String>();
-                                    hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
-                                    hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
-                                    posts.add(hashMap);
-                                }
-
-                                final SimpleAdapter postAdapter = new SimpleAdapter(
-                                        CoolPixActivity.this,
-                                        posts,
-                                        R.layout.posts_layout,
-                                        new String[]{"published", "title"},
-                                        new int[]{R.id.post_publised, R.id.post_title});
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                                    /*for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
+                                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                                        hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
+                                        hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
+                                        posts.add(hashMap);
                                     }
-                                });*/
 
+                                    final SimpleAdapter postAdapter = new SimpleAdapter(
+                                            CoolPixActivity.this,
+                                            posts,
+                                            R.layout.posts_layout,
+                                            new String[]{"published", "title"},
+                                            new int[]{R.id.post_publised, R.id.post_title});
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                                        }
+                                    });*/
+                                }
                             } catch (JSONException error) {
                                 error.printStackTrace();
                             }

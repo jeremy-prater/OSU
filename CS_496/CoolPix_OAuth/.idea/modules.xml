@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CoolPix.iml" filepath="$PROJECT_DIR$/CoolPix.iml" />
+      <module fileurl="file://C:\Users\JPrate\src\OSU\CS_496\CoolPix_OAuth\CoolPix.iml" filepath="C:\Users\JPrate\src\OSU\CS_496\CoolPix_OAuth\CoolPix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CoolPix_OAuth.iml" filepath="$PROJECT_DIR$/CoolPix_OAuth.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\JPrate\src\OSU\CS_496\CoolPix_OAuth\app\app.iml" filepath="C:\Users\JPrate\src\OSU\CS_496\CoolPix_OAuth\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Geotagger.iml" filepath="$PROJECT_DIR$/Geotagger.iml" />
+      <module fileurl="file://C:\Users\JPrate\src\OSU\CS_496\Geotagger\Geotagger.iml" filepath="C:\Users\JPrate\src\OSU\CS_496\Geotagger\Geotagger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\JPrate\src\OSU\CS_496\Geotagger\app\app.iml" filepath="C:\Users\JPrate\src\OSU\CS_496\Geotagger\app\app.iml" />
     </modules>
   </component>
 </project>

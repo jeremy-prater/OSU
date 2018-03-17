@@ -11,29 +11,40 @@
 
         <TextView
             android:id="@+id/post_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/post_publised"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
             android:paddingHorizontal="5dp"
             android:paddingVertical="5dp"
-            android:text="TextView"
-            android:textSize="20sp"
+            android:text="title"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/post_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_title"
+            android:text="date"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="5dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="16dp" />
 
         <TextView
-            android:id="@+id/post_publised"
-            android:layout_width="wrap_content"
+            android:id="@+id/post_body"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/post_date"
+            android:text="body"
             android:paddingHorizontal="5dp"
             android:paddingVertical="5dp"
-            android:text="TextView"
-            android:textStyle="bold"
             tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:layout_editor_absoluteY="16dp" />
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

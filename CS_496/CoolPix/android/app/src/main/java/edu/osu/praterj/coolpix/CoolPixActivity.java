@@ -8,7 +8,8 @@ import android.app.PendingIntent;
 import android.net.Uri;
 import android.util.Log;
 
-import android.widget.SimpleAdapter;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import android.graphics.BitmapFactory;
@@ -19,7 +20,6 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Base64;
 
 import android.content.SharedPreferences;
 
@@ -64,6 +64,35 @@ public class CoolPixActivity extends AppCompatActivity {
         SharedPreferences authPreferences = getSharedPreferences("auth", MODE_PRIVATE);
         setContentView(R.layout.activity_cool_pix);
         localAuthorizationService = new AuthorizationService(this);
+        Button refresh = findViewById(R.id.button_refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(debugTag, "Refreshing Posts");
+                if (localAuthState != null) {
+                    signinComplete();
+                }
+            }
+        });
+
+        Button addPost= findViewById(R.id.button_add_post);
+        addPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(debugTag, "Launching Activity Add Post");
+                Intent intent = new Intent(CoolPixActivity.this, AddNewPostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button signOut= findViewById(R.id.button_sign_out);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(debugTag, "Signing out...");
+            }
+        });
+
     }
 
     @Override

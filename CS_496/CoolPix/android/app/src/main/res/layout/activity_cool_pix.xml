@@ -31,21 +31,21 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/refresh" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/button_add_post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/newpost" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/button_sign_out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

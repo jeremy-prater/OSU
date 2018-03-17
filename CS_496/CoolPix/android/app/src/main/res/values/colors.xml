@@ -5,4 +5,5 @@
     <color name="colorMainBack">#d0d0e0</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorToolsbackground">#303050</color>
+    <color name="control_background">#cc4285f4</color>
 </resources>

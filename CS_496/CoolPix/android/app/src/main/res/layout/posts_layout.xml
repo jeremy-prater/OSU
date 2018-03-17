@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/post_item"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/post_title"
+            android:id="@+id/post_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -19,32 +20,43 @@
             android:paddingHorizontal="5dp"
             android:paddingVertical="5dp"
             android:text="title"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/post_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/post_title"
+            android:layout_below="@+id/post_caption"
             android:text="date"
             android:paddingHorizontal="5dp"
-            android:paddingVertical="5dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="16dp" />
+            android:paddingVertical="5dp" />
+
+        <CheckBox
+            android:id="@+id/post_liked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/post_date"
+            android:text="@string/post_liked" />
+
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/post_liked"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/alert_dark_frame" />
 
         <TextView
             android:id="@+id/post_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/post_date"
+            android:layout_below="@+id/post_image"
             android:text="body"
             android:paddingHorizontal="5dp"
             android:paddingVertical="5dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="16dp" />
-
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

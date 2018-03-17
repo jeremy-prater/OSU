@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import android.widget.SimpleAdapter;
+import android.widget.ListView;
 
 import java.util.Date;
 import java.util.Map;
@@ -234,7 +235,7 @@ public class CoolPixActivity extends AppCompatActivity {
     {
         try {
             JSONArray itemArray = localUserObject.getJSONArray("posts");
-            List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+            List<Map<String, Object>> posts = new ArrayList<Map<String, Object>>();
 
             for (int i = 0; i < itemArray.length(); i++) {
                 String imageData = itemArray.getJSONObject(i).getString("imageData");
@@ -249,27 +250,27 @@ public class CoolPixActivity extends AppCompatActivity {
                 Log.i(debugTag, body);
                 Log.i(debugTag, Boolean.toString(liked));
 
-                /*HashMap<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put("imageData", );
-                hashMap.put("lastEdit", );
-                hashMap.put("caption", );
-                hashMap.put("body", );
-                hashMap.put("liked", );
-                posts.add(hashMap);*/
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("imageData", imageData);
+                hashMap.put("lastEdit", editDate);
+                hashMap.put("caption", caption);
+                hashMap.put("body", body);
+                hashMap.put("liked", liked);
+                posts.add(hashMap);
             }
 
-            /*final SimpleAdapter postAdapter = new SimpleAdapter(
+            final SimpleAdapter postAdapter = new SimpleAdapter(
                     CoolPixActivity.this,
                     posts,
                     R.layout.posts_layout,
-                    new String[]{"caption", "imageData", "lastEdit", "liked", "body"},
-                    new int[]{R.id.post_publised, R.id.post_title});
+                    new String[]{"caption", "lastEdit", "liked", "body"},
+                    new int[]{R.id.post_caption, R.id.post_date, R.id.post_liked, R.id.post_body});
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                    ((ListView) findViewById(R.id.picList)).setAdapter(postAdapter);
                 }
-            });*/
+            });
         } catch (JSONException error) {
             error.printStackTrace();
         }

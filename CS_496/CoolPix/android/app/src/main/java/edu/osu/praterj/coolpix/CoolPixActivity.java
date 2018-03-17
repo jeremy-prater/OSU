@@ -11,11 +11,15 @@ import android.util.Log;
 import android.widget.SimpleAdapter;
 import android.widget.ListView;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Base64;
 
 import android.content.SharedPreferences;
 
@@ -238,20 +242,21 @@ public class CoolPixActivity extends AppCompatActivity {
             List<Map<String, Object>> posts = new ArrayList<Map<String, Object>>();
 
             for (int i = 0; i < itemArray.length(); i++) {
-                String imageData = itemArray.getJSONObject(i).getString("imageData");
+                byte[] imageData = android.util.Base64.decode(itemArray.getJSONObject(i).getString("imageData"), android.util.Base64.DEFAULT);
+                Bitmap decodedImage= BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 Date editDate = new Date(itemArray.getJSONObject(i).getLong("lastEdit"));
                 String caption = itemArray.getJSONObject(i).getString("caption");
                 String body = itemArray.getJSONObject(i).getString("body");
                 boolean liked = itemArray.getJSONObject(i).getBoolean("liked");
 
-                Log.i(debugTag, imageData);
+                //Log.i(debugTag, imageData);
                 Log.i(debugTag, editDate.toString());
                 Log.i(debugTag, caption);
                 Log.i(debugTag, body);
                 Log.i(debugTag, Boolean.toString(liked));
 
                 HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("imageData", imageData);
+                hashMap.put("imageData", decodedImage);
                 hashMap.put("lastEdit", editDate);
                 hashMap.put("caption", caption);
                 hashMap.put("body", body);
@@ -263,8 +268,8 @@ public class CoolPixActivity extends AppCompatActivity {
                     CoolPixActivity.this,
                     posts,
                     R.layout.posts_layout,
-                    new String[]{"caption", "lastEdit", "liked", "body"},
-                    new int[]{R.id.post_caption, R.id.post_date, R.id.post_liked, R.id.post_body});
+                    new String[]{"caption", "lastEdit", "liked", "body", "imageData"},
+                    new int[]{R.id.post_caption, R.id.post_date, R.id.post_liked, R.id.post_body, R.id.post_image});
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -44,8 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_below="@+id/post_liked"
-            android:scaleType="fitXY"
-            app:srcCompat="@android:drawable/alert_dark_frame" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/post_body"

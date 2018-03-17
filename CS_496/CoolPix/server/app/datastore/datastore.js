@@ -42,7 +42,7 @@ module.exports = class {
             'creationTime': Date.now(),
             'posts': [
                 {
-                    imageData: "#imagethis",
+                    imageData: "welcome-test.jpg",
                     lastEdit: 0,
                     caption: "caption 1",
                     body: "body 1",
@@ -50,17 +50,6 @@ module.exports = class {
                     comments: [
                         "this is dumb",
                         "no it's not!"
-                    ]
-                },
-                {
-                    imageData: "#imagethis2",    // Base64 image
-                    lastEdit: 1521266624 * 1000, // uint32 time
-                    caption: "caption 2",        // caption string
-                    body: "body 2",              // body string
-                    liked: true,                 // liked
-                    comments: [                  // comments and stuff
-                        "this is awesome",
-                        "sure is!"
                     ]
                 }
             ]

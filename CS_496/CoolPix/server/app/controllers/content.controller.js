@@ -1,13 +1,14 @@
 var DataStore = require('../datastore/datastore');
+var fs = require('fs');
 
 var dataStore = new DataStore();
 
 exports.content = function (req, res) {
-    /////////////////////////////////////////
-    //
-    // Add new image to database
-    //
     if (req.method === 'POST') {
+        /////////////////////////////////////////
+        //
+        // Add new image to database
+        //
         var newImage = dataStore.AddImage(req.body.email, req.body.imageData, req.body.title, req.body.body);
         if (newImage == undefined) {
             res.sendStatus(500);
@@ -15,7 +16,20 @@ exports.content = function (req, res) {
             console.log(`[HTTP] User Added content ${JSON.stringify(newImage)}`);
             res.send(newImage);
         }
+    } else if (req.method === 'POST') {
+        /////////////////////////////////////////
+        //
+        // Get Image from DB
+        //
+        fs.readFile(`./content/${req.params.imagefile}`, (err, data) => {
+            if (err) {
+                console.log(`[HTTP] Error feteching file [${req.parms.imagefile}] [${err}]`);
+                res.sendStatus(500);
+            }
+            res.send(data);
+          });
     }
+
     /*if ("user" in req.params) {
         var boat = dataStore.GetBoatInSlipByID(req.params.slipid);
         if (boat !== undefined) {

@@ -28,25 +28,53 @@ module.exports = class {
     //
 
     CreateAccount(id, name) {
+        console.log(this.users);
+
         if (id in this.users) {
             console.log(`[DataStore] User already exists [${id}]`);
+            console.log(this.users[id]);
             return this.users[id];
         }
 
         var newUser = {
-            'ID': id,
-            'Name': name,
-            'CreationTime': Date.now(),
-            'Posts': {}
+            'id': id,
+            'name': name,
+            'creationTime': Date.now(),
+            'posts': [
+                {
+                    imageData: "#imagethis",
+                    lastEdit: 0,
+                    caption: "caption 1",
+                    body: "body 1",
+                    liked: false,
+                    comments: [
+                        "this is dumb",
+                        "no it's not!"
+                    ]
+                },
+                {
+                    imageData: "#imagethis2",    // Base64 image
+                    lastEdit: 1521266624 * 1000, // uint32 time
+                    caption: "caption 2",        // caption string
+                    body: "body 2",              // body string
+                    liked: true,                 // liked
+                    comments: [                  // comments and stuff
+                        "this is awesome",
+                        "sure is!"
+                    ]
+                }
+            ]
         };
 
-        console.log(`[DataStore] Creating user [${id}][${id}]`);
+        console.log(`[DataStore] Creating user [${id}][${name}]`);
         this.users[id] = newUser;
+        console.log(this.users);
         return newUser;
     }
 
     GetAccount(id) {
         console.log(`[DataStore] Getting user [${id}]`);
+        console.log(this.users);
 
         if (id in this.users) {
             return this.users[id];

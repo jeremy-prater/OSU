@@ -4,7 +4,7 @@ var dataStore = new DataStore();
 
 exports.users = function (req, res) {
     if (req.method === 'POST') {
-        var newUser = dataStore.CreateAccount(req.body.id, req.body.email, req.body.name);
+        var newUser = dataStore.CreateAccount(req.body.id, req.body.name);
         if (newUser == undefined) {
             res.sendStatus(409);
         } else {

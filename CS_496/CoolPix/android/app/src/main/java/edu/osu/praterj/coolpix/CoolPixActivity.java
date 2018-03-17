@@ -7,18 +7,16 @@ import android.content.Intent;
 import android.app.PendingIntent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.SimpleAdapter;
-import android.widget.ListView;
-import android.widget.EditText;
 
-import java.util.HashMap;
+import android.widget.SimpleAdapter;
+
+import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 
 import android.content.SharedPreferences;
-import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +49,7 @@ public class CoolPixActivity extends AppCompatActivity {
 
     private AuthorizationService localAuthorizationService;
     private AuthState localAuthState;
+    private JSONObject localUserObject;
 
     final private String debugTag = "CoolPix";
 
@@ -65,21 +64,20 @@ public class CoolPixActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         localAuthState = getOrCreateAuthState();
-        if (localAuthState != null)
-        {
-            updateMyPosts();
+        if (localAuthState != null) {
+            signinComplete();
         }
         super.onStart();
     }
 
 
-    void updateMyPosts() {
+    void signinComplete() {
         localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
             @Override
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" https://www.googleapis.com/plus/v1/people/me");
+                    HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plus/v1/people/me");
                     Log.i(debugTag, "Access Token : " + accessToken);
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -96,8 +94,8 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
-                                long userID = jsonObject.getLong("id");
-                                Log.i(debugTag, "User ID : " + Long.toString(userID));
+                                String userID = jsonObject.getString("id");
+                                Log.i(debugTag, "User ID : " + userID);
 
                                 GetUserInfo(userID);
                             } catch (JSONException error) {
@@ -119,7 +117,7 @@ public class CoolPixActivity extends AppCompatActivity {
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" https://www.googleapis.com/plus/v1/people/me");
+                    HttpUrl reqUrl = HttpUrl.parse("https://www.googleapis.com/plus/v1/people/me");
                     Log.i(debugTag, "Access Token : " + accessToken);
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -136,14 +134,14 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
-                                Log.i(debugTag, resp);
-                                long userID = jsonObject.getLong("id");
+                                String userID = jsonObject.getString("id");
+                                Log.i(debugTag, "Creating user with id " + userID);
                                 String displayName = jsonObject.getString("displayName");
                                 String payload = "{" +
-                                        "\"ID\": " + Long.toString(userID) + "," +
-                                        "\"Name\": \"" + displayName + "\"," +
-                                        "\"CreationTime\": " + new Date().getTime() + "," +
-                                        "\"Posts\": {}" +
+                                        "\"id\": \"" + userID + "\"," +
+                                        "\"name\": \"" + displayName + "\"," +
+                                        "\"creationTime\": " + new Date().getTime() + "," +
+                                        "\"posts\": {}" +
                                         "}";
 
                                 Log.i(debugTag, payload);
@@ -151,7 +149,7 @@ public class CoolPixActivity extends AppCompatActivity {
                                 RequestBody body = RequestBody.create(JSON, payload);
 
                                 OkHttpClient httpClient = new OkHttpClient();
-                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+                                HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
                                         .post(body)
@@ -164,6 +162,14 @@ public class CoolPixActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
+                                        String resp = response.body().string();
+                                        try {
+                                            localUserObject = new JSONObject(resp);
+                                            // Update something...
+                                            updateUserPosts();
+                                        } catch (JSONException error) {
+                                            error.printStackTrace();
+                                        }
                                     }
                                 });
 
@@ -179,14 +185,14 @@ public class CoolPixActivity extends AppCompatActivity {
         });
     }
 
-    void GetUserInfo(final long userID) {
+    void GetUserInfo(final String userID) {
         localAuthState.performActionWithFreshTokens(localAuthorizationService, new AuthState.AuthStateAction() {
             @Override
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + Long.toString(userID));
-                    Log.i(debugTag, "User info for user : " + Long.toString(userID));
+                    HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
+                    Log.i(debugTag, "User info for user : " + userID);
                     Request request = new Request.Builder()
                             .url(reqUrl)
                             .build();
@@ -199,41 +205,20 @@ public class CoolPixActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String resp = response.body().string();
-                            try {
-                                if (resp.length() == 0) {
-                                    Log.i(debugTag, "User does not exist : " + Long.toString(userID));
-                                    // User does not exists.
-                                    CreateUser();
-                                    return;
-                                } else {
-                                    Log.i(debugTag, "User Info : " + resp);
-                                    JSONObject jsonObject = new JSONObject(resp);
-
-                                    //JSONArray itemArray = jsonObject.getJSONArray("items");
-                                    //List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
-
-                                    /*for (int i = 0; i < Math.min(itemArray.length(), 3); i++) {
-                                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                                        hashMap.put("published", itemArray.getJSONObject(i).getString("published"));
-                                        hashMap.put("title", itemArray.getJSONObject(i).getString("title"));
-                                        posts.add(hashMap);
-                                    }
-
-                                    final SimpleAdapter postAdapter = new SimpleAdapter(
-                                            CoolPixActivity.this,
-                                            posts,
-                                            R.layout.posts_layout,
-                                            new String[]{"published", "title"},
-                                            new int[]{R.id.post_publised, R.id.post_title});
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
-                                        }
-                                    });*/
+                            if (resp.length() == 0) {
+                                Log.i(debugTag, "User does not exist : " + userID);
+                                // User does not exists.
+                                CreateUser();
+                                return;
+                            } else {
+                                Log.i(debugTag, "User Info : " + resp);
+                                try {
+                                    localUserObject = new JSONObject(resp);
+                                    // Update something...
+                                    updateUserPosts();
+                                } catch (JSONException error) {
+                                    error.printStackTrace();
                                 }
-                            } catch (JSONException error) {
-                                error.printStackTrace();
                             }
                         }
                     });
@@ -243,6 +228,51 @@ public class CoolPixActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    void updateUserPosts()
+    {
+        try {
+            JSONArray itemArray = localUserObject.getJSONArray("posts");
+            List<Map<String, String>> posts = new ArrayList<Map<String, String>>();
+
+            for (int i = 0; i < itemArray.length(); i++) {
+                String imageData = itemArray.getJSONObject(i).getString("imageData");
+                Date editDate = new Date(itemArray.getJSONObject(i).getLong("lastEdit"));
+                String caption = itemArray.getJSONObject(i).getString("caption");
+                String body = itemArray.getJSONObject(i).getString("body");
+                boolean liked = itemArray.getJSONObject(i).getBoolean("liked");
+
+                Log.i(debugTag, imageData);
+                Log.i(debugTag, editDate.toString());
+                Log.i(debugTag, caption);
+                Log.i(debugTag, body);
+                Log.i(debugTag, Boolean.toString(liked));
+
+                /*HashMap<String, String> hashMap = new HashMap<String, String>();
+                hashMap.put("imageData", );
+                hashMap.put("lastEdit", );
+                hashMap.put("caption", );
+                hashMap.put("body", );
+                hashMap.put("liked", );
+                posts.add(hashMap);*/
+            }
+
+            /*final SimpleAdapter postAdapter = new SimpleAdapter(
+                    CoolPixActivity.this,
+                    posts,
+                    R.layout.posts_layout,
+                    new String[]{"caption", "imageData", "lastEdit", "liked", "body"},
+                    new int[]{R.id.post_publised, R.id.post_title});
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //((ListView) findViewById(R.id.messageList)).setAdapter(postAdapter);
+                }
+            });*/
+        } catch (JSONException error) {
+            error.printStackTrace();
+        }
     }
 
     AuthState getOrCreateAuthState() {

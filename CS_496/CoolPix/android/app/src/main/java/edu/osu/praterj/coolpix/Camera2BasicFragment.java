@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -57,19 +58,37 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import android.content.SharedPreferences;
+import android.content.Context;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -243,7 +262,7 @@ public class Camera2BasicFragment extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), localView, getActivity()));
         }
 
     };
@@ -424,11 +443,13 @@ public class Camera2BasicFragment extends Fragment
         return inflater.inflate(R.layout.fragment_camera2_basic, container, false);
     }
 
+    public View localView;
+
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
-        view.findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+        localView = view;
     }
 
     @Override
@@ -891,16 +912,6 @@ public class Camera2BasicFragment extends Fragment
                 takePicture();
                 break;
             }
-            case R.id.info: {
-                Activity activity = getActivity();
-                if (null != activity) {
-                    new AlertDialog.Builder(activity)
-                            .setMessage(R.string.intro_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                }
-                break;
-            }
         }
     }
 
@@ -919,40 +930,63 @@ public class Camera2BasicFragment extends Fragment
         /**
          * The JPEG image
          */
-        private final Image mImage;
-        /**
-         * The file we save the image into.
-         */
-        private final File mFile;
 
-        ImageSaver(Image image, File file) {
-            mImage = image;
-            mFile = file;
+        private final Image localimage;
+        private final String caption;
+        private final String body;
+        private final String userIDString;
+
+        ImageSaver(Image image, View view, Activity activity) {
+            localimage = image;
+            caption = ((EditText) view.findViewById(R.id.editCaption)).getText().toString();
+            body = ((EditText) view.findViewById(R.id.editBody)).getText().toString();
+            SharedPreferences authPreferences = activity.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+            userIDString = authPreferences.getString("userID", null);
+
         }
 
         @Override
         public void run() {
-            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.remaining()];
+            ByteBuffer buffer = localimage.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(mFile);
-                output.write(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (null != output) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
 
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, outputStream);
+            String imageString = android.util.Base64.encodeToString(outputStream.toByteArray(), android.util.Base64.DEFAULT);
+
+            // Post it to the cloud...
+            String payload = "{" +
+                    "\"id\": \"" + userIDString + "\"," +
+                    "\"imageData\": \"" + imageString.replaceAll("\n","") + "\"," +
+                    "\"title\": \"" + caption + "\"," +
+                    "\"body\": \"" + body + "\"" +
+                    "}";
+
+            Log.i("[Create Post]", "Creating post for:" + userIDString);
+            MediaType JSON = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(JSON, payload);
+
+            OkHttpClient httpClient = new OkHttpClient();
+            HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+            //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content");
+            Request request = new Request.Builder()
+                    .url(reqUrl)
+                    .post(body)
+                    .build();
+            httpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.i("[Create Post]", "Post Completed");
+                }
+            });
+        }
     }
 
     /**

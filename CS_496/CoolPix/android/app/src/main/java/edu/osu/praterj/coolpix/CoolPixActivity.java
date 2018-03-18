@@ -55,6 +55,7 @@ public class CoolPixActivity extends AppCompatActivity {
     private AuthorizationService localAuthorizationService;
     private AuthState localAuthState;
     private JSONObject localUserObject;
+    private String userIDString;
 
     final private String debugTag = "CoolPix";
 
@@ -80,6 +81,10 @@ public class CoolPixActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(debugTag, "Launching Activity Add Post");
+
+                SharedPreferences authPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+                authPreferences.edit().putString("userID", userIDString).apply();
+
                 Intent intent = new Intent(CoolPixActivity.this, AddNewPostActivity.class);
                 startActivity(intent);
             }
@@ -128,10 +133,11 @@ public class CoolPixActivity extends AppCompatActivity {
                             String resp = response.body().string();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
-                                String userID = jsonObject.getString("id");
-                                Log.i(debugTag, "User ID : " + userID);
+                                userIDString = jsonObject.getString("id");
+                                Log.i(debugTag, "User ID : " + userIDString);
 
-                                GetUserInfo(userID);
+
+                                GetUserInfo(userIDString);
                             } catch (JSONException error) {
                                 error.printStackTrace();
                             }
@@ -183,7 +189,8 @@ public class CoolPixActivity extends AppCompatActivity {
                                 RequestBody body = RequestBody.create(JSON, payload);
 
                                 OkHttpClient httpClient = new OkHttpClient();
-                                HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
+                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+                                //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
                                         .post(body)
@@ -225,7 +232,8 @@ public class CoolPixActivity extends AppCompatActivity {
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
+                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + userID);
+                    //HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
                     Log.i(debugTag, "User info for user : " + userID);
                     Request request = new Request.Builder()
                             .url(reqUrl)

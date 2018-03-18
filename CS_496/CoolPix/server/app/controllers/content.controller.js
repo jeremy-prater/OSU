@@ -9,7 +9,7 @@ exports.content = function (req, res) {
         //
         // Add new image to database
         //
-        var newImage = dataStore.AddImage(req.body.email, req.body.imageData, req.body.title, req.body.body);
+        var newImage = dataStore.AddImage(req.body.id, req.body.imageData, req.body.title, req.body.body);
         if (newImage == undefined) {
             res.sendStatus(500);
         } else {

@@ -192,8 +192,8 @@ public class CoolPixActivity extends AppCompatActivity {
                                 RequestBody body = RequestBody.create(JSON, payload);
 
                                 OkHttpClient httpClient = new OkHttpClient();
-                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
-                                //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
+                                //HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+                                HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
                                         .post(body)
@@ -235,8 +235,8 @@ public class CoolPixActivity extends AppCompatActivity {
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + userID);
-                    //HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
+                    //HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + userID);
+                    HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
                     Log.i(debugTag, "User info for user : " + userID);
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -281,7 +281,17 @@ public class CoolPixActivity extends AppCompatActivity {
             JSONArray itemArray = localUserObject.getJSONArray("posts");
             List<Map<String, Object>> posts = new ArrayList<Map<String, Object>>();
 
-            for (int i = 0; i < itemArray.length(); i++) {
+            if (itemArray.length() == 0){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ListView) findViewById(R.id.picList)).setAdapter(null);
+                    }
+                });
+                return;
+            }
+
+            for (int i = itemArray.length() - 1 ; i >= 0 ; i--) {
                 byte[] imageData = android.util.Base64.decode(itemArray.getJSONObject(i).getString("imageData"), android.util.Base64.DEFAULT);
                 Bitmap decodedImage= BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 Date editDate = new Date(itemArray.getJSONObject(i).getLong("lastEdit"));

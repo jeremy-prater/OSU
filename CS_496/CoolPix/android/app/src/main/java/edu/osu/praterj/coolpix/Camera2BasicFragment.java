@@ -981,8 +981,8 @@ public class Camera2BasicFragment extends Fragment
             RequestBody body = RequestBody.create(JSON, payload);
 
             OkHttpClient httpClient = new OkHttpClient();
-            HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content");
-            //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content");
+            //HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content");
+            HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content");
             Request request = new Request.Builder()
                     .url(reqUrl)
                     .post(body)

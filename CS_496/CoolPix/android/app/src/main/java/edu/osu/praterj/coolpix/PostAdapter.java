@@ -4,6 +4,7 @@ package edu.osu.praterj.coolpix;
  * Created by prater on 3/17/18.
  */
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,13 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.util.Log;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 //
 // Adapter code adapted from
@@ -114,10 +122,34 @@ public class PostAdapter extends SimpleAdapter{
                             ((Button) v).setOnClickListener(new View.OnClickListener() {
                                 String localData = (String) data;
                                 String imageID = dataSet.get("imageID").toString();
+                                CoolPixActivity pixActivity = (CoolPixActivity)context;
 
                                 @Override
                                 public void onClick(View v) {
                                     Log.i("PostAdapter", "Clicked something : " + localData + ":" + userID + ":" + imageID);
+                                    if (localData.compareTo("deleteImage") == 0) {
+                                        // Delete the image...
+                                        OkHttpClient httpClient = new OkHttpClient();
+                                        //HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content/" + userID + "/" + imageID);
+                                        HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content/" + userID + "/" + imageID);
+                                        Request request = new Request.Builder()
+                                                .url(reqUrl)
+                                                .delete()
+                                                .build();
+                                        httpClient.newCall(request).enqueue(new Callback() {
+                                            @Override
+                                            public void onFailure(Call call, IOException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            @Override
+                                            public void onResponse(Call call, Response response) throws IOException {
+                                                Log.i("Post Adapter", "Deleted Image");
+                                                pixActivity.signinComplete();
+                                            }
+                                        });
+
+                                    }
                                 }
                             });
                         } else {

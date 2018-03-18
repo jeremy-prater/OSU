@@ -124,9 +124,29 @@ module.exports = class {
     // Post Delete
     //
 
-    DeleteImage(id, imageID) {
-        console.log(`[DataStore] User [${id}] delete image [${imageID}]`);
-        delete this.users[id].Posts[imageID];
+    DeleteImage(userID, imageID) {
+        console.log(`[DataStore] User [${userID}] delete image [${imageID}]`);
+        if (userID in this.users) {
+            var deletedImage = -1;
+            for (var index = 0; index < this.users[userID].posts.length; index++) {
+                var testImageID = this.users[userID].posts[index].imageID;
+                if (testImageID == imageID)
+                {
+                    deletedImage = index;
+                    break;
+                }
+            }
+
+            if (deletedImage == -1) {
+                return false;
+            } else {
+                console.log(`[DataStore] User [${userID}] delete image [${imageID}] at index [${deletedImage}]`);
+                this.users[userID].posts.splice(deletedImage, 1);
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
 }

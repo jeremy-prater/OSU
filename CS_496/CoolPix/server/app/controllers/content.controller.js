@@ -29,15 +29,18 @@ exports.content = function (req, res) {
                 res.sendStatus(500);
             }
             res.send(data);
-          });
-    }
-
-    /*if ("user" in req.params) {
-        var boat = dataStore.GetBoatInSlipByID(req.params.slipid);
-        if (boat !== undefined) {
-            res.send(boat);
+        });
+    } else if (req.method === 'DELETE') {
+        /////////////////////////////////////////
+        //
+        // Delete Image from DB
+        //
+        console.log(`[HTTP] Deleting Image [${req.params.userid}] [${req.params.imageid}]`);
+        var result = dataStore.DeleteImage(req.params.userid, req.params.imageid);
+        if (result) {
+            res.sendStatus(200);
         } else {
-            res.sendStatus(404);
+            res.sendStatus(502);
         }
-    }*/
+    }
 };

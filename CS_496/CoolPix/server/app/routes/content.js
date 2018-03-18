@@ -3,4 +3,5 @@ module.exports = function(app) {
 
     // Post a new picture
     app.post('/content', index.content);
+    app.delete('/content/:userid/:imageid', index.content);
 };

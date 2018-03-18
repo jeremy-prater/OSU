@@ -288,19 +288,24 @@ public class CoolPixActivity extends AppCompatActivity {
                 String caption = itemArray.getJSONObject(i).getString("caption");
                 String body = itemArray.getJSONObject(i).getString("body");
                 boolean liked = itemArray.getJSONObject(i).getBoolean("liked");
+                String imageID = itemArray.getJSONObject(i).getString("imageID");
 
-                //Log.i(debugTag, imageData);
+                Log.i(debugTag, imageID);
                 Log.i(debugTag, editDate.toString());
                 Log.i(debugTag, caption);
                 Log.i(debugTag, body);
                 Log.i(debugTag, Boolean.toString(liked));
 
                 HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("userID", userIDString);
+                hashMap.put("imageID", imageID);
                 hashMap.put("imageData", decodedImage);
                 hashMap.put("lastEdit", editDate);
                 hashMap.put("caption", caption);
                 hashMap.put("body", body);
                 hashMap.put("liked", liked);
+                hashMap.put("deleteImage", "deleteImage");
+                hashMap.put("editImage", "editImage");
                 posts.add(hashMap);
             }
 
@@ -308,8 +313,8 @@ public class CoolPixActivity extends AppCompatActivity {
                     CoolPixActivity.this,
                     posts,
                     R.layout.posts_layout,
-                    new String[]{"caption", "lastEdit", "liked", "body", "imageData"},
-                    new int[]{R.id.post_caption, R.id.post_date, R.id.post_liked, R.id.post_body, R.id.post_image});
+                    new String[]{"caption", "lastEdit", "liked", "body", "imageData", "editImage", "deleteImage"},
+                    new int[]{R.id.post_caption, R.id.post_date, R.id.post_liked, R.id.post_body, R.id.post_image, R.id.editButton, R.id.deleteButton});
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

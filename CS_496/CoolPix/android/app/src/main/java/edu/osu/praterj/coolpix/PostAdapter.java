@@ -14,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Checkable;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.util.Log;
 
 //
 // Adapter code adapted from
@@ -32,6 +34,9 @@ public class PostAdapter extends SimpleAdapter{
     int[] to;
     Context context;
     LayoutInflater mInflater;
+
+    private final String userID;
+
     public PostAdapter(Context context, List<? extends Map<String, ?>> data, // if fails to compile, do the same replacement as above on this line
                                  int resource, String[] from, int[] to) {
         super(context, data, resource, from, to);
@@ -40,6 +45,8 @@ public class PostAdapter extends SimpleAdapter{
         this.from = from;
         this.to = to;
         this.context = context;
+        userID = map.get(0).get("userID").toString();
+        Log.i("PostAdapter", "User ID :" + userID);
     }
 
 
@@ -101,9 +108,23 @@ public class PostAdapter extends SimpleAdapter{
                                     (data == null ? "<unknown type>" : data.getClass()));
                         }
                     } else if (v instanceof TextView) {
-                        // Note: keep the instanceof TextView check at the bottom of these
-                        // ifs since a lot of views are TextViews (e.g. CheckBoxes).
-                        setViewText((TextView) v, text);
+                        if (v instanceof Button) {
+                            Log.i("PostAdapter", "Setup Handler : " + (String) data);
+
+                            ((Button) v).setOnClickListener(new View.OnClickListener() {
+                                String localData = (String) data;
+                                String imageID = dataSet.get("imageID").toString();
+
+                                @Override
+                                public void onClick(View v) {
+                                    Log.i("PostAdapter", "Clicked something : " + localData + ":" + userID + ":" + imageID);
+                                }
+                            });
+                        } else {
+                            // Note: keep the instanceof TextView check at the bottom of these
+                            // ifs since a lot of views are TextViews (e.g. CheckBoxes).
+                            setViewText((TextView) v, text);
+                        }
                     } else if (v instanceof ImageView) {
                         if (data instanceof Integer) {
                             setViewImage((ImageView) v, (Integer) data);
@@ -121,12 +142,7 @@ public class PostAdapter extends SimpleAdapter{
         }
     }
 
-
-
     private void setViewImage(ImageView v, Bitmap bmp){
         v.setImageBitmap(bmp);
     }
-
-
-
 }

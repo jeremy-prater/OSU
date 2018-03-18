@@ -95,6 +95,9 @@ public class CoolPixActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(debugTag, "Signing out...");
+                SharedPreferences authPreferences = getSharedPreferences("auth", MODE_PRIVATE);
+                authPreferences.edit().remove("state").apply();
+                onStart();
             }
         });
 

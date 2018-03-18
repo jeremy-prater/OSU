@@ -881,7 +881,7 @@ public class Camera2BasicFragment extends Fragment
         // We have to take that into account and rotate JPEG properly.
         // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
         // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
-        return (ORIENTATIONS.get(rotation) + mSensorOrientation + 270) % 360;
+        return (ORIENTATIONS.get(rotation) + mSensorOrientation) % 360;
     }
 
     /**
@@ -950,10 +950,22 @@ public class Camera2BasicFragment extends Fragment
             ByteBuffer buffer = localimage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.capacity()];
             buffer.get(bytes);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+            Bitmap originalBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+            int newWidth = originalBitmap.getWidth();
+            int newHeight = originalBitmap.getHeight();
+            double widthRatio = 500.0f / newWidth;
+            double heightRatio = 500.0f / newHeight;
+            double ratio = Math.min(widthRatio, heightRatio);
+            newWidth *= ratio;
+            newHeight *= ratio;
+            Bitmap scaledBitmap= Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap bitmap = Bitmap.createBitmap(scaledBitmap , 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, outputStream);
             String imageString = android.util.Base64.encodeToString(outputStream.toByteArray(), android.util.Base64.DEFAULT);
 
             // Post it to the cloud...
@@ -969,7 +981,7 @@ public class Camera2BasicFragment extends Fragment
             RequestBody body = RequestBody.create(JSON, payload);
 
             OkHttpClient httpClient = new OkHttpClient();
-            HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+            HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content");
             //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content");
             Request request = new Request.Builder()
                     .url(reqUrl)

@@ -37,6 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_below="@+id/post_date"
+            android:checked="false"
+            android:enabled="false"
             android:text="@string/post_liked" />
 
         <ImageView
@@ -56,6 +58,23 @@
             android:paddingVertical="5dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="16dp" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/deleteButton"
+            android:layout_alignBottom="@+id/deleteButton"
+            android:layout_toStartOf="@+id/deleteButton"
+            android:text="@string/editPost" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/post_body"
+            android:text="@string/deletePost" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

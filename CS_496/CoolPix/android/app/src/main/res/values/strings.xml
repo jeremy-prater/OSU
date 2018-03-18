@@ -5,10 +5,12 @@
     <string name="refresh">Refresh</string>
     <string name="newpost">Add Image</string>
     <string name="signout">Sign out</string>
-    <string name="post_liked">Like Post</string>
+    <string name="post_liked">Liked Post</string>
     <string name="picture">Post Image</string>
     <string name="request_permission">This sample needs camera permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="post_caption">#entercaption</string>
     <string name="post_body">#enterbody</string>
+    <string name="deletePost">Delete</string>
+    <string name="editPost">Edit</string>
 </resources>

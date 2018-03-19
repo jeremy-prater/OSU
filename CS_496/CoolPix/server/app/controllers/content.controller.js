@@ -42,5 +42,17 @@ exports.content = function (req, res) {
         } else {
             res.sendStatus(502);
         }
+    } else if (req.method === 'PATCH') {
+        /////////////////////////////////////////
+        //
+        // Update image in DB
+        //
+        console.log(`[HTTP] Updating Image [${req.body.userid}] [${req.body.imageid}] [${req.body.attrib}] = [${req.body.value}]`);
+        var result = dataStore.UpdateImage(req.body.userid, req.body.imageid, req.body.attrib, req.body.value);
+        if (result) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(502);
+        }
     }
 };

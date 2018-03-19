@@ -149,4 +149,27 @@ module.exports = class {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Post Delete
+    //
+
+    UpdateImage(userID, imageID, attrib, value) {
+        console.log(`[DataStore] User [${userID}] updating image [${imageID}] [${attrib}] = [${value}]`);
+        if (userID in this.users) {
+            for (var index = 0; index < this.users[userID].posts.length; index++) {
+                var testImageID = this.users[userID].posts[index].imageID;
+                if (testImageID == imageID)
+                {
+                    console.log(`[DataStore] User [${userID}] updated image [${imageID}] [${attrib}] = [${value}]`);
+                    this.users[userID].posts[index][attrib] = value;
+                    this.users[userID].posts[index].lastEdit = Date.now();
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
 }

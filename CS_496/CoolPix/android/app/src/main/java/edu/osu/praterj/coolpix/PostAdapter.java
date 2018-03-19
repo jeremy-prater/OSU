@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,8 +132,8 @@ public class PostAdapter extends SimpleAdapter{
                                     if (localData.compareTo("deleteImage") == 0) {
                                         // Delete the image...
                                         OkHttpClient httpClient = new OkHttpClient();
-                                        //HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content/" + userID + "/" + imageID);
-                                        HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content/" + userID + "/" + imageID);
+                                        HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/content/" + userID + "/" + imageID);
+                                        //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/content/" + userID + "/" + imageID);
                                         Request request = new Request.Builder()
                                                 .url(reqUrl)
                                                 .delete()
@@ -149,6 +151,12 @@ public class PostAdapter extends SimpleAdapter{
                                             }
                                         });
 
+                                    } else if (localData.compareTo("editImage") == 0) {
+                                        SharedPreferences authPreferences =  pixActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+                                        authPreferences.edit().putString("editImageID", imageID).apply();
+
+                                        Intent intent = new Intent(pixActivity, EditPostActivity.class);
+                                        pixActivity.startActivity(intent);
                                     }
                                 }
                             });

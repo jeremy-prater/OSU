@@ -192,8 +192,8 @@ public class CoolPixActivity extends AppCompatActivity {
                                 RequestBody body = RequestBody.create(JSON, payload);
 
                                 OkHttpClient httpClient = new OkHttpClient();
-                                //HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
-                                HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
+                                HttpUrl reqUrl = HttpUrl.parse("http://dev-smart.ddns.net:1337/users");
+                                //HttpUrl reqUrl = HttpUrl.parse("http://10.0.2.2:1337/users");
                                 Request request = new Request.Builder()
                                         .url(reqUrl)
                                         .post(body)
@@ -210,6 +210,9 @@ public class CoolPixActivity extends AppCompatActivity {
                                         try {
                                             localUserObject = new JSONObject(resp);
                                             // Update something...
+                                            SharedPreferences authPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+                                            authPreferences.edit().putString("userInfo", resp).apply();
+
                                             updateUserPosts();
                                         } catch (JSONException error) {
                                             error.printStackTrace();
@@ -235,8 +238,8 @@ public class CoolPixActivity extends AppCompatActivity {
             public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException error) {
                 if (error == null) {
                     OkHttpClient httpClient = new OkHttpClient();
-                    //HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + userID);
-                    HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
+                    HttpUrl reqUrl = HttpUrl.parse(" http://dev-smart.ddns.net:1337/users/" + userID);
+                    //HttpUrl reqUrl = HttpUrl.parse(" http://10.0.2.2:1337/users/" + userID);
                     Log.i(debugTag, "User info for user : " + userID);
                     Request request = new Request.Builder()
                             .url(reqUrl)
@@ -260,6 +263,8 @@ public class CoolPixActivity extends AppCompatActivity {
                                 try {
                                     localUserObject = new JSONObject(resp);
                                     // Update something...
+                                    SharedPreferences authPreferences = getSharedPreferences("userInfo", MODE_PRIVATE);
+                                    authPreferences.edit().putString("userInfo", resp).apply();
                                     updateUserPosts();
                                 } catch (JSONException error) {
                                     error.printStackTrace();
